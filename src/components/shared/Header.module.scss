@@ -1,0 +1,29 @@
+@import "../shared/styles/mixins.scss";
+
+.header {
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+  background-color: $header-color;
+
+  .navContainer {
+    margin: 0 auto;
+    padding: 0 3rem; // maybe use 1.5rem here for small screens
+    max-width: $breakPointXL;
+    line-height: 4rem;
+    display: flex;
+    justify-content: space-between;
+
+    .navLinks > * {
+      margin-left: 1.5rem;
+    }
+
+    .navLink {
+      padding: 0 8px;
+    }
+  }
+}
+
+.safeZone {
+  margin-top: 4rem;
+}
