@@ -2,27 +2,32 @@ const path = require('path');
 
 exports.createPages = async ({ actions, graphql }) => {
   const { createPage } = actions;
-  const result = await graphql(`
+  const blogPostsQuery = await graphql(`
     {
-      allMarkdownRemark {
+      allContentfulBlogPost {
         edges {
           node {
-            frontmatter {
-              path
-            }
+            title
+            id
+            slug
+            publishDate(formatString: "MMMM DD, YYYY")
           }
         }
       }
     }
   `);
-  if (result.errors) {
-    console.error(result.errors);
+  if (blogPostsQuery.errors) {
+    console.error(blogPostsQuery.errors);
   }
-
-  result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+  const blogPosts = blogPostsQuery.data.allContentfulBlogPost.edges;
+  blogPosts.forEach(({ node }) => {
+    console.log(node);
     createPage({
-      path: node.frontmatter.path,
+      path: 'blog/' + node.slug,
       component: path.resolve('./src/templates/post.tsx'),
+      context: {
+        id: node.id,
+      }
     });
   });
 }
