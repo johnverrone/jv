@@ -7,19 +7,23 @@ module.exports = {
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-typescript`,
-    `gatsby-plugin-scss-typescript`,
+    `gatsby-plugin-emotion`,
+    `gatsby-background-image`,
+    `gatsby-transformer-remark`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-fullstory`,
+      options: {
+        fs_org: 'Q23YS',
+      }
+    },
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
         fonts: [`Open Sans`],
         display: 'swap',
       },
-    },
-    {
-      resolve: `gatsby-background-image`,
-      options: {
-
-      }
     },
     {
       resolve: `gatsby-source-contentful`,
@@ -29,25 +33,15 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `images`,
-        path: `${__dirname}/src/images`,
-      },
-    },
-    `gatsby-transformer-remark`,
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
-    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `John Verrone`,
         short_name: `JV`,
         start_url: `/`,
-        background_color: `#222222`,
-        theme_color: `#EEEEEEE`,
+        background_color: `#FFFFFF`,
+        theme_color: `#FFFFFF`,
         display: `standalone`,
-        icon: `src/images/favicon.png`,
+        icon: `./static/images/favicon.png`,
       }
     }
     // `gatsby-plugin-offline`,

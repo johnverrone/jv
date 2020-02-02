@@ -1,7 +1,7 @@
 import React from 'react';
-import { graphql, Link } from 'gatsby';
+import { graphql } from 'gatsby';
 import SEO from '../components/shared/SEO';
-import styles from './blog.module.scss';
+import BlogList from '../components/shared/BlogList';
 
 interface BlogPageProps {
   data: {
@@ -17,13 +17,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ data }) => {
   return (
     <>
       <SEO title="Blog" />
-      <div className={styles.blogContainer}>
-        { posts.map(({ node: p }) => (
-          <li key={p.id}>
-            <Link to={`/blog/${p.slug}`}>{p.title}</Link>
-          </li>
-        ))}
-      </div>
+      <BlogList posts={posts} />
     </>
   )
 }

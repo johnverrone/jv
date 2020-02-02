@@ -1,3 +1,6 @@
+import { css } from '@emotion/core';
+
+export const reset = css`
 /* http://meyerweb.com/eric/tools/css/reset/
 v5.0.1 | 20191019
 License: none (public domain)
@@ -50,3 +53,4 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+`;

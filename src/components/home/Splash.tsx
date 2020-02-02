@@ -1,30 +1,27 @@
 import React from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import BackgroundImage from 'gatsby-background-image';
-import styles from './Splash.module.scss';
 
 const Splash: React.FC = () => {
   const data = useStaticQuery(graphql`
     query {
-      file(relativePath: { eq: "bg.jpg" }) {
-        childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid
-          }
+      contentfulAsset(contentful_id: { eq: "E33uRF0Dk0DSoKrE83XH9" }) {
+        fluid(maxWidth: 2000, quality: 100) {
+          ...GatsbyContentfulFluid
         }
       }
     }
   `);
 
-  const imageData = data.file.childImageSharp.fluid;
+  const imageData = data.contentfulAsset.fluid;
 
   return (
     <BackgroundImage
       Tag="section"
-      className={styles.splash}
       fluid={imageData}
       backgroundColor={`#222222`}
       style={{
+        flex: 1,
         // Defaults are overwrite-able by setting one or each of the following:
         backgroundSize: 'cover',
         backgroundPosition: '50% 20%',
