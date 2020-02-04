@@ -15,8 +15,8 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
     <Container>
       <ul>
         { posts.map(({ node: p }) => (
-          <li key={p.contentful_id}>
-          <Link to={`/blog/${p.slug}`}>{p.title}</Link>
+          <li key={p.id}>
+            <Link to={`/blog/${p.slug}`}>{p.title}</Link>
           </li>
         ))}
       </ul>

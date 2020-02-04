@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import SEO from '../components/shared/SEO';
+import SEO from '../components/core/SEO';
 import BlogList from '../components/shared/BlogList';
 
 interface BlogPageProps {

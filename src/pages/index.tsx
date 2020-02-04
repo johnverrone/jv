@@ -1,5 +1,5 @@
 import React from 'react';
-import SEO from '../components/shared/SEO';
+import SEO from '../components/core/SEO';
 import Splash from '../components/home/Splash';
 
 const IndexPage: React.FC = () => (

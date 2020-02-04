@@ -1,5 +1,5 @@
 import React from 'react';
-import SEO from '../components/shared/SEO';
+import SEO from '../components/core/SEO';
 
 const NotFoundPage: React.FC = () => (
   <>
