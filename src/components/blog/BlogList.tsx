@@ -1,13 +1,7 @@
 import React from 'react';
 import Link from 'gatsby-link';
 import styled from '../core/styled';
-
-const Container = styled.div`
-  padding: 4em 1.5em;
-  @media screen and (min-width: ${props => props.theme.responsive.medium}) {
-    padding: 4em 3em;
-  }
-`;
+import { Container } from '../shared/Container';
 
 const TitleWrapper = styled.div`
   margin-bottom: 2rem;

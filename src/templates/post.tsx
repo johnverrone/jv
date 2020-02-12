@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import { Container } from '../components/shared/Container';
 
 const Post = ({ data }) => {
   const { contentfulBlogPost } = data;
@@ -7,11 +8,11 @@ const Post = ({ data }) => {
   const html = body.childMarkdownRemark.html;
 
   return (
-    <div className="post">
+    <Container>
       <h1>{title}</h1>
       <h2>{publishDate}</h2>
       <div dangerouslySetInnerHTML={{ __html: html }} />
-    </div>
+    </Container>
   )
 }
 
