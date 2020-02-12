@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import SEO from '../components/core/SEO';
-import BlogList from '../components/shared/BlogList';
+import BlogList from '../components/blog/BlogList';
 
 interface BlogPageProps {
   data: {
@@ -31,6 +31,12 @@ export const query = graphql`
           id
           title
           slug
+          publishDate(formatString: "MMMM DD, YYYY")
+          body {
+            childMarkdownRemark {
+              excerpt
+            }
+          }
         }
       }
     }

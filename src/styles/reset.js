@@ -53,4 +53,19 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+button,
+input {
+  background: none;
+  border: none;
+  outline: none;
+  appearance: none;
+  border-radius: 0;
+  resize: none;
+  &:focus {
+    outline: none;
+  }
+  &:invalid {
+    box-shadow: none;
+  }
+}
 `;

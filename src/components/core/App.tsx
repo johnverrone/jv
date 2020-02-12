@@ -1,13 +1,13 @@
 import React from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import { Global } from '@emotion/core';
-import styled from '@emotion/styled';
+import styled from './styled';
 import { reset } from '../../styles/reset';
 import Header from './Header';
 
 const Root = styled.div`
   font-family: "Open Sans",inter ui,-apple-system,BlinkMacSystemFont,roboto,segoe ui,Helvetica,Arial,sans-serif;
-  color: #222;
+  color: ${props => props.theme.colors.text};
   line-height: 200%;
   display: flex;
   flex-direction: column;

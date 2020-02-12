@@ -1,10 +1,6 @@
 import styled, { CreateStyled } from '@emotion/styled';
+import theme from '../../gatsby-plugin-theme-ui';
 
-export type Theme = {
-  colors: {
-    text: string,
-    background: string,
-  }
-}
+type Theme = typeof theme;
 
 export default styled as CreateStyled<Theme>;

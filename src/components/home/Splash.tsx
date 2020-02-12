@@ -24,7 +24,7 @@ const Splash: React.FC = () => {
         flex: 1,
         // Defaults are overwrite-able by setting one or each of the following:
         backgroundSize: 'cover',
-        backgroundPosition: '50% 20%',
+        backgroundPosition: '50% 10%',
         backgroundRepeat: '',
       }}
     >
