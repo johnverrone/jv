@@ -20,5 +20,6 @@ export default {
     small: '35rem',
     medium: '50rem',
     large: '80rem',
+    max: '100rem',
   },
 }

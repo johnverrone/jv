@@ -23,7 +23,7 @@ const Header = styled.header<MenuProps>`
 const Nav = styled(motion.nav)`
   margin: 0 auto;
   padding: 0 1.5rem;
-  max-width: 1380px;
+  max-width: ${props => props.theme.responsive.max};
   height: 100%;
   display: flex;
   align-items: center;
