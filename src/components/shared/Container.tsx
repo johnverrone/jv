@@ -1,6 +1,6 @@
 import styled from '../core/styled';
 
-export const Container = styled.div`
+const Container = styled.div`
   padding: 4em 1.5em;
   margin: 0 auto;
   width: 100%;
@@ -9,3 +9,5 @@ export const Container = styled.div`
     padding: 4em 3em;
   }
 `;
+
+export default Container;

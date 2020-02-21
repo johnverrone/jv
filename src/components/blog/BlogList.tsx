@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'gatsby-link';
+import Container from '../shared/Container';
 import styled from '../core/styled';
-import { Container } from '../shared/Container';
 
 const TitleWrapper = styled.div`
   margin-bottom: 2rem;

@@ -1,21 +1,29 @@
 const path = require('path');
 
-exports.createPages = async ({ actions, graphql }) => {
-  const { createPage } = actions;
-  const blogPostsQuery = await graphql(`
-    {
-      allContentfulBlogPost {
-        edges {
-          node {
-            title
-            id
-            slug
-            publishDate(formatString: "MMMM DD, YYYY")
+const query = {
+  posts: `{
+    allContentfulBlogPost {
+      edges {
+        node {
+          title
+          id
+          slug
+          publishDate(formatString: "MMMM DD, YYYY")
+          body {
+            childMarkdownRemark {
+              html
+            }
           }
         }
       }
     }
-  `);
+  }`,
+};
+
+exports.createPages = async ({ actions, graphql }) => {
+  const { createPage } = actions;
+  const blogPostsQuery = await graphql(query.posts);
+
   if (blogPostsQuery.errors) {
     console.error(blogPostsQuery.errors);
   }
@@ -25,7 +33,7 @@ exports.createPages = async ({ actions, graphql }) => {
       path: 'blog/' + node.slug,
       component: path.resolve('./src/templates/post.tsx'),
       context: {
-        id: node.id,
+        ...node,
       }
     });
   });

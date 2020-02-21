@@ -1,34 +1,18 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { Container } from '../components/shared/Container';
+import Container from '../components/shared/Container';
+import Title from '../components/shared/Title';
+import Content from '../components/shared/Content';
 
-const Post = ({ data }) => {
-  const { contentfulBlogPost } = data;
-  const { title, publishDate, body} = contentfulBlogPost;
-  const html = body.childMarkdownRemark.html;
+const Post = ({ pageContext }) => {
+  const { title, publishDate, body} = pageContext;
 
   return (
     <Container>
-      <h1>{title}</h1>
-      <h2>{publishDate}</h2>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <Title title={title} date={publishDate} />
+      <Content markdown={body} />
     </Container>
   )
 }
 
 export default Post;
-export const pageQuery = graphql`
-  query BlogPostQuery($id: String!) {
-    contentfulBlogPost(id: { eq: $id }) {
-      title
-      id
-      slug
-      publishDate(formatString: "MMMM DD, YYYY")
-      body {
-        childMarkdownRemark {
-          html
-        }
-      }
-    }
-  }
-`;
