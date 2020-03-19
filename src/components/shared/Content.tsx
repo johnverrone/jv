@@ -9,6 +9,36 @@ const Wrapper = styled.div`
   h5,
   h6 {
     font-weight: ${props => props.theme.fontWeights.semiBold};
+    line-height: 1.15;
+    margin: 0 0 1.25rem;
+  }
+
+  h1 {
+    font-size: 1.866em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.17em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+  h5 {
+    font-size: .866em;
+  }
+
+  h6 {
+    font-size: .667em;
+  }
+
+  p {
+    margin-bottom: 1.25em;
   }
 `;
 

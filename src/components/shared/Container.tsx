@@ -1,12 +1,13 @@
 import styled from '../core/styled';
 
 const Container = styled.div`
-  padding: 4em 1.5em;
+  padding: 3em 1.5em;
   margin: 0 auto;
+  margin-top: 60px;
   width: 100%;
   max-width: ${props => props.theme.responsive.max};
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
-    padding: 4em 3em;
+    padding: 3em;
   }
 `;
 
