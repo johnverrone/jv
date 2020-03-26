@@ -164,6 +164,9 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
           <Item variants={itemVariants}>
             <Link to="/blog" onClick={close}>Blog</Link>
           </Item>
+          <Item variants={itemVariants}>
+            <Link to="/instagram" onClick={close}>Gram</Link>
+          </Item>
         </List>
       </Nav>
     </Header>

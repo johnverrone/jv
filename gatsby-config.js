@@ -34,6 +34,12 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-instagram`,
+      options: {
+        username: `johnverrone`,
+      },
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `John Verrone`,
