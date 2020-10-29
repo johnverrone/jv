@@ -1,6 +1,6 @@
 export JV_HOME := $(shell pwd)
 
-BEAN_PKGS := $(shell find projects/go/beans -type d -regex '.*/beans/[^/]*/main')
+BEAN_PKGS := $(shell find go/beans -type d -regex '.*/beans/[^/]*/main')
 
 test:
 	@echo $(BEAN_PKGS)
@@ -10,7 +10,7 @@ test:
 define make-go-bean
 .PHONY:	$1
 $1:
-	go build -o $(JV_HOME)/projects/go/bin/$1 jv/$2
+	go build -o $(JV_HOME)/go/bin/$1 jv/$2
 endef
 
 $(eval $(foreach pkg,$(BEAN_PKGS),$(call make-go-bean,$(lastword $(subst /, ,$(patsubst %/main,%,$(pkg)))),$(pkg))))
