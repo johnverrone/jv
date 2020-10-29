@@ -16,7 +16,7 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
-  name       = "jv-node-pool"
+  name       = "${var.cluster_name}-node-pool"
   location   = var.location
   cluster    = google_container_cluster.primary.name
   node_count = 1
@@ -33,4 +33,9 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
       "https://www.googleapis.com/auth/cloud-platform"
     ]
   }
+}
+
+output "k8s_cluster_name" {
+  value       = google_container_cluster.primary.name
+  description = "GKE Cluster Nmae"
 }

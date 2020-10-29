@@ -1,4 +1,4 @@
 provider "google" {
-  project = "verrone-gcp"
-  region  = "us-central1"
+  project = var.project
+  region  = var.location
 }
