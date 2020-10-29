@@ -2,6 +2,7 @@ variable "project" {
   description = "The GCP Project"
   default     = "verrone-gcp"
 }
+
 variable "cluster_name" {
   description = "The name for the GKE cluster"
   default     = "main-cluster"
@@ -9,7 +10,7 @@ variable "cluster_name" {
 
 variable "location" {
   description = "the location to use for the primary k8s cluster"
-  default     = "us-central1"
+  default     = "us-central1-a"
 }
 
 variable "network" {
