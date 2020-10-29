@@ -2,10 +2,6 @@ export JV_HOME := $(shell pwd)
 
 BEAN_PKGS := $(shell find go/beans -type d -regex '.*/beans/[^/]*/main')
 
-test:
-	@echo $(BEAN_PKGS)
-	$(foreach pkg,$(BEAN_PKGS),@echo $(lastword $(subst /, ,$(patsubst %/main,%,$(pkg)))))
-
 # A make recipe for each go service (bean)
 define make-go-bean
 .PHONY:	$1
