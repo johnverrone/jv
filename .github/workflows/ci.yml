@@ -4,24 +4,22 @@ jobs:
   build-and-containerize:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: ^1.13
-
       - name: Checkout repo
         uses: actions/checkout@v2
-
-      - name: Build binaries
-        run: make tiger
-
-      - name: Dockerize
-        uses: docker/build-push-action@v2
+      - name: Login to gcloud registry
+        id: gcloud
+        uses: elgohr/gcloud-login-action@master
         with:
-          context: .
-          file: ./etc/docker/Dockerfile
-          push: false
-          tags: jv/tiger:latest
+          account_key: ${{ secrets.GCLOUD_KEY }}
+
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: verrone-gcp/tiger
+          username: ${{ steps.gcloud.outputs.username }}
+          password: ${{ steps.gcloud.outputs.password }}
+          registry: gcr.io
+          dockerfile: etc/docker/Dockerfile
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
