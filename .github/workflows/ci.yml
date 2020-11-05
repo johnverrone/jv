@@ -16,7 +16,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: verrone-gcp/tiger
+          name: jv-dev13/tiger
           username: ${{ steps.gcloud.outputs.username }}
           password: ${{ steps.gcloud.outputs.password }}
           registry: gcr.io
