@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: tiger
-        image: gcr.io/verrone-gcp/tiger:latest
+        image: gcr.io/jv-dev13/tiger:latest
         ports:
         - containerPort: 8080
