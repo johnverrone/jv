@@ -1,6 +1,6 @@
 variable "project" {
   description = "The GCP Project"
-  default     = "verrone-gcp"
+  default     = "jv-dev13"
 }
 
 variable "cluster_name" {

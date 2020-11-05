@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tiger-deployment
+  labels:
+    app: tiger
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tiger
+  template:
+    metadata:
+      labels:
+        app: tiger
+    spec:
+      containers:
+      - name: tiger
+        image: gcr.io/verrone-gcp/tiger:latest
+        ports:
+        - containerPort: 8080
