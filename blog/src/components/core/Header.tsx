@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'gatsby';
 import { motion } from 'framer-motion';
 import styled from './styled';
 
 type MenuProps = {
   open: boolean;
-}
+};
 
 const Header = styled.header<MenuProps>`
   background-color: ${props => props.theme.colors.background};
@@ -15,9 +15,9 @@ const Header = styled.header<MenuProps>`
   bottom: 0;
   left: 0;
   width: 100%;
-  max-height: ${props => props.open ? '100%' : '60px'};
+  max-height: ${props => (props.open ? '100%' : '60px')};
   z-index: 99;
-  transition: max-height 0.5s cubic-bezier(.14,.44,.55,1);
+  transition: max-height 0.5s cubic-bezier(0.14, 0.44, 0.55, 1);
 `;
 
 const Nav = styled(motion.nav)`
@@ -52,7 +52,7 @@ const Item = styled(motion.li)`
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     opacity: 1 !important;
     pointer-events: auto;
-    margin-left: .75rem;
+    margin-left: 0.75rem;
     padding: 0;
     font-size: 1rem;
   }
@@ -117,11 +117,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
 
   const toggle = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
   const close = () => {
     setIsOpen(false);
-  }
+  };
 
   const itemVariants = {
     open: {
@@ -129,8 +129,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
     },
     closed: {
       opacity: 0,
-    }
-  }
+    },
+  };
 
   const listVariants = {
     open: {
@@ -144,33 +144,31 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
         staggerChildren: 0.05,
         staggerDirection: -1,
       },
-    }
-  }
+    },
+  };
 
   return (
     <Header open={isOpen}>
-      <Nav
-        initial={false}
-        animate={isOpen ? 'open' : 'closed'}
-      >
+      <Nav initial={false} animate={isOpen ? 'open' : 'closed'}>
         <MenuToggle open={isOpen} onClick={toggle} aria-label="Toggle Menu">
           <span />
           <span />
         </MenuToggle>
         <List variants={listVariants} open={isOpen}>
           <Item variants={itemVariants} positionTransition>
-            <Link to="/" onClick={close}>{siteTitle}</Link>
+            <Link to="/" onClick={close}>
+              {siteTitle}
+            </Link>
           </Item>
           <Item variants={itemVariants}>
-            <Link to="/blog" onClick={close}>Blog</Link>
-          </Item>
-          <Item variants={itemVariants}>
-            <Link to="/instagram" onClick={close}>Gram</Link>
+            <Link to="/blog" onClick={close}>
+              Blog
+            </Link>
           </Item>
         </List>
       </Nav>
     </Header>
   );
-}
+};
 
 export default AppHeader;

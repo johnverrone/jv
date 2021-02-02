@@ -17,7 +17,7 @@ module.exports = {
       resolve: `gatsby-plugin-fullstory`,
       options: {
         fs_org: 'Q23YS',
-      }
+      },
     },
     {
       resolve: `gatsby-plugin-google-fonts`,
@@ -34,12 +34,6 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-instagram`,
-      options: {
-        username: `johnverrone`,
-      },
-    },
-    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `John Verrone`,
@@ -49,8 +43,8 @@ module.exports = {
         theme_color: `#FFFFFF`,
         display: `standalone`,
         icon: `./static/images/favicon.png`,
-      }
-    }
+      },
+    },
     // `gatsby-plugin-offline`,
   ],
 };

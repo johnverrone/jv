@@ -6,6 +6,7 @@
   "author": "John Verrone <john.verrone@gmail.com>",
   "dependencies": {
     "@emotion/core": "^10.0.27",
+    "@emotion/react": "^11.1.4",
     "@emotion/styled": "^10.0.27",
     "framer-motion": "^1.8.3",
     "gatsby": "^2.19.7",
@@ -20,9 +21,8 @@
     "gatsby-plugin-sharp": "^2.4.3",
     "gatsby-plugin-theme-ui": "^0.3.0",
     "gatsby-plugin-typescript": "^2.1.26",
-    "gatsby-source-contentful": "^2.1.84",
+    "gatsby-source-contentful": "^4.5.3",
     "gatsby-source-filesystem": "^2.1.46",
-    "gatsby-source-instagram": "^0.7.0",
     "gatsby-transformer-remark": "^2.6.49",
     "gatsby-transformer-sharp": "^2.3.13",
     "prop-types": "^15.7.2",
