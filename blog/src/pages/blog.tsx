@@ -1,14 +1,14 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import SEO from '../components/core/SEO';
-import BlogList from '../components/blog/BlogList';
+import SEO from '../components/SEO';
+import BlogList from '../components/BlogList';
 
 interface BlogPageProps {
   data: {
     allContentfulBlogPost: {
       edges: any[];
-    }
-  }
+    };
+  };
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ data }) => {
@@ -19,8 +19,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ data }) => {
       <SEO title="Blog" />
       <BlogList posts={posts} />
     </>
-  )
-}
+  );
+};
 
 export default BlogPage;
 export const query = graphql`

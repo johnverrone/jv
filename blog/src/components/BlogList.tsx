@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'gatsby-link';
-import Container from '../shared/Container';
-import styled from '../core/styled';
+import Container from './Container';
+import styled from '../styles/styled';
 
 const TitleWrapper = styled.div`
   margin-bottom: 2rem;
@@ -82,11 +82,11 @@ interface BlogListProps {
 
 const BlogList: React.FC<BlogListProps> = ({ posts }) => {
   const years = new Map();
-  for (const [i, {node: post}] of posts.entries()) {
+  for (const [i, { node: post }] of posts.entries()) {
     const year = new Date(post.publishDate).getFullYear();
     if (!years.has(year)) {
       years.set(year, i);
-      years[i] =  year;
+      years[i] = year;
     }
   }
 
@@ -111,7 +111,7 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
         })}
       </List>
     </Container>
-  )
-}
+  );
+};
 
 export default BlogList;

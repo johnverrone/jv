@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '../core/styled';
+import styled from '../styles/styled';
 
 const Wrapper = styled.div`
   margin-bottom: 1.5rem;

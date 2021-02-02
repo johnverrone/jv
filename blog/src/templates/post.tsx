@@ -1,7 +1,7 @@
 import React from 'react';
-import Title from '../components/shared/Title';
-import Content from '../components/shared/Content';
-import styled from '../components/core/styled';
+import Title from '../components/Title';
+import Content from '../components/Content';
+import styled from '../components/styled';
 
 const PostContainer = styled.div`
   margin: 0 auto;
@@ -11,14 +11,14 @@ const PostContainer = styled.div`
 `;
 
 const Post = ({ pageContext }) => {
-  const { title, publishDate, body} = pageContext;
+  const { title, publishDate, body } = pageContext;
 
   return (
     <PostContainer>
       <Title title={title} date={publishDate} />
       <Content markdown={body} />
     </PostContainer>
-  )
-}
+  );
+};
 
 export default Post;

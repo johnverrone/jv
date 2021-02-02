@@ -34,7 +34,7 @@ exports.createPages = async ({ actions, graphql }) => {
       component: path.resolve('./src/templates/post.tsx'),
       context: {
         ...node,
-      }
+      },
     });
   });
-}
+};

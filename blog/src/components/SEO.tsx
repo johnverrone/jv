@@ -15,7 +15,12 @@ interface SEOProps {
   lang?: string;
 }
 
-const SEO: React.FC<SEOProps> = ({ description = '', lang = 'en', meta = [], title }) => {
+const SEO: React.FC<SEOProps> = ({
+  description = '',
+  lang = 'en',
+  meta = [],
+  title,
+}) => {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -75,6 +80,6 @@ const SEO: React.FC<SEOProps> = ({ description = '', lang = 'en', meta = [], tit
       ].concat(meta)}
     />
   );
-}
+};
 
 export default SEO;

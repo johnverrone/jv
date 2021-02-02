@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'gatsby';
 import { motion } from 'framer-motion';
-import styled from './styled';
+import styled from '../styles/styled';
 
 type MenuProps = {
   open: boolean;

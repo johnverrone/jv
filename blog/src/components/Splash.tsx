@@ -27,9 +27,8 @@ const Splash: React.FC = () => {
         backgroundPosition: '50% 10%',
         backgroundRepeat: '',
       }}
-    >
-    </BackgroundImage>
+    ></BackgroundImage>
   );
-}
+};
 
 export default Splash;

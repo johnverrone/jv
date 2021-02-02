@@ -12,7 +12,7 @@ const Transition = ({ children, location }) => {
         duration,
         delay: duration,
         when: 'beforeChildren',
-      }
+      },
     },
     exit: {
       opacity: 0,
@@ -27,7 +27,8 @@ const Transition = ({ children, location }) => {
         variants={variants}
         initial="initial"
         animate="enter"
-        exit="exit">
+        exit="exit"
+      >
         {children}
       </motion.div>
     </AnimatePresence>

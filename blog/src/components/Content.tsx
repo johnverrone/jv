@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '../core/styled';
+import styled from '../styles/styled';
 
 const Wrapper = styled.div`
   h1,
@@ -30,11 +30,11 @@ const Wrapper = styled.div`
   }
 
   h5 {
-    font-size: .866em;
+    font-size: 0.866em;
   }
 
   h6 {
-    font-size: .667em;
+    font-size: 0.667em;
   }
 
   p {
@@ -47,10 +47,13 @@ interface ContentProps {
 }
 
 const Content: React.FC<ContentProps> = ({ markdown, children }) => {
-  return markdown
-    ? <Wrapper dangerouslySetInnerHTML={{ __html: markdown.childMarkdownRemark.html }} />
-    : <Wrapper>{children}</Wrapper>
-}
+  return markdown ? (
+    <Wrapper
+      dangerouslySetInnerHTML={{ __html: markdown.childMarkdownRemark.html }}
+    />
+  ) : (
+    <Wrapper>{children}</Wrapper>
+  );
+};
 
 export default Content;
-
