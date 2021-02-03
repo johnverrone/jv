@@ -1,4 +1,9 @@
 export default {
+  fonts: {
+    body: '"Open Sans", sans-serif',
+    heading: '"Avenir Next", sans-serif',
+    monospace: 'Menlo, monospace',
+  },
   colors: {
     text: '#232923',
     background: 'rgba(255, 255, 255, 0.9)',
@@ -22,4 +27,4 @@ export default {
     large: '80rem',
     max: '100rem',
   },
-}
+};
