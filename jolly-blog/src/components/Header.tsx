@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'gatsby';
-import { motion } from 'framer-motion';
+import { motion, MotionProps } from 'framer-motion';
 import styled from '../styles/styled';
 
 type MenuProps = {
@@ -78,7 +78,7 @@ const Item = styled(motion.li)`
   }
 `;
 
-const MenuToggle = styled.button<MenuProps>`
+const MenuButton = styled(motion.button)`
   margin: 0;
   padding: 0;
   position: absolute;
@@ -90,23 +90,36 @@ const MenuToggle = styled.button<MenuProps>`
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     display: none;
   }
-  span {
-    display: block;
-    background-color: ${props => props.theme.colors.text};
-    width: 100%;
-    height: 2px;
-  }
-  span:first-of-type {
-    transform: rotate(${props => (props.open ? '45deg' : '0')})
-      translateY(${props => (props.open ? '0' : '.35rem')});
-  }
-  span:nth-of-type(2n) {
-    transform: rotate(${props => (props.open ? '-45deg' : '0')})
-      translateY(${props => (props.open ? '0' : '-.35rem')});
-    position: relative;
-    bottom: ${props => (props.open ? '2px' : '0')};
-  }
 `;
+
+const Path: React.FC<MotionProps> = props => (
+  <motion.path
+    fill="none"
+    strokeWidth="2"
+    stroke="black"
+    strokeLinecap="round"
+    {...props}
+  />
+);
+
+const MenuToggle = ({ toggle }) => (
+  <MenuButton onClick={toggle}>
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <Path
+        variants={{
+          closed: { d: 'M 2 7 L 20 7' },
+          open: { d: 'M 4 5 L 18 19' },
+        }}
+      />
+      <Path
+        variants={{
+          closed: { d: 'M 2 17 L 20 17' },
+          open: { d: 'M 4 19 L 18 5' },
+        }}
+      />
+    </svg>
+  </MenuButton>
+);
 
 interface AppHeaderProps {
   siteTitle?: string;
@@ -150,10 +163,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
   return (
     <Header open={isOpen}>
       <Nav initial={false} animate={isOpen ? 'open' : 'closed'}>
-        <MenuToggle open={isOpen} onClick={toggle} aria-label="Toggle Menu">
-          <span />
-          <span />
-        </MenuToggle>
+        <MenuToggle toggle={toggle} aria-label="Toggle Menu" />
         <List variants={listVariants} open={isOpen}>
           <Item variants={itemVariants} positionTransition>
             <Link to="/" onClick={close}>
