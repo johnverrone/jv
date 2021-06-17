@@ -5,14 +5,14 @@ import BlogList from '../components/BlogList';
 
 interface BlogPageProps {
   data: {
-    allContentfulBlogPost: {
+    allNotion: {
       edges: any[];
     };
   };
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ data }) => {
-  const posts = data.allContentfulBlogPost.edges;
+  const posts = data.allNotion.edges;
 
   return (
     <>
@@ -25,16 +25,16 @@ const BlogPage: React.FC<BlogPageProps> = ({ data }) => {
 export default BlogPage;
 export const query = graphql`
   query {
-    allContentfulBlogPost {
+    allNotion {
       edges {
         node {
           id
           title
-          slug
-          publishDate(formatString: "MMMM DD, YYYY")
-          body {
-            childMarkdownRemark {
-              excerpt
+          properties {
+            Date {
+              value {
+                start(formatString: "MMMM DD, YYYY")
+              }
             }
           }
         }

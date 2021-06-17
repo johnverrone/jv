@@ -85,7 +85,7 @@ interface BlogListProps {
 const BlogList: React.FC<BlogListProps> = ({ posts }) => {
   const years = new Map();
   for (const [i, { node: post }] of posts.entries()) {
-    const year = new Date(post.publishDate).getFullYear();
+    const year = new Date(post.properties.Date.value.start).getFullYear();
     if (!years.has(year)) {
       years.set(year, i);
       years[i] = year;
@@ -99,14 +99,15 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
       </TitleWrapper>
       <List>
         {posts.map(({ node: p }, i) => {
-          const postYear = new Date(p.publishDate).getFullYear();
+          const postYear = new Date(
+            p.properties.Date.value.start
+          ).getFullYear();
           return (
             <Item key={p.id}>
-              <Post to={`/blog/${p.slug}`}>
+              <Post to={`/blog/${p.id}`}>
                 {years.get(postYear) === i && <Year>{postYear}</Year>}
                 <PostTitle>{p.title}</PostTitle>
-                <Description>{p.body.childMarkdownRemark.excerpt}</Description>
-                <DateComponent>{p.publishDate}</DateComponent>
+                <DateComponent>{p.properties.Date.value.start}</DateComponent>
               </Post>
             </Item>
           );

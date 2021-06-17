@@ -11,12 +11,12 @@ const PostContainer = styled.div`
 `;
 
 const Post = ({ pageContext }) => {
-  const { title, publishDate, body } = pageContext;
+  const { title, properties, childMarkdownRemark } = pageContext;
 
   return (
     <PostContainer>
-      <Title title={title} date={publishDate} />
-      <Content markdown={body} />
+      <Title title={title} date={properties.Date.value.start} />
+      <Content html={childMarkdownRemark.html} />
     </PostContainer>
   );
 };

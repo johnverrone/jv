@@ -2,17 +2,20 @@ const path = require('path');
 
 const query = {
   posts: `{
-    allContentfulBlogPost {
+    allNotion {
       edges {
         node {
-          title
           id
-          slug
-          publishDate(formatString: "MMMM DD, YYYY")
-          body {
-            childMarkdownRemark {
-              html
+          title
+          properties {
+            Date {
+              value {
+                start(formatString: "MMMM DD, YYYY")
+              }
             }
+          }
+          childMarkdownRemark {
+            html
           }
         }
       }
@@ -28,10 +31,10 @@ exports.createPages = async ({ actions, graphql }) => {
     console.error(blogPostsQuery.errors);
   }
 
-  const blogPosts = blogPostsQuery.data.allContentfulBlogPost.edges;
+  const blogPosts = blogPostsQuery.data.allNotion.edges;
   blogPosts.forEach(({ node }) => {
     createPage({
-      path: 'blog/' + node.slug,
+      path: 'blog/' + node.id,
       component: path.resolve('./src/templates/post.tsx'),
       context: {
         ...node,

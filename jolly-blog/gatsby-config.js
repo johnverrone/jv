@@ -27,10 +27,12 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-contentful`,
+      resolve: `gatsby-source-notion-api`,
       options: {
-        spaceId: process.env.CONTENTFUL_SPACE_ID,
-        accessToken: process.env.CONTENTFUL_TOKEN,
+        token: process.env.NOTION_TOKEN,
+        databaseId: process.env.NOTION_DATABASE,
+        propsToFrontmatter: true,
+        lowerTitleLevel: true,
       },
     },
     {

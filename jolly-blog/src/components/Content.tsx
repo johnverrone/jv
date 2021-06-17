@@ -52,14 +52,12 @@ const Wrapper = styled.div`
 `;
 
 interface ContentProps {
-  markdown?: any;
+  html?: any;
 }
 
-const Content: React.FC<ContentProps> = ({ markdown, children }) => {
-  return markdown ? (
-    <Wrapper
-      dangerouslySetInnerHTML={{ __html: markdown.childMarkdownRemark.html }}
-    />
+const Content: React.FC<ContentProps> = ({ html, children }) => {
+  return html ? (
+    <Wrapper dangerouslySetInnerHTML={{ __html: html }} />
   ) : (
     <Wrapper>{children}</Wrapper>
   );
