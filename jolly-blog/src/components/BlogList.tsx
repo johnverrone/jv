@@ -79,7 +79,7 @@ const DateComponent = styled.p`
 
 interface BlogListProps {
   // TODO: figure out how to get proptype from contentful
-  posts: any[];
+  posts: { id: string; title: string }[];
 }
 
 const BlogList: React.FC<BlogListProps> = ({ posts }) => {
@@ -98,16 +98,16 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
         <Title>Posts</Title>
       </TitleWrapper>
       <List>
-        {posts.map(({ node: p }, i) => {
-          const postYear = new Date(
-            p.properties.Date.value.start
-          ).getFullYear();
+        {posts.map(({ id, title }) => {
+          /* const postYear = new Date( */
+          /*   p.properties.Date.value.start */
+          /* ).getFullYear(); */
           return (
-            <Item key={p.id}>
-              <Post to={`/blog/${p.id}`}>
+            <Item key={id}>
+              <Post href={`/blog/${id}`}>
                 {/* {years.get(postYear) === i && <Year>{postYear}</Year>} */}
-                <PostTitle>{p.title}</PostTitle>
-                <DateComponent>{p.properties.Date.value.start}</DateComponent>
+                <PostTitle>{title}</PostTitle>
+                <DateComponent>2021</DateComponent>
               </Post>
             </Item>
           );

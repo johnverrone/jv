@@ -13,17 +13,14 @@ export default function BlogPage({ posts }) {
 
 export async function getStaticProps() {
   const notion = new Client({ auth: process.env.NOTION_TOKEN });
-  const databaseId = process.env.NOTION_DATABASE;
+  const database_id = process.env.NOTION_DATABASE;
 
   async function getJournals() {
     try {
-      const journals = await notion.request({
-        path: `databases/${databaseId}/query`,
-        method: 'post',
-        body: {},
+      const journals = await notion.databases.query({
+        database_id,
       });
-      console.log('Success!', journals);
-      return journals;
+      return journals.results;
     } catch (error) {
       console.log(error.body);
     }
