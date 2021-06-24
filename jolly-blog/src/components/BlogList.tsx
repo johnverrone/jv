@@ -1,7 +1,7 @@
 import React from 'react';
-import Link from 'gatsby-link';
+import Link from 'next/link';
 import Container from './Container';
-import styled from '../styles/styled';
+import styled from '@emotion/styled';
 
 const TitleWrapper = styled.div`
   margin-bottom: 2rem;
@@ -83,14 +83,14 @@ interface BlogListProps {
 }
 
 const BlogList: React.FC<BlogListProps> = ({ posts }) => {
-  const years = new Map();
-  for (const [i, { node: post }] of posts.entries()) {
-    const year = new Date(post.properties.Date.value.start).getFullYear();
-    if (!years.has(year)) {
-      years.set(year, i);
-      years[i] = year;
-    }
-  }
+  /* const years = new Map(); */
+  /* for (const [i, { node: post }] of posts.entries()) { */
+  /*   const year = new Date(post.properties.Date.value.start).getFullYear(); */
+  /*   if (!years.has(year)) { */
+  /*     years.set(year, i); */
+  /*     years[i] = year; */
+  /*   } */
+  /* } */
 
   return (
     <Container>
@@ -105,7 +105,7 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
           return (
             <Item key={p.id}>
               <Post to={`/blog/${p.id}`}>
-                {years.get(postYear) === i && <Year>{postYear}</Year>}
+                {/* {years.get(postYear) === i && <Year>{postYear}</Year>} */}
                 <PostTitle>{p.title}</PostTitle>
                 <DateComponent>{p.properties.Date.value.start}</DateComponent>
               </Post>

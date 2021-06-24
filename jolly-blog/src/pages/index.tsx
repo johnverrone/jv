@@ -1,6 +1,6 @@
 import React from 'react';
-import SEO from '../components/SEO';
-import styled from '../styles/styled';
+import Layout from '../components/Layout';
+import styled from '@emotion/styled';
 
 const Splash = styled.div`
   height: 100vh;
@@ -11,8 +11,9 @@ const Splash = styled.div`
 
 const IndexPage: React.FC = () => (
   <>
-    <SEO title="Home" description="Software engineer located in Atlanta, GA" />
-    <Splash>Gatsby site is up!</Splash>
+    <Layout title="Home" description="Software engineer located in Atlanta, GA">
+      <Splash>Gatsby site is up!</Splash>
+    </Layout>
   </>
 );
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'gatsby';
+import Link from 'next/link';
 import { motion, MotionProps } from 'framer-motion';
-import styled from '../styles/styled';
+import styled from '@emotion/styled';
 
 type MenuProps = {
   open: boolean;
@@ -87,6 +87,8 @@ const MenuButton = styled(motion.button)`
   right: 1.5rem;
   width: 1.5rem;
   height: 60px;
+  background: none;
+  border: none;
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     display: none;
   }
@@ -165,15 +167,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
       <Nav initial={false} animate={isOpen ? 'open' : 'closed'}>
         <MenuToggle toggle={toggle} aria-label="Toggle Menu" />
         <List variants={listVariants} open={isOpen}>
-          <Item variants={itemVariants} positionTransition>
-            <Link to="/" onClick={close}>
-              {siteTitle}
-            </Link>
+          <Item variants={itemVariants}>
+            <Link href="/">{siteTitle}</Link>
           </Item>
           <Item variants={itemVariants}>
-            <Link to="/blog" onClick={close}>
-              Blog
-            </Link>
+            <Link href="/blog">Blog</Link>
           </Item>
         </List>
       </Nav>

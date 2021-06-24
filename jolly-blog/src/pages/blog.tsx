@@ -1,44 +1,36 @@
 import React from 'react';
-import { graphql } from 'gatsby';
-import SEO from '../components/SEO';
 import BlogList from '../components/BlogList';
+import Layout from '../components/Layout';
+import { Client } from '@notionhq/client';
 
-interface BlogPageProps {
-  data: {
-    allNotion: {
-      edges: any[];
-    };
-  };
+export default function BlogPage({ posts }) {
+  return (
+    <Layout title="blog">
+      <BlogList posts={posts} />
+    </Layout>
+  );
 }
 
-const BlogPage: React.FC<BlogPageProps> = ({ data }) => {
-  const posts = data.allNotion.edges;
+export async function getStaticProps() {
+  const notion = new Client({ auth: process.env.NOTION_TOKEN });
+  const databaseId = process.env.NOTION_DATABASE;
 
-  return (
-    <>
-      <SEO title="Blog" />
-      <BlogList posts={posts} />
-    </>
-  );
-};
-
-export default BlogPage;
-export const query = graphql`
-  query {
-    allNotion {
-      edges {
-        node {
-          id
-          title
-          properties {
-            Date {
-              value {
-                start(formatString: "MMMM DD, YYYY")
-              }
-            }
-          }
-        }
-      }
+  async function getJournals() {
+    try {
+      const journals = await notion.request({
+        path: `databases/${databaseId}/query`,
+        method: 'post',
+        body: {},
+      });
+      console.log('Success!', journals);
+      return journals;
+    } catch (error) {
+      console.log(error.body);
     }
   }
-`;
+
+  const posts = await getJournals();
+  return {
+    props: { posts },
+  };
+}
