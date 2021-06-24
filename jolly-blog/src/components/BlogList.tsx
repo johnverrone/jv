@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Container from './Container';
 import styled from '@emotion/styled';
+import { Post } from '../lib/blog';
 
 const TitleWrapper = styled.div`
   margin-bottom: 2rem;
@@ -20,7 +21,7 @@ const List = styled.ul``;
 
 const Item = styled.li``;
 
-const Post = styled(Link)`
+const PostLink = styled(Link)`
   display: block;
   text-decoration: none;
   color: ${props => props.theme.colors.text};
@@ -79,7 +80,7 @@ const DateComponent = styled.p`
 
 interface BlogListProps {
   // TODO: figure out how to get proptype from contentful
-  posts: { id: string; title: string }[];
+  posts: Post[];
 }
 
 const BlogList: React.FC<BlogListProps> = ({ posts }) => {
@@ -104,11 +105,13 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
           /* ).getFullYear(); */
           return (
             <Item key={id}>
-              <Post href={`/blog/${id}`}>
-                {/* {years.get(postYear) === i && <Year>{postYear}</Year>} */}
-                <PostTitle>{title}</PostTitle>
-                <DateComponent>2021</DateComponent>
-              </Post>
+              <PostLink href={`/blog/${id}`}>
+                <>
+                  {/* {years.get(postYear) === i && <Year>{postYear}</Year>} */}
+                  <PostTitle>{title}</PostTitle>
+                  <DateComponent>2021</DateComponent>
+                </>
+              </PostLink>
             </Item>
           );
         })}
