@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({
         <meta property="twitter:description" content={description} />
         <link rel="shortcut icon" href="/images/favicon.png" />
       </Head>
-      <Header />
+      <Header siteTitle="Jolly adventures" />
       <main>{children}</main>
     </ThemeProvider>
   );

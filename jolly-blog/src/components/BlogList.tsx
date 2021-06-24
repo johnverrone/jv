@@ -21,7 +21,7 @@ const List = styled.ul``;
 
 const Item = styled.li``;
 
-const PostLink = styled(Link)`
+const PostSnippet = styled.div`
   display: block;
   text-decoration: none;
   color: ${props => props.theme.colors.text};
@@ -84,14 +84,14 @@ interface BlogListProps {
 }
 
 const BlogList: React.FC<BlogListProps> = ({ posts }) => {
-  /* const years = new Map(); */
-  /* for (const [i, { node: post }] of posts.entries()) { */
-  /*   const year = new Date(post.properties.Date.value.start).getFullYear(); */
-  /*   if (!years.has(year)) { */
-  /*     years.set(year, i); */
-  /*     years[i] = year; */
-  /*   } */
-  /* } */
+  const years = new Map();
+  posts.forEach((post, i) => {
+    const year = new Date(post.date).getFullYear();
+    if (!years.has(year)) {
+      years.set(year, i);
+      years[i] = year;
+    }
+  });
 
   return (
     <Container>
@@ -99,19 +99,17 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
         <Title>Posts</Title>
       </TitleWrapper>
       <List>
-        {posts.map(({ id, title }) => {
-          /* const postYear = new Date( */
-          /*   p.properties.Date.value.start */
-          /* ).getFullYear(); */
+        {posts.map(({ id, title, date }, i) => {
+          const postYear = new Date(date).getFullYear();
           return (
             <Item key={id}>
-              <PostLink href={`/blog/${id}`}>
-                <>
-                  {/* {years.get(postYear) === i && <Year>{postYear}</Year>} */}
+              <Link href={`/blog/${id}`}>
+                <PostSnippet>
+                  {years.get(postYear) === i && <Year>{postYear}</Year>}
                   <PostTitle>{title}</PostTitle>
-                  <DateComponent>2021</DateComponent>
-                </>
-              </PostLink>
+                  <DateComponent>{new Date(date).toDateString()}</DateComponent>
+                </PostSnippet>
+              </Link>
             </Item>
           );
         })}

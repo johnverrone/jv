@@ -7,15 +7,21 @@ const database_id = process.env.NOTION_DATABASE;
 export interface Post {
   id: string;
   title: string;
+  date: string;
 }
 
 let cache: Post[] = [];
 
-export async function getAllPosts() {
-  if (!isEmpty(cache)) {
-    console.log('fetching from cache', cache[0]);
-    return cache;
-  }
+export const getAllPostIds = async (): Promise<string[]> => {
+  if (!isEmpty(cache)) return cache.map(p => p.id);
+
+  const posts = await getAllPosts();
+  return posts.map(p => p.id);
+};
+
+export const getAllPosts = async () => {
+  if (!isEmpty(cache)) return cache;
+
   try {
     const posts = await notion.databases.query({
       database_id,
@@ -29,9 +35,14 @@ export async function getAllPosts() {
               ''
             )
           : '';
+      const date =
+        page.properties['Date'].type === 'date'
+          ? page.properties['Date'].date.start
+          : '';
       return {
         id: page.id,
-        title: title,
+        title,
+        date,
       };
     });
 
@@ -39,4 +50,22 @@ export async function getAllPosts() {
   } catch (error) {
     console.log(error.body);
   }
-}
+};
+
+export const getPost = async (id: string) => {
+  try {
+    const post = await notion.pages.retrieve({ page_id: id });
+    const title =
+      post.properties['Name'].type === 'title'
+        ? post.properties['Name'].title.reduce(
+            (acc, curr) => (acc += curr.plain_text),
+            ''
+          )
+        : '';
+    return {
+      title,
+    };
+  } catch (error) {
+    console.log(error.body);
+  }
+};
