@@ -103,7 +103,6 @@ const MenuButton = styled(motion.button)`
 
 const VerticalItem = styled.div`
   margin: 8px 0;
-  text-align: right;
 `;
 
 const Path: React.FC<MotionProps> = props => (
@@ -185,7 +184,12 @@ export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
             </Link>
           </SiteTitle>
           <NavItem variants={itemVariants}>
-            <NestedMenu name="Daily">
+            <Link href="/blog">
+              <a onClick={close}>Blog</a>
+            </Link>
+            </NavItem>
+          <NavItem variants={itemVariants}>
+            <NestedMenu name="Journals">
               <VerticalItem>
                 <Link href="/daily/john">
                   <a onClick={close}>John</a>

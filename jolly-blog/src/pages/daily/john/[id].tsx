@@ -2,25 +2,19 @@ import React from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import styled from '@emotion/styled';
 import { ParsedUrlQuery } from 'querystring';
-import { getAllPostIds, getPost } from '../../../lib/blog';
+import { getAllPostIds, getPost, Post as PostType } from '../../../lib/blog';
 import Layout from '../../../components/Layout';
 import { AppContainer } from '../../../components/AppContainer';
+import {BlogTitle} from '../../../components/BlogTitle';
 
-const BlogTitle = styled.h2`
-  font-size: 1.5rem;
-  font-family: ${props => props.theme.fonts.heading};
-`;
-
-const BlogContent = styled.p`
-  font-family: ${props => props.theme.fonts.body};
-`;
+const BlogContent = styled.p``;
 
 export default function Post({ postData }: PostProps) {
-  const { title, content } = postData;
+  const { title, date, content } = postData;
   return (
     <Layout title={title}>
       <AppContainer>
-        <BlogTitle>{title}</BlogTitle>
+        <BlogTitle title={title} date={date} />
         <BlogContent>{content}</BlogContent>
       </AppContainer>
     </Layout>
@@ -28,10 +22,7 @@ export default function Post({ postData }: PostProps) {
 }
 
 interface PostProps {
-  postData: {
-    title: string;
-    content: string;
-  };
+  postData: PostType;
 }
 
 interface RouteProps extends ParsedUrlQuery {

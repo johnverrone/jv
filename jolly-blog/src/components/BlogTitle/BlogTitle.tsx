@@ -10,22 +10,24 @@ const TitleText = styled.h1`
   font-weight: ${props => props.theme.fontWeights.bold};
   line-height: 1.15;
   font-size: 1.866em;
+  margin-bottom: 12px;
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     font-size: 2.488em;
   }
 `;
 
 const Date = styled.h2`
+  font-family: ${props => props.theme.fonts.monospace};
   font-size: 0.9em;
   opacity: 0.5;
 `;
 
-interface TitleProps {
+interface BlogTitleProps {
   title: string;
   date: string;
 }
 
-const Title: React.FC<TitleProps> = ({ title, date }) => {
+export const BlogTitle: React.FC<BlogTitleProps> = ({ title, date }) => {
   return (
     <Wrapper>
       <TitleText>{title}</TitleText>
@@ -33,5 +35,3 @@ const Title: React.FC<TitleProps> = ({ title, date }) => {
     </Wrapper>
   );
 };
-
-export default Title;

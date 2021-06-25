@@ -9,6 +9,7 @@ export interface Post {
   id: string;
   title: string;
   date: string;
+  content?: string;
 }
 
 let cache: Post[] = [];
@@ -20,7 +21,7 @@ export const getAllPostIds = async (): Promise<string[]> => {
   return posts.map(p => p.id);
 };
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (): Promise<Post[]> => {
   if (!isEmpty(cache)) return cache;
 
   try {
@@ -38,7 +39,7 @@ export const getAllPosts = async () => {
           : '';
       const date =
         page.properties['Date'].type === 'date'
-          ? page.properties['Date'].date.start
+          ? new Date(page.properties['Date'].date.start).toDateString()
           : '';
       return {
         id: page.id,
@@ -53,7 +54,7 @@ export const getAllPosts = async () => {
   }
 };
 
-export const getPost = async (id: string) => {
+export const getPost = async (id: string): Promise<Post> => {
   try {
     const post = await notion.pages.retrieve({ page_id: id });
     const blocks = await notion.blocks.children.list({ block_id: id });
@@ -63,7 +64,10 @@ export const getPost = async (id: string) => {
       post.properties['Name'].type === 'title'
         ? richTextToString(post.properties['Name'].title)
         : '';
-
+    const date =
+      post.properties['Date'].type === 'date'
+        ? new Date(post.properties['Date'].date.start).toDateString()
+        : '';
     const content = blocks.results.reduce(
       (acc, r) =>
         (acc +=
@@ -71,7 +75,9 @@ export const getPost = async (id: string) => {
       ''
     );
     return {
+      id: post.id,
       title,
+      date,
       content,
     };
   } catch (error) {

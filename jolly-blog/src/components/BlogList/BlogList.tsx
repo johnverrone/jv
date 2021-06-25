@@ -89,7 +89,7 @@ export const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
                 <PostSnippet>
                   {years.get(postYear) === i && <Year>{postYear}</Year>}
                   <PostTitle>{title}</PostTitle>
-                  <DateComponent>{new Date(date).toDateString()}</DateComponent>
+                  <DateComponent>{date}</DateComponent>
                 </PostSnippet>
               </Link>
             </Item>
