@@ -1,17 +1,17 @@
 export default {
   fonts: {
-    body: '"Open Sans", sans-serif',
-    heading: 'Cairo, sans-serif',
+    body: '"Fira Sans", "Open Sans", sans-serif',
+    heading: 'Oxygen, Cairo, sans-serif',
     monospace: 'Menlo, monospace',
   },
   colors: {
     text: '#232923',
-    background: 'rgba(255, 255, 255, 0.9)',
+    background: 'rgba(255, 255, 255, 0.5)',
     accent: '#758487',
     modes: {
       dark: {
         text: '#ffffff',
-        background: '#121212',
+        background: 'rgba(255, 255, 255, 0.5)',
         accent: '#ffffff',
       },
     },

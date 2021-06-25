@@ -6,7 +6,7 @@ import { getAllPosts } from '../lib/blog';
 
 export default function BlogPage({ posts }) {
   return (
-    <Layout title="blog">
+    <Layout title="Blog">
       <BlogList posts={posts} />
     </Layout>
   );

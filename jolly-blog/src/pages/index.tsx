@@ -1,18 +1,50 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import Image from 'next/image';
 import styled from '@emotion/styled';
+import Layout from '../components/Layout';
+import image from '../../public/images/mt-evans.jpg';
 
-const Splash = styled.div`
+const BackgroundWrapper = styled.div`
+  position: relative;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: -1;
+`;
+
+const SplashText = styled.div`
+  margin-top: 60px;
+  padding: 24px;
+  width: 100%;
+  @media screen and (min-width: ${props => props.theme.responsive.medium}) {
+    position: absolute;
+    top: 20%;
+    left: 8%;
+    max-width: 275px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: thin solid grey;
+    border-radius: 8px;
+  }
+  @media screen and (min-width: ${props => props.theme.responsive.large}) {
+    position: absolute;
+    top: 20%;
+    left: 15%;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: thin solid grey;
+    border-radius: 8px;
+  }
 `;
 
 const IndexPage: React.FC = () => (
   <>
-    <Layout title="Home" description="Software engineer located in Atlanta, GA">
-      <Splash>Gatsby site is up!</Splash>
+    <Layout title="John and Molly" description="Adventures of digital nomads.">
+      <SplashText>Hey gursssss, we&apos;re john and molly</SplashText>
+      <BackgroundWrapper>
+        <Image
+          src={image}
+          layout="fill"
+          objectFit="cover"
+          objectPosition="63% 30%"
+        />
+      </BackgroundWrapper>
     </Layout>
   </>
 );

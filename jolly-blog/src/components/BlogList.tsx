@@ -21,11 +21,14 @@ const List = styled.ul``;
 
 const Item = styled.li``;
 
-const PostSnippet = styled.div`
+const PostSnippet = styled.a`
   display: block;
   text-decoration: none;
   color: ${props => props.theme.colors.text};
   padding: 2rem 0;
+  background-color: transparent;
+  border-radius: 8px;
+  transition: background-color 280ms ease-out;
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -35,12 +38,10 @@ const PostSnippet = styled.div`
       'year date date desc desc desc';
   }
   &:hover {
-    h2 {
-      color: ${props => props.theme.colors.accent};
-    }
-    p {
-      opacity: 0.5;
-    }
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  & * {
+    pointer-events: none;
   }
 `;
 
@@ -49,6 +50,7 @@ const PostTitle = styled.h2`
   font-family: ${props => props.theme.fonts.heading};
   font-weight: ${props => props.theme.fontWeights.semiBold};
   transition: color 0.3s;
+  margin-bottom: 8px;
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     grid-area: title;
   }
@@ -62,6 +64,7 @@ const Description = styled.p`
 `;
 
 const Year = styled.h1`
+  font-family: ${props => props.theme.fonts.monospace};
   display: none;
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     display: block;
@@ -71,6 +74,7 @@ const Year = styled.h1`
 `;
 
 const DateComponent = styled.p`
+  font-family: ${props => props.theme.fonts.monospace};
   font-size: 0.9rem;
   opacity: 0.5;
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
@@ -95,9 +99,6 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
 
   return (
     <Container>
-      <TitleWrapper>
-        <Title>Posts</Title>
-      </TitleWrapper>
       <List>
         {posts.map(({ id, title, date }, i) => {
           const postYear = new Date(date).getFullYear();
