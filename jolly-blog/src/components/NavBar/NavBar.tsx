@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, MotionProps } from 'framer-motion';
 import styled from '@emotion/styled';
-import { Popover } from '../Popover';
+import { NestedMenu } from './NestedMenu';
 
 type MenuProps = {
   open: boolean;
 };
 
-const Header = styled.header<MenuProps>`
+const Container = styled.header<MenuProps>`
   background-color: ${props => props.theme.colors.background};
   position: fixed;
   top: 0;
@@ -34,7 +34,7 @@ const Nav = styled(motion.nav)`
   }
 `;
 
-const List = styled(motion.ul)<MenuProps>`
+const NavItems = styled(motion.ul)<MenuProps>`
   width: 100%;
   text-align: center;
   pointer-events: ${props => (props.open ? 'auto' : 'none')};
@@ -45,7 +45,7 @@ const List = styled(motion.ul)<MenuProps>`
   }
 `;
 
-const Item = styled(motion.li)`
+export const NavItem = styled(motion.li)`
   display: flex;
   justify-content: center;
   padding: 0.5rem 0;
@@ -63,7 +63,7 @@ const Item = styled(motion.li)`
   }
 `;
 
-const SiteLogo = styled(motion.li)`
+const SiteTitle = styled(motion.li)`
   opacity: 1 !important;
   position: fixed;
   pointer-events: auto;
@@ -99,12 +99,6 @@ const MenuButton = styled(motion.button)`
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     display: none;
   }
-`;
-
-const Pane = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 8px;
 `;
 
 const VerticalItem = styled.div`
@@ -147,12 +141,14 @@ interface NavBarProps {
 
 export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [dailyOpen, setDailyOpen] = useState(false);
-  const [anchorRef, setAnchorRef] = useState<HTMLDivElement | null>(null);
 
   const toggle = () => {
     setIsOpen(!isOpen);
   };
+
+  const close = () => {
+    setIsOpen(false);
+  }
 
   const itemVariants = {
     open: {
@@ -179,43 +175,31 @@ export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
   };
 
   return (
-    <Header open={isOpen}>
+    <Container open={isOpen}>
       <Nav initial={false} animate={isOpen ? 'open' : 'closed'}>
         <MenuToggle toggle={toggle} aria-label="Toggle Menu" />
-        <List variants={listVariants} open={isOpen}>
-          <SiteLogo variants={itemVariants}>
+        <NavItems variants={listVariants} open={isOpen}>
+          <SiteTitle variants={itemVariants}>
             <Link href="/">
               <a>{siteTitle}</a>
             </Link>
-          </SiteLogo>
-          <Item variants={itemVariants}>
-            <div ref={setAnchorRef}>
-              <button onClick={() => setDailyOpen(prev => !prev)}>
-                <Item>Daily</Item>
-              </button>
-              <Popover
-                anchor={anchorRef}
-                open={dailyOpen}
-                offset={8}
-                placement="bottom-end"
-              >
-                <Pane>
-                  <VerticalItem>
-                    <Link href="/daily/john">
-                      <a>John</a>
-                    </Link>
-                  </VerticalItem>
-                  <VerticalItem>
-                    <Link href="/daily/molly">
-                      <a>Molly</a>
-                    </Link>
-                  </VerticalItem>
-                </Pane>
-              </Popover>
-            </div>
-          </Item>
-        </List>
+          </SiteTitle>
+          <NavItem variants={itemVariants}>
+            <NestedMenu name="Daily">
+              <VerticalItem>
+                <Link href="/daily/john">
+                  <a onClick={close}>John</a>
+                </Link>
+              </VerticalItem>
+              <VerticalItem>
+                <Link href="/daily/molly">
+                  <a onClick={close}>Molly</a>
+                </Link>
+              </VerticalItem>
+            </NestedMenu>
+          </NavItem>
+        </NavItems>
       </Nav>
-    </Header>
+    </Container>
   );
 };
