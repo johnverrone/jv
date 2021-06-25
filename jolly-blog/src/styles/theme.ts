@@ -23,8 +23,8 @@ export default {
   },
   responsive: {
     small: '35rem',
-    medium: '50rem',
-    large: '80rem',
-    max: '100rem',
+    medium: '40rem',
+    large: '50rem',
+    max: '80rem',
   },
 };

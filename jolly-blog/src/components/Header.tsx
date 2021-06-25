@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, MotionProps } from 'framer-motion';
 import styled from '@emotion/styled';
+import { Popover } from './Popover';
 
 type MenuProps = {
   open: boolean;
@@ -56,21 +57,27 @@ const Item = styled(motion.li)`
     margin-left: 0.75rem;
     padding: 0;
   }
-  &:first-of-type {
-    opacity: 1 !important;
-    position: fixed;
-    pointer-events: auto;
-    top: 0;
-    left: 1.5rem;
-    line-height: 60px;
-    padding: 0;
-    margin: 0;
-    font-size: 1.5rem;
-    @media screen and (min-width: ${props => props.theme.responsive.medium}) {
-      position: relative;
-      left: 0;
-      margin-right: auto;
-    }
+  a {
+    color: ${props => props.theme.colors.text};
+    text-decoration: none;
+  }
+`;
+
+const SiteLogo = styled(motion.li)`
+  opacity: 1 !important;
+  position: fixed;
+  pointer-events: auto;
+  top: 0;
+  left: 1.5rem;
+  line-height: 60px;
+  padding: 0;
+  margin: 0;
+  font-size: 1.5rem;
+  font-family: ${props => props.theme.fonts.heading};
+  @media screen and (min-width: ${props => props.theme.responsive.medium}) {
+    position: relative;
+    left: 0;
+    margin-right: auto;
   }
   a {
     color: ${props => props.theme.colors.text};
@@ -92,6 +99,17 @@ const MenuButton = styled(motion.button)`
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     display: none;
   }
+`;
+
+const Pane = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 8px;
+`;
+
+const VerticalItem = styled.div`
+  margin: 8px 0;
+  text-align: right;
 `;
 
 const Path: React.FC<MotionProps> = props => (
@@ -129,6 +147,8 @@ interface AppHeaderProps {
 
 const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [dailyOpen, setDailyOpen] = useState(false);
+  const [anchorRef, setAnchorRef] = useState<HTMLDivElement | null>(null);
 
   const toggle = () => {
     setIsOpen(!isOpen);
@@ -167,11 +187,36 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
       <Nav initial={false} animate={isOpen ? 'open' : 'closed'}>
         <MenuToggle toggle={toggle} aria-label="Toggle Menu" />
         <List variants={listVariants} open={isOpen}>
+          <SiteLogo variants={itemVariants}>
+            <Link href="/">
+              <a>{siteTitle}</a>
+            </Link>
+          </SiteLogo>
           <Item variants={itemVariants}>
-            <Link href="/">{siteTitle}</Link>
-          </Item>
-          <Item variants={itemVariants}>
-            <Link href="/daily/john">Daily</Link>
+            <div ref={setAnchorRef}>
+              <button onClick={() => setDailyOpen(prev => !prev)}>
+                <Item>Daily</Item>
+              </button>
+              <Popover
+                anchor={anchorRef}
+                open={dailyOpen}
+                offset={8}
+                placement="bottom-end"
+              >
+                <Pane>
+                  <VerticalItem>
+                    <Link href="/daily/john">
+                      <a>John</a>
+                    </Link>
+                  </VerticalItem>
+                  <VerticalItem>
+                    <Link href="/daily/molly">
+                      <a>Molly</a>
+                    </Link>
+                  </VerticalItem>
+                </Pane>
+              </Popover>
+            </div>
           </Item>
         </List>
       </Nav>
