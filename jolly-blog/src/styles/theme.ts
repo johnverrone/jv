@@ -1,4 +1,4 @@
-export default {
+const theme = {
   fonts: {
     body: '"Fira Sans", "Open Sans", sans-serif',
     heading: 'Oxygen, Cairo, sans-serif',
@@ -28,3 +28,5 @@ export default {
     max: '80rem',
   },
 };
+
+export default theme;

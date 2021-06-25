@@ -37,10 +37,6 @@ const Layout: React.FC<LayoutProps> = ({
           href="https://fonts.gstatic.com"
           crossOrigin="true"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fira+Sans&family=Oxygen&display=swap"
-          rel="stylesheet"
-        />
       </Head>
       <Header siteTitle="John and Molly" />
       <main>{children}</main>

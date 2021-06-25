@@ -154,10 +154,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
     setIsOpen(!isOpen);
   };
 
-  const close = () => {
-    setIsOpen(false);
-  };
-
   const itemVariants = {
     open: {
       opacity: 1,

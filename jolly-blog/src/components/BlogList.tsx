@@ -4,19 +4,6 @@ import Container from './Container';
 import styled from '@emotion/styled';
 import { Post } from '../lib/blog';
 
-const TitleWrapper = styled.div`
-  margin-bottom: 2rem;
-  @media screen and (min-width: ${props => props.theme.responsive.medium}) {
-    margin-bottom: 2rem;
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 2rem;
-  font-family: ${props => props.theme.fonts.heading};
-  font-weight: ${props => props.theme.fontWeights.bold};
-`;
-
 const List = styled.ul``;
 
 const Item = styled.li``;
@@ -53,13 +40,6 @@ const PostTitle = styled.h2`
   margin-bottom: 8px;
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     grid-area: title;
-  }
-`;
-
-const Description = styled.p`
-  transition: opacity 0.3s;
-  @media screen and (min-width: ${props => props.theme.responsive.medium}) {
-    grid-area: desc;
   }
 `;
 
@@ -105,7 +85,7 @@ const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
           const postYear = new Date(date).getFullYear();
           return (
             <Item key={id}>
-              <Link href={`${basePath}/${id}`}>
+              <Link href={`${basePath}/${id}`} passHref>
                 <PostSnippet>
                   {years.get(postYear) === i && <Year>{postYear}</Year>}
                   <PostTitle>{title}</PostTitle>

@@ -40,6 +40,7 @@ const IndexPage: React.FC = () => (
       <SplashText>Hey gursssss, we&apos;re john and molly</SplashText>
       <BackgroundWrapper>
         <Image
+          alt="splash image"
           src={image}
           layout="fill"
           objectFit="cover"
