@@ -1,4 +1,5 @@
 import { Client } from '@notionhq/client';
+import { RichText } from '@notionhq/client/build/src/api-types';
 import { isEmpty } from 'lodash';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
@@ -55,17 +56,29 @@ export const getAllPosts = async () => {
 export const getPost = async (id: string) => {
   try {
     const post = await notion.pages.retrieve({ page_id: id });
+    const blocks = await notion.blocks.children.list({ block_id: id });
+    console.log(post);
+    console.log(blocks);
     const title =
       post.properties['Name'].type === 'title'
-        ? post.properties['Name'].title.reduce(
-            (acc, curr) => (acc += curr.plain_text),
-            ''
-          )
+        ? richTextToString(post.properties['Name'].title)
         : '';
+
+    const content = blocks.results.reduce(
+      (acc, r) =>
+        (acc +=
+          r.type === 'paragraph' ? richTextToString(r.paragraph.text) : ''),
+      ''
+    );
     return {
       title,
+      content,
     };
   } catch (error) {
     console.log(error.body);
   }
+};
+
+const richTextToString = (rt: RichText[]): string => {
+  return rt.reduce((acc, curr) => (acc += curr.plain_text), '');
 };

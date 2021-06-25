@@ -11,6 +11,7 @@ const BackgroundWrapper = styled.div`
 `;
 
 const SplashText = styled.div`
+  font-family: ${props => props.theme.fonts.body};
   margin-top: 60px;
   padding: 24px;
   width: 100%;

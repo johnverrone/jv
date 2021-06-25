@@ -171,7 +171,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
             <Link href="/">{siteTitle}</Link>
           </Item>
           <Item variants={itemVariants}>
-            <Link href="/blog">Blog</Link>
+            <Link href="/daily/john">Daily</Link>
           </Item>
         </List>
       </Nav>

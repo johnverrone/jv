@@ -85,9 +85,10 @@ const DateComponent = styled.p`
 interface BlogListProps {
   // TODO: figure out how to get proptype from contentful
   posts: Post[];
+  basePath: string;
 }
 
-const BlogList: React.FC<BlogListProps> = ({ posts }) => {
+const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
   const years = new Map();
   posts.forEach((post, i) => {
     const year = new Date(post.date).getFullYear();
@@ -104,7 +105,7 @@ const BlogList: React.FC<BlogListProps> = ({ posts }) => {
           const postYear = new Date(date).getFullYear();
           return (
             <Item key={id}>
-              <Link href={`/blog/${id}`}>
+              <Link href={`${basePath}/${id}`}>
                 <PostSnippet>
                   {years.get(postYear) === i && <Year>{postYear}</Year>}
                   <PostTitle>{title}</PostTitle>
