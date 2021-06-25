@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import Container from './Container';
+import { AppContainer } from '../AppContainer';
 import styled from '@emotion/styled';
-import { Post } from '../lib/blog';
+import { Post } from '../../lib/blog';
 
 const List = styled.ul``;
 
@@ -68,7 +68,7 @@ interface BlogListProps {
   basePath: string;
 }
 
-const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
+export const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
   const years = new Map();
   posts.forEach((post, i) => {
     const year = new Date(post.date).getFullYear();
@@ -79,7 +79,7 @@ const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
   });
 
   return (
-    <Container>
+    <AppContainer>
       <List>
         {posts.map(({ id, title, date }, i) => {
           const postYear = new Date(date).getFullYear();
@@ -96,8 +96,6 @@ const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
           );
         })}
       </List>
-    </Container>
+    </AppContainer>
   );
 };
-
-export default BlogList;

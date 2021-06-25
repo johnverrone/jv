@@ -25,11 +25,11 @@ interface TitleProps {
   date: string;
 }
 
-const Title = (props: TitleProps) => {
+const Title: React.FC<TitleProps> = ({ title, date }) => {
   return (
     <Wrapper>
-      <TitleText>{props.title}</TitleText>
-      <Date>{props.date}</Date>
+      <TitleText>{title}</TitleText>
+      <Date>{date}</Date>
     </Wrapper>
   );
 };

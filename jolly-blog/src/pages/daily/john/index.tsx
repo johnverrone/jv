@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
-import BlogList from '../../../components/BlogList';
+import { BlogList } from '../../../components/BlogList';
 import Layout from '../../../components/Layout';
 import { getAllPosts } from '../../../lib/blog';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Transition = ({ children, location }) => {
+export const Transition = ({ children, location }) => {
   const duration = 0.25;
 
   const variants = {
@@ -34,5 +34,3 @@ const Transition = ({ children, location }) => {
     </AnimatePresence>
   );
 };
-
-export default Transition;

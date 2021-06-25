@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, MotionProps } from 'framer-motion';
 import styled from '@emotion/styled';
-import { Popover } from './Popover';
+import { Popover } from '../Popover';
 
 type MenuProps = {
   open: boolean;
@@ -141,11 +141,11 @@ const MenuToggle = ({ toggle }) => (
   </MenuButton>
 );
 
-interface AppHeaderProps {
+interface NavBarProps {
   siteTitle?: string;
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
+export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dailyOpen, setDailyOpen] = useState(false);
   const [anchorRef, setAnchorRef] = useState<HTMLDivElement | null>(null);
@@ -219,5 +219,3 @@ const AppHeader: React.FC<AppHeaderProps> = ({ siteTitle = '' }) => {
     </Header>
   );
 };
-
-export default AppHeader;

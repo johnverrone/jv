@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { ParsedUrlQuery } from 'querystring';
 import { getAllPostIds, getPost } from '../../../lib/blog';
 import Layout from '../../../components/Layout';
-import Container from '../../../components/Container';
+import { AppContainer } from '../../../components/AppContainer';
 
 const BlogTitle = styled.h2`
   font-size: 1.5rem;
@@ -19,10 +19,10 @@ export default function Post({ postData }: PostProps) {
   const { title, content } = postData;
   return (
     <Layout title={title}>
-      <Container>
+      <AppContainer>
         <BlogTitle>{title}</BlogTitle>
         <BlogContent>{content}</BlogContent>
-      </Container>
+      </AppContainer>
     </Layout>
   );
 }
