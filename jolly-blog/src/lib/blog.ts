@@ -1,6 +1,8 @@
 import { Client } from '@notionhq/client';
-import { RichText } from '@notionhq/client/build/src/api-types';
 import { isEmpty } from 'lodash';
+import { blocksToMarkdown } from './notion/utils/blockToMarkdown';
+import { blockToString } from './notion/utils/blockToString';
+import { getPageTitle } from './notion/utils/getPageTitle';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const database_id = process.env.NOTION_DATABASE;
@@ -30,13 +32,7 @@ export const getAllPosts = async (): Promise<Post[]> => {
     });
 
     cache = posts.results.map(page => {
-      const title =
-        page.properties['Name'].type === 'title'
-          ? page.properties['Name'].title.reduce(
-              (acc, curr) => (acc += curr.plain_text),
-              ''
-            )
-          : '';
+      const title = getPageTitle(page);
       const date =
         page.properties['Date'].type === 'date'
           ? new Date(page.properties['Date'].date.start).toDateString()
@@ -56,26 +52,16 @@ export const getAllPosts = async (): Promise<Post[]> => {
 
 export const getPost = async (id: string): Promise<Post> => {
   try {
-    const post = await notion.pages.retrieve({ page_id: id });
+    const page = await notion.pages.retrieve({ page_id: id });
     const blocks = await notion.blocks.children.list({ block_id: id });
-    console.log(post);
-    console.log(blocks);
-    const title =
-      post.properties['Name'].type === 'title'
-        ? richTextToString(post.properties['Name'].title)
-        : '';
+    const title = getPageTitle(page);
     const date =
-      post.properties['Date'].type === 'date'
-        ? new Date(post.properties['Date'].date.start).toDateString()
+      page.properties['Date'].type === 'date'
+        ? new Date(page.properties['Date'].date.start).toDateString()
         : '';
-    const content = blocks.results.reduce(
-      (acc, r) =>
-        (acc +=
-          r.type === 'paragraph' ? richTextToString(r.paragraph.text) : ''),
-      ''
-    );
+    const content = blocksToMarkdown(blocks.results);
     return {
-      id: post.id,
+      id: page.id,
       title,
       date,
       content,
@@ -83,8 +69,4 @@ export const getPost = async (id: string): Promise<Post> => {
   } catch (error) {
     console.log(error.body);
   }
-};
-
-const richTextToString = (rt: RichText[]): string => {
-  return rt.reduce((acc, curr) => (acc += curr.plain_text), '');
 };
