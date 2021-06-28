@@ -1,6 +1,7 @@
 import { Client } from '@notionhq/client';
 import { isEmpty } from 'lodash';
 import { blocksToMarkdown } from './notion/utils/blockToMarkdown';
+import { getPageProperties } from './notion/utils/getPageProperties';
 import { getPageTitle } from './notion/utils/getPageTitle';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
@@ -32,10 +33,8 @@ export const getAllPosts = async (): Promise<Post[]> => {
 
     cache = posts.results.map(page => {
       const title = getPageTitle(page);
-      const date =
-        page.properties['Date'].type === 'date'
-          ? new Date(page.properties['Date'].date.start).toDateString()
-          : '';
+      const date = getPageProperties(page)['Date'].value;
+
       return {
         id: page.id,
         title,
@@ -54,10 +53,7 @@ export const getPost = async (id: string): Promise<Post> => {
     const page = await notion.pages.retrieve({ page_id: id });
     const blocks = await notion.blocks.children.list({ block_id: id });
     const title = getPageTitle(page);
-    const date =
-      page.properties['Date'].type === 'date'
-        ? new Date(page.properties['Date'].date.start).toDateString()
-        : '';
+    const date = getPageProperties(page)['Date'].value;
     const content = blocksToMarkdown(blocks.results);
     return {
       id: page.id,
