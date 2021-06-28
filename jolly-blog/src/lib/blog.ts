@@ -1,7 +1,6 @@
 import { Client } from '@notionhq/client';
 import { isEmpty } from 'lodash';
 import { blocksToMarkdown } from './notion/utils/blockToMarkdown';
-import { blockToString } from './notion/utils/blockToString';
 import { getPageTitle } from './notion/utils/getPageTitle';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
