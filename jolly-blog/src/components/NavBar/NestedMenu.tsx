@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { Popover } from '../Popover';
+import { Popover } from '@components/Popover';
+import { Button } from '@components/Button';
 import { NavItem } from './NavBar';
 
 const Pane = styled.div`
@@ -20,9 +21,9 @@ export const NestedMenu: React.FC<NestedMenuProps> = ({ name, children }) => {
 
   return (
     <div ref={setAnchorRef}>
-      <button onClick={() => setOpen(prev => !prev)}>
+      <Button onClick={() => setOpen(prev => !prev)}>
         <NavItem>{name}</NavItem>
-      </button>
+      </Button>
       <Popover anchor={anchorRef} open={open} offset={8} placement="bottom-end">
         <Pane onClick={() => setOpen(false)}>{children}</Pane>
       </Popover>
