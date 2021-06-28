@@ -4,24 +4,24 @@ import styled from '@emotion/styled';
 import { ParsedUrlQuery } from 'querystring';
 import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { getAllPostIds, getPost, Post as PostType } from '../../../lib/blog';
-import Layout from '../../../components/Layout';
-import { AppContainer } from '../../../components/AppContainer';
-import { BlogTitle } from '../../../components/BlogTitle';
+import { getAllPostIds, getPost, Post as PostType } from '@lib/blog';
+import { SEO } from '@components/SEO';
+import { AppContainer } from '@components/AppContainer';
+import { BlogTitle } from '@components/BlogTitle';
 
 const BlogContent = styled.p``;
 
 export default function Post({ postData, mdxSource }: PostProps) {
   const { title, date } = postData;
   return (
-    <Layout title={title}>
+    <SEO title={title}>
       <AppContainer>
         <BlogTitle title={title} date={date} />
         <BlogContent>
           <MDXRemote {...mdxSource} />
         </BlogContent>
       </AppContainer>
-    </Layout>
+    </SEO>
   );
 }
 

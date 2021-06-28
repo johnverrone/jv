@@ -1,14 +1,14 @@
 import React from 'react';
 import Head from 'next/head';
 
-interface LayoutProps {
+interface SEOProps {
   title: string;
   description?: string;
   meta?: ConcatArray<any>;
   lang?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({
+export const SEO: React.FC<SEOProps> = ({
   title,
   description = '',
   children,
@@ -29,5 +29,3 @@ const Layout: React.FC<LayoutProps> = ({
     </>
   );
 };
-
-export default Layout;

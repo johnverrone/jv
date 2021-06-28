@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import styled from '@emotion/styled';
-import Layout from '../components/Layout';
-import image from '../../public/images/mt-evans.jpg';
+import { SEO } from '@components/SEO';
+import image from '@images/mt-evans.jpg';
 
 const BackgroundWrapper = styled.div`
   position: relative;
@@ -12,7 +12,7 @@ const BackgroundWrapper = styled.div`
 
 const IndexPage: React.FC = () => (
   <>
-    <Layout title="John and Molly" description="Adventures of digital nomads.">
+    <SEO title="John and Molly" description="Adventures of digital nomads.">
       <BackgroundWrapper>
         <Image
           alt="splash image"
@@ -22,7 +22,7 @@ const IndexPage: React.FC = () => (
           objectPosition="63% 30%"
         />
       </BackgroundWrapper>
-    </Layout>
+    </SEO>
   </>
 );
 

@@ -1,4 +1,18 @@
-import { RichText } from '@notionhq/client/build/src/api-types';
+import {
+  Annotations,
+  RichText,
+  RichTextTextInput,
+} from '@notionhq/client/build/src/api-types';
+
+interface TextData extends RichTextTextInput, Annotations {}
+
+const format = (text: TextData): string => {
+  let formatted = text.text.content;
+  if (text.italic) {
+    formatted = `_${formatted}_`;
+  }
+  return formatted;
+};
 
 export const blockToString = (textBlocks: RichText[]): string => {
   return textBlocks.reduce((text, block) => {
@@ -13,9 +27,13 @@ export const blockToString = (textBlocks: RichText[]): string => {
     }
 
     if (block.type === 'text') {
-      content = block.text.content;
+      let data: TextData = {
+        ...block,
+        ...block.annotations,
+      };
+      content = format(data);
     }
 
-    return (text += content);
+    return text.concat(content);
   }, '');
 };

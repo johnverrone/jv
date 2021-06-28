@@ -34,7 +34,7 @@ const Nav = styled(motion.nav)`
   }
 `;
 
-const NavItems = styled(motion.ul)<MenuProps>`
+const NavItems = styled(motion.div)<MenuProps>`
   width: 100%;
   text-align: center;
   pointer-events: ${props => (props.open ? 'auto' : 'none')};
@@ -45,7 +45,7 @@ const NavItems = styled(motion.ul)<MenuProps>`
   }
 `;
 
-export const NavItem = styled(motion.li)`
+export const NavItem = styled(motion.div)`
   display: flex;
   justify-content: center;
   padding: 0.5rem 0;
@@ -63,7 +63,7 @@ export const NavItem = styled(motion.li)`
   }
 `;
 
-const SiteTitle = styled(motion.li)`
+const SiteTitle = styled(motion.div)`
   opacity: 1 !important;
   position: fixed;
   pointer-events: auto;
@@ -147,7 +147,7 @@ export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
 
   const close = () => {
     setIsOpen(false);
-  }
+  };
 
   const itemVariants = {
     open: {
@@ -187,7 +187,7 @@ export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
             <Link href="/blog">
               <a onClick={close}>Blog</a>
             </Link>
-            </NavItem>
+          </NavItem>
           <NavItem variants={itemVariants}>
             <NestedMenu name="Journals">
               <VerticalItem>

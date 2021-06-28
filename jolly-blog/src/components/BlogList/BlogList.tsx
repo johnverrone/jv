@@ -4,9 +4,9 @@ import { AppContainer } from '../AppContainer';
 import styled from '@emotion/styled';
 import { Post } from '../../lib/blog';
 
-const List = styled.ul``;
+const List = styled.div``;
 
-const Item = styled.li``;
+const Item = styled.div``;
 
 const PostSnippet = styled.a`
   display: block;
