@@ -12,17 +12,16 @@ const BackgroundWrapper = styled.div`
 
 const IndexPage: React.FC = () => (
   <>
-    <SEO title="John and Molly" description="Adventures of digital nomads.">
-      <BackgroundWrapper>
-        <Image
-          alt="splash image"
-          src={image}
-          layout="fill"
-          objectFit="cover"
-          objectPosition="63% 30%"
-        />
-      </BackgroundWrapper>
-    </SEO>
+    <SEO title="John and Molly" description="Adventures of digital nomads." />
+    <BackgroundWrapper>
+      <Image
+        alt="splash image"
+        src={image}
+        layout="fill"
+        objectFit="cover"
+        objectPosition="63% 30%"
+      />
+    </BackgroundWrapper>
   </>
 );
 

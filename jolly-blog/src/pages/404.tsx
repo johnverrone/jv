@@ -1,7 +1,7 @@
 import React from 'react';
+import Head from 'next/head';
 import styled from '@emotion/styled';
 import { AppContainer } from '@components/AppContainer';
-import { SEO } from '@components/SEO';
 
 const Error = styled.div`
   display: flex;
@@ -15,14 +15,17 @@ const Error = styled.div`
 `;
 
 const NotFoundPage: React.FC = () => (
-  <SEO title="Oops">
+  <>
+    <Head>
+      <title>oopsies</title>
+    </Head>
     <AppContainer>
       <Error>
         <h1>oopsies</h1>
         <p>You just hit a route that doesn&#39;t exist 😅</p>
       </Error>
     </AppContainer>
-  </SEO>
+  </>
 );
 
 export default NotFoundPage;

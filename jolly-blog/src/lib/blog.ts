@@ -10,7 +10,7 @@ const database_id = process.env.NOTION_DATABASE;
 export interface Post {
   id: string;
   title: string;
-  date: string;
+  date: { start: string; end?: string };
   content?: string;
 }
 
@@ -33,7 +33,7 @@ export const getAllPosts = async (): Promise<Post[]> => {
 
     cache = posts.results.map(page => {
       const title = getPageTitle(page);
-      const date = getPageProperties(page)['Date'].value;
+      const date = getPageProperties(page)['Date'].date;
 
       return {
         id: page.id,
@@ -53,7 +53,7 @@ export const getPost = async (id: string): Promise<Post> => {
     const page = await notion.pages.retrieve({ page_id: id });
     const blocks = await notion.blocks.children.list({ block_id: id });
     const title = getPageTitle(page);
-    const date = getPageProperties(page)['Date'].value;
+    const date = getPageProperties(page)['Date'].date;
     const content = blocksToMarkdown(blocks.results);
     return {
       id: page.id,

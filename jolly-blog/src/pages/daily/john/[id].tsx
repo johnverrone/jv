@@ -6,22 +6,23 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { getAllPostIds, getPost, Post as PostType } from '@lib/blog';
 import { SEO } from '@components/SEO';
-import { AppContainer } from '@components/AppContainer';
 import { BlogTitle } from '@components/BlogTitle';
+import { FullBleedContainer } from '@components/FullBleedContainer';
 
 const BlogContent = styled.p``;
 
 export default function Post({ postData, mdxSource }: PostProps) {
   const { title, date } = postData;
   return (
-    <SEO title={title}>
-      <AppContainer>
+    <>
+      <SEO title={title} />
+      <FullBleedContainer>
         <BlogTitle title={title} date={date} />
         <BlogContent>
           <MDXRemote {...mdxSource} />
         </BlogContent>
-      </AppContainer>
-    </SEO>
+      </FullBleedContainer>
+    </>
   );
 }
 

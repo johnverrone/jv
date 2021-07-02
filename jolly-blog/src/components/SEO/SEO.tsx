@@ -8,11 +8,7 @@ interface SEOProps {
   lang?: string;
 }
 
-export const SEO: React.FC<SEOProps> = ({
-  title,
-  description = '',
-  children,
-}) => {
+export const SEO: React.FC<SEOProps> = ({ title, description = '' }) => {
   return (
     <>
       <Head>
@@ -25,7 +21,6 @@ export const SEO: React.FC<SEOProps> = ({
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Head>
-      <main>{children}</main>
     </>
   );
 };

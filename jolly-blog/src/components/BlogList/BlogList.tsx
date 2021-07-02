@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { AppContainer } from '../AppContainer';
 import styled from '@emotion/styled';
-import { Post } from '../../lib/blog';
+import { Post } from '@lib/blog';
+import { formatDate } from '@utils/date';
 
 const List = styled.div``;
 
@@ -63,7 +63,6 @@ const DateComponent = styled.p`
 `;
 
 interface BlogListProps {
-  // TODO: figure out how to get proptype from contentful
   posts: Post[];
   basePath: string;
 }
@@ -71,7 +70,7 @@ interface BlogListProps {
 export const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
   const years = new Map();
   posts.forEach((post, i) => {
-    const year = new Date(post.date).getFullYear();
+    const year = new Date(post.date.start).getFullYear();
     if (!years.has(year)) {
       years.set(year, i);
       years[i] = year;
@@ -79,23 +78,21 @@ export const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
   });
 
   return (
-    <AppContainer>
-      <List>
-        {posts.map(({ id, title, date }, i) => {
-          const postYear = new Date(date).getFullYear();
-          return (
-            <Item key={id}>
-              <Link href={`${basePath}/${id}`} passHref>
-                <PostSnippet>
-                  {years.get(postYear) === i && <Year>{postYear}</Year>}
-                  <PostTitle>{title}</PostTitle>
-                  <DateComponent>{date}</DateComponent>
-                </PostSnippet>
-              </Link>
-            </Item>
-          );
-        })}
-      </List>
-    </AppContainer>
+    <List>
+      {posts.map(({ id, title, date }, i) => {
+        const postYear = new Date(date.start).getFullYear();
+        return (
+          <Item key={id}>
+            <Link href={`${basePath}/${id}`} passHref>
+              <PostSnippet>
+                {years.get(postYear) === i && <Year>{postYear}</Year>}
+                <PostTitle>{title}</PostTitle>
+                <DateComponent>{formatDate(date)}</DateComponent>
+              </PostSnippet>
+            </Link>
+          </Item>
+        );
+      })}
+    </List>
   );
 };

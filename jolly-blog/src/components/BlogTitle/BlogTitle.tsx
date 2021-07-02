@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Post } from '@lib/blog';
+import { formatDate } from '@utils/date';
 
 const Wrapper = styled.div`
   margin-bottom: 1.5rem;
@@ -22,16 +24,13 @@ const Date = styled.h2`
   opacity: 0.5;
 `;
 
-interface BlogTitleProps {
-  title: string;
-  date: string;
-}
+interface BlogTitleProps extends Pick<Post, 'title' | 'date'> {}
 
 export const BlogTitle: React.FC<BlogTitleProps> = ({ title, date }) => {
   return (
     <Wrapper>
       <TitleText>{title}</TitleText>
-      <Date>{date}</Date>
+      <Date>{formatDate(date)}</Date>
     </Wrapper>
   );
 };

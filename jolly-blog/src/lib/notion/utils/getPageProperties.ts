@@ -1,7 +1,12 @@
-import { Page, PropertyValue } from '@notionhq/client/build/src/api-types';
+import {
+  DatePropertyValue,
+  Page,
+  PropertyValue,
+} from '@notionhq/client/build/src/api-types';
 
 type PageProperty = PropertyValue & {
   value: string;
+  date?: DatePropertyValue['date'];
 };
 
 export const getPageProperties = (
@@ -20,6 +25,7 @@ export const getPageProperties = (
         [key]: {
           ...page.properties[key],
           value: date.end ? `${date.start} - ${date.end}` : date.start,
+          date,
         },
       };
     }
