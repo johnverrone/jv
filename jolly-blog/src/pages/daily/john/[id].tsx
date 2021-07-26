@@ -48,7 +48,9 @@ export const getStaticPaths: GetStaticPaths<RouteProps> = async () => {
 export const getStaticProps: GetStaticProps<PostProps, RouteProps> = async ({
   params,
 }) => {
-  const postData = await getPost(params.id);
+  const postData = params ? await getPost(params.id) : null;
+  if (!postData || !postData.content) return {};
+
   const mdxSource = await serialize(postData.content);
 
   return {

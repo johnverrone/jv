@@ -6,7 +6,7 @@ export const getPageTitle = (page: Page) => {
     value => value.type === 'title'
   );
 
-  if (titleProp.type !== 'title') {
+  if (!titleProp || titleProp.type !== 'title') {
     throw new Error(`Unable to retrieve page title for page ${page.id}`);
   }
 

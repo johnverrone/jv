@@ -6,7 +6,7 @@ import {
 
 type PageProperty = PropertyValue & {
   value: string;
-  date?: DatePropertyValue['date'];
+  date: DatePropertyValue['date'];
 };
 
 export const getPageProperties = (
@@ -30,13 +30,14 @@ export const getPageProperties = (
       };
     }
 
-    return {
-      ...acc,
-      [key]: {
-        ...page.properties[key],
-        value: page.properties[key][page.properties[key].type],
-      },
-    };
+    return acc;
+    // return {
+    //   ...acc,
+    //   [key]: {
+    //     ...page.properties[key],
+    //     value: page.properties[key][page.properties[key].type],
+    //   },
+    // };
   }, {});
 
   return properties;

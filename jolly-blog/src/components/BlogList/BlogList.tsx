@@ -73,7 +73,6 @@ export const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
     const year = new Date(post.date.start).getFullYear();
     if (!years.has(year)) {
       years.set(year, i);
-      years[i] = year;
     }
   });
 
