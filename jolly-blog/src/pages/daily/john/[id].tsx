@@ -53,7 +53,6 @@ export const getStaticProps: GetStaticProps<PostProps, RouteProps> = async ({
   const postData = params ? await getPost(params.id) : null;
   if (!postData) return { props: {} };
 
-  console.log('postData.content', postData.content);
   const mdxSource = await serialize(postData.content || '_no content_ 😢');
 
   return {

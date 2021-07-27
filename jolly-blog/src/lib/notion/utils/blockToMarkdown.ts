@@ -15,11 +15,6 @@ export const blocksToMarkdown = (blocks: Block[], depth = 0): string => {
     if (!block) return acc;
     let str = '';
 
-    if (hasOwnProperty(block, block.type)) {
-      const newLocal = block[block.type];
-      console.log(newLocal);
-    }
-
     if (block.has_children) {
       str = ' '.repeat(depth).concat(str);
 
