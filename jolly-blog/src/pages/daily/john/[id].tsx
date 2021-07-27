@@ -12,6 +12,8 @@ import { FullBleedContainer } from '@components/FullBleedContainer';
 const BlogContent = styled.p``;
 
 export default function Post({ postData, mdxSource }: PostProps) {
+  if (!postData || !mdxSource) return null;
+
   const { title, date } = postData;
   return (
     <>
@@ -27,8 +29,8 @@ export default function Post({ postData, mdxSource }: PostProps) {
 }
 
 interface PostProps {
-  postData: PostType;
-  mdxSource: MDXRemoteSerializeResult;
+  postData?: PostType;
+  mdxSource?: MDXRemoteSerializeResult;
 }
 
 interface RouteProps extends ParsedUrlQuery {
@@ -49,7 +51,7 @@ export const getStaticProps: GetStaticProps<PostProps, RouteProps> = async ({
   params,
 }) => {
   const postData = params ? await getPost(params.id) : null;
-  if (!postData || !postData.content) return {};
+  if (!postData || !postData.content) return { props: {} };
 
   const mdxSource = await serialize(postData.content);
 
