@@ -115,7 +115,7 @@ const Path: React.FC<MotionProps> = props => (
   />
 );
 
-const MenuToggle = ({ toggle }) => (
+const MenuToggle: React.FC<{ toggle: () => void }> = ({ toggle }) => (
   <MenuButton onClick={toggle}>
     <svg width="24" height="24" viewBox="0 0 24 24">
       <Path
