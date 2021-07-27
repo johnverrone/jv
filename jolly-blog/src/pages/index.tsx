@@ -1,18 +1,27 @@
 import React from 'react';
-import SEO from '../components/SEO';
-import styled from '../styles/styled';
+import Image from 'next/image';
+import styled from '@emotion/styled';
+import { SEO } from '@components/SEO';
+import image from '@images/mt-evans.jpg';
 
-const Splash = styled.div`
+const BackgroundWrapper = styled.div`
+  position: relative;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: -1;
 `;
 
 const IndexPage: React.FC = () => (
   <>
-    <SEO title="Home" description="Software engineer located in Atlanta, GA" />
-    <Splash>Gatsby site is up!</Splash>
+    <SEO title="John and Molly" description="Adventures of digital nomads." />
+    <BackgroundWrapper>
+      <Image
+        alt="splash image"
+        src={image}
+        layout="fill"
+        objectFit="cover"
+        objectPosition="63% 30%"
+      />
+    </BackgroundWrapper>
   </>
 );
 

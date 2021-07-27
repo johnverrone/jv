@@ -51,9 +51,8 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# gatsby files
-.cache/
-public
+# next files
+.next
 
 # Mac files
 .DS_Store
