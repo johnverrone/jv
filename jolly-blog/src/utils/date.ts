@@ -1,4 +1,4 @@
-import { Post } from '../lib/blog';
+import { Post } from '../lib/journals';
 
 export const formatDate = (date: Post['date']): string => {
   const options: Intl.DateTimeFormatOptions = {
