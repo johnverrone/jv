@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Post } from '@lib/blog';
+import { Post } from '@lib/journals';
 import { formatDate } from '@utils/date';
 
 const Wrapper = styled.div`
@@ -24,9 +24,12 @@ const Date = styled.h2`
   opacity: 0.5;
 `;
 
-interface BlogTitleProps extends Pick<Post, 'title' | 'date'> {}
+interface JournalTitleProps extends Pick<Post, 'title' | 'date'> {}
 
-export const BlogTitle: React.FC<BlogTitleProps> = ({ title, date }) => {
+export const JournalTitle: React.FC<JournalTitleProps> = ({
+  title,
+  date,
+}) => {
   return (
     <Wrapper>
       <TitleText>{title}</TitleText>
