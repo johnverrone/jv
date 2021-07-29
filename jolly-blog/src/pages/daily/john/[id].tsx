@@ -1,9 +1,9 @@
 import React from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { getAllPostIds, getPost, Post as PostType } from '@lib/journals';
+import { getPost, Post as PostType } from '@lib/journals';
 import { SEO } from '@components/SEO';
 import { JournalTitle } from '@components/JournalTitle';
 import { FullBleedContainer } from '@components/FullBleedContainer';
@@ -17,7 +17,7 @@ interface RouteProps extends ParsedUrlQuery {
   id: string;
 }
 
-export default function Post({ postData, mdxSource }: PostProps) {
+const JournalPage: React.FC<PostProps> = ({ postData, mdxSource }) => {
   const { title, date } = postData;
   return (
     <>
@@ -30,11 +30,12 @@ export default function Post({ postData, mdxSource }: PostProps) {
       </FullBleedContainer>
     </>
   );
-}
+};
 
-export const getStaticProps: GetStaticProps<PostProps, RouteProps> = async ({
-  params,
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  PostProps,
+  RouteProps
+> = async ({ params }) => {
   if (!params) return { notFound: true };
   const postData = await getPost(params.id);
   if (!postData) return { notFound: true };
@@ -49,12 +50,4 @@ export const getStaticProps: GetStaticProps<PostProps, RouteProps> = async ({
   };
 };
 
-export const getStaticPaths: GetStaticPaths<RouteProps> = async () => {
-  const postIds = await getAllPostIds();
-  const paths = postIds.map(id => ({ params: { id } }));
-
-  return {
-    paths,
-    fallback: false,
-  };
-};
+export default JournalPage;

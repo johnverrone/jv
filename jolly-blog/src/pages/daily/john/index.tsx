@@ -1,13 +1,15 @@
 import React from 'react';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps } from 'next';
 import { JournalList } from '@components/JournalList';
 import { SEO } from '@components/SEO';
-import { getAllPosts } from '@lib/journals';
+import { getAllPosts, Post } from '@lib/journals';
 import { AppContainer } from '@components/AppContainer';
 
-const BlogPage = ({
-  posts,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+interface BlogPageProps {
+  posts: Post[];
+}
+
+const BlogPage: React.FC<BlogPageProps> = ({ posts }) => {
   return (
     <>
       <SEO title="John's Daily Journal" />
@@ -18,7 +20,7 @@ const BlogPage = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps<BlogPageProps> = async () => {
   const posts = await getAllPosts();
 
   return {
