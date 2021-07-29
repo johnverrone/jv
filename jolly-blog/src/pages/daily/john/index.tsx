@@ -1,8 +1,8 @@
 import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { BlogList } from '@components/BlogList';
+import { JournalList } from '@components/JournalList';
 import { SEO } from '@components/SEO';
-import { getAllPosts } from '@lib/blog';
+import { getAllPosts } from '@lib/journals';
 import { AppContainer } from '@components/AppContainer';
 
 const BlogPage = ({
@@ -12,7 +12,7 @@ const BlogPage = ({
     <>
       <SEO title="John's Daily Journal" />
       <AppContainer>
-        <BlogList basePath="/daily/john" posts={posts} />
+        <JournalList basePath="/daily/john" posts={posts} />
       </AppContainer>
     </>
   );

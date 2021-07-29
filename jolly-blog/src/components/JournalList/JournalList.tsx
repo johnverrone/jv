@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { Post } from '@lib/blog';
+import { Post } from '@lib/journals';
 import { formatDate } from '@utils/date';
 
 const List = styled.div``;
@@ -62,12 +62,15 @@ const DateComponent = styled.p`
   }
 `;
 
-interface BlogListProps {
+interface JournalListProps {
   posts: Post[];
   basePath: string;
 }
 
-export const BlogList: React.FC<BlogListProps> = ({ posts, basePath }) => {
+export const JournalList: React.FC<JournalListProps> = ({
+  posts,
+  basePath,
+}) => {
   const years = new Map();
   posts.forEach((post, i) => {
     const year = new Date(post.date.start).getFullYear();
