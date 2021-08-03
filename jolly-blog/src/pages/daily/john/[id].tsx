@@ -1,16 +1,16 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { serialize } from 'next-mdx-remote/serialize';
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { getPost, Post as PostType } from '@lib/journals';
 import { SEO } from '@components/SEO';
 import { JournalTitle } from '@components/JournalTitle';
 import { FullBleedContainer } from '@components/FullBleedContainer';
+import { getMDXComponent } from 'mdx-bundler/client';
+import { bundleMDX } from 'mdx-bundler';
 
 interface PostProps {
   postData: PostType;
-  mdxSource: MDXRemoteSerializeResult;
+  mdxSource: string;
 }
 
 interface RouteProps extends ParsedUrlQuery {
@@ -19,13 +19,17 @@ interface RouteProps extends ParsedUrlQuery {
 
 const JournalPage: React.FC<PostProps> = ({ postData, mdxSource }) => {
   const { title, date } = postData;
+  const MDXComponent = React.useMemo(() => getMDXComponent(mdxSource), [
+    mdxSource,
+  ]);
+
   return (
     <>
       <SEO title={title} />
       <FullBleedContainer>
         <JournalTitle title={title} date={date} />
         <div>
-          <MDXRemote {...mdxSource} />
+          <MDXComponent />
         </div>
       </FullBleedContainer>
     </>
@@ -40,7 +44,9 @@ export const getServerSideProps: GetServerSideProps<
   const postData = await getPost(params.id);
   if (!postData) return { notFound: true };
 
-  const mdxSource = await serialize(postData.content || '_no content_ 😢');
+  const { code: mdxSource } = await bundleMDX(
+    postData.content || '_no content_ 😢'
+  );
 
   return {
     props: {
