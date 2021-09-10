@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, MotionProps } from 'framer-motion';
 import styled from '@emotion/styled';
+import { SocialIcons } from '@components/SocialIcons';
 
 type MenuProps = {
   open: boolean;
@@ -57,8 +58,12 @@ export const NavItem = styled(motion.div)`
     padding: 0;
   }
   a {
+    transition: color 200ms ease-in-out;
     color: ${props => props.theme.colors.text};
     text-decoration: none;
+    &:hover {
+      color: ${props => props.theme.colors.accent};
+    }
   }
 `;
 
@@ -97,6 +102,19 @@ const MenuButton = styled(motion.button)`
   border: none;
   @media screen and (min-width: ${props => props.theme.responsive.medium}) {
     display: none;
+  }
+`;
+
+const Divider = styled(motion.div)`
+  margin: 0.5rem 0;
+  height: 2px;
+  background-color: #222;
+  width: 100%;
+  @media screen and (min-width: ${props => props.theme.responsive.medium}) {
+    opacity: 1 !important;
+    margin: 0 0 0 0.75rem;
+    height: 24px;
+    width: 2px;
   }
 `;
 
@@ -182,6 +200,10 @@ export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
             <Link href="/blog">
               <a onClick={close}>Blog</a>
             </Link>
+          </NavItem>
+          <Divider variants={itemVariants} />
+          <NavItem variants={itemVariants}>
+            <SocialIcons />
           </NavItem>
         </NavItems>
       </Nav>
