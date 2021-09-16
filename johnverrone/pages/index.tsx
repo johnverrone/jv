@@ -12,7 +12,7 @@ const BackgroundWrapper = styled.div`
 
 const IndexPage: React.FC = () => (
   <>
-    <SEO title="John Verrone" description="Personal blog" />
+    <SEO description="Personal blog" />
     <BackgroundWrapper>
       <Image
         alt="john"

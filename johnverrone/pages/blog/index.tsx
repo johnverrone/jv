@@ -11,7 +11,7 @@ interface BlogPageProps {
 const BlogPage: React.FC<BlogPageProps> = ({ posts }) => {
   return (
     <>
-      <SEO title="John Verrone | Blog" />
+      <SEO title="Blog" />
       <AppContainer>
         {posts.map(p => (
           <Link href={`/blog/${p.slug}`} key={p.slug}>

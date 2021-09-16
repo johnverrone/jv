@@ -15,7 +15,7 @@ interface RouteProps extends ParsedUrlQuery {
 const BlogPage: React.FC<BlogPageProps> = ({ post }) => {
   return (
     <>
-      <SEO title={`John and Molly | ${post.title}`} />
+      <SEO title={post.title} />
       <AppContainer>
         <p>blog content here</p>
       </AppContainer>
