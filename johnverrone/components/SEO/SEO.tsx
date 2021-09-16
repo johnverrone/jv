@@ -9,7 +9,7 @@ interface SEOProps {
 }
 
 export const SEO: React.FC<SEOProps> = ({ title = '', description = '' }) => {
-  const fullTitle = `John Verrone | ${title}`;
+  const fullTitle = `John Verrone${title ? ` | ${title}` : ''}`;
   return (
     <>
       <Head>
