@@ -13,13 +13,14 @@ const BlogPage: React.FC<BlogPageProps> = ({ posts }) => {
     <>
       <SEO title="Blog" />
       <AppContainer>
-        {posts.map(p => (
+        {/* {posts.map(p => (
           <Link href={`/blog/${p.slug}`} key={p.slug}>
             <a>
               <h1>{p.title}</h1>
             </a>
           </Link>
-        ))}
+        ))} */}
+        <p>🚧 coming soon 🚧</p>
       </AppContainer>
     </>
   );
