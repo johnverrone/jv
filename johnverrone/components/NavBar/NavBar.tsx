@@ -183,6 +183,11 @@ export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
               <a onClick={close}>Blog</a>
             </Link>
           </NavItem>
+          <NavItem variants={itemVariants}>
+            <Link href="/coffee">
+              <a onClick={close}>Coffee</a>
+            </Link>
+          </NavItem>
         </NavItems>
       </Nav>
     </Container>

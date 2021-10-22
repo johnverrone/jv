@@ -9,7 +9,7 @@ const CoffeePage: React.FC = () => {
     <>
       <SEO title="Coffee" />
       <AppContainer>
-        <iframe title="airtable-embed" src="https://airtable.com/embed/shrHQSvgnRIlpgXE4?backgroundColor=greenLight&viewControls=on" frameBorder="0" width="100%" height="533" style={{ background: 'transparent', border: '1px solid #ccc' }} />
+        <iframe title="airtable-embed" src="https://airtable.com/embed/shrHQSvgnRIlpgXE4?backgroundColor=greenLight&viewControls=on" frameBorder="0" width="100%" height="1000px" style={{ background: 'transparent', border: '1px solid #ccc' }} />
       </AppContainer>
     </>
   );
