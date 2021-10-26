@@ -1,0 +1,7 @@
+{
+  "name": "jv",
+  "workspaces": [
+    "jolly-blog",
+    "johnverrone"
+  ]
+}
