@@ -24,7 +24,10 @@ export const getServerSideProps: GetServerSideProps<BlogPageProps> = async () =>
   const posts = await getAllPosts();
 
   return {
-    props: { posts },
+    props: {
+      notFound: process.env.NODE_ENV === 'production',
+      posts,
+    },
   };
 };
 

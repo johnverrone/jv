@@ -188,20 +188,20 @@ export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
               <a onClick={close}>Blog</a>
             </Link>
           </NavItem>
-          <NavItem variants={itemVariants}>
-            <NestedMenu name="Journals">
-              <VerticalItem>
-                <Link href="/daily/john">
-                  <a onClick={close}>John</a>
-                </Link>
-              </VerticalItem>
-              <VerticalItem>
-                <Link href="/daily/molly">
-                  <a onClick={close}>Molly</a>
-                </Link>
-              </VerticalItem>
-            </NestedMenu>
-          </NavItem>
+          {/* <NavItem variants={itemVariants}> */}
+          {/*   <NestedMenu name="Journals"> */}
+          {/*     <VerticalItem> */}
+          {/*       <Link href="/daily/john"> */}
+          {/*         <a onClick={close}>John</a> */}
+          {/*       </Link> */}
+          {/*     </VerticalItem> */}
+          {/*     <VerticalItem> */}
+          {/*       <Link href="/daily/molly"> */}
+          {/*         <a onClick={close}>Molly</a> */}
+          {/*       </Link> */}
+          {/*     </VerticalItem> */}
+          {/*   </NestedMenu> */}
+          {/* </NavItem> */}
         </NavItems>
       </Nav>
     </Container>

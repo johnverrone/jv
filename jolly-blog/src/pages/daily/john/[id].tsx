@@ -44,6 +44,7 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
+      notFound: process.env.NODE_ENV === 'production',
       postData,
       mdxSource,
     },
