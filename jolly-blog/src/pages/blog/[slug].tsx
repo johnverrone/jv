@@ -1,31 +1,32 @@
 import React from 'react';
-import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { SEO } from '@components/SEO';
 import { getAllPosts, getPostBySlug, Post } from '@lib/blog';
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
+import { bundleMDX } from 'mdx-bundler';
+import { getMDXComponent } from 'mdx-bundler/client';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
-interface PostWithMdx extends Post {
-  mdxSource: MDXRemoteSerializeResult;
-}
-
 interface BlogPageProps {
-  post: PostWithMdx;
+  post: Post;
+  mdxSource: string;
 }
 
 interface RouteProps extends ParsedUrlQuery {
   slug: string;
 }
 
-const BlogPage: React.FC<BlogPageProps> = ({ post }) => {
+const BlogPage: React.FC<BlogPageProps> = ({ post, mdxSource }) => {
+  const MDXComponent = React.useMemo(() => getMDXComponent(mdxSource), [
+    mdxSource,
+  ]);
+
   return (
     <>
       <SEO title={`John and Molly | ${post.title}`} />
       <AppContainer>
         <div>
-          <MDXRemote {...post.mdxSource} />
+          <MDXComponent />
         </div>
       </AppContainer>
     </>
@@ -40,16 +41,12 @@ export const getStaticProps: GetStaticProps<
 
   const post = getPostBySlug(params.slug);
 
-  const loadContent = async (p: Post) => {
-    const mdxSource = await serialize(p.content);
-    return { ...p, mdxSource };
-  };
-
-  const postWithMdx = await loadContent(post);
+  const { code: mdxSource } = await bundleMDX(post.content);
 
   return {
     props: {
-      post: postWithMdx,
+      post,
+      mdxSource,
     },
   };
 };

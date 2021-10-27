@@ -7,6 +7,7 @@ const theme = {
   colors: {
     text: '#232923',
     background: 'rgba(255, 255, 255, 0.5)',
+    hover: 'hsla(0deg 0% 0% / 0.1)',
     accent: '#758487',
     modes: {
       dark: {

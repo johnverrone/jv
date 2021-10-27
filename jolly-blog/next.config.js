@@ -10,4 +10,7 @@ module.exports = {
         : null,
     ].filter(Boolean);
   },
+  images: {
+    domains: ['storage.googleapis.com'],
+  },
 };
