@@ -7,8 +7,11 @@ const Container = styled.a`
   text-align: center;
   color: ${props => props.theme.colors.text};
   text-decoration: none;
+  border-radius: 4px;
+
+  transition: background-color 150ms ease-in-out;
   &:hover {
-    color: ${props => props.theme.colors.accent};
+    background-color: ${props => props.theme.colors.hover};
   }
 `;
 
