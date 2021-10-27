@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, MotionProps } from 'framer-motion';
 import styled from '@emotion/styled';
-import { NestedMenu } from './NestedMenu';
 
 type MenuProps = {
   open: boolean;
@@ -101,10 +100,6 @@ const MenuButton = styled(motion.button)`
   }
 `;
 
-const VerticalItem = styled.div`
-  margin: 8px 0;
-`;
-
 const Path: React.FC<MotionProps> = props => (
   <motion.path
     fill="none"
@@ -188,20 +183,6 @@ export const NavBar: React.FC<NavBarProps> = ({ siteTitle = '' }) => {
               <a onClick={close}>Blog</a>
             </Link>
           </NavItem>
-          {/* <NavItem variants={itemVariants}> */}
-          {/*   <NestedMenu name="Journals"> */}
-          {/*     <VerticalItem> */}
-          {/*       <Link href="/daily/john"> */}
-          {/*         <a onClick={close}>John</a> */}
-          {/*       </Link> */}
-          {/*     </VerticalItem> */}
-          {/*     <VerticalItem> */}
-          {/*       <Link href="/daily/molly"> */}
-          {/*         <a onClick={close}>Molly</a> */}
-          {/*       </Link> */}
-          {/*     </VerticalItem> */}
-          {/*   </NestedMenu> */}
-          {/* </NavItem> */}
         </NavItems>
       </Nav>
     </Container>
