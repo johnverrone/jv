@@ -1,16 +1,19 @@
 import React from 'react';
 import { SEO } from '@components/SEO';
-import { AppContainer } from '@components/AppContainer';
-import { GetStaticProps } from 'next';
-import Link from 'next/link';
+import styled from '@emotion/styled';
+
+const Airtable = styled.iframe`
+  position: absolute;
+  top: 60px;
+  width: 100%;
+  height: calc(100% - 60px);
+`;
 
 const CoffeePage: React.FC = () => {
   return (
     <>
       <SEO title="Coffee" />
-      <AppContainer>
-        <iframe title="airtable-embed" src="https://airtable.com/embed/shrHQSvgnRIlpgXE4?backgroundColor=greenLight&viewControls=on" frameBorder="0" width="100%" height="1000px" style={{ background: 'transparent', border: '1px solid #ccc' }} />
-      </AppContainer>
+      <Airtable title="airtable-embed" src="https://airtable.com/embed/shrHQSvgnRIlpgXE4?backgroundColor=greenLight&viewControls=on" frameBorder="0" />
     </>
   );
 };
