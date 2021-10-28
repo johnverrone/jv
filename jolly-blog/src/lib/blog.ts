@@ -6,6 +6,8 @@ export interface Post {
   slug: string;
   title: string;
   date: string;
+  author?: string;
+  published: boolean;
   content: string;
 }
 
@@ -28,12 +30,15 @@ export const getPostBySlug = (slug: string): Post => {
       Number.parseInt(dateString.substring(0, 2) + 1)
     );
 
+    const published = Boolean(data['published']) ?? false;
+
     if (date.toString() === 'Invalid Date') throw new Error('Invalid date');
 
     return {
       slug: realSlug,
       title: data['title'],
       date: dateString,
+      published,
       content,
     };
   } catch (e) {
@@ -44,6 +49,6 @@ export const getPostBySlug = (slug: string): Post => {
 
 export const getAllPosts = (): Post[] => {
   const slugs = getPostSlugs();
-  const posts = slugs.map(slug => getPostBySlug(slug));
+  const posts = slugs.map(slug => getPostBySlug(slug)).filter(p => p.published);
   return posts;
 };

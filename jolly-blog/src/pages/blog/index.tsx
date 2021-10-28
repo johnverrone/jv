@@ -5,6 +5,7 @@ import { GetStaticProps } from 'next';
 import { getAllPosts, Post } from '@lib/blog';
 import { BlogList } from '@components/BlogList';
 import { BlogItem } from '@components/BlogItem';
+import { EmptyPage } from '@components/EmptyPage';
 
 interface BlogPageProps {
   posts: Post[];
@@ -15,11 +16,15 @@ const BlogPage: React.FC<BlogPageProps> = ({ posts }) => {
     <>
       <SEO title="John and Molly | Blog" />
       <AppContainer>
-        <BlogList>
-          {posts.map(blog => (
-            <BlogItem blog={blog} key={blog.slug} />
-          ))}
-        </BlogList>
+        {posts.length ? (
+          <BlogList>
+            {posts.map(blog => (
+              <BlogItem blog={blog} key={blog.slug} />
+            ))}
+          </BlogList>
+        ) : (
+          <EmptyPage />
+        )}
       </AppContainer>
     </>
   );
