@@ -3,7 +3,9 @@ import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
 import { GetStaticProps } from 'next';
 import { getAllPosts, Post } from '@lib/blog';
-import Link from 'next/link';
+import { BlogList } from '@components/BlogList';
+import { BlogItem } from '@components/BlogItem';
+import { EmptyPage } from '@components/EmptyPage';
 
 interface BlogPageProps {
   posts: Pick<Post, 'slug' | 'title'>[];
@@ -14,13 +16,15 @@ const BlogPage: React.FC<BlogPageProps> = ({ posts }) => {
     <>
       <SEO title="John and Molly | Blog" />
       <AppContainer>
-        {posts.map(p => (
-          <Link href={`/blog/${p.slug}`} key={p.slug}>
-            <a>
-              <h1>{p.title}</h1>
-            </a>
-          </Link>
-        ))}
+        {posts.length ? (
+          <BlogList>
+            {posts.map(blog => (
+              <BlogItem blog={blog} key={blog.slug} />
+            ))}
+          </BlogList>
+        ) : (
+          <EmptyPage />
+        )}
       </AppContainer>
     </>
   );
