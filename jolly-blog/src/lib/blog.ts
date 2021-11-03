@@ -49,6 +49,8 @@ export const getPostBySlug = (slug: string): Post => {
 
 export const getAllPosts = (): Post[] => {
   const slugs = getPostSlugs();
-  const posts = slugs.map(slug => getPostBySlug(slug)).filter(p => p.published);
+  const posts = slugs
+    .map(slug => getPostBySlug(slug))
+    .filter(p => (process.env.NODE_ENV === 'production' ? p.published : p)); // only filter published blogs for production
   return posts;
 };
