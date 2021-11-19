@@ -2,12 +2,37 @@ import React from 'react';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import { SEO } from '@components/SEO';
-import image from '@images/john.jpg';
+import image from '@images/painted-wall.jpg';
+import { NavBar } from '@components/Navigation';
 
 const BackgroundWrapper = styled.div`
-  position: relative;
+  position: absolute;
+  top: 0;
   height: 100vh;
+  width: 100vw;
   z-index: -1;
+`;
+
+const Title = styled.h1`
+  position: absolute;
+  top: 92px;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-family-heading);
+`;
+
+const Bio = styled.p`
+  position: absolute;
+  top: 190px;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  line-height: 2;
+`;
+
+const Emphasis = styled.strong`
+  font-weight: bold;
 `;
 
 const IndexPage: React.FC = () => (
@@ -19,9 +44,19 @@ const IndexPage: React.FC = () => (
         src={image}
         layout="fill"
         objectFit="cover"
-        objectPosition="50% 15%"
+        objectPosition="33% 66%"
       />
     </BackgroundWrapper>
+    <NavBar />
+    <Title>johnverrone</Title>
+    <Bio>
+      I primarily build things for the <Emphasis>web</Emphasis>.
+      <br />I enjoy taking <Emphasis>pics</Emphasis> of cool places.
+      <br />
+      Occasionally I tell a story through <Emphasis>film</Emphasis>,
+      <br />
+      Very rarely will I <Emphasis>write</Emphasis> about stuff.
+    </Bio>
   </>
 );
 

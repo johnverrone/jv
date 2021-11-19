@@ -2,16 +2,17 @@ import React from 'react';
 import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
 import { GetStaticProps } from 'next';
-import Link from 'next/link';
+import { WheelNav } from '@components/Navigation';
 
 interface BlogPageProps {
-  posts: { slug: string, title: string}[];
+  posts: { slug: string; title: string }[];
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ posts }) => {
   return (
     <>
       <SEO title="Blog" />
+      <WheelNav />
       <AppContainer>
         {/* {posts.map(p => (
           <Link href={`/blog/${p.slug}`} key={p.slug}>
