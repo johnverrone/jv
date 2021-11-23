@@ -14,6 +14,7 @@ const Wrapper = styled.nav`
   align-items: center;
   font-family: var(--font-family-mono);
 `;
+
 export const NavBar = () => {
   return (
     <Wrapper>
