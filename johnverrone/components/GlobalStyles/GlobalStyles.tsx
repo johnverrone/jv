@@ -9,6 +9,8 @@ export const GlobalStyles = () => {
           --font-family-heading: 'Oxygen';
           --font-family-body: 'Fira Sans';
           --font-family-mono: 'Fira Code';
+
+          --font-size-heading2: 1.25rem;
         }
 
         p {
