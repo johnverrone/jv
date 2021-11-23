@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import { SEO } from '@components/SEO';
-import image from '@images/painted-wall.jpg';
+import image from '@images/painted-wall-full.jpg';
 import { NavBar } from '@components/Navigation';
 
 const BackgroundWrapper = styled.div`
@@ -45,6 +45,8 @@ const IndexPage: React.FC = () => (
         layout="fill"
         objectFit="cover"
         objectPosition="33% 66%"
+        placeholder="blur"
+        priority
       />
     </BackgroundWrapper>
     <NavBar />
