@@ -1,6 +1,7 @@
+import React from 'react';
 import styled from '@emotion/styled';
 
-export const Button = styled.button`
+const ButtonBase = styled.button`
   background: none;
   border: none;
   outline: none;
@@ -8,3 +9,9 @@ export const Button = styled.button`
   resize: none;
   cursor: pointer;
 `;
+export const Button = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>((props, ref) => <ButtonBase ref={ref} {...props} />);
+
+Button.displayName = 'Button';
