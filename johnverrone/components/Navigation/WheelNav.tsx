@@ -72,6 +72,7 @@ const MenuButton = styled(motion(Button))`
   font-family: var(--font-family-mono);
   padding: 0;
   text-align: left;
+  color: black;
 
   @media (min-width: ${(p) => p.theme.responsive.small}) {
     text-align: right;
