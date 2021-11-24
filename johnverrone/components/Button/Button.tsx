@@ -9,6 +9,7 @@ const ButtonBase = styled.button`
   resize: none;
   cursor: pointer;
 `;
+
 export const Button = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement>

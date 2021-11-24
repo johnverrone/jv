@@ -23,7 +23,6 @@ const Wrapper = styled.div`
 `;
 
 const PageTitle = styled.a`
-  margin: 0;
   font-family: var(--font-family-heading);
   font-size: var(--font-size-heading2, 1.25rem);
   font-weight: bold;
@@ -54,7 +53,6 @@ const Menu = styled(motion.ol)`
   font-family: var(--font-family-mono);
   list-style-type: none;
   padding: 0;
-  margin: 0;
   margin-top: 4px;
 `;
 

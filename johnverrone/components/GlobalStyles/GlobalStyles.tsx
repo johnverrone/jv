@@ -15,7 +15,6 @@ export const GlobalStyles = () => {
 
         p {
           font-family: var(--font-family-body);
-          line-height: 1.5;
         }
       `}
     />

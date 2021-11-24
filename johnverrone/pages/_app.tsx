@@ -2,8 +2,8 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@emotion/react';
 import theme from '../styles/theme';
-import '../styles/normalize.css';
 import { GlobalStyles } from '@components/GlobalStyles';
+import '../styles/reset.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
