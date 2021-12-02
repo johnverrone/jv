@@ -50,14 +50,24 @@ const Divider = styled.hr`
 `;
 
 const Menu = styled(motion.ol)`
+  position: relative;
+  left: -40px;
+
   font-family: var(--font-family-mono);
+  background-color: hsl(0deg 0% 90% / 90%);
   list-style-type: none;
-  padding: 0;
+  padding: 40px;
   margin-top: 4px;
+  border-radius: 6px;
+
+  @media (min-width: ${(p) => p.theme.responsive.small}) {
+    left: revert;
+    right: -40px;
+  }
 `;
 
 const MenuItem = styled(motion.li)`
-  padding: 4px 0;
+  padding: 20px 0;
 
   @media (min-width: ${(p) => p.theme.responsive.small}) {
     text-align: right;
@@ -108,7 +118,7 @@ export const WheelNav = () => {
 
   const menuItemVariants = {
     visible: {
-      opacity: 0.5,
+      opacity: 1,
     },
     hidden: {
       opacity: 0,

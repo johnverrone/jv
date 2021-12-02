@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const AppContainer = styled.div`
-  padding: 3em 1.5em;
+  padding: 12px;
   margin: 0 auto;
   margin-top: 60px;
   max-width: ${(props) => props.theme.responsive.max};
