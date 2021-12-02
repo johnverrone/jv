@@ -7,7 +7,7 @@ const List = styled.ul`
 
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 `;
 
 interface WorkListProps {}
