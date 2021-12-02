@@ -8,10 +8,10 @@ import { NavItem } from './NavItem';
 import { MENU_ITEMS } from './contants';
 
 const Wrapper = styled.div`
-  position: fixed;
-  top: 20px;
-  left: 20%;
-  height: 40px;
+  position: sticky;
+  margin: 0 auto;
+  padding: 20px 0;
+  width: 50%;
   display: flex;
   align-items: baseline;
 
@@ -50,7 +50,8 @@ const Divider = styled.hr`
 `;
 
 const Menu = styled(motion.ol)`
-  position: relative;
+  position: absolute;
+  top: 100%;
   left: -40px;
 
   font-family: var(--font-family-mono);
@@ -90,6 +91,7 @@ const MenuButton = styled(motion(Button))`
 const MenuWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 export const WheelNav = () => {
