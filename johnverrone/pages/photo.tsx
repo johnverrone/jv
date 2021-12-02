@@ -23,21 +23,21 @@ const PhotoPage: React.FC = () => {
       <SEO title="photo" />
       <WheelNav />
       <AppContainer>
-        <CollectionTitle>Galapagos, Ecuador</CollectionTitle>
+        <CollectionTitle>Galápagos Islands, Ecuador</CollectionTitle>
         <PhotoList>
           <Image
             src={iguana}
-            alt="Iguana in the Galapagos Islands, Ecuador"
+            alt="Iguana in the Galápagos Islands, Ecuador"
             objectFit="cover"
           />
           <Image
             src={pelican}
-            alt="Pelican in the Galapagos Islands, Ecuador"
+            alt="Pelican in the Galápagos Islands, Ecuador"
             objectFit="cover"
           />
           <Image
             src={seaLion}
-            alt="Sea Lion in the Galapagos Islands, Ecuador"
+            alt="Sea Lion in the Galápagos Islands, Ecuador"
             objectFit="cover"
           />
         </PhotoList>
