@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
 `;
 
 const LinkWrapper = styled(Wrapper.withComponent('a'))`
