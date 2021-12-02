@@ -7,8 +7,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { NavItem } from './NavItem';
 import { MENU_ITEMS } from './contants';
 
-const Wrapper = styled.div`
+const Container = styled.div`
   position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+`;
+
+const Wrapper = styled.div`
   margin: 0 auto;
   padding: 20px 0;
   width: 50%;
@@ -128,42 +134,44 @@ export const WheelNav = () => {
   };
 
   return (
-    <Wrapper>
-      <Link href="/" passHref>
-        <PageTitle>johnverrone</PageTitle>
-      </Link>
-      <Divider />
-      <MenuWrapper>
-        <MenuButton
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={toggleMenu}
-        >
-          {currentPage}
-        </MenuButton>
-        <AnimatePresence>
-          {open && (
-            <Menu
-              key="nav-menu"
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={listVariants}
-              onClick={() => setOpen((o) => !o)}
-            >
-              {MENU_ITEMS.filter((item) => item.name !== currentPage).map(
-                (item) => (
-                  <MenuItem key={item.slug} variants={menuItemVariants}>
-                    <Link href={item.slug} passHref>
-                      <NavItem>{item.name}</NavItem>
-                    </Link>
-                  </MenuItem>
-                )
-              )}
-            </Menu>
-          )}
-        </AnimatePresence>
-      </MenuWrapper>
-    </Wrapper>
+    <Container>
+      <Wrapper>
+        <Link href="/" passHref>
+          <PageTitle>johnverrone</PageTitle>
+        </Link>
+        <Divider />
+        <MenuWrapper>
+          <MenuButton
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleMenu}
+          >
+            {currentPage}
+          </MenuButton>
+          <AnimatePresence>
+            {open && (
+              <Menu
+                key="nav-menu"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={listVariants}
+                onClick={() => setOpen((o) => !o)}
+              >
+                {MENU_ITEMS.filter((item) => item.name !== currentPage).map(
+                  (item) => (
+                    <MenuItem key={item.slug} variants={menuItemVariants}>
+                      <Link href={item.slug} passHref>
+                        <NavItem>{item.name}</NavItem>
+                      </Link>
+                    </MenuItem>
+                  )
+                )}
+              </Menu>
+            )}
+          </AnimatePresence>
+        </MenuWrapper>
+      </Wrapper>
+    </Container>
   );
 };
