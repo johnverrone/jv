@@ -16,7 +16,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700&family=Oxygen&family=Fira+Code&display=swap"
             rel="stylesheet"
           />
-          <script>
+          <script>{`
             window['_fs_debug'] = false;
             window['_fs_host'] = 'fullstory.com';
             window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
@@ -39,7 +39,7 @@ class MyDocument extends Document {
                 if(m[y])m[y]=function(){return g._w[y].apply(this,arguments)};
                 g._v="1.3.0";
             })(window,document,window['_fs_namespace'],'script','user');
-          </script>
+          `}</script>
         </Head>
         <body>
           <Main />
