@@ -11,9 +11,7 @@ import styled from '@emotion/styled';
 
 const CollectionTitle = styled.h3`
   font-family: var(--font-family-heading);
-
   text-align: center;
-
   margin-bottom: 12px;
 `;
 

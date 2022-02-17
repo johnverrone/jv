@@ -2,6 +2,7 @@ import React from 'react';
 import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
 import { WheelNav } from '@components/Navigation';
+import { YouTubeVideo } from '@components/YouTubeVideo';
 
 const VideoPage: React.FC = () => {
   return (
@@ -9,7 +10,9 @@ const VideoPage: React.FC = () => {
       <SEO title="video" />
       <WheelNav />
       <AppContainer>
-        <p>🚧 coming soon 🚧</p>
+        <YouTubeVideo videoId="GAp0sDY30U4" title="Colorado Hiking" />
+        <div style={{ height: 100 }} />
+        <YouTubeVideo videoId="B4JxmDm1bA0" title="Southwest Roadtrip" />
       </AppContainer>
     </>
   );
