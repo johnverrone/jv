@@ -2,6 +2,7 @@ import React from 'react';
 import { SEO } from '@components/SEO';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { getAllCoffeeBrews } from '@lib/coffee/brews';
 
 const Airtable = styled.iframe`
   position: absolute;
@@ -35,5 +36,10 @@ const CoffeePage: React.FC = () => {
     </>
   );
 };
+
+export async function getServerSideProps() {
+  const data = await getAllCoffeeBrews();
+  return { props: { data } };
+}
 
 export default CoffeePage;
