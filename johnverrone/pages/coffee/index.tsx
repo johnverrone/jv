@@ -3,7 +3,12 @@ import { SEO } from '@components/SEO';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { getAllCoffeeBrews } from '@lib/coffee/brews';
-import { InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps } from 'next';
+import { CoffeeBrew } from '@lib/coffee/types';
+
+interface CoffeePageProps {
+  coffees: CoffeeBrew[];
+}
 
 const Title = styled.a`
   font-family: var(--font-family-heading);
@@ -15,17 +20,14 @@ const Title = styled.a`
   color: black;
 `;
 
-const CoffeePage: React.FC<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ data }) => {
-  console.log({ data });
+const CoffeePage: React.FC<CoffeePageProps> = ({ coffees }) => {
   return (
     <>
       <SEO title="Coffee" />
       <Link href="/" passHref>
         <Title>johnverrone</Title>
       </Link>
-      {data.map((d) => (
+      {coffees.map((d) => (
         <div key={d.id}>
           {d.name} - {d.roaster}
         </div>
@@ -34,9 +36,10 @@ const CoffeePage: React.FC<
   );
 };
 
-export async function getServerSideProps() {
-  const data = await getAllCoffeeBrews();
-  return { props: { data } };
-}
+export const getServerSideProps: GetServerSideProps<CoffeePageProps> =
+  async () => {
+    const coffees = await getAllCoffeeBrews();
+    return { props: { coffees } };
+  };
 
 export default CoffeePage;
