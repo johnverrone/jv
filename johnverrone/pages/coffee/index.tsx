@@ -3,13 +3,7 @@ import { SEO } from '@components/SEO';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { getAllCoffeeBrews } from '@lib/coffee/brews';
-
-const Airtable = styled.iframe`
-  position: absolute;
-  top: 60px;
-  width: 100%;
-  height: calc(100% - 60px);
-`;
+import { InferGetServerSidePropsType } from 'next';
 
 const Title = styled.a`
   font-family: var(--font-family-heading);
@@ -21,18 +15,21 @@ const Title = styled.a`
   color: black;
 `;
 
-const CoffeePage: React.FC = () => {
+const CoffeePage: React.FC<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ data }) => {
+  console.log({ data });
   return (
     <>
       <SEO title="Coffee" />
       <Link href="/" passHref>
         <Title>johnverrone</Title>
       </Link>
-      <Airtable
-        title="airtable-embed"
-        src="https://airtable.com/embed/shrHQSvgnRIlpgXE4?backgroundColor=greenLight&viewControls=on"
-        frameBorder="0"
-      />
+      {data.map((d) => (
+        <div key={d.id}>
+          {d.name} - {d.roaster}
+        </div>
+      ))}
     </>
   );
 };

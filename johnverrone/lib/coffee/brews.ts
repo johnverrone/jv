@@ -1,17 +1,71 @@
-import { Database } from '@notionhq/client/build/src/api-types';
-import { notion, databaseId } from './notion';
+import { notion, coffeeDatabaseId, roasterDatabaseId } from './notion';
 import { CoffeeBrew } from './types';
 
 export const getAllCoffeeBrews = async (): Promise<CoffeeBrew[]> => {
   const brews = await notion.databases.query({
-    database_id: databaseId,
+    database_id: coffeeDatabaseId,
   });
 
-  return brews.results.map((value) => {
-    // const name = value.title.join(',');
-    return {
-      id: value.id,
-      name: 'name',
-    };
+  const roasters = await notion.databases.query({
+    database_id: roasterDatabaseId,
   });
+
+  const roastersById = roasters.results.reduce<{ [id: string]: any }>(
+    (acc, curr) => ({
+      ...acc,
+      [curr.id]: curr,
+    }),
+    {}
+  );
+
+  const brewsById = brews.results
+    .filter(hasProperties)
+    .reduce<{ [id: string]: CoffeeBrew }>(
+      (acc, { id, properties, ...rest }) => {
+        console.log(properties);
+        return {
+          ...acc,
+          [id]: {
+            id: id,
+            name: getTitle(properties),
+            roaster: getTitle(
+              roastersById[properties['Roaster'].relation[0].id].properties
+            ),
+            ...rest,
+          },
+        };
+      },
+      {}
+    );
+
+  return Object.values(brewsById);
 };
+
+const getTitle = <P extends Record<string, V>, V extends { type: string }>(
+  properties: P
+): string => {
+  return Object.values(properties).find((p) => p.type === 'title')?.title[0]
+    .text.content;
+};
+
+const hasProperties = <
+  P extends Record<K, V>,
+  K extends keyof P,
+  V extends P[K]
+>(
+  page: P
+): page is Extract<P, { properties: any }> => {
+  return 'properties' in page;
+};
+
+// const getProperty = <P extends Record<K, V>, K extends keyof P, V extends P[K]>(
+//   properties: P,
+//   key: K,
+//   value: string
+// ) => {
+//   const values = Object.values<V>(properties);
+//   console.log(values);
+//   return values.find((p: V): p is Extract<P, Record<K, V>> => p.type === value);
+//   // ? (properties[key] as unknown as Extract<P, Record<K, V>>)
+//   // : undefined;
+// };
