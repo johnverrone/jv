@@ -12,6 +12,8 @@ export const GlobalStyles = () => {
 
           --font-size-heading2: 1.25rem;
 
+          --border-radius-tight: 4px;
+
           --shadow-color: 0deg 0% 49%;
           --shadow-elevation-low: 0.3px 0.5px 0.4px
               hsl(var(--shadow-color) / 0.97),

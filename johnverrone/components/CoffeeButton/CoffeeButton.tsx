@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 
 const Wrapper = styled.a`
-  position: absolute;
+  position: fixed;
   bottom: 20px;
   right: 20px;
   height: 50px;
