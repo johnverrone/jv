@@ -29,7 +29,7 @@ const CoffeePage: React.FC<CoffeePageProps> = ({ coffees }) => {
       </Link>
       {coffees.map((d) => (
         <div key={d.id}>
-          {d.name} - {d.roaster}
+          {d.name} - {d.roaster.name}
         </div>
       ))}
     </>
