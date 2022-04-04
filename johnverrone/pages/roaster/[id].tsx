@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-const CoffeeDetailPage: React.FC = () => {
+const RoasterDetailPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
   return (
@@ -15,10 +15,10 @@ const CoffeeDetailPage: React.FC = () => {
         <SiteTitle>johnverrone</SiteTitle>
       </Link>
       <AppContainer>
-        <div>Coffee: {id}</div>
+        <div>Coffee roaster: {id}</div>
       </AppContainer>
     </>
   );
 };
 
-export default CoffeeDetailPage;
+export default RoasterDetailPage;
