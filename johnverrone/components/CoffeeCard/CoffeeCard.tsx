@@ -2,9 +2,14 @@ import styled from '@emotion/styled';
 import { CoffeeBrew } from '@lib/coffee/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
-import { Link as A } from '@components/Link';
+import React, { Fragment } from 'react';
+import { A } from '@components/A';
 import { CurrentlyBrewing } from './CurrentlyBrewing';
+import {
+  PropertyList,
+  PropertyTitle,
+  PropertyValue,
+} from '@components/PropertyList';
 
 const Wrapper = styled.article`
   border-radius: var(--border-radius-tight);
@@ -31,19 +36,6 @@ const ImageContainer = styled.div`
   height: 300px;
   position: relative;
 `;
-
-const PropertyList = styled.dl``;
-
-const PropertyTitle = styled.dt`
-  text-transform: uppercase;
-  color: var(--color-grey-medium);
-  font-size: var(--font-size-property-key);
-`;
-
-const PropertyValue = styled.dd`
-  margin-bottom: 12px;
-`;
-
 interface CoffeeCardProps {
   coffee: CoffeeBrew;
 }
@@ -52,12 +44,12 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee }) => {
   const coffeeRoasterString = coffee.roaster.map((r) => r.name).join(', ');
   const coffeeRoasterNode: React.ReactNode = coffee.roaster.map(
     (roaster, i) => (
-      <>
+      <Fragment key={roaster.id}>
         <Link href={`/roaster/${roaster.id}`} passHref>
           <A>{roaster.name}</A>
         </Link>
         {i < coffee.roaster.length - 1 && ', '}
-      </>
+      </Fragment>
     )
   );
 

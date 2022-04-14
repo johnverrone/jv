@@ -118,3 +118,16 @@ export const getAllCoffeeBrews = async (): Promise<CoffeeBrew[]> => {
 
   return Object.values(brewsById);
 };
+
+export const getCoffeeBrewById = async (id: string): Promise<CoffeeBrew> => {
+  return Promise.resolve({
+    id,
+    name: `Coffee ${id}`,
+    roaster: [],
+    imageUrl: 'test',
+    currentlyBrewing: false,
+    rating: '1',
+    origin: 'test',
+    singleOrigin: false,
+  });
+};

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Link = styled.a`
+export const A = styled.a`
   text-decoration: none;
 
   :link {

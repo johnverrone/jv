@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   images: {
-    domains: ['s3.us-west-2.amazonaws.com', 'dl.airtable.com'],
+    domains: [
+      's3.us-west-2.amazonaws.com',
+      'dl.airtable.com',
+      'cdn.shopify.com',
+    ],
   },
   reactStrictMode: true,
   async redirects() {
