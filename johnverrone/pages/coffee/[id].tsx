@@ -1,10 +1,6 @@
 import { A } from '@components/A';
 import { AppContainer } from '@components/AppContainer';
-import {
-  PropertyList as PL,
-  PropertyTitle as PT,
-  PropertyValue as PV,
-} from '@components/PropertyList';
+import { CoffeeCard } from '@components/CoffeeCard';
 import { SEO } from '@components/SEO';
 import { SiteTitle } from '@components/SiteTitle';
 import styled from '@emotion/styled';
@@ -12,34 +8,12 @@ import { getCoffeeBrewById } from '@lib/coffee/brews';
 import { CoffeeBrew } from '@lib/coffee/types';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import React from 'react';
+import React, { Fragment } from 'react';
 
-const Wrapper = styled.section`
-  max-width: 500px;
+const Wrapper = styled.div`
   margin: 0 auto;
-`;
-
-const CoffeeTitle = styled.h2`
-  margin-bottom: 20px;
-`;
-
-const PropertyList = styled(PL)`
-  display: grid;
-  grid-template-columns: max-content;
-  gap: 20px;
-
-  align-items: center;
-`;
-
-const PropertyTitle = styled(PT)`
-  grid-column-start: 1;
-`;
-
-const PropertyValue = styled(PV)`
-  grid-column-start: 2;
-  margin: 0;
+  max-width: 500px;
 `;
 
 interface CoffeeDetailPageProps {
@@ -51,7 +25,18 @@ interface RouteProps extends ParsedUrlQuery {
 }
 
 const CoffeeDetailPage: React.FC<CoffeeDetailPageProps> = ({ coffee }) => {
-  console.log({ coffee });
+  const coffeeRoasterString = coffee.roaster.map((r) => r.name).join(', ');
+  const coffeeRoasterNode: React.ReactNode = coffee.roaster.map(
+    (roaster, i) => (
+      <Fragment key={roaster.id}>
+        <Link href={`/roaster/${roaster.id}`} passHref>
+          <A>{roaster.name}</A>
+        </Link>
+        {i < coffee.roaster.length - 1 && ', '}
+      </Fragment>
+    )
+  );
+
   return (
     <>
       <SEO title="Coffee" />
@@ -63,17 +48,7 @@ const CoffeeDetailPage: React.FC<CoffeeDetailPageProps> = ({ coffee }) => {
           <A>← all coffee</A>
         </Link>
         <Wrapper>
-          <CoffeeTitle>{coffee.name}</CoffeeTitle>
-          <PropertyList>
-            <PropertyTitle>Roaster</PropertyTitle>
-            <PropertyValue>roaster</PropertyValue>
-            <PropertyTitle>Origin</PropertyTitle>
-            <PropertyValue>origin</PropertyValue>
-            <PropertyTitle>Flavors</PropertyTitle>
-            <PropertyValue>flavors</PropertyValue>
-            <PropertyTitle>Rating</PropertyTitle>
-            <PropertyValue>rating</PropertyValue>
-          </PropertyList>
+          <CoffeeCard coffee={coffee} />
         </Wrapper>
       </AppContainer>
     </>
@@ -85,8 +60,12 @@ export const getServerSideProps: GetServerSideProps<
   RouteProps
 > = async ({ params }) => {
   if (!params) return { notFound: true };
-  const coffee = await getCoffeeBrewById(params?.id);
-  return { props: { coffee } };
+  try {
+    const coffee = await getCoffeeBrewById(params?.id);
+    return { props: { coffee } };
+  } catch (err) {
+    return { notFound: true };
+  }
 };
 
 export default CoffeeDetailPage;
