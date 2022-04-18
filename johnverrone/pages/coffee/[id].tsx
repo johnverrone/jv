@@ -9,7 +9,7 @@ import { CoffeeBrew } from '@lib/coffee/types';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { ParsedUrlQuery } from 'querystring';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const Wrapper = styled.div`
   margin: 0 auto;
