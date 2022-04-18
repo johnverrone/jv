@@ -1,39 +1,44 @@
 import React from 'react';
 import { SEO } from '@components/SEO';
-import styled from '@emotion/styled';
 import Link from 'next/link';
+import { getAllCoffeeBrews } from '@lib/coffee/brews';
+import { GetServerSideProps } from 'next';
+import { CoffeeBrew } from '@lib/coffee/types';
+import { CoffeeCard, CoffeeCardList } from '@components/CoffeeCard';
+import { SiteTitle } from '@components/SiteTitle';
 
-const Airtable = styled.iframe`
-  position: absolute;
-  top: 60px;
-  width: 100%;
-  height: calc(100% - 60px);
-`;
+const coffeeSortFn = (a: CoffeeBrew, b: CoffeeBrew) => {
+  const currentlyBrewingFirst =
+    a.currentlyBrewing === b.currentlyBrewing ? 0 : a.currentlyBrewing ? -1 : 1;
+  const ratingDescending = b.rating.length - a.rating.length;
 
-const Title = styled.a`
-  font-family: var(--font-family-heading);
-  font-size: var(--font-size-heading2);
-  line-height: 60px;
-  display: flex;
-  justify-content: center;
-  text-decoration: none;
-  color: black;
-`;
+  return currentlyBrewingFirst || ratingDescending;
+};
 
-const CoffeePage: React.FC = () => {
+interface CoffeePageProps {
+  coffees: CoffeeBrew[];
+}
+
+const CoffeePage: React.FC<CoffeePageProps> = ({ coffees }) => {
   return (
     <>
       <SEO title="Coffee" />
       <Link href="/" passHref>
-        <Title>johnverrone</Title>
+        <SiteTitle>johnverrone</SiteTitle>
       </Link>
-      <Airtable
-        title="airtable-embed"
-        src="https://airtable.com/embed/shrHQSvgnRIlpgXE4?backgroundColor=greenLight&viewControls=on"
-        frameBorder="0"
-      />
+      <CoffeeCardList>
+        {coffees.sort(coffeeSortFn).map((coffee) => (
+          <CoffeeCard coffee={coffee} key={coffee.id} />
+        ))}
+      </CoffeeCardList>
     </>
   );
 };
+
+export const getServerSideProps: GetServerSideProps<CoffeePageProps> =
+  async () => {
+    const coffees = await getAllCoffeeBrews();
+    return { props: { coffees } };
+  };
 
 export default CoffeePage;

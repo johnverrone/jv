@@ -8,9 +8,30 @@ export const GlobalStyles = () => {
         :root {
           --font-family-heading: 'Oxygen';
           --font-family-body: 'Fira Sans';
+          /* --font-family-body: system-ui, 'Segoe UI', Roboto, Helvetica, Arial,
+            sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', */
           --font-family-mono: 'Fira Code';
 
-          --font-size-heading2: 1.25rem;
+          --font-size-heading2: 1.5rem;
+          --font-size-property-key: 0.625rem;
+
+          --border-radius-tight: 4px;
+          --border-radius-loose: 8px;
+
+          --grey-color: 0deg 0%;
+          --color-grey-light: hsl(var(--grey-color) 80%);
+          --color-grey-medium: hsl(var(--grey-color) 50%);
+          --color-grey-dark: hsl(var(--grey-color) 20%);
+
+          --snow-color: 212deg;
+          --color-snow-light: hsl(var(--snow-color) 40% 80%);
+          --color-snow-medium: hsl(var(--snow-color) 15% 50%);
+          --color-snow-dark: hsl(var(--snow-color) 40% 20%);
+
+          --sunset-color: 48deg;
+          --color-sunset-light: hsl(var(--sunset-color) 40% 80%);
+          --color-sunset-medium: hsl(var(--sunset-color) 15% 50%);
+          --color-sunset-dark: hsl(var(--sunset-color) 40% 20%);
 
           --shadow-color: 0deg 0% 49%;
           --shadow-elevation-low: 0.3px 0.5px 0.4px
@@ -35,6 +56,10 @@ export const GlobalStyles = () => {
 
         body {
           font-family: var(--font-family-body);
+        }
+
+        h2 {
+          font-size: var(--font-size-heading2);
         }
       `}
     />
