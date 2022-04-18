@@ -1,1 +1,1 @@
-export { SiteTitle } from './SiteTItle';
+export { SiteTitle } from './SiteTitle';
