@@ -24,36 +24,22 @@ interface RouteProps extends ParsedUrlQuery {
   id: string;
 }
 
-const CoffeeDetailPage: React.FC<CoffeeDetailPageProps> = ({ coffee }) => {
-  const coffeeRoasterString = coffee.roaster.map((r) => r.name).join(', ');
-  const coffeeRoasterNode: React.ReactNode = coffee.roaster.map(
-    (roaster, i) => (
-      <Fragment key={roaster.id}>
-        <Link href={`/roaster/${roaster.id}`} passHref>
-          <A>{roaster.name}</A>
-        </Link>
-        {i < coffee.roaster.length - 1 && ', '}
-      </Fragment>
-    )
-  );
-
-  return (
-    <>
-      <SEO title="Coffee" />
-      <Link href="/" passHref>
-        <SiteTitle>johnverrone</SiteTitle>
+const CoffeeDetailPage: React.FC<CoffeeDetailPageProps> = ({ coffee }) => (
+  <>
+    <SEO title="Coffee" />
+    <Link href="/" passHref>
+      <SiteTitle>johnverrone</SiteTitle>
+    </Link>
+    <AppContainer>
+      <Link href="/coffee" passHref>
+        <A>← all coffee</A>
       </Link>
-      <AppContainer>
-        <Link href="/coffee" passHref>
-          <A>← all coffee</A>
-        </Link>
-        <Wrapper>
-          <CoffeeCard coffee={coffee} />
-        </Wrapper>
-      </AppContainer>
-    </>
-  );
-};
+      <Wrapper>
+        <CoffeeCard coffee={coffee} />
+      </Wrapper>
+    </AppContainer>
+  </>
+);
 
 export const getServerSideProps: GetServerSideProps<
   CoffeeDetailPageProps,
