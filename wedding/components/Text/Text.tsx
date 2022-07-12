@@ -44,5 +44,5 @@ const getClassName = (variant: Variant): string => {
     className += css.body;
   }
 
-  return (className += ' ' + variant);
+  return `${className}  ${css[variant]}`;
 };

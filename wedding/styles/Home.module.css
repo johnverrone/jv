@@ -1,11 +1,3 @@
-.headingWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  margin-top: 20px;
-}
-
 .splashImage {
   background: url('/mt-evans.jpg');
   background-size: cover;

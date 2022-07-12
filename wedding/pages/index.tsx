@@ -1,6 +1,6 @@
+import { SectionHeader } from 'components/SectionHeader';
 import Head from 'next/head';
 import React from 'react';
-import { Text } from 'components/Text';
 import css from '../styles/Home.module.css';
 
 export default function Home({}) {
@@ -13,10 +13,10 @@ export default function Home({}) {
 
       <div className={css.splashImage} />
 
-      <div className={css.headingWrapper}>
-        <Text variant="heading1">The Wedding</Text>
-        <Text variant="body2">July 22, 2023 &middot; Buena Vista, CO</Text>
-      </div>
+      <SectionHeader
+        title="The Wedding"
+        subtitle="July 22, 2023 &middot; Buena Vista, CO"
+      />
     </>
   );
 }
