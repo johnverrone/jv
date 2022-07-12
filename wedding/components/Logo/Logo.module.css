@@ -1,0 +1,23 @@
+.logo {
+  display: inline-block;
+  height: 38px;
+}
+
+.ampersand {
+  position: relative;
+  top: 6px;
+}
+
+.john,
+.molly {
+  font-family: 'Oxygen';
+  font-size: 1.25rem;
+}
+
+.john {
+  margin-right: 6px;
+}
+
+.molly {
+  margin-left: 1px;
+}
