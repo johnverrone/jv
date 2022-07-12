@@ -1,0 +1,6 @@
+.splashImage {
+  background: url('/mt-evans.jpg');
+  background-size: cover;
+  background-position: 66%;
+  height: 600px;
+}
