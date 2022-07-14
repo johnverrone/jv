@@ -25,4 +25,10 @@ select {
 :root {
   --font-family-body: 'Fira Sans';
   --font-family-heading: Oxygen;
+
+  --mountain-grey-50: #808080;
+  --mountain-grey-70: #545454;
+
+  --mountain-snow-50: #6c7e93;
+  --mountain-snow-100: #1f3247;
 }

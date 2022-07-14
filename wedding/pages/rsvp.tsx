@@ -1,6 +1,9 @@
 import Head from 'next/head';
 import React from 'react';
 import { SectionHeader } from 'components/SectionHeader';
+import css from '../styles/RSVP.module.css';
+import { TextInput } from 'components/TextInput';
+import { Button } from 'components/Button';
 
 export default function Home({}) {
   return (
@@ -12,22 +15,27 @@ export default function Home({}) {
 
       <SectionHeader title="RSVP" subtitle="so... you comin?" />
 
-      <form>
-        <div>
+      <form className={css.rsvpForm}>
+        <div className={css.formItem}>
           <label htmlFor="name">Name</label>
-          <input type="text" id="name" />
+          <TextInput type="text" id="name" placeholder="Name" />
         </div>
-        <div>
+        <div className={css.formItem}>
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" />
+          <TextInput type="email" id="email" placeholder="Email Address" />
         </div>
-        <div>
+        <div className={css.formItem}>
           <span>Attendance</span>
-          <input type="radio" name="attendance" id="attendance-yes" />
-          <label htmlFor="attendance">Yes</label>
-          <input type="radio" name="attendance" id="attendance-no" />
-          <label htmlFor="attendance">No</label>
+          <div>
+            <input type="radio" name="attendance" id="attendance-yes" />
+            <label htmlFor="attendance">Yes</label>
+            <input type="radio" name="attendance" id="attendance-no" />
+            <label htmlFor="attendance">No</label>
+          </div>
         </div>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
       </form>
     </>
   );
