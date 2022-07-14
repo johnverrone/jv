@@ -1,0 +1,11 @@
+.primary {
+  background-color: var(--mountain-snow-100);
+  color: white;
+
+  cursor: pointer;
+
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  box-shadow: 2px 2px 0px var(--mountain-snow-50);
+}

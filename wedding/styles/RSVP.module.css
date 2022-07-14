@@ -1,0 +1,15 @@
+.rsvpForm {
+  width: 100%;
+  max-width: 500px;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 30px;
+}
+
+.formItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
