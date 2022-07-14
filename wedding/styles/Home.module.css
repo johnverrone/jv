@@ -3,4 +3,6 @@
   background-size: cover;
   background-position: 66%;
   height: 600px;
+  max-width: 1100px;
+  margin: 0 auto;
 }

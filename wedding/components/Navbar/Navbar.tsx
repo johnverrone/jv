@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import React from 'react';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Hamburger } from './Hamburger';
 import css from './Navbar.module.css';
+import { NavLinks } from './NavLinks';
 
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -28,31 +28,7 @@ export const Navbar = () => {
           >
             <nav className={css.mobileNav}>
               <ul>
-                <li>
-                  <Link href="/">
-                    <a onClick={handleLinkClick}>Home</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/our-story">
-                    <a onClick={handleLinkClick}>Our Story</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/weekend">
-                    <a onClick={handleLinkClick}>Wedding Weekend</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/registry">
-                    <a onClick={handleLinkClick}>Registry</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/rsvp">
-                    <a onClick={handleLinkClick}>RSVP</a>
-                  </Link>
-                </li>
+                <NavLinks onClick={handleLinkClick} />
               </ul>
             </nav>
           </motion.div>

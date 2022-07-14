@@ -1,3 +1,9 @@
+@media (min-width: 550px) {
+  .navbar {
+    display: none;
+  }
+}
+
 .mobileNavHamburger {
   background: none;
   border: none;
