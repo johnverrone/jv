@@ -2,7 +2,7 @@ import { SectionHeader } from 'components/SectionHeader';
 import Head from 'next/head';
 import Image from 'next/image';
 import React from 'react';
-import css from '../styles/Home.module.css';
+import css from '../styles/home.module.css';
 
 export default function Home({}) {
   return (
@@ -27,7 +27,7 @@ export default function Home({}) {
 
       <SectionHeader
         title="The Wedding"
-        subtitle="July 22, 2023 &middot; Buena Vista, CO"
+        subtitle="July 22, 2023 &middot; Colorado"
       />
     </>
   );

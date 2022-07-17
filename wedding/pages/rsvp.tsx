@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import { SectionHeader } from 'components/SectionHeader';
-import css from '../styles/RSVP.module.css';
+import css from '../styles/rsvp.module.css';
 import { TextInput } from 'components/TextInput';
 import { Button } from 'components/Button';
 

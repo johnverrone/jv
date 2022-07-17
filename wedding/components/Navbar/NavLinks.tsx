@@ -1,4 +1,5 @@
 import { Hearts } from 'components/Hearts';
+import { motion } from 'framer-motion';
 import { useHover } from 'hooks/useHover';
 import Link from 'next/link';
 import React from 'react';
@@ -37,12 +38,12 @@ const NavLink = ({ onClick, children, ...linkProps }: NavLinkProps) => {
   const [ref, hovered] = useHover<HTMLAnchorElement>();
 
   return (
-    <li>
+    <motion.li whileHover={{ scale: 1.2 }}>
       <Link {...linkProps}>
         <a onClick={onClick} ref={ref}>
           <Hearts active={hovered}>{children}</Hearts>
         </a>
       </Link>
-    </li>
+    </motion.li>
   );
 };
