@@ -14,7 +14,7 @@ export default function Home({}) {
 
       <SectionHeader
         title="Wedding Weekend"
-        subtitle="this is what's going down"
+        subtitle="This is what's going down"
       />
     </>
   );

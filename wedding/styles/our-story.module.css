@@ -1,0 +1,10 @@
+.storyWrapper {
+  max-width: 70ch;
+  text-align: justify;
+  margin: 0 auto;
+  padding: 0 2ch;
+}
+
+.storyWrapper > p {
+  text-indent: 2rem;
+}

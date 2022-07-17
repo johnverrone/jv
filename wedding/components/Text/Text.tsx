@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 import css from './Text.module.css';
 
 type Variant =
@@ -11,11 +11,12 @@ type Variant =
 
 interface TextProps {
   variant: Variant;
+  tag?: ElementType;
   children?: React.ReactNode;
 }
 
-export const Text = ({ variant, children }: TextProps) => {
-  const Component = getComponent(variant);
+export const Text = ({ variant, tag, children }: TextProps) => {
+  const Component = tag ? tag : getComponent(variant);
   return <Component className={getClassName(variant)}>{children}</Component>;
 };
 
