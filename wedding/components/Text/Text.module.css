@@ -1,6 +1,6 @@
 .heading {
   font-family: var(--font-family-heading);
-  font-weight: bold;
+  font-weight: 700;
 
   margin: 0.25em 0;
 }

@@ -15,14 +15,24 @@ export default function Home({}) {
 
       <SectionHeader title="RSVP" subtitle="so... you comin?" />
 
-      <form className={css.rsvpForm}>
+      <form
+        className={css.rsvpForm}
+        onSubmit={(e) => {
+          e.preventDefault();
+          alert('thank you');
+        }}
+      >
         <div className={css.formItem}>
           <label htmlFor="name">Name</label>
-          <TextInput type="text" id="name" placeholder="Name" />
+          <TextInput type="text" id="name" placeholder="Benjamin Evalent" />
         </div>
         <div className={css.formItem}>
           <label htmlFor="email">Email</label>
-          <TextInput type="email" id="email" placeholder="Email Address" />
+          <TextInput
+            type="email"
+            id="email"
+            placeholder="benevalent@gmail.com"
+          />
         </div>
         <div className={css.formItem}>
           <span>Attendance</span>
