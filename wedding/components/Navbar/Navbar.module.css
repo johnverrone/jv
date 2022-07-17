@@ -11,6 +11,11 @@
   top: 20px;
   left: 32px;
   z-index: 101;
+  padding: 0;
+}
+
+.mobileNavHamburger > svg {
+  display: block;
 }
 
 .mobileNavWrapper {
@@ -36,6 +41,6 @@
 .mobileNav ul li {
   padding: 24px 0;
   font-family: var(--font-family-heading, var(--system-font));
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.25rem;
 }

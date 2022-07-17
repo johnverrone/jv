@@ -1,0 +1,44 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.childrenWrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.heartWrapper {
+  position: absolute;
+  display: block;
+  animation: in-n-out 1000ms forwards;
+}
+
+.heartSvg {
+  position: absolute;
+  pointer-events: none;
+  display: block;
+  z-index: 2;
+  animation: float-away 1000ms linear;
+}
+
+@keyframes in-n-out {
+  0% {
+    transform: scale(0);
+  }
+  30% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes float-away {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-60px);
+  }
+}

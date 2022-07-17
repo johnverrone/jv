@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Hamburger } from './Hamburger';
 import css from './Navbar.module.css';
 import { NavLinks } from './NavLinks';
+import { Menu } from 'react-feather';
 
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -16,7 +16,7 @@ export const Navbar = () => {
         className={css.mobileNavHamburger}
         onClick={() => setOpen((p) => !p)}
       >
-        <Hamburger />
+        <Menu />
       </button>
       <AnimatePresence>
         {open && (
