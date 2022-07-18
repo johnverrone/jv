@@ -6,6 +6,7 @@
 
 .header {
   min-height: 60px;
+  background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;

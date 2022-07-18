@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { random } from 'utils/math';
 
 export const useRandomInterval = (
@@ -6,14 +6,17 @@ export const useRandomInterval = (
   minDelay: number | null,
   maxDelay: number | null
 ) => {
-  const timeoutId = React.useRef<number | undefined>(undefined);
-  const savedCallback = React.useRef(callback);
-  React.useEffect(() => {
+  const timeoutId = useRef<number | undefined>(undefined);
+  const savedCallback = useRef(callback);
+
+  useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
-  React.useEffect(() => {
+
+  useEffect(() => {
     let isEnabled =
       typeof minDelay === 'number' && typeof maxDelay === 'number';
+
     if (isEnabled) {
       const handleTick = () => {
         const nextTickAt = random(minDelay ?? 0, maxDelay ?? 0);
@@ -24,10 +27,11 @@ export const useRandomInterval = (
       };
       handleTick();
     }
+
     return () => window.clearTimeout(timeoutId.current);
   }, [minDelay, maxDelay]);
 
-  const cancel = React.useCallback(function () {
+  const cancel = useCallback(function () {
     window.clearTimeout(timeoutId.current);
   }, []);
 
