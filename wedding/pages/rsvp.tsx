@@ -24,13 +24,19 @@ export default function Home({}) {
       >
         <div className={css.formItem}>
           <label htmlFor="name">Name</label>
-          <TextInput type="text" id="name" placeholder="Benjamin Evalent" />
+          <TextInput
+            type="text"
+            id="name"
+            autoComplete="name"
+            placeholder="Benjamin Evalent"
+          />
         </div>
         <div className={css.formItem}>
           <label htmlFor="email">Email</label>
           <TextInput
             type="email"
             id="email"
+            autoComplete="email"
             placeholder="benevalent@gmail.com"
           />
         </div>

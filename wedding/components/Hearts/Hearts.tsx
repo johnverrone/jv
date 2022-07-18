@@ -15,7 +15,9 @@ export interface Heart {
   style: CSSProperties;
 }
 
-const generateHeart = (color: string = DEFAULT_COLOR): Heart => {
+const generateHeart = (): Heart => {
+  const color = `hsl(${random(320, 340)}deg, 100%, ${random(50, 80)}%)`;
+
   return {
     id: String(random(10000, 99999)),
     createdAt: Date.now(),
@@ -31,13 +33,12 @@ const generateHeart = (color: string = DEFAULT_COLOR): Heart => {
   };
 };
 
-export const Hearts = ({
-  active = false,
-  children,
-}: {
+interface HeartsProps {
   active?: boolean;
   children: React.ReactNode;
-}) => {
+}
+
+export const Hearts = ({ active = false, children }: HeartsProps) => {
   const [hearts, setHearts] = useState<Heart[]>([]);
 
   useEffect(() => {
