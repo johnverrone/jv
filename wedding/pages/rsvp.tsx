@@ -1,11 +1,43 @@
 import Head from 'next/head';
-import React from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import { SectionHeader } from 'components/SectionHeader';
 import css from '../styles/rsvp.module.css';
 import { TextInput } from 'components/TextInput';
 import { Button } from 'components/Button';
+import { useMachine } from '@xstate/react';
+import { rsvpMachine } from 'xstate/rsvpMachine';
+
+const attendingMessage = (name: string | null) =>
+  `We look forward to celebrating with you, ${name}!`;
+const notAttendingMessage = (name?: string | null) =>
+  `Aww bummer. Thanks for letting us know, ${name}!`;
 
 export default function Home({}) {
+  const [state, send] = useMachine(rsvpMachine);
+
+  useEffect(() => {
+    console.log(state.context);
+  }, [state.context]);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const endpoint = '/api/rsvp';
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(state.context),
+    };
+
+    const response = await fetch(endpoint, options);
+    const result = await response.json();
+
+    send(result.attending ? 'SAY_YES' : 'SAY_NO');
+  };
+
   return (
     <>
       <Head>
@@ -15,44 +47,86 @@ export default function Home({}) {
 
       <SectionHeader title="RSVP" subtitle="so... you comin?" />
 
-      <form
-        className={css.rsvpForm}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert('thank you');
-        }}
-      >
-        <div className={css.formItem}>
-          <label htmlFor="name">Name</label>
-          <TextInput
-            type="text"
-            id="name"
-            autoComplete="name"
-            placeholder="Benjamin Evalent"
-          />
-        </div>
-        <div className={css.formItem}>
-          <label htmlFor="email">Email</label>
-          <TextInput
-            type="email"
-            id="email"
-            autoComplete="email"
-            placeholder="benevalent@gmail.com"
-          />
-        </div>
-        <div className={css.formItem}>
-          <span>Attendance</span>
-          <div>
-            <input type="radio" name="attendance" id="attendance-yes" />
-            <label htmlFor="attendance">Yes</label>
-            <input type="radio" name="attendance" id="attendance-no" />
-            <label htmlFor="attendance">No</label>
+      {state.matches('attending') ? (
+        <span>
+          {attendingMessage(state.context.name)}
+          <button onClick={() => send('EDIT')}>edit</button>
+        </span>
+      ) : state.matches('notAttending') ? (
+        <span>
+          {notAttendingMessage(state.context.name)}
+          <button onClick={() => send('EDIT')}>edit</button>
+        </span>
+      ) : state.matches('editing') ? (
+        <form className={css.rsvpForm} onSubmit={handleSubmit}>
+          <div className={css.formItem}>
+            <label htmlFor="name">Name</label>
+            <TextInput
+              type="text"
+              id="name"
+              autoComplete="name"
+              placeholder="Benjamin Evalent"
+              required
+              value={state.context.name}
+              onChange={(e) =>
+                send({ type: 'CHANGE_NAME', name: e.target.value })
+              }
+            />
           </div>
-        </div>
-        <Button type="submit" variant="primary">
-          Submit
-        </Button>
-      </form>
+          <div className={css.formItem}>
+            <label htmlFor="email">Email</label>
+            <TextInput
+              type="email"
+              id="email"
+              autoComplete="email"
+              placeholder="benevalent@gmail.com"
+              required
+              value={state.context.email}
+              onChange={(e) =>
+                send({ type: 'CHANGE_EMAIL', email: e.target.value })
+              }
+            />
+          </div>
+          <div className={css.formItem}>
+            <span>Attendance</span>
+            <div>
+              <input
+                type="radio"
+                name="attendance"
+                id="attendance-yes"
+                value="attending"
+                checked={state.context.attending === true}
+                onChange={(e) =>
+                  send({
+                    type: 'CHANGE_ATTENDANCE',
+                    attending: e.target.value === 'attending',
+                  })
+                }
+                required
+              />
+              <label htmlFor="attendance-yes">Yes</label>
+              <input
+                type="radio"
+                name="attendance"
+                id="attendance-no"
+                value="not-attending"
+                checked={state.context.attending === false}
+                onChange={(e) =>
+                  send({
+                    type: 'CHANGE_ATTENDANCE',
+                    attending: e.target.value === 'attending',
+                  })
+                }
+                required
+              />
+              <label htmlFor="attendance-no">No</label>
+            </div>
+          </div>
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
+        </form>
+      ) : null}
     </>
   );
 }
