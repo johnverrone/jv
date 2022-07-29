@@ -1,41 +1,24 @@
 import Head from 'next/head';
-import React, { FormEvent, useEffect } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { SectionHeader } from 'components/SectionHeader';
 import css from '../styles/rsvp.module.css';
 import { TextInput } from 'components/TextInput';
 import { Button } from 'components/Button';
 import { useMachine } from '@xstate/react';
 import { rsvpMachine } from 'xstate/rsvpMachine';
+import { Attendance } from 'types/rsvp';
 
 const attendingMessage = (name: string | null) =>
   `We look forward to celebrating with you, ${name}!`;
 const notAttendingMessage = (name?: string | null) =>
   `Aww bummer. Thanks for letting us know, ${name}!`;
 
-export default function Home({}) {
+export default function Rsvp({}) {
   const [state, send] = useMachine(rsvpMachine);
-
-  useEffect(() => {
-    console.log(state.context);
-  }, [state.context]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    const endpoint = '/api/rsvp';
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(state.context),
-    };
-
-    const response = await fetch(endpoint, options);
-    const result = await response.json();
-
-    send(result.attending ? 'SAY_YES' : 'SAY_NO');
+    send('SUBMIT');
   };
 
   return (
@@ -47,86 +30,176 @@ export default function Home({}) {
 
       <SectionHeader title="RSVP" subtitle="so... you comin?" />
 
-      {state.matches('attending') ? (
-        <span>
-          {attendingMessage(state.context.name)}
-          <button onClick={() => send('EDIT')}>edit</button>
-        </span>
-      ) : state.matches('notAttending') ? (
-        <span>
-          {notAttendingMessage(state.context.name)}
-          <button onClick={() => send('EDIT')}>edit</button>
-        </span>
-      ) : state.matches('editing') ? (
-        <form className={css.rsvpForm} onSubmit={handleSubmit}>
-          <div className={css.formItem}>
-            <label htmlFor="name">Name</label>
-            <TextInput
-              type="text"
-              id="name"
-              autoComplete="name"
-              placeholder="Benjamin Evalent"
-              required
-              value={state.context.name}
-              onChange={(e) =>
-                send({ type: 'CHANGE_NAME', name: e.target.value })
-              }
-            />
-          </div>
-          <div className={css.formItem}>
-            <label htmlFor="email">Email</label>
-            <TextInput
-              type="email"
-              id="email"
-              autoComplete="email"
-              placeholder="benevalent@gmail.com"
-              required
-              value={state.context.email}
-              onChange={(e) =>
-                send({ type: 'CHANGE_EMAIL', email: e.target.value })
-              }
-            />
-          </div>
-          <div className={css.formItem}>
-            <span>Attendance</span>
-            <div>
-              <input
-                type="radio"
-                name="attendance"
-                id="attendance-yes"
-                value="attending"
-                checked={state.context.attending === true}
-                onChange={(e) =>
-                  send({
-                    type: 'CHANGE_ATTENDANCE',
-                    attending: e.target.value === 'attending',
-                  })
-                }
+      <div className={css.pageContainer}>
+        <div>current: {state.toStrings()}</div>
+
+        {state.matches('lookup') ? (
+          <LookupForm
+            name={state.context.name}
+            onSubmit={(name) => send({ type: 'LOOKUP', name })}
+          />
+        ) : state.matches('searching') ? (
+          <Searching />
+        ) : state.matches('found') ? (
+          <Found
+            attendance={state.context.attendance}
+            onChange={() => send('CHANGE_RESPONSE')}
+          />
+        ) : state.matches('notFound') ? (
+          <NotFound
+            onRetry={() => send('RETRY')}
+            onStartOver={() => send('START_OVER')}
+          />
+        ) : state.matches('editing') ? (
+          <form className={css.rsvpForm} onSubmit={handleSubmit}>
+            <div className={css.formItem}>
+              <label htmlFor="name">Name</label>
+              <TextInput
+                type="text"
+                id="name"
+                autoComplete="name"
+                placeholder="Benjamin Evalent"
                 required
-              />
-              <label htmlFor="attendance-yes">Yes</label>
-              <input
-                type="radio"
-                name="attendance"
-                id="attendance-no"
-                value="not-attending"
-                checked={state.context.attending === false}
+                value={state.context.name}
                 onChange={(e) =>
-                  send({
-                    type: 'CHANGE_ATTENDANCE',
-                    attending: e.target.value === 'attending',
-                  })
+                  send({ type: 'CHANGE_NAME', name: e.target.value })
                 }
-                required
               />
-              <label htmlFor="attendance-no">No</label>
             </div>
-          </div>
-          <Button type="submit" variant="primary">
-            Submit
-          </Button>
-        </form>
-      ) : null}
+            <div className={css.formItem}>
+              <label htmlFor="email">Email</label>
+              <TextInput
+                type="email"
+                id="email"
+                autoComplete="email"
+                placeholder="benevalent@gmail.com"
+                required
+                value={state.context.email}
+                onChange={(e) =>
+                  send({ type: 'CHANGE_EMAIL', email: e.target.value })
+                }
+              />
+            </div>
+            <div className={css.formItem}>
+              <span>Attendance</span>
+              <div>
+                <input
+                  type="radio"
+                  name="attendance"
+                  id="attendance-yes"
+                  value="attending"
+                  checked={state.context.attendance === 'attending'}
+                  onChange={(e) =>
+                    send({
+                      type: 'CHANGE_ATTENDANCE',
+                      attending: e.target.value === 'attending',
+                    })
+                  }
+                  required
+                />
+                <label htmlFor="attendance-yes">Yes</label>
+                <input
+                  type="radio"
+                  name="attendance"
+                  id="attendance-no"
+                  value="not-attending"
+                  checked={state.context.attendance === 'not-attending'}
+                  onChange={(e) =>
+                    send({
+                      type: 'CHANGE_ATTENDANCE',
+                      attending: e.target.value === 'attending',
+                    })
+                  }
+                  required
+                />
+                <label htmlFor="attendance-no">No</label>
+              </div>
+            </div>
+            <Button type="submit" variant="primary">
+              Submit
+            </Button>
+          </form>
+        ) : state.matches('submitting') ? (
+          <Submitting />
+        ) : state.matches('submitted') ? (
+          <Submitted onAck={() => send('ACK')} />
+        ) : null}
+      </div>
     </>
   );
 }
+
+const LookupForm = ({
+  name: propName,
+  onSubmit,
+}: {
+  name: string;
+  onSubmit: (name: string) => void;
+}) => {
+  const [name, setName] = useState(propName);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    onSubmit(name);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className={css.formItem}>
+        <label htmlFor="name">Name</label>
+        <TextInput
+          type="text"
+          id="name"
+          autoComplete="name"
+          placeholder="Benjamin Evalent"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+    </form>
+  );
+};
+
+const Searching = () => <p>Searching for invite...</p>;
+
+const Found = ({
+  attendance,
+  onChange,
+}: {
+  attendance: Attendance;
+  onChange: () => void;
+}) => (
+  <div>
+    <p>You have {attendance !== 'unknown' ? 'responded' : 'not responded'}</p>
+    {attendance !== 'unknown' && (
+      <p>
+        You are {attendance === 'attending' ? 'attending' : 'not attending'}
+      </p>
+    )}
+    <button onClick={onChange}>change response</button>
+  </div>
+);
+
+const NotFound = ({
+  onRetry,
+  onStartOver,
+}: {
+  onRetry: () => void;
+  onStartOver: () => void;
+}) => (
+  <div>
+    <p>There was an error finding your invite</p>
+    <button onClick={onRetry}>retry</button>
+    <button onClick={onStartOver}>start over</button>
+  </div>
+);
+
+const Submitting = () => <p>Submitting your RSVP...</p>;
+
+const Submitted = ({ onAck }: { onAck: () => void }) => (
+  <div>
+    <p>Response received, thanks!</p>
+    <button onClick={onAck}>ack</button>
+  </div>
+);
