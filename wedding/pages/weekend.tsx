@@ -1,7 +1,5 @@
 import Head from 'next/head';
 import React from 'react';
-import { Text } from 'components/Text';
-import css from '../styles/Weekend.module.css';
 import { SectionHeader } from 'components/SectionHeader';
 
 export default function Home({}) {
