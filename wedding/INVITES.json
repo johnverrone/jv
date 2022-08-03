@@ -3,5 +3,16 @@
     "name": "John Verrone",
     "email": "john.verrone@gmail.com",
     "attendance": "unknown"
+  },
+  {
+    "name": "friend1",
+    "email": "john.verrone@gmail.com",
+    "attendance": "unknown"
+  },
+  {
+    "name": "friend1plus1",
+    "email": "john.verrone@gmail.com",
+    "attendance": "unknown",
+    "host": "friend1"
   }
 ]
