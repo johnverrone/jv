@@ -11,6 +11,10 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@trpc/client": "^9.26.2",
+    "@trpc/next": "^9.26.2",
+    "@trpc/react": "^9.26.2",
+    "@trpc/server": "^9.26.2",
     "@xstate/react": "^3.0.0",
     "framer-motion": "^6.4.3",
     "next": "^12.2.4",
@@ -18,7 +22,8 @@
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-query": "^3.39.2",
-    "xstate": "^4.32.1"
+    "xstate": "^4.32.1",
+    "zod": "^3.17.10"
   },
   "devDependencies": {
     "@types/node": "^18.6.3",

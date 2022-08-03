@@ -1,20 +1,28 @@
+import { createTRPCClient } from '@trpc/client';
+import { AppRouter } from 'pages/api/trpc/[trpc]';
 import { RSVP } from 'types/rsvp';
 import { createMachine, assign } from 'xstate';
 
+const client = createTRPCClient<AppRouter>({
+  url: 'http://localhost:3000/trpc',
+});
+
 const findInvitations = async (search: string) => {
+  const response = await client.query('hello', { text: 'john' });
+  console.log(response);
   const endpoint = `/api/invite/${search}`;
   const res = await fetch(endpoint);
   return res.json();
 };
 
-const submitRSVP = async (rsvp: RSVP) => {
+const submitRSVPs = async (rsvps: RSVP[]) => {
   const endpoint = '/api/rsvp';
   const options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(rsvp),
+    body: JSON.stringify(rsvps),
   };
 
   const response = await fetch(endpoint, options);
@@ -79,13 +87,14 @@ export const rsvpMachine = createMachine<RSVPContext>({
           target: 'submitting',
           actions: assign({
             invitations: (_, event) => event.invitations,
-          })
+          }),
+        },
       },
     },
     submitting: {
       invoke: {
         id: 'submitResponse',
-        src: (context) => submitRSVP(context.invitations),
+        src: (context) => submitRSVPs(context.invitations),
         onDone: {
           target: 'submitted',
         },
