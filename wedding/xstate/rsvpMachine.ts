@@ -1,8 +1,8 @@
 import { RSVP } from 'types/rsvp';
 import { createMachine, assign } from 'xstate';
 
-const getInvitation = async (name: string) => {
-  const endpoint = `/api/invite/${name}`;
+const findInvitations = async (search: string) => {
+  const endpoint = `/api/invite/${search}`;
   const res = await fetch(endpoint);
   return res.json();
 };
@@ -21,45 +21,39 @@ const submitRSVP = async (rsvp: RSVP) => {
   return response.json();
 };
 
-interface RSVPContext extends RSVP {
+interface RSVPContext {
+  search: string;
   error: string | null;
+  invitations: RSVP[];
 }
 
 export const rsvpMachine = createMachine<RSVPContext>({
   id: 'rsvp',
   initial: 'lookup',
   context: {
-    name: '',
-    email: '',
-    attendance: 'unknown',
+    search: '',
     error: null,
+    invitations: [],
   },
   states: {
     lookup: {
       on: {
-        CHANGE_NAME: {
-          actions: assign({
-            name: (_, event) => event.name,
-          }),
-        },
         LOOKUP: {
           target: 'searching',
           actions: assign({
-            name: (_, event) => event.name,
+            search: (_, event) => event.search,
           }),
         },
       },
     },
     searching: {
       invoke: {
-        id: 'getInvitation',
-        src: (context) => getInvitation(context.name),
+        id: 'findInvitations',
+        src: (context) => findInvitations(context.search),
         onDone: {
           target: 'found',
           actions: assign({
-            name: (_, event) => event.data.name,
-            email: (_, event) => event.data.email,
-            attendance: (_, event) => event.data.attendance,
+            invitations: (_, event) => event.data,
           }),
         },
         onError: {
@@ -81,29 +75,17 @@ export const rsvpMachine = createMachine<RSVPContext>({
     },
     editing: {
       on: {
-        CHANGE_NAME: {
+        SUBMIT: {
+          target: 'submitting',
           actions: assign({
-            name: (_, event) => event.name,
-          }),
-        },
-        CHANGE_EMAIL: {
-          actions: assign({
-            email: (_, event) => event.email,
-          }),
-        },
-        CHANGE_ATTENDANCE: {
-          actions: assign({
-            attendance: (_, event) =>
-              event.attending ? 'attending' : 'not-attending',
-          }),
-        },
-        SUBMIT: 'submitting',
+            invitations: (_, event) => event.invitations,
+          })
       },
     },
     submitting: {
       invoke: {
         id: 'submitResponse',
-        src: (context) => submitRSVP(context),
+        src: (context) => submitRSVP(context.invitations),
         onDone: {
           target: 'submitted',
         },
