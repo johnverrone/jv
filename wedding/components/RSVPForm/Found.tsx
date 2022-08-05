@@ -9,7 +9,7 @@ interface FoundProps {
 export const Found = ({ invitations, onChange }: FoundProps) => (
   <div>
     {invitations.map((inv) => (
-      <div>
+      <div key={inv.name}>
         <p>
           You have{' '}
           {inv.attendance !== 'unknown' ? 'responded' : 'not responded'}
