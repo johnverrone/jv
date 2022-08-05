@@ -1,16 +1,17 @@
 import { withTRPC } from '@trpc/next';
 import { Layout } from 'components/Layout';
 import { AppRouter } from './api/trpc/[trpc]';
-import { AppPropsType } from 'next/dist/shared/lib/utils';
+import { AppProps } from 'next/app';
 import '../styles/globals.css';
 
-const MyApp = ({ Component, pageProps }: AppPropsType) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Layout>
       <Component {...pageProps} />
     </Layout>
   );
 };
+
 export default withTRPC<AppRouter>({
   config({ ctx }) {
     /**
