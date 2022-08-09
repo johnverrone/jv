@@ -1,7 +1,7 @@
 import { withTRPC } from '@trpc/next';
 import { Layout } from '../components//Layout';
-import { AppRouter } from './api/trpc/[trpc]';
 import { AppProps } from 'next/app';
+import { AppRouter } from '../server/routers/_app';
 import '../styles/globals.css';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
