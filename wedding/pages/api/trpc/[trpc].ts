@@ -1,17 +1,20 @@
 import * as trpc from '@trpc/server';
+import { TRPCError } from '@trpc/server';
 import * as trpcNext from '@trpc/server/adapters/next';
+import { findInvites } from 'utils/database';
 import { z } from 'zod';
 
-export const appRouter = trpc.router().query('hello', {
-  input: z
-    .object({
-      text: z.string().nullish(),
-    })
-    .nullish(),
-  resolve({ input }) {
-    return {
-      greeting: `hello ${input?.text ?? 'world'}`,
-    };
+export const appRouter = trpc.router().query('invitations', {
+  input: z.string(),
+  async resolve({ input }) {
+    const invitations = await findInvites(input);
+    if (!invitations) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `Invite not found for ${input}`,
+      });
+    }
+    return invitations;
   },
 });
 

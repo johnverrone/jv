@@ -4,15 +4,13 @@ import { RSVP } from 'types/rsvp';
 import { createMachine, assign } from 'xstate';
 
 const client = createTRPCClient<AppRouter>({
-  url: 'http://localhost:3000/trpc',
+  url: 'http://localhost:3000/api/trpc',
 });
 
-const findInvitations = async (search: string) => {
-  const response = await client.query('hello', { text: 'john' });
-  console.log(response);
-  const endpoint = `/api/invite/${search}`;
-  const res = await fetch(endpoint);
-  return res.json();
+const findInvitations = async (search: string): Promise<RSVP[] | undefined> => {
+  const invitations = await client.query('invitations', search);
+  console.log(invitations);
+  return invitations;
 };
 
 const submitRSVPs = async (rsvps: RSVP[]) => {
