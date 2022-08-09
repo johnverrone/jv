@@ -41,6 +41,10 @@ export default function Home() {
         <br />
         <Text variant="body3">stay tuned for more details.</Text>
       </div>
+      {/* <SectionHeader
+        title="The Wedding"
+        subtitle="July 22, 2023 &middot; Colorado"
+      /> */}
     </>
   );
 }
