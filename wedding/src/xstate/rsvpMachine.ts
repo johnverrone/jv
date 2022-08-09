@@ -1,5 +1,5 @@
+import { AppRouter } from '@server/routers/_app';
 import { createTRPCClient } from '@trpc/client';
-import { AppRouter } from '@pages/api/trpc/[trpc]';
 import { RSVP } from '@utils/types';
 import { createMachine, assign } from 'xstate';
 
@@ -8,7 +8,7 @@ const client = createTRPCClient<AppRouter>({
 });
 
 const findInvitations = async (search: string) => {
-  return client.query('invitations', search);
+  return client.query('invitations.find', search);
 };
 
 const submitRSVPs = async (rsvps: RSVP[]) => {
