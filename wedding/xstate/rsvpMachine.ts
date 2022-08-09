@@ -7,10 +7,8 @@ const client = createTRPCClient<AppRouter>({
   url: 'http://localhost:3000/api/trpc',
 });
 
-const findInvitations = async (search: string): Promise<RSVP[] | undefined> => {
-  const invitations = await client.query('invitations', search);
-  console.log(invitations);
-  return invitations;
+const findInvitations = async (search: string) => {
+  return client.query('invitations', search);
 };
 
 const submitRSVPs = async (rsvps: RSVP[]) => {
