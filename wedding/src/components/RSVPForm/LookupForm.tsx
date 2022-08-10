@@ -1,6 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 import { TextInput } from '@components/TextInput';
+import { Text } from '@components/Text';
 import css from '@styles/rsvp.module.css';
+import { Button } from '@components/Button';
 
 interface LookupFormProps {
   search: string;
@@ -16,7 +18,16 @@ export const LookupForm = ({ search, onSubmit }: LookupFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={css.rsvpForm}>
+      <div>
+        <Text variant="heading1">Find your invitation</Text>
+        <Text variant="body3">
+          <i>
+            If you are responding for your guest or family, you will be able to
+            RSVP for your entire group.
+          </i>
+        </Text>
+      </div>
       <div className={css.formItem}>
         <label htmlFor="name">Name</label>
         <TextInput
@@ -29,6 +40,7 @@ export const LookupForm = ({ search, onSubmit }: LookupFormProps) => {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
+      <Button className={css.submitButton}>Search</Button>
     </form>
   );
 };

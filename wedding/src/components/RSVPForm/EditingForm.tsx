@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import { Button } from '@components/Button';
-import { TextInput } from '@components/TextInput';
-import { Attendance, RSVP } from '@utils/types';
+import { Text } from '@components/Text';
+import { RSVP } from '@utils/types';
 import css from '@styles/rsvp.module.css';
 
 interface EditingForm {
@@ -26,6 +26,8 @@ export const EditingForm = ({ initialState, onSubmit }: EditingForm) => {
       {rsvps &&
         Object.keys(rsvps).map((name) => {
           const attending = rsvps[name].attendance === 'attending';
+          const notAttending = rsvps[name].attendance === 'not-attending';
+
           const handleChangeAttending = (
             e: React.ChangeEvent<HTMLInputElement>
           ) =>
@@ -40,8 +42,8 @@ export const EditingForm = ({ initialState, onSubmit }: EditingForm) => {
               },
             }));
           return (
-            <div key={name}>
-              <span>{name}</span>
+            <div key={name} className={css.editRow}>
+              <Text variant="body1">{name}</Text>
               <div>
                 <input
                   type="radio"
@@ -52,22 +54,23 @@ export const EditingForm = ({ initialState, onSubmit }: EditingForm) => {
                   onChange={handleChangeAttending}
                   required
                 />
-                <label htmlFor={`${name}-attendance-yes`}>Yes</label>
+                <label htmlFor={`${name}-attendance-yes`}>Accept</label>
+                <div style={{ display: 'inline-block', width: 8 }} />
                 <input
                   type="radio"
                   name={`${name}-attendance`}
                   id={`${name}-attendance-no`}
                   value="not-attending"
-                  checked={!attending}
+                  checked={notAttending}
                   onChange={handleChangeAttending}
                   required
                 />
-                <label htmlFor={`${name}-attendance-no`}>No</label>
+                <label htmlFor={`${name}-attendance-no`}>Decline</label>
               </div>
             </div>
           );
         })}
-      <Button type="submit" variant="primary">
+      <Button type="submit" variant="primary" className={css.submitButton}>
         Submit
       </Button>
     </form>

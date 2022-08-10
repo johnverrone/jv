@@ -8,12 +8,38 @@
 .rsvpForm {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 30px;
+  gap: 20px;
 }
 
 .formItem {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.formItem label {
+  margin-bottom: 4px;
+}
+
+.submitButton {
+  align-self: flex-end;
+}
+
+.foundInvite {
+  margin: 1em 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rowItems {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

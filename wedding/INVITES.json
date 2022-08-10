@@ -2,12 +2,12 @@
   {
     "name": "John Verrone",
     "email": "john.verrone@gmail.com",
-    "attendance": "attending"
+    "attendance": "not-attending"
   },
   {
     "name": "friend1",
     "email": "john.verrone@gmail.com",
-    "attendance": "attending"
+    "attendance": "not-attending"
   },
   {
     "name": "friend1plus1",

@@ -1,12 +1,16 @@
 import React from 'react';
+import css from '@styles/rsvp.module.css';
+import { Button } from '@components/Button';
 
 interface SubmittedProps {
   onAck: () => void;
 }
 
 export const Submitted = ({ onAck }: SubmittedProps) => (
-  <div>
+  <div className={css.rsvpForm}>
     <p>Response received, thanks!</p>
-    <button onClick={onAck}>ack</button>
+    <Button onClick={onAck} className={css.submitButton}>
+      👍
+    </Button>
   </div>
 );
