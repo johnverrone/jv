@@ -1,5 +1,6 @@
 import { AppRouter } from '@server/routers/_app';
 import { createTRPCClient } from '@trpc/client';
+import { InferMutationInput, InferQueryInput } from '@utils/trpc';
 import { RSVP } from '@utils/types';
 import { createMachine, assign } from 'xstate';
 
@@ -7,11 +8,15 @@ const client = createTRPCClient<AppRouter>({
   url: 'http://localhost:3000/api/trpc',
 });
 
-const findInvitations = async (search: string) => {
+type FindInvitationRequest = InferQueryInput<'invitations.find'>;
+
+const findInvitations = async (search: FindInvitationRequest) => {
   return client.query('invitations.find', search);
 };
 
-const submitRSVPs = async (rsvps: RSVP[]) => {
+type InvitationUpdateRequest = InferMutationInput<'invitations.update'>;
+
+const submitRSVPs = async (rsvps: InvitationUpdateRequest) => {
   return client.mutation('invitations.update', rsvps);
 };
 
@@ -91,7 +96,7 @@ export const rsvpMachine = createMachine<RSVPContext>({
     },
     submitted: {
       on: {
-        ACK: 'found',
+        ACK: 'lookup',
       },
     },
     errorSubmitting: {

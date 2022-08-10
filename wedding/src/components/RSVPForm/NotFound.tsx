@@ -1,4 +1,7 @@
+import { Text } from '@components/Text';
 import React from 'react';
+import css from '@styles/rsvp.module.css';
+import { Button } from '@components/Button';
 
 interface NotFoundProps {
   onRetry: () => void;
@@ -6,9 +9,13 @@ interface NotFoundProps {
 }
 
 export const NotFound = ({ onRetry, onStartOver }: NotFoundProps) => (
-  <div>
-    <p>There was an error finding your invite</p>
-    <button onClick={onRetry}>retry</button>
-    <button onClick={onStartOver}>start over</button>
+  <div className={css.rsvpForm}>
+    <Text variant="heading3">
+      Uh oh! There was an error finding your invite.
+    </Text>
+    <div className={css.rowItems}>
+      <Button onClick={onStartOver}>Search again</Button>
+      <Button onClick={onRetry}>Retry</Button>
+    </div>
   </div>
 );

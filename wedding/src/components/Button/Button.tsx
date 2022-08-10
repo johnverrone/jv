@@ -6,5 +6,5 @@ interface ButtonProps extends React.ComponentProps<'button'> {
 }
 
 export const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
-  return <button {...props} className={css[variant]} />;
+  return <button {...props} className={`${props.className} ${css[variant]}`} />;
 };

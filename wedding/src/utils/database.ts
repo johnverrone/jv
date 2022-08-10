@@ -35,8 +35,13 @@ export const updateInvite = async (
   name: string,
   attendance: Attendance
 ): Promise<boolean> => {
-  setValue('./INVITES.json', name, attendance);
-  return false;
+  try {
+    setValue('./INVITES.json', name, attendance);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
 
 const setValue = (fileName: string, name: string, value: Attendance) =>
