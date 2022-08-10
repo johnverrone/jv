@@ -2,17 +2,17 @@
   {
     "name": "John Verrone",
     "email": "john.verrone@gmail.com",
-    "attendance": "unknown"
+    "attendance": "attending"
   },
   {
     "name": "friend1",
     "email": "john.verrone@gmail.com",
-    "attendance": "unknown"
+    "attendance": "attending"
   },
   {
     "name": "friend1plus1",
     "email": "john.verrone@gmail.com",
-    "attendance": "unknown",
+    "attendance": "not-attending",
     "host": "friend1"
   }
 ]

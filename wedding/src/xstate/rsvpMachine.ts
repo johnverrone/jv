@@ -12,17 +12,7 @@ const findInvitations = async (search: string) => {
 };
 
 const submitRSVPs = async (rsvps: RSVP[]) => {
-  const endpoint = '/api/rsvp';
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(rsvps),
-  };
-
-  const response = await fetch(endpoint, options);
-  return response.json();
+  return client.mutation('invitations.update', rsvps);
 };
 
 interface RSVPContext {

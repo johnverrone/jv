@@ -35,7 +35,10 @@ export const RSVPForm = () => {
       onStartOver={() => send('START_OVER')}
     />
   ) : state.matches('editing') ? (
-    <EditingForm onSubmit={handleSubmit} />
+    <EditingForm
+      initialState={state.context.invitations}
+      onSubmit={handleSubmit}
+    />
   ) : state.matches('submitting') ? (
     <Submitting />
   ) : state.matches('submitted') ? (
