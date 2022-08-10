@@ -1,5 +1,5 @@
 import React from 'react';
-import { RSVP } from 'types/rsvp';
+import { RSVP } from '@utils/types';
 
 interface FoundProps {
   invitations: RSVP[];
@@ -11,7 +11,7 @@ export const Found = ({ invitations, onChange }: FoundProps) => (
     {invitations.map((inv) => (
       <div key={inv.name}>
         <p>
-          You have{' '}
+          {inv.name}, you have{' '}
           {inv.attendance !== 'unknown' ? 'responded' : 'not responded'}
         </p>
         {inv.attendance !== 'unknown' && (
