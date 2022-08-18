@@ -43,7 +43,7 @@ export default function Home() {
       </div>
       {/* <SectionHeader
         title="The Wedding"
-        subtitle="July 22, 2023 &middot; Colorado"
+        subtitle="August 26, 2023 &middot; Evergreen, CO"
       /> */}
     </>
   );
