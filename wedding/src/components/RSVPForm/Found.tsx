@@ -1,19 +1,19 @@
 import React, { Fragment } from 'react';
-import { RSVP } from '@utils/types';
 import { Text } from '@components/Text';
 import { Check, HelpCircle, X } from 'react-feather';
 import css from '@styles/rsvp.module.css';
 import { Button } from '@components/Button';
 import Link from 'next/link';
+import { Person } from '@prisma/client';
 
 interface FoundProps {
-  invitations: RSVP[];
+  invitations: Person[];
   onChange: () => void;
 }
 
 export const Found = ({ invitations, onChange }: FoundProps) => {
   const firstTime = invitations.every(
-    (invite) => invite.attendance === 'unknown'
+    (invite) => invite.attendance === 'UNKNOWN'
   );
 
   return (
@@ -25,8 +25,8 @@ export const Found = ({ invitations, onChange }: FoundProps) => {
       )}
       <div>
         {invitations.map((inv) => {
-          const attending = inv.attendance === 'attending';
-          const unknown = inv.attendance === 'unknown';
+          const attending = inv.attendance === 'ATTENDING';
+          const unknown = inv.attendance === 'UNKNOWN';
           return (
             <Fragment key={inv.name}>
               <div className={css.foundInvite}>

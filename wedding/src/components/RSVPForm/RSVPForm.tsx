@@ -8,12 +8,12 @@ import { Found } from './Found';
 import { NotFound } from './NotFound';
 import { Submitted } from './Submitted';
 import { EditingForm } from './EditingForm';
-import { RSVP } from '@utils/types';
+import { Person } from '@prisma/client';
 
 export const RSVPForm = () => {
   const [state, send] = useMachine(rsvpMachine);
 
-  const handleSubmit = (invitations: RSVP[]) => {
+  const handleSubmit = (invitations: Person[]) => {
     send({ type: 'SUBMIT', invitations });
   };
 
