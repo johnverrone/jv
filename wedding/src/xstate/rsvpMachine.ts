@@ -1,7 +1,7 @@
+import { Person } from '@prisma/client';
 import { AppRouter } from '@server/routers/_app';
 import { createTRPCClient } from '@trpc/client';
 import { InferMutationInput, InferQueryInput } from '@utils/trpc';
-import { RSVP } from '@utils/types';
 import { createMachine, assign } from 'xstate';
 
 const client = createTRPCClient<AppRouter>({
@@ -23,7 +23,7 @@ const submitRSVPs = async (rsvps: InvitationUpdateRequest) => {
 interface RSVPContext {
   search: string;
   error: string | null;
-  invitations: RSVP[];
+  invitations: Person[];
 }
 
 export const rsvpMachine = createMachine<RSVPContext>({
