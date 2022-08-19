@@ -11,8 +11,7 @@ datasource db {
 }
 
 model Person {
-  id          Int         @id @default(autoincrement())
-  name        String
+  name        String      @id
   email       String?     @unique
   attendance  Attendance  @default(UNKNOWN)
   group       Group       @relation(fields: [groupId], references: [id])

@@ -5,10 +5,10 @@ import { prisma } from '@server/prisma';
 import { Prisma } from '@prisma/client';
 
 const defaultPersonSelect = Prisma.validator<Prisma.PersonSelect>()({
-  id: true,
   name: true,
   email: true,
   attendance: true,
+  groupId: true,
 });
 
 export const invitationsRouter = createRouter()
@@ -22,28 +22,28 @@ export const invitationsRouter = createRouter()
   .query('find', {
     input: z.string(),
     async resolve({ input }) {
-      const invitations = await prisma.person.findMany({
+      const invite = await prisma.person.findUnique({
+        where: { name: input },
+        select: defaultPersonSelect,
+      });
+      const groupsInvitations = await prisma.person.findMany({
         where: {
-          name: {
-            equals: input,
-            mode: 'insensitive',
-          },
+          groupId: invite?.groupId,
         },
         select: defaultPersonSelect,
       });
-      if (!invitations.length) {
+      if (!invite) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: `Invite not found for ${input}`,
         });
       }
-      return invitations;
+      return groupsInvitations;
     },
   })
   .mutation('update', {
     input: z.array(
       z.object({
-        id: z.number(),
         name: z.string(),
         attendance: z.union([
           z.literal('ATTENDING'),
@@ -54,13 +54,12 @@ export const invitationsRouter = createRouter()
     ),
     async resolve({ input }) {
       for (const i of input) {
-        const { id, attendance } = i;
-        const person = prisma.person.update({
-          where: { id },
+        const { name, attendance } = i;
+        await prisma.person.update({
+          where: { name },
           data: { attendance },
           select: defaultPersonSelect,
         });
-        return person;
       }
     },
   });
