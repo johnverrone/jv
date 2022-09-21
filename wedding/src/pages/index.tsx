@@ -27,11 +27,6 @@ export default function Home() {
         />
       </div>
 
-      {/* <SectionHeader
-        title="The Wedding"
-        subtitle="August 26, 2023 &middot; Evergreen, CO"
-      /> */}
-
       <div style={{ textAlign: 'center' }}>
         <br />
         <Text variant="body3">stay tuned for more details.</Text>
