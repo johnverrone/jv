@@ -1,0 +1,28 @@
+.primary {
+  background-color: var(--mountain-snow-90);
+  color: white;
+
+  cursor: pointer;
+  touch-action: manipulation;
+
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  box-shadow: 2px 2px 0px var(--mountain-snow-70);
+
+  transition-property: background-color, transform, box-shadow;
+  transition-duration: 100ms;
+  transition-timing-function: ease-in-out;
+}
+
+@media (hover: hover) {
+  .primary:hover {
+    background-color: var(--mountain-snow-50);
+  }
+}
+
+.primary:active {
+  background-color: var(--mountain-snow-100);
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}

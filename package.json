@@ -2,6 +2,7 @@
   "name": "jv",
   "workspaces": [
     "jolly-blog",
-    "johnverrone"
+    "johnverrone",
+    "wedding"
   ]
 }
