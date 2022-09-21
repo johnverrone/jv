@@ -2,7 +2,7 @@ module.exports = {
   reactStrictMode: true,
   async redirects() {
     return [
-      process.env.MAINTENANCE_MODE === '1'
+      process.env.TEASER_MODE === '1'
         ? {
             source: '/:any+',
             destination: '/',
