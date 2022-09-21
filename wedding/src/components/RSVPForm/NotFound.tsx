@@ -1,7 +1,7 @@
-import { Text } from '@components/Text';
+import { Text } from '../Text';
 import React from 'react';
 import css from '@styles/rsvp.module.css';
-import { Button } from '@components/Button';
+import { Button } from '../Button';
 
 interface NotFoundProps {
   onRetry: () => void;

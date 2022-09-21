@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import React from 'react';
-import { SectionHeader } from '@components/SectionHeader';
+import { SectionHeader } from '../components/SectionHeader';
+import { RSVPForm } from '../components/RSVPForm';
 import css from '@styles/rsvp.module.css';
-import { RSVPForm } from '@components/RSVPForm';
 
 export default function Rsvp({}) {
   return (

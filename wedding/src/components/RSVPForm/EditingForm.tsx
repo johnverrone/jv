@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
-import { Button } from '@components/Button';
-import { Text } from '@components/Text';
+import { Button } from '../Button';
+import { Text } from '../Text';
 import css from '@styles/rsvp.module.css';
 import { Person } from '@prisma/client';
 

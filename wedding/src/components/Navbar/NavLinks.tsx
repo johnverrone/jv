@@ -1,6 +1,6 @@
-import { Hearts } from '@components/Hearts';
+import { Hearts } from '../Hearts';
 import { motion } from 'framer-motion';
-import { useHover } from '@hooks/useHover';
+import { useHover } from '../../hooks/useHover';
 import Link from 'next/link';
 import React from 'react';
 import css from './NavLinks.module.css';

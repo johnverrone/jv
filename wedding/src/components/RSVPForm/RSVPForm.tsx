@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 import { useMachine } from '@xstate/react';
-import { rsvpMachine } from '@xstate/rsvpMachine';
+import { rsvpMachine } from '../../xstate/rsvpMachine';
 import { LookupForm } from './LookupForm';
 import { Searching } from './Searching';
 import { Submitting } from './Submitting';

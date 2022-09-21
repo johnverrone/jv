@@ -1,7 +1,7 @@
 import { createRouter } from '../createRouter';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { prisma } from '@server/prisma';
+import { prisma } from '../prisma';
 import { Prisma } from '@prisma/client';
 
 const defaultPersonSelect = Prisma.validator<Prisma.PersonSelect>()({

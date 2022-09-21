@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@components/Text';
+import { Text } from '../Text';
 import css from './SectionHeader.module.css';
 
 interface SectionHeaderProps {

@@ -1,6 +1,6 @@
-import { useRandomInterval } from '@hooks/useRandomInterval';
+import { useRandomInterval } from '../../hooks/useRandomInterval';
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { random } from '@utils/math';
+import { random } from '../../utils/math';
 import { HeartInstance } from './HeartInstance';
 import css from './Hearts.module.css';
 

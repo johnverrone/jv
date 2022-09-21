@@ -1,5 +1,5 @@
-import { Logo } from '@components/Logo';
-import { DesktopNav } from '@components/Navbar';
+import { Logo } from '../Logo';
+import { DesktopNav } from '../Navbar';
 import React from 'react';
 import css from './Header.module.css';
 
