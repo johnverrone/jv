@@ -4,6 +4,7 @@ import { createTRPCClient } from '@trpc/client';
 import { InferMutationInput, InferQueryInput } from '@utils/trpc';
 import { createMachine, assign } from 'xstate';
 
+// TODO: connect to correct server URL when running on Vercel
 const client = createTRPCClient<AppRouter>({
   url: 'http://localhost:3000/api/trpc',
 });
