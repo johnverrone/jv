@@ -14,6 +14,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {
+    if (typeof window !== 'undefined') {
+      // during client requests
+      return {
+        url: '/api/trpc',
+      };
+    }
+
     /**
      * If you want to use SSR, you need to use the server's full URL
      * @link https://trpc.io/docs/ssr
@@ -33,5 +40,5 @@ export default withTRPC<AppRouter>({
   /**
    * @link https://trpc.io/docs/ssr
    */
-  ssr: false,
+  ssr: true,
 })(MyApp);
