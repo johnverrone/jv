@@ -16,6 +16,9 @@ body {
     Helvetica Neue,
     sans-serif
   );
+
+  background-color: var(--background-primary);
+  color: var(--foreground-primary);
 }
 
 a {
@@ -60,4 +63,9 @@ select {
   --mountain-grey-50: hsla(0, 0%, 50.2%, 1);
   --mountain-grey-70: hsla(0, 0%, 32.9%, 1);
   --mountain-grey-90: hsla(0, 0%, 20%, 1);
+
+  --champagne-pink: hsl(25deg 58% 80%);
+  --background-primary: #101010;
+  --foreground-primary: var(--champagne-pink);
+  --foreground-pink: hsl(330deg, 100%, 75%);
 }

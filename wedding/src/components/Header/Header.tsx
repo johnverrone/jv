@@ -8,7 +8,7 @@ export const Header = () => {
     <div className={css.headerWrapper}>
       <header className={css.header}>
         <Logo />
-        <DesktopNav />
+        {/* <DesktopNav /> */}
       </header>
     </div>
   );

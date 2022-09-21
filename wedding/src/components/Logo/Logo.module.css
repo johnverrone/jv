@@ -17,3 +17,7 @@
 .molly {
   margin-left: 1px;
 }
+
+.heartpersand {
+  stroke: var(--foreground-primary);
+}

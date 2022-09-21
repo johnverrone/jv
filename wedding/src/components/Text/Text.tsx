@@ -17,7 +17,11 @@ interface TextProps {
 
 export const Text = ({ variant, tag, children }: TextProps) => {
   const Component = tag ? tag : getComponent(variant);
-  return <Component className={getClassName(variant)}>{children}</Component>;
+  return (
+    <Component className={`${css.text} ${getClassName(variant)}`}>
+      {children}
+    </Component>
+  );
 };
 
 const getComponent = (variant: Variant) => {

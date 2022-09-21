@@ -1,6 +1,7 @@
 .splashImage {
   position: relative;
-  height: 600px;
-  max-width: 1100px;
+  /* height: 760px; 600px */
+  max-width: min(1100px, 95%);
+  aspect-ratio: 595 / 420;
   margin: 0 auto;
 }

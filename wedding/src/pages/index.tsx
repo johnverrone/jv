@@ -1,4 +1,5 @@
 import { SectionHeader } from '@components/SectionHeader';
+import { Text } from '@components/Text';
 import Head from 'next/head';
 import Image from 'next/image';
 import React from 'react';
@@ -17,7 +18,7 @@ export default function Home({}) {
 
       <div className={css.splashImage}>
         <Image
-          src="/mt-evans.jpg"
+          src="/teaser.png"
           alt="John and Molly on Mt. Evans"
           priority
           layout="fill"
@@ -26,10 +27,15 @@ export default function Home({}) {
         />
       </div>
 
-      <SectionHeader
+      {/* <SectionHeader
         title="The Wedding"
         subtitle="August 26, 2023 &middot; Evergreen, CO"
-      />
+      /> */}
+
+      <div style={{ textAlign: 'center' }}>
+        <br />
+        <Text variant="body3">stay tuned for more details.</Text>
+      </div>
     </>
   );
 }

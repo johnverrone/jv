@@ -12,7 +12,7 @@
   left: 32px;
   z-index: 101;
   padding: 0;
-  color: black;
+  color: var(--foreground-primary);
 }
 
 .mobileNavHamburger > svg {
@@ -22,7 +22,7 @@
 .mobileNavWrapper {
   position: fixed;
   inset: 0px;
-  background: hsl(0deg, 0%, 100%);
+  background: var(--background-primary);
   z-index: 100;
 }
 
