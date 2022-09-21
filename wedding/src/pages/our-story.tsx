@@ -2,7 +2,7 @@ import { SectionHeader } from '../components/SectionHeader';
 import { Text } from '../components/Text';
 import Head from 'next/head';
 import React from 'react';
-import css from '@styles/our-story.module.css';
+import css from '../styles/our-story.module.css';
 
 export default function OurStory({}) {
   return (
