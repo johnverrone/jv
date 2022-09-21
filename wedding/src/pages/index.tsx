@@ -5,7 +5,7 @@ import Image from 'next/image';
 import React from 'react';
 import css from '../styles/home.module.css';
 
-export default function Home({}) {
+export default function Home() {
   return (
     <>
       <Head>

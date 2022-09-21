@@ -4,7 +4,7 @@ import { SectionHeader } from '../components/SectionHeader';
 import { RSVPForm } from '../components/RSVPForm';
 import css from '../styles/rsvp.module.css';
 
-export default function Rsvp({}) {
+export default function Rsvp() {
   return (
     <>
       <Head>
