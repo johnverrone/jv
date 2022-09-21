@@ -1,12 +1,4 @@
-import Document, {
-  Html,
-  Head as IHead,
-  Main,
-  NextScript as INextScript,
-} from 'next/document';
-
-const Head = IHead as any;
-const NextScript = INextScript as any;
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
   render() {
