@@ -1,7 +1,23 @@
 .splashImage {
+  display: none;
   position: relative;
-  /* height: 760px; 600px */
   max-width: min(1100px, 95%);
   aspect-ratio: 595 / 420;
   margin: 0 auto;
+}
+
+.splashImageMobile {
+  position: relative;
+  max-width: min(1100px, 95%);
+  aspect-ratio: 9 / 16;
+  margin: 0 auto;
+}
+
+@media (min-width: 700px) {
+  .splashImage {
+    display: block;
+  }
+  .splashImageMobile {
+    display: none;
+  }
 }

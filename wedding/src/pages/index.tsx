@@ -19,7 +19,17 @@ export default function Home() {
       <div className={css.splashImage}>
         <Image
           src="/teaser.png"
-          alt="John and Molly on Mt. Evans"
+          alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
+          priority
+          layout="fill"
+          objectFit="cover"
+          objectPosition="66%"
+        />
+      </div>
+      <div className={css.splashImageMobile}>
+        <Image
+          src="/mobile-teaser.png"
+          alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
           priority
           layout="fill"
           objectFit="cover"
