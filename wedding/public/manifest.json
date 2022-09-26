@@ -1,0 +1,34 @@
+{
+  "short_name": "Jolly",
+  "name": "Molly & John Wedding",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "id": "/?source=pwa",
+  "start_url": "/?source=pwa",
+  "background_color": "#101010",
+  "display": "minimal-ui",
+  "scope": "/",
+  "theme_color": "#101010",
+  "shortcuts": [
+    {
+      "name": "RSVP",
+      "url": "/rsvp?source=pwa"
+    }
+  ],
+  "description": "The wedding of Molly & John"
+}
