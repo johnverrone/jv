@@ -1,7 +1,7 @@
 import { Person } from '@prisma/client';
-import { AppRouter } from '@server/routers/_app';
+import { AppRouter } from '../server/routers/_app';
 import { createTRPCClient } from '@trpc/client';
-import { InferMutationInput, InferQueryInput } from '@utils/trpc';
+import { InferMutationInput, InferQueryInput } from '../utils/trpc';
 import { createMachine, assign } from 'xstate';
 
 const client = createTRPCClient<AppRouter>({

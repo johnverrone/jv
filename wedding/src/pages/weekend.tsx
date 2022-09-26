@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import React from 'react';
-import { SectionHeader } from '@components/SectionHeader';
+import { SectionHeader } from '../components/SectionHeader';
 
 export default function Home({}) {
   return (

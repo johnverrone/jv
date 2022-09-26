@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
-import { Button } from '@components/Button';
-import { Text } from '@components/Text';
-import css from '@styles/rsvp.module.css';
+import { Button } from '../../components/Button';
+import { Text } from '../../components/Text';
+import css from '../../styles/rsvp.module.css';
 import { Person } from '@prisma/client';
 
 interface EditingForm {
