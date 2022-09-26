@@ -2,13 +2,14 @@
   "name": "wedding",
   "version": "0.0.1",
   "engines": {
-    "node": "^16.13.0"
+    "node": "^14.20.0"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
