@@ -5,6 +5,10 @@ import { AppRouter } from '../server/routers/_app';
 import '../styles/globals.css';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  if (typeof window !== 'undefined' && window.document) {
+    document.body.classList.add('teaser');
+  }
+
   return (
     <Layout>
       <Component {...pageProps} />

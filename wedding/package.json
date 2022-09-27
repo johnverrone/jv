@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "teaser": "NEXT_PUBLIC_TEASER_MODE=1 next dev",
     "vercel-build": "prisma generate && next build"
   },
   "prisma": {

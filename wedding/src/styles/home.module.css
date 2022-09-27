@@ -1,4 +1,11 @@
 .splashImage {
+  position: relative;
+  max-width: min(1100px, 95%);
+  aspect-ratio: 9 / 6;
+  margin: 0 auto;
+}
+
+.teaserImage {
   display: none;
   position: relative;
   max-width: min(1100px, 95%);
@@ -6,7 +13,7 @@
   margin: 0 auto;
 }
 
-.splashImageMobile {
+.teaserImageMobile {
   position: relative;
   max-width: min(1100px, 95%);
   aspect-ratio: 9 / 16;
@@ -14,10 +21,10 @@
 }
 
 @media (min-width: 700px) {
-  .splashImage {
+  .teaserImage {
     display: block;
   }
-  .splashImageMobile {
+  .teaserImageMobile {
     display: none;
   }
 }
