@@ -6,6 +6,7 @@ import React from 'react';
 import css from '../styles/home.module.css';
 
 export default function Home() {
+  const teaserMode = process.env.TEASER_MODE ?? '0';
   return (
     <>
       <Head>
@@ -18,7 +19,7 @@ export default function Home() {
 
       <div className={css.splashImage}>
         <Image
-          src="/teaser.png"
+          src="/s/teaser.png"
           alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
           priority
           layout="fill"
@@ -28,7 +29,7 @@ export default function Home() {
       </div>
       <div className={css.splashImageMobile}>
         <Image
-          src="/mobile-teaser.png"
+          src="/s/mobile-teaser.png"
           alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
           priority
           layout="fill"
@@ -37,14 +38,17 @@ export default function Home() {
         />
       </div>
 
-      <div style={{ textAlign: 'center' }}>
-        <br />
-        <Text variant="body3">stay tuned for more details.</Text>
-      </div>
-      {/* <SectionHeader
-        title="The Wedding"
-        subtitle="August 26, 2023 &middot; Evergreen, CO"
-      /> */}
+      {teaserMode ? (
+        <div style={{ textAlign: 'center' }}>
+          <br />
+          <Text variant="body3">stay tuned for more details.</Text>
+        </div>
+      ) : (
+        <SectionHeader
+          title="The Wedding"
+          subtitle="August 26, 2023 &middot; Evergreen, CO"
+        />
+      )}
     </>
   );
 }
