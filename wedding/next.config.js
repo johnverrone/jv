@@ -4,7 +4,7 @@ module.exports = {
     return [
       process.env.TEASER_MODE === '1'
         ? {
-            source: '/:any(^(?!s\/).*)',
+            source: '/:any(^(?!\/s\/).*$)',
             destination: '/',
             permanent: false,
           }
