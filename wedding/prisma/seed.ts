@@ -22,10 +22,9 @@ async function main() {
 
   await prisma.person.upsert({
     where: {
-      id: firstPostId,
+      name: 'Test Data',
     },
     create: {
-      id: firstPostId,
       name: 'Test Data',
       email: 'example@gmail.com',
       groupId: firstGroupId,
