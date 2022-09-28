@@ -34,13 +34,6 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          {/* HTML Meta Tags */}
-          <title>Molly & John Wedding</title>
-          <meta
-            name="description"
-            content="Your complete guide to the wedding of Molly Dickinson and John Verrone. Find travel information, registry details, and RSVP here."
-          />
-
           {/* Facebook Open Graph Meta Tags */}
           <meta property="og:title" content="Molly & John Wedding" />
           <meta
