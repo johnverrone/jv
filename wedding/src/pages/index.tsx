@@ -21,7 +21,7 @@ export default function Home() {
         <>
           <div className={css.teaserImage}>
             <Image
-              src="/s/teaser.png"
+              src="/s/teaser-desktop.png"
               alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
               priority
               layout="fill"
@@ -31,7 +31,7 @@ export default function Home() {
           </div>
           <div className={css.teaserImageMobile}>
             <Image
-              src="/s/mobile-teaser.png"
+              src="/s/teaser-mobile.png"
               alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
               priority
               layout="fill"

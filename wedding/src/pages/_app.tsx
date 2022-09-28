@@ -5,8 +5,12 @@ import { AppRouter } from '../server/routers/_app';
 import '../styles/globals.css';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  if (typeof window !== 'undefined' && window.document) {
-    document.body.classList.add('teaser');
+  if (
+    typeof window !== 'undefined' &&
+    window.document &&
+    process.env.NEXT_PUBLIC_TEASER_MODE == '1'
+  ) {
+    document.documentElement.setAttribute('data-theme', 'dark');
   }
 
   return (

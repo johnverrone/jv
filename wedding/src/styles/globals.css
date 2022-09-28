@@ -37,7 +37,8 @@ select {
   font: inherit;
 }
 
-:root {
+:root,
+html[data-theme='light'] {
   --font-family-body: 'Fira Sans';
   --font-family-heading: Oxygen;
 
@@ -70,7 +71,7 @@ select {
   --foreground-pink: hsl(330deg, 100%, 75%);
 }
 
-.teaser {
+html[data-theme='dark'] {
   --background-primary: #101010;
   --foreground-primary: var(--champagne-pink);
   --foreground-pink: hsl(330deg, 100%, 75%);
