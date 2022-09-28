@@ -1,6 +1,6 @@
 {
   "short_name": "Jolly",
-  "name": "Molly & John Wedding",
+  "name": "Molly Dickinson and John Verrone's Wedding",
   "icons": [
     {
       "src": "/s/icon-192.svg",
@@ -30,5 +30,5 @@
       "url": "/rsvp?source=pwa"
     }
   ],
-  "description": "The wedding of Molly & John"
+  "description": "The wedding website of Molly and John"
 }

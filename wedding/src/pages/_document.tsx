@@ -35,7 +35,10 @@ class MyDocument extends Document {
           />
 
           {/* Facebook Open Graph Meta Tags */}
-          <meta property="og:title" content="Molly & John Wedding" />
+          <meta
+            property="og:title"
+            content="Molly Dickinson and John Verrone's Wedding"
+          />
           <meta
             property="og:description"
             content="Your complete guide to the wedding of Molly Dickinson and John Verrone. Find travel information, registry details, and RSVP here."
