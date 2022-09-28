@@ -13,7 +13,7 @@ export default function Home() {
         <title>Molly &amp; John Wedding</title>
         <meta
           name="description"
-          content="Official wedding website for Molly Dickinson and John Verrone! View photos, directions, registry details, and RSVP."
+          content="Your complete guide to the wedding of Molly Dickinson and John Verrone. Find travel information, registry details, and RSVP here."
         />
       </Head>
 

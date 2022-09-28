@@ -13,11 +13,16 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          {/* ICON */}
           <link
             rel="icon"
             href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👩‍❤️‍💋‍👨</text></svg>"
           />
+
+          {/* PWA */}
           <link rel="manifest" href="/manifest.json" />
+
+          {/* FONTS */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
@@ -28,6 +33,20 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700&family=Oxygen:wght@400;700&family=Fira+Code&display=swap"
             rel="stylesheet"
           />
+
+          {/* UNFURL */}
+          <meta property="og:title" content="Molly & John Wedding" />
+          <meta
+            property="og:description"
+            content="Your complete guide to the wedding of Molly Dickinson and John Verrone. Find travel information, registry details, and RSVP here."
+          />
+          <meta
+            property="og:image"
+            content="https://johnmolly.com/s/teaser-desktop.png"
+          />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:creator" content="@johnverrone" />
         </Head>
         <body>
           <Main />
