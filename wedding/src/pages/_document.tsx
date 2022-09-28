@@ -13,7 +13,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {/* ICON */}
+          {/* Icons */}
           <link
             rel="icon"
             href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👩‍❤️‍💋‍👨</text></svg>"
@@ -22,7 +22,7 @@ class MyDocument extends Document {
           {/* PWA */}
           <link rel="manifest" href="/manifest.json" />
 
-          {/* FONTS */}
+          {/* Fonts */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
@@ -34,7 +34,14 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          {/* UNFURL */}
+          {/* HTML Meta Tags */}
+          <title>Molly & John Wedding</title>
+          <meta
+            name="description"
+            content="Your complete guide to the wedding of Molly Dickinson and John Verrone. Find travel information, registry details, and RSVP here."
+          />
+
+          {/* Facebook Open Graph Meta Tags */}
           <meta property="og:title" content="Molly & John Wedding" />
           <meta
             property="og:description"
@@ -45,6 +52,11 @@ class MyDocument extends Document {
             content="https://johnmolly.com/s/teaser-desktop.png"
           />
           <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://johnmolly.com/" />
+
+          {/* Twitter Meta Tags */}
+          <meta property="twitter:domain" content="johnmolly.com" />
+          <meta property="twitter:url" content="https://johnmolly.com/" />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:creator" content="@johnverrone" />
         </Head>
