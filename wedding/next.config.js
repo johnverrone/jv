@@ -4,7 +4,7 @@ module.exports = {
     return [
       process.env.NEXT_PUBLIC_TEASER_MODE === '1'
         ? {
-            source: '/((?!s/).+)',
+            source: '/((?!s/|robots).+)',
             destination: '/',
             permanent: false,
           }
