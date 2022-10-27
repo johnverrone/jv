@@ -59,12 +59,16 @@ const NavLink = ({
 
   return (
     <motion.li whileHover={{ scale: 1.2 }}>
-      <Link {...linkProps}>
-        <a onClick={onClick} ref={ref} className={active ? css.active : ''}>
-          <Hearts active={hovered}>
-            <span className={active ? css.active : ''}>{children}</span>
-          </Hearts>
-        </a>
+      <Link
+        {...linkProps}
+        onClick={onClick}
+        ref={ref}
+        className={active ? css.active : ''}>
+
+        <Hearts active={hovered}>
+          <span className={active ? css.active : ''}>{children}</span>
+        </Hearts>
+
       </Link>
     </motion.li>
   );
