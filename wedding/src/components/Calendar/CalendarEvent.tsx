@@ -77,7 +77,7 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
             </p>
             <p>{event.description}</p>
           </div>,
-          document.querySelector('#calendar')
+          document.querySelector('#calendar') ?? document.body
         )}
     </>
   );

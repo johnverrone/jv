@@ -68,7 +68,8 @@ html[data-theme='light'] {
   --champagne-pink: hsl(25deg 58% 80%);
   --lime: hsl(122deg 53% 26%);
   --orange: hsl(30deg 100% 47%);
-  --ivory: hsl(60deg 100% 97%);
+  --ivory-raw: 60deg 100% 97%;
+  --ivory: hsl(var(--ivory-raw));
   --background-primary: var(--ivory);
   --foreground-primary: black;
   --foreground-pink: hsl(330deg, 100%, 75%);

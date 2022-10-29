@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import css from './Calendar.module.scss';
 import { CalendarEvent } from './CalendarEvent';
 import type { WeddingEvent } from './types';
@@ -20,76 +21,68 @@ export function Calendar({ events }: CalendarProps) {
   };
 
   return (
-    <div id="calendar" className={css.calendar}>
-      <h2 className={css.dayName}>Thursday</h2>
-      <div className={css.day}>
-        <div className={css.hourLines}>
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
+    <>
+      {!!openEventId && (
+        <div className={css.overlay} onClick={() => setOpenEventId(null)} />
+      )}
+      <div id="calendar" className={css.calendar}>
+        <h2 className={css.dayName}>Friday</h2>
+        <div className={css.day}>
+          <div className={css.hourLines}>
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+          </div>
+          {fridayEvents.map((e) => (
+            <CalendarEvent
+              key={e.id}
+              event={e}
+              open={openEventId === e.id}
+              onClick={() => onClick(e.id)}
+            />
+          ))}
         </div>
-      </div>
-      <h2 className={css.dayName}>Friday</h2>
-      <div className={css.day}>
-        <div className={css.hourLines}>
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
+        <h2 className={css.dayName}>Saturday</h2>
+        <div className={css.day}>
+          <div className={css.hourLines}>
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+          </div>
+          {saturdayEvents.map((e) => (
+            <CalendarEvent
+              key={e.id}
+              event={e}
+              open={openEventId === e.id}
+              onClick={() => onClick(e.id)}
+            />
+          ))}
         </div>
-        {fridayEvents.map((e) => (
-          <CalendarEvent
-            key={e.id}
-            event={e}
-            open={openEventId === e.id}
-            onClick={() => onClick(e.id)}
-          />
-        ))}
-      </div>
-      <h2 className={css.dayName}>Saturday</h2>
-      <div className={css.day}>
-        <div className={css.hourLines}>
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
+        <h2 className={css.dayName}>Sunday</h2>
+        <div className={css.day}>
+          <div className={css.hourLines}>
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+            <div className={css.hourLine} />
+          </div>
         </div>
-        {saturdayEvents.map((e) => (
-          <CalendarEvent
-            key={e.id}
-            event={e}
-            open={openEventId === e.id}
-            onClick={() => onClick(e.id)}
-          />
-        ))}
+        <div className={css.eventLine} />
       </div>
-      <h2 className={css.dayName}>Sunday</h2>
-      <div className={css.day}>
-        <div className={css.hourLines}>
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-          <div className={css.hourLine} />
-        </div>
-      </div>
-      <div className={css.eventLine} />
-    </div>
+    </>
   );
 }
