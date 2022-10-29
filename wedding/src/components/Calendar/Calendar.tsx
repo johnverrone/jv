@@ -1,5 +1,5 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import css from './Calendar.module.scss';
 import { CalendarEvent } from './CalendarEvent';
 import type { WeddingEvent } from './types';
@@ -22,9 +22,17 @@ export function Calendar({ events }: CalendarProps) {
 
   return (
     <>
-      {!!openEventId && (
-        <div className={css.overlay} onClick={() => setOpenEventId(null)} />
-      )}
+      <AnimatePresence>
+        {openEventId && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={css.overlay}
+            onClick={() => setOpenEventId(null)}
+          />
+        )}
+      </AnimatePresence>
       <div id="calendar" className={css.calendar}>
         <h2 className={css.dayName}>Friday</h2>
         <div className={css.day}>
