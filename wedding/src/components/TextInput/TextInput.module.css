@@ -4,4 +4,5 @@
   border: 1px solid var(--mountain-grey-50);
   font-family: var(--font-family-body);
   color: var(--mountain-grey-70);
+  background-color: transparent;
 }

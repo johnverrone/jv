@@ -1,5 +1,5 @@
 import { Header } from '../Header';
-import { Navbar } from '../Navbar';
+import { MobileNav } from '../Navigation';
 import React from 'react';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -7,7 +7,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Header />
-      {showNav && <Navbar />}
+      {showNav && <MobileNav />}
       <main>{children}</main>
     </>
   );

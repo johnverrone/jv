@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import css from './Navbar.module.css';
+import css from './MobileNav.module.css';
 import { NavLinks } from './NavLinks';
 import { Menu } from 'react-feather';
 
-export const Navbar = () => {
+export const MobileNav = () => {
   const [open, setOpen] = useState(false);
 
   const handleLinkClick = () => setOpen(false);

@@ -1,0 +1,81 @@
+.calendar {
+  position: relative;
+  --day-line-color: black;
+  --event-color: var(--lime);
+}
+
+.eventLine {
+  background-color: var(--event-color);
+
+  position: absolute;
+  width: 3px;
+  height: 1400px;
+  top: 50px;
+  left: 50%;
+}
+
+.dayName {
+  display: flex;
+  align-items: center;
+  margin: 0;
+
+  &::after {
+    content: '';
+    background-color: var(--day-line-color);
+    flex: 1;
+    height: 2px;
+    margin-left: 10px;
+  }
+}
+
+.day {
+  height: 320px;
+  position: relative;
+
+  .hourLines {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 20px 0;
+
+    .hourLine {
+      background-color: hsla(0deg 0% 0% / 8%);
+      height: 1px;
+      width: 75%;
+    }
+  }
+
+  .event {
+    --dot-width: 40px;
+
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    top: var(--top);
+    left: calc(50% - calc(var(--dot-width) / 2) + 2px);
+    background: unset;
+    border: none;
+    padding: 0;
+
+    .eventDot {
+      background-color: var(--event-color);
+      border-radius: calc(var(--dot-width) * 0.5);
+      width: var(--dot-width);
+      height: var(--height);
+    }
+  }
+}
+
+.eventBubble {
+  background-color: var(--event-color);
+  color: white;
+  border-radius: 20px;
+  padding: 20px;
+
+  h2 {
+    margin-top: 0;
+  }
+}

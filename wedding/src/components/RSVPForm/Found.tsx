@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Text } from '../../components/Text';
 import { Check, HelpCircle, X } from 'react-feather';
-import css from '../../styles/rsvp.module.css';
+import css from './index.module.scss';
 import { Button } from '../../components/Button';
 import Link from 'next/link';
 import { Person } from '@prisma/client';
