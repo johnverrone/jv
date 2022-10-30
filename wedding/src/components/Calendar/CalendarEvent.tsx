@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { CSSProperties, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { usePopper } from 'react-popper';
@@ -60,23 +61,28 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
       </button>
       {open &&
         ReactDOM.createPortal(
-          <div
-            ref={setPopperElement}
-            className={css.eventBubble}
-            style={styles.popper}
-            {...attributes.popper}
-          >
-            <h2>{event.name}</h2>
-            <p>{event.location}</p>
-            <p>
-              {`${event.startTime.toLocaleTimeString(undefined, {
-                timeStyle: 'short',
-              })} - ${event.endTime.toLocaleTimeString(undefined, {
-                timeStyle: 'short',
-              })}`}
-            </p>
-            <p>{event.description}</p>
-          </div>,
+          <AnimatePresence>
+            <motion.div
+              ref={setPopperElement}
+              className={css.eventBubble}
+              style={styles.popper}
+              {...attributes.popper}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <h2>{event.name}</h2>
+              <p>{event.location}</p>
+              <p>
+                {`${event.startTime.toLocaleTimeString(undefined, {
+                  timeStyle: 'short',
+                })} - ${event.endTime.toLocaleTimeString(undefined, {
+                  timeStyle: 'short',
+                })}`}
+              </p>
+              <p>{event.description}</p>
+            </motion.div>
+          </AnimatePresence>,
           document.querySelector('#calendar') ?? document.body
         )}
     </>
