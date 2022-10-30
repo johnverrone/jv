@@ -59,10 +59,11 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
         <div className={css.eventDot} ref={setReferenceElement} />
         <span>{event.shortName}</span>
       </button>
-      {open &&
-        ReactDOM.createPortal(
-          <AnimatePresence>
+      {ReactDOM.createPortal(
+        <AnimatePresence>
+          {open && (
             <motion.div
+              key={event.id}
               ref={setPopperElement}
               className={css.eventBubble}
               style={styles.popper}
@@ -82,9 +83,10 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
               </p>
               <p>{event.description}</p>
             </motion.div>
-          </AnimatePresence>,
-          document.querySelector('#calendar') ?? document.body
-        )}
+          )}
+        </AnimatePresence>,
+        document.querySelector('#calendar') ?? document.body
+      )}
     </>
   );
 }
