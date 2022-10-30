@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
 import css from './Calendar.module.scss';
 import { CalendarEvent } from './CalendarEvent';
+import { Text } from '../Text';
 import type { WeddingEvent } from './types';
 
 interface CalendarProps {
@@ -9,8 +10,8 @@ interface CalendarProps {
 }
 
 export function Calendar({ events }: CalendarProps) {
-  const fridayEvents = events?.filter((e) => e.day === 'friday') ?? [];
-  const saturdayEvents = events?.filter((e) => e.day === 'saturday') ?? [];
+  const fridayEvents = events?.filter((e) => e.day === 'Friday') ?? [];
+  const saturdayEvents = events?.filter((e) => e.day === 'Saturday') ?? [];
   const [openEventId, setOpenEventId] = useState<string | null>(null);
 
   const onClick = (id: string) => {
@@ -34,18 +35,10 @@ export function Calendar({ events }: CalendarProps) {
         )}
       </AnimatePresence>
       <div id="calendar" className={css.calendar}>
-        <h2 className={css.dayName}>Friday</h2>
+        <div className={css.dayName}>
+          <Text variant="heading2">Friday</Text>
+        </div>
         <div className={css.day}>
-          <div className={css.hourLines}>
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-          </div>
           {fridayEvents.map((e) => (
             <CalendarEvent
               key={e.id}
@@ -55,18 +48,10 @@ export function Calendar({ events }: CalendarProps) {
             />
           ))}
         </div>
-        <h2 className={css.dayName}>Saturday</h2>
+        <div className={css.dayName}>
+          <Text variant="heading2">Saturday</Text>
+        </div>
         <div className={css.day}>
-          <div className={css.hourLines}>
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-          </div>
           {saturdayEvents.map((e) => (
             <CalendarEvent
               key={e.id}
@@ -76,19 +61,10 @@ export function Calendar({ events }: CalendarProps) {
             />
           ))}
         </div>
-        <h2 className={css.dayName}>Sunday</h2>
-        <div className={css.day}>
-          <div className={css.hourLines}>
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-            <div className={css.hourLine} />
-          </div>
+        <div className={css.dayName}>
+          <Text variant="heading2">Sunday</Text>
         </div>
+        <div className={css.day}></div>
         <div className={css.eventLine} />
       </div>
     </>

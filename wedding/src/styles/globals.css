@@ -72,6 +72,7 @@ html[data-theme='light'] {
   --ivory: hsl(var(--ivory-raw));
   --background-primary: var(--ivory);
   --foreground-primary: black;
+  --foreground-inverse: var(--ivory);
   --foreground-pink: hsl(330deg, 100%, 75%);
 }
 

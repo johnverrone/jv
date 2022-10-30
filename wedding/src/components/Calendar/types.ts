@@ -4,7 +4,7 @@ export interface WeddingEvent {
   shortName: string;
   location: string;
   description?: string;
-  day: 'friday' | 'saturday' | 'sunday';
+  day: 'Friday' | 'Saturday' | 'Sunday';
   startTime: Date;
   endTime: Date;
 }

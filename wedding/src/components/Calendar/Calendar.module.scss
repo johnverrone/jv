@@ -1,7 +1,8 @@
 .calendar {
   position: relative;
-  --day-line-color: black;
+  --day-separator-color: hsla(0deg 0% 0% / 20%);
   --event-color: var(--lime);
+  --line-position: 50%;
 }
 
 .eventLine {
@@ -11,17 +12,18 @@
   width: 3px;
   height: 1000px;
   top: 50px;
-  left: 50%;
+  left: var(--line-position);
 }
 
 .dayName {
   display: flex;
   align-items: center;
   margin: 0;
+  color: var(--day-separator-color);
 
   &::after {
     content: '';
-    background-color: var(--day-line-color);
+    background-color: var(--day-separator-color);
     flex: 1;
     height: 2px;
     margin-left: 10px;
@@ -51,28 +53,39 @@
     --dot-width: 40px;
 
     position: absolute;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr var(--dot-width) 1fr;
     align-items: center;
-    gap: 20px;
+    width: 100%;
+    gap: 16px;
     top: var(--top);
-    left: calc(50% - calc(var(--dot-width) / 2) + 2px);
     color: inherit;
     background: unset;
     border: none;
     padding: 0;
+    text-align: unset;
+
+    .eventTime {
+      justify-self: end;
+    }
 
     .eventDot {
       background-color: var(--event-color);
       border-radius: calc(var(--dot-width) * 0.5);
       width: var(--dot-width);
       height: var(--height);
+      flex: 0 0 auto;
+    }
+
+    p {
+      margin: 0;
     }
   }
 }
 
 .eventBubble {
   background-color: var(--event-color);
-  color: white;
+  color: var(--foreground-inverse);
   border-radius: 20px;
   padding: 20px;
   z-index: 3;
