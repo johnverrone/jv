@@ -1,8 +1,11 @@
 import { SectionHeader } from '../components/SectionHeader';
 import { Text } from '../components/Text';
 import Head from 'next/head';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import React from 'react';
+import heroImage from '../../public/s/mt-evans.jpg';
+import teaserDesktop from '../../public/s/teaser-desktop.png';
+import teaserMobile from '../../public/s/teaser-mobile.png';
 import css from './index.module.scss';
 
 export default function Home() {
@@ -21,22 +24,26 @@ export default function Home() {
         <>
           <div className={css.teaserImage}>
             <Image
-              src="/s/teaser-desktop.png"
+              src={teaserDesktop}
               alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
               priority
-              layout="fill"
-              objectFit="cover"
-              objectPosition="66%"
+              fill
+              style={{
+                objectFit: 'cover',
+                objectPosition: '66%',
+              }}
             />
           </div>
           <div className={css.teaserImageMobile}>
             <Image
-              src="/s/teaser-mobile.png"
+              src={teaserMobile}
               alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
               priority
-              layout="fill"
-              objectFit="cover"
-              objectPosition="66%"
+              fill
+              style={{
+                objectFit: 'cover',
+                objectPosition: '66%',
+              }}
             />
           </div>
 
@@ -49,12 +56,14 @@ export default function Home() {
         <>
           <div className={css.splashImage}>
             <Image
-              src="/s/mt-evans.jpg"
+              src={heroImage}
               alt="John & Molly on the summit of Mt. Evans"
               priority
-              layout="fill"
-              objectFit="cover"
-              objectPosition="66%"
+              fill
+              style={{
+                objectFit: 'cover',
+                objectPosition: '66%',
+              }}
             />
           </div>
           <SectionHeader
