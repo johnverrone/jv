@@ -43,7 +43,7 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
           </Text>
         </div>
         <div className={css.eventDot} ref={setReferenceElement} />
-        <Text variant="body3">{event.shortName}</Text>
+        <Text variant="body3">{event.name}</Text>
       </button>
       {typeof window !== 'undefined'
         ? ReactDOM.createPortal(
@@ -59,7 +59,9 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                   style={styles.popper}
                   {...attributes.popper}
                 >
-                  <Text variant="heading1">{event.name}</Text>
+                  <Text variant="heading1">
+                    {`${event.emoji} ${event.name}`}
+                  </Text>
                   <Text variant="body2" tag="p">
                     {event.location}
                   </Text>

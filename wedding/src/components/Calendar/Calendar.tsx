@@ -35,6 +35,7 @@ export function Calendar({ events }: CalendarProps) {
         )}
       </AnimatePresence>
       <div id="calendar" className={css.calendar}>
+        <div className={css.eventLine} />
         <div className={css.dayName}>
           <Text variant="heading2">Friday</Text>
         </div>
@@ -65,7 +66,6 @@ export function Calendar({ events }: CalendarProps) {
           <Text variant="heading2">Sunday</Text>
         </div>
         <div className={css.day}></div>
-        <div className={css.eventLine} />
       </div>
     </>
   );

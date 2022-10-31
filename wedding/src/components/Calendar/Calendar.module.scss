@@ -12,7 +12,7 @@
   width: 3px;
   height: 1000px;
   top: 50px;
-  left: var(--line-position);
+  left: calc(var(--line-position) - 1px);
 }
 
 .dayName {
@@ -87,7 +87,7 @@
   background-color: var(--event-color);
   color: var(--foreground-inverse);
   border-radius: 20px;
-  padding: 20px;
+  padding: 16px 32px;
   z-index: 3;
 
   h2 {

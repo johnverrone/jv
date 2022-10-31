@@ -7,43 +7,43 @@ import css from './weekend.module.scss';
 const events: WeddingEvent[] = [
   {
     id: 'golf',
-    name: 'Golf Tournament',
-    shortName: 'Golf',
+    name: 'Golf Event',
     location: 'Hiwan Golf Club',
     description:
       "Fun round of golf at Hiwan Golf Club. Entry is $100 / player. Closest to the pin, longest drive, and low net rewards will be given out! Don't forget to RSVP for this separately so can book the appropriate number of tee times.",
     startTime: new Date(2023, 7, 25, 8),
     endTime: new Date(2023, 7, 25, 13),
     day: 'Friday',
+    emoji: '🏌️‍♂️',
   },
   {
     id: 'welcome-party',
     name: 'Welcome Party',
-    shortName: 'Welcome Party',
     location: 'Revival Brewing',
     description:
       'Join us for drinks and jolly good times in downtown Evergreen as we kick off the weekend!',
     startTime: new Date(2023, 7, 25, 18),
     endTime: new Date(2023, 7, 25, 21),
     day: 'Friday',
+    emoji: '🥳',
   },
   {
     id: 'ceremony',
-    name: 'Ceremony and Reception',
-    shortName: 'Ceremony & Reception',
+    name: 'Ceremony & Reception',
     location: 'Hiwan Golf Club',
     startTime: new Date(2023, 7, 26, 16),
     endTime: new Date(2023, 7, 26, 22),
     day: 'Saturday',
+    emoji: '👰‍♀️',
   },
   {
     id: 'afterparty',
     name: 'After Party',
-    shortName: 'After Party',
     location: 'Little Bear Saloon',
     startTime: new Date(2023, 7, 26, 22, 30),
     endTime: new Date(2023, 7, 26, 24),
     day: 'Saturday',
+    emoji: '💃🏼',
   },
 ];
 

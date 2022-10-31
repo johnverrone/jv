@@ -1,24 +1,24 @@
 .heading {
   font-family: var(--font-family-heading);
-  font-weight: 700;
 
   margin: 0.25em 0;
 }
 
 .heading1 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
 }
 
 .heading2 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .heading3 {
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 .body {
   font-family: var(--font-family-body);
+  font-weight: 300;
 }
 
 .body1 {
