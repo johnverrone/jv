@@ -22,18 +22,6 @@ class MyDocument extends Document {
           {/* PWA */}
           <link rel="manifest" href="/manifest.json" />
 
-          {/* Fonts */}
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin="true"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700&family=Oxygen:wght@400;700&family=Fira+Code&display=swap"
-            rel="stylesheet"
-          />
-
           {/* Facebook Open Graph Meta Tags */}
           <meta
             property="og:title"

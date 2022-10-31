@@ -39,8 +39,8 @@ select {
 
 :root,
 html[data-theme='light'] {
-  --font-family-body: 'Fira Sans';
-  --font-family-heading: Oxygen;
+  --font-family-body: var(--catamaran-font);
+  --font-family-heading: var(--fiona-font);
 
   --mountain-snow-0: hsla(213, 44%, 95.1%, 1);
   --mountain-snow-10: hsla(211, 41.2%, 90%, 1);

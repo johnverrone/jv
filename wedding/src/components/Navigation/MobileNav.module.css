@@ -23,7 +23,7 @@
   position: fixed;
   inset: 0px;
   background: var(--background-primary);
-  z-index: 100;
+  z-index: 1;
 }
 
 .mobileNav {
@@ -42,6 +42,5 @@
 .mobileNav ul li {
   padding: 24px 0;
   font-family: var(--font-family-heading, var(--system-font));
-  font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.75rem;
 }

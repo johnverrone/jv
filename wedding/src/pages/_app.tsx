@@ -3,14 +3,29 @@ import { Layout } from '../components//Layout';
 import { AppProps } from 'next/app';
 import { AppRouter } from '../server/routers/_app';
 import '../styles/globals.css';
+import { Catamaran } from '@next/font/google';
+import localFont from '@next/font/local';
+
+const fionaFont = localFont({
+  src: '../styles/fiona.woff2',
+  variable: '--fiona-font',
+});
+
+const catamaran = Catamaran({
+  variable: '--catamaran-font',
+  subsets: ['latin'],
+});
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  if (
-    typeof window !== 'undefined' &&
-    window.document &&
-    process.env.NEXT_PUBLIC_TEASER_MODE == '1'
-  ) {
-    document.documentElement.setAttribute('data-theme', 'dark');
+  if (typeof window !== 'undefined' && window.document) {
+    if (process.env.NEXT_PUBLIC_TEASER_MODE == '1') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    document.documentElement.setAttribute(
+      'class',
+      `${catamaran.variable} ${fionaFont.variable}`
+    );
   }
 
   return (

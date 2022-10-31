@@ -1,6 +1,7 @@
 import { Hearts } from '../Hearts';
 import { motion } from 'framer-motion';
 import { useHover } from '../../hooks/useHover';
+import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
 import css from './NavLinks.module.css';
@@ -63,12 +64,13 @@ const NavLink = ({
         {...linkProps}
         onClick={onClick}
         ref={ref}
-        className={active ? css.active : ''}>
-
+        className={classNames({ [css.active]: active })}
+      >
         <Hearts active={hovered}>
-          <span className={active ? css.active : ''}>{children}</span>
+          <span className={classNames({ [css.active]: active })}>
+            {children}
+          </span>
         </Hearts>
-
       </Link>
     </motion.li>
   );

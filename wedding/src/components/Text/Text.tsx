@@ -1,4 +1,5 @@
 import React, { ElementType } from 'react';
+import classNames from 'classnames';
 import css from './Text.module.css';
 
 type Variant =
@@ -18,7 +19,7 @@ interface TextProps {
 export const Text = ({ variant, tag, children }: TextProps) => {
   const Component = tag ? tag : getComponent(variant);
   return (
-    <Component className={`${css.text} ${getClassName(variant)}`}>
+    <Component className={classNames(css.text, getClassName(variant))}>
       {children}
     </Component>
   );
