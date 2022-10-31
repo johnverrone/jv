@@ -57,7 +57,13 @@ export const EditingForm = ({ initialState, onSubmit }: EditingForm) => {
                   onChange={handleChangeAttending}
                   required
                 />
-                <label htmlFor={`${name}-attendance-yes`}>Accept</label>
+                <Text
+                  tag="label"
+                  variant="body2"
+                  htmlFor={`${name}-attendance-yes`}
+                >
+                  Accept
+                </Text>
                 <div style={{ display: 'inline-block', width: 8 }} />
                 <input
                   type="radio"
@@ -68,7 +74,13 @@ export const EditingForm = ({ initialState, onSubmit }: EditingForm) => {
                   onChange={handleChangeAttending}
                   required
                 />
-                <label htmlFor={`${name}-attendance-no`}>Decline</label>
+                <Text
+                  tag="label"
+                  variant="body2"
+                  htmlFor={`${name}-attendance-no`}
+                >
+                  Decline
+                </Text>
               </div>
             </div>
           );

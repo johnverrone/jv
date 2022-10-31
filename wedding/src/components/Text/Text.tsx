@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react';
+import React, { ComponentProps, ElementType } from 'react';
 import classNames from 'classnames';
 import css from './Text.module.css';
 
@@ -10,16 +10,24 @@ type Variant =
   | 'body2'
   | 'body3';
 
-interface TextProps {
+interface TextProps<T extends ElementType> {
   variant: Variant;
-  tag?: ElementType;
+  tag?: T;
   children?: React.ReactNode;
 }
 
-export const Text = ({ variant, tag, children }: TextProps) => {
+export const Text = <T extends ElementType>({
+  variant,
+  tag,
+  children,
+  ...rest
+}: TextProps<T> & Omit<ComponentProps<T>, keyof TextProps<T>>) => {
   const Component = tag ? tag : getComponent(variant);
   return (
-    <Component className={classNames(css.text, getClassName(variant))}>
+    <Component
+      className={classNames(css.text, getClassName(variant))}
+      {...rest}
+    >
       {children}
     </Component>
   );
