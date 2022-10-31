@@ -1,5 +1,5 @@
 import React from 'react';
-import css from '../../styles/rsvp.module.css';
+import css from './index.module.scss';
 import { Button } from '../../components/Button';
 
 interface SubmittedProps {

@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import { TextInput } from '../../components/TextInput';
 import { Text } from '../../components/Text';
-import css from '../../styles/rsvp.module.css';
+import css from './index.module.scss';
 import { Button } from '../../components/Button';
 
 interface LookupFormProps {

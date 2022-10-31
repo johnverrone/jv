@@ -4,9 +4,6 @@ import { random } from '../../utils/math';
 import { HeartInstance } from './HeartInstance';
 import css from './Hearts.module.css';
 
-// hot pink
-const DEFAULT_COLOR = 'hsl(330deg, 100%, 70%)';
-
 export interface Heart {
   id: string;
   createdAt: number;
@@ -16,7 +13,10 @@ export interface Heart {
 }
 
 const generateHeart = (): Heart => {
-  const color = `hsl(${random(320, 340)}deg, 100%, ${random(50, 80)}%)`;
+  const color = `hsl(${random(25, 60)}deg, ${random(50, 100)}%, ${random(
+    50,
+    80
+  )}%)`;
 
   return {
     id: String(random(10000, 99999)),

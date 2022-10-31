@@ -10,7 +10,7 @@
   position: fixed;
   top: 20px;
   left: 32px;
-  z-index: 101;
+  z-index: 2;
   padding: 0;
   color: var(--foreground-primary);
 }
