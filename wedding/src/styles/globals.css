@@ -81,3 +81,9 @@ html[data-theme='dark'] {
   --foreground-primary: var(--champagne-pink);
   --foreground-pink: hsl(330deg, 100%, 75%);
 }
+
+.link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}

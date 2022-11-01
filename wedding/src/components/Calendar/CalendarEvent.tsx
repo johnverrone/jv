@@ -5,6 +5,7 @@ import { usePopper } from 'react-popper';
 import { WeddingEvent } from './types';
 import { Text } from '../Text';
 import css from './Calendar.module.scss';
+import Link from 'next/link';
 
 interface EventProps {
   event: WeddingEvent;
@@ -55,6 +56,7 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   ref={setPopperElement}
+                  role="dialog"
                   className={css.eventBubble}
                   style={styles.popper}
                   {...attributes.popper}
@@ -63,7 +65,17 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                     {`${event.emoji} ${event.name}`}
                   </Text>
                   <Text variant="body2" tag="p">
-                    {event.location}
+                    {event.locationUrl ? (
+                      <Link
+                        href={event.locationUrl}
+                        target="_blank"
+                        className="link"
+                      >
+                        {event.location}
+                      </Link>
+                    ) : (
+                      event.location
+                    )}
                   </Text>
                   <Text variant="body2" tag="p">
                     {`${event.day} ${getTimeString(event)}`}

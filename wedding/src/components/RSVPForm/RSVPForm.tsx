@@ -28,6 +28,7 @@ export const RSVPForm = () => {
     <Found
       invitations={state.context.invitations}
       onChange={() => send('CHANGE_RESPONSE')}
+      onCancel={() => send('START_OVER')}
     />
   ) : state.matches('notFound') ? (
     <NotFound
@@ -38,6 +39,7 @@ export const RSVPForm = () => {
     <EditingForm
       initialState={state.context.invitations}
       onSubmit={handleSubmit}
+      onCancel={() => send('START_OVER')}
     />
   ) : state.matches('submitting') ? (
     <Submitting />

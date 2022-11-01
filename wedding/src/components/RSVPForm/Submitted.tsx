@@ -1,6 +1,8 @@
 import React from 'react';
 import css from './index.module.scss';
 import { Button } from '../../components/Button';
+import { Text } from '../../components/Text';
+import Link from 'next/link';
 
 interface SubmittedProps {
   onAck: () => void;
@@ -8,9 +10,9 @@ interface SubmittedProps {
 
 export const Submitted = ({ onAck }: SubmittedProps) => (
   <div className={css.rsvpForm}>
-    <p>Response received, thanks!</p>
-    <Button onClick={onAck} className={css.submitButton}>
-      👍
-    </Button>
+    <Text variant="body1">Response received, thanks!</Text>
+    <Link href="/weekend" className={css.submitButton}>
+      <Button>See the Schedule</Button>
+    </Link>
   </div>
 );

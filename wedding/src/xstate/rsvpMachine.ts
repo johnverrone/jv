@@ -65,6 +65,7 @@ export const rsvpMachine = createMachine<RSVPContext>({
     found: {
       on: {
         CHANGE_RESPONSE: 'editing',
+        START_OVER: 'lookup',
       },
     },
     notFound: {
@@ -75,6 +76,7 @@ export const rsvpMachine = createMachine<RSVPContext>({
     },
     editing: {
       on: {
+        START_OVER: 'lookup',
         SUBMIT: {
           target: 'submitting',
           actions: assign({

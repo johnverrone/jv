@@ -7,9 +7,14 @@ import { Person } from '@prisma/client';
 interface EditingForm {
   initialState: Person[];
   onSubmit: (rsvps: Person[]) => void;
+  onCancel: () => void;
 }
 
-export const EditingForm = ({ initialState, onSubmit }: EditingForm) => {
+export const EditingForm = ({
+  initialState,
+  onSubmit,
+  onCancel,
+}: EditingForm) => {
   const inital = initialState?.reduce<{ [key: string]: Person }>(
     (acc, curr) => {
       acc[curr.name] = curr;
@@ -119,9 +124,14 @@ export const EditingForm = ({ initialState, onSubmit }: EditingForm) => {
             </div>
           );
         })}
-      <Button type="submit" variant="primary" className={css.submitButton}>
-        Submit
-      </Button>
+      <div className={css.rowItems}>
+        <Button variant="secondary" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+      </div>
     </form>
   );
 };

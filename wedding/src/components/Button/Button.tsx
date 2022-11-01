@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import css from './Button.module.css';
 
 interface ButtonProps extends React.ComponentProps<'button'> {
-  variant?: 'primary';
+  variant?: 'primary' | 'secondary';
 }
 
 export const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
