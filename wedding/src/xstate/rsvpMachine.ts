@@ -27,6 +27,7 @@ interface RSVPContext {
 }
 
 export const rsvpMachine = createMachine<RSVPContext>({
+  predictableActionArguments: true,
   id: 'rsvp',
   initial: 'lookup',
   context: {

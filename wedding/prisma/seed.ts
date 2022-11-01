@@ -8,6 +8,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  const firstPersonId = 1;
   const firstGroupId = 1000;
   await prisma.group.upsert({
     where: {
@@ -21,9 +22,10 @@ async function main() {
 
   await prisma.person.upsert({
     where: {
-      name: 'Test Data',
+      id: firstPersonId,
     },
     create: {
+      id: firstPersonId,
       name: 'Test Data',
       email: 'example@gmail.com',
       groupId: firstGroupId,
