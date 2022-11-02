@@ -4,8 +4,12 @@ import { createTRPCClient } from '@trpc/client';
 import { InferMutationInput, InferQueryInput } from '../utils/trpc';
 import { createMachine, assign } from 'xstate';
 
+const url = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc`
+  : 'http://localhost:3000/api/trpc';
+
 const client = createTRPCClient<AppRouter>({
-  url: 'http://localhost:3000/api/trpc',
+  url,
 });
 
 type FindInvitationRequest = InferQueryInput<'invitations.find'>;
