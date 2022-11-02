@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import css from './Calendar.module.scss';
 import { CalendarEvent } from './CalendarEvent';
 import { Text } from '../Text';
@@ -20,6 +20,17 @@ export function Calendar({ events }: CalendarProps) {
       return id;
     });
   };
+
+  useEffect(() => {
+    const listener = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpenEventId(null);
+      }
+    };
+    window.addEventListener('keydown', listener);
+
+    return () => window.removeEventListener('keydown', listener);
+  });
 
   return (
     <>

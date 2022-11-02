@@ -26,3 +26,32 @@
   transform: translate(2px, 2px);
   box-shadow: none;
 }
+
+.secondary {
+  background-color: transparent;
+  color: var(--mountain-snow-90);
+
+  cursor: pointer;
+  touch-action: manipulation;
+
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 1px solid var(--mountain-snow-70);
+  box-shadow: 2px 2px 0px var(--mountain-snow-70);
+
+  transition-property: background-color, transform, box-shadow;
+  transition-duration: 100ms;
+  transition-timing-function: ease-in-out;
+}
+
+@media (hover: hover) {
+  .secondary:hover {
+    background-color: hsla(0deg 0% 0% / 5%);
+  }
+}
+
+.secondary:active {
+  background-color: hsla(0deg 0% 0% / 10%);
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}

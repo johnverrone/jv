@@ -9,6 +9,7 @@ const events: WeddingEvent[] = [
     id: 'golf',
     name: 'Golf Event',
     location: 'Hiwan Golf Club',
+    locationUrl: 'https://g.page/Hiwan?share',
     description:
       "Fun round of golf at Hiwan Golf Club. Entry is $100 / player. Closest to the pin, longest drive, and low net rewards will be given out! Don't forget to RSVP for this separately so can book the appropriate number of tee times.",
     startTime: new Date(2023, 7, 25, 8),
@@ -31,6 +32,7 @@ const events: WeddingEvent[] = [
     id: 'ceremony',
     name: 'Ceremony & Reception',
     location: 'Hiwan Golf Club',
+    locationUrl: 'https://g.page/Hiwan?share',
     startTime: new Date(2023, 7, 26, 16),
     endTime: new Date(2023, 7, 26, 22),
     day: 'Saturday',

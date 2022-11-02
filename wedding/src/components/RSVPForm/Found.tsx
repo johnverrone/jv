@@ -3,15 +3,15 @@ import { Text } from '../../components/Text';
 import { Check, HelpCircle, X } from 'react-feather';
 import css from './index.module.scss';
 import { Button } from '../../components/Button';
-import Link from 'next/link';
 import { Person } from '@prisma/client';
 
 interface FoundProps {
   invitations: Person[];
   onChange: () => void;
+  onCancel: () => void;
 }
 
-export const Found = ({ invitations, onChange }: FoundProps) => {
+export const Found = ({ invitations, onChange, onCancel }: FoundProps) => {
   const firstTime = invitations.every(
     (invite) => invite.attendance === 'UNKNOWN'
   );
@@ -20,14 +20,16 @@ export const Found = ({ invitations, onChange }: FoundProps) => {
     <div className={css.rsvpForm}>
       {!firstTime && (
         <div>
-          <Text variant="heading1">Welcome back!</Text>
-          <Text variant="body2">Here&apos;s a recap of your RSVP.</Text>
+          <Text variant="body1">
+            Welcome back! Here&apos;s a recap of your RSVP.
+          </Text>
         </div>
       )}
       <div>
         {invitations.map((inv) => {
           const attending = inv.attendance === 'ATTENDING';
           const unknown = inv.attendance === 'UNKNOWN';
+          const golfing = inv.golf === 'ATTENDING';
           return (
             <Fragment key={inv.name}>
               <div className={css.foundInvite}>
@@ -38,7 +40,7 @@ export const Found = ({ invitations, onChange }: FoundProps) => {
                     unknown
                       ? ' has not responded'
                       : attending
-                      ? ' is attending'
+                      ? ` is attending${golfing ? ' and golfing' : ''}`
                       : ' is not attending'
                   }`}
                 </Text>
@@ -48,8 +50,12 @@ export const Found = ({ invitations, onChange }: FoundProps) => {
         })}
       </div>
       <div className={css.rowItems}>
-        <Link href="/">&lt; Return Home</Link>
-        <Button onClick={onChange}>Change Response</Button>
+        <Button variant="secondary" onClick={onCancel}>
+          Done
+        </Button>
+        <Button variant="primary" onClick={onChange}>
+          Change Response
+        </Button>
       </div>
     </div>
   );
