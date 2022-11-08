@@ -5,6 +5,8 @@ import { AppRouter } from '../server/routers/_app';
 import '../styles/globals.css';
 import { Catamaran } from '@next/font/google';
 import localFont from '@next/font/local';
+import * as FullStory from '@fullstory/browser';
+import { useEffect } from 'react';
 
 const fionaFont = localFont({
   src: '../styles/fiona.woff2',
@@ -17,6 +19,13 @@ const catamaran = Catamaran({
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  useEffect(() => {
+    FullStory.init({
+      orgId: 'Q23YS',
+      devMode: process.env.NODE_ENV !== 'production',
+    });
+  }, []);
+
   if (typeof window !== 'undefined' && window.document) {
     if (process.env.NEXT_PUBLIC_TEASER_MODE == '1') {
       document.documentElement.setAttribute('data-theme', 'dark');
