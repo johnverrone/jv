@@ -2,7 +2,7 @@
   "name": "wedding",
   "version": "0.0.1",
   "engines": {
-    "node": "^14.20.0"
+    "node": "^16"
   },
   "scripts": {
     "dev": "source .env && next dev",
@@ -24,7 +24,7 @@
     "@trpc/server": "^9.26.2",
     "@xstate/react": "^3.0.0",
     "framer-motion": "^6.4.3",
-    "next": "^13.0.0",
+    "next": "^13.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
