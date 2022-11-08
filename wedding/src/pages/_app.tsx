@@ -20,7 +20,10 @@ const catamaran = Catamaran({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
-    FullStory.init({ orgId: 'Q23YS' });
+    FullStory.init({
+      orgId: 'Q23YS',
+      devMode: process.env.NODE_ENV !== 'production',
+    });
   }, []);
 
   if (typeof window !== 'undefined' && window.document) {
