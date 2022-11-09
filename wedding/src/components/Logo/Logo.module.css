@@ -2,19 +2,8 @@
   display: flex;
   align-items: center;
   height: 60px;
-}
-
-.john,
-.molly {
+  cursor: pointer;
   font-size: 1.5rem;
-}
-
-.john {
-  margin-right: 6px;
-}
-
-.molly {
-  margin-left: 1px;
 }
 
 .heartpersand {
