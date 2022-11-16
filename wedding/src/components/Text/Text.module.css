@@ -1,6 +1,5 @@
 .heading {
   font-family: var(--font-family-heading);
-
   margin: 0.25em 0;
 }
 
@@ -34,4 +33,8 @@
 .body3 {
   font-size: 0.875rem;
   line-height: 1.5;
+}
+
+.bold {
+  font-weight: 500;
 }

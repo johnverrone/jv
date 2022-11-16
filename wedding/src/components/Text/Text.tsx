@@ -12,12 +12,14 @@ type Variant =
 
 interface TextProps<T extends ElementType> {
   variant: Variant;
+  bold?: boolean;
   tag?: T;
   children?: React.ReactNode;
 }
 
 export const Text = <T extends ElementType>({
   variant,
+  bold = false,
   tag,
   children,
   ...rest
@@ -25,7 +27,9 @@ export const Text = <T extends ElementType>({
   const Component = tag ? tag : getComponent(variant);
   return (
     <Component
-      className={classNames(css.text, getClassName(variant))}
+      className={classNames(css.text, getClassName(variant), {
+        [css.bold]: bold,
+      })}
       {...rest}
     >
       {children}

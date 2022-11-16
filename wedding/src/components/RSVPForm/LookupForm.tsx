@@ -20,7 +20,9 @@ export const LookupForm = ({ search, onSubmit }: LookupFormProps) => {
   return (
     <form onSubmit={handleSubmit} className={css.rsvpForm}>
       <div>
-        <Text variant="heading1">Find your invitation</Text>
+        <Text variant="body1" bold tag="h1">
+          Find your invitation
+        </Text>
         <Text variant="body3">
           <i>
             If you are responding for your guest or family, you will be able to

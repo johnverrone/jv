@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  &:nth-of-type(even) {
+    align-items: flex-end;
+  }
+
+  .figure {
+    width: max(50%, 300px);
+    margin-inline: 0;
+
+    .image {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+}

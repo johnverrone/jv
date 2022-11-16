@@ -73,10 +73,9 @@ export function Calendar({ events }: CalendarProps) {
             />
           ))}
         </div>
-        <div className={css.dayName}>
+        <div className={css.dayName} style={{ height: 2 }}>
           <Text variant="heading2">Sunday</Text>
         </div>
-        <div className={css.day}></div>
       </div>
     </>
   );

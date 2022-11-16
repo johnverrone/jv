@@ -2,7 +2,29 @@ import React, { FormEvent, useState } from 'react';
 import { Button } from '../../components/Button';
 import { Text } from '../../components/Text';
 import css from './index.module.scss';
-import { Person } from '@prisma/client';
+import { Attendance, Person } from '@prisma/client';
+import { Calendar, MapPin } from 'react-feather';
+import { AcceptDecline, AttendanceProps } from './AcceptDecline';
+import { motion } from 'framer-motion';
+
+const container = {
+  hide: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.25,
+    },
+  },
+};
+
+const item = {
+  hide: { opacity: 0 },
+  show: { opacity: 1 },
+};
+
+type PersonByName = {
+  [key: string]: Person;
+};
 
 interface EditingForm {
   initialState: Person[];
@@ -15,123 +37,126 @@ export const EditingForm = ({
   onSubmit,
   onCancel,
 }: EditingForm) => {
-  const inital = initialState?.reduce<{ [key: string]: Person }>(
-    (acc, curr) => {
-      acc[curr.name] = curr;
-      return acc;
-    },
-    {}
-  );
+  const inital = initialState?.reduce<PersonByName>((acc, curr) => {
+    acc[curr.name] = curr;
+    return acc;
+  }, {});
   const [rsvps, setRsvps] = useState(inital);
+
+  const showFridayEvents = Object.values(rsvps).some(
+    (rsvp) => rsvp.attendance === 'ATTENDING'
+  );
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     onSubmit(Object.values(rsvps));
   };
 
+  const updateRsvp = (
+    name: string,
+    property: AttendanceProps,
+    attending: Attendance
+  ) => {
+    setRsvps((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        [property]: attending,
+      },
+    }));
+  };
+
   return (
-    <form className={css.rsvpForm} onSubmit={handleSubmit}>
-      {rsvps &&
-        Object.keys(rsvps).map((name) => {
-          const attending = rsvps[name].attendance === 'ATTENDING';
-          const notAttending = rsvps[name].attendance === 'NOT_ATTENDING';
-          const playingGolf = rsvps[name].golf === 'ATTENDING';
-
-          const handleChangeAttending = (
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            setRsvps((prev) => ({
-              ...prev,
-              [name]: {
-                ...prev[name],
-                attendance:
-                  e.target.value === 'attending'
-                    ? 'ATTENDING'
-                    : 'NOT_ATTENDING',
-                golf: 'NOT_ATTENDING',
-              },
-            }));
-
-          const handleGolfAttending = (
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            setRsvps((prev) => ({
-              ...prev,
-              [name]: {
-                ...prev[name],
-                golf:
-                  prev[name].golf === 'ATTENDING'
-                    ? 'NOT_ATTENDING'
-                    : 'ATTENDING',
-              },
-            }));
-
-          return (
-            <div key={name}>
-              <div className={css.editRow}>
-                <Text variant="body1">{name}</Text>
-                <div>
-                  <input
-                    type="radio"
-                    name={`${name}-attendance`}
-                    id={`${name}-attendance-yes`}
-                    value="attending"
-                    checked={attending}
-                    onChange={handleChangeAttending}
-                    required
-                  />
-                  <Text
-                    tag="label"
-                    variant="body2"
-                    htmlFor={`${name}-attendance-yes`}
-                  >
-                    Accept
-                  </Text>
-                  <div style={{ display: 'inline-block', width: 8 }} />
-                  <input
-                    type="radio"
-                    name={`${name}-attendance`}
-                    id={`${name}-attendance-no`}
-                    value="not-attending"
-                    checked={notAttending}
-                    onChange={handleChangeAttending}
-                    required
-                  />
-                  <Text
-                    tag="label"
-                    variant="body2"
-                    htmlFor={`${name}-attendance-no`}
-                  >
-                    Decline
-                  </Text>
-                </div>
-              </div>
-              {attending && (
-                <div className={css.golfContainer}>
-                  <Text variant="body3">
-                    Will you be joining us for a round of golf at Hiwan Golf
-                    Club on Friday morning for $100?
-                    <br />
-                    (more info on the <strong>Wedding Weekend</strong> page)
-                  </Text>
-                  <input
-                    type="checkbox"
-                    checked={playingGolf}
-                    onChange={handleGolfAttending}
-                  />
-                </div>
-              )}
+    <>
+      <motion.form
+        variants={container}
+        initial="hide"
+        animate="show"
+        exit="hide"
+        className={css.rsvpForm}
+        onSubmit={handleSubmit}
+      >
+        <motion.div variants={item}>
+          <div className={css.eventInfo}>
+            <Text variant="body1" bold>
+              Friday Morning Golf
+            </Text>
+            <div className={css.iconRow}>
+              <Calendar size={18} />
+              <Text variant="body3">Friday, August 25, 2022 at 8:00am</Text>
             </div>
-          );
-        })}
-      <div className={css.rowItems}>
-        <Button variant="secondary" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit" variant="primary">
-          Submit
-        </Button>
-      </div>
-    </form>
+            <div className={css.iconRow}>
+              <MapPin size={18} />
+              <Text variant="body3">Hiwan Golf Club</Text>
+            </div>
+          </div>
+          {Object.entries(rsvps).map(([name, rsvp]) => (
+            <AcceptDecline
+              key={name}
+              name={name}
+              property="golf"
+              attendance={rsvp.golf}
+              onChange={updateRsvp}
+            />
+          ))}
+        </motion.div>
+        <motion.div variants={item}>
+          <div className={css.eventInfo}>
+            <Text variant="body1" bold>
+              Welcome Party
+            </Text>
+            <div className={css.iconRow}>
+              <Calendar size={18} />
+              <Text variant="body3">Friday, August 25, 2022 at 6:00pm</Text>
+            </div>
+            <div className={css.iconRow}>
+              <MapPin size={18} />
+              <Text variant="body3">Location TBD</Text>
+            </div>
+          </div>
+          {Object.entries(rsvps).map(([name, rsvp]) => (
+            <AcceptDecline
+              key={name}
+              name={name}
+              property="welcome"
+              attendance={rsvp.welcome}
+              onChange={updateRsvp}
+            />
+          ))}
+        </motion.div>
+        <motion.div variants={item}>
+          <div className={css.eventInfo}>
+            <Text variant="body1" bold>
+              Wedding Ceremony & Reception
+            </Text>
+            <div className={css.iconRow}>
+              <Calendar size={18} />
+              <Text variant="body3">Saturday, August 26, 2022 at 5:00pm</Text>
+            </div>
+            <div className={css.iconRow}>
+              <MapPin size={18} />
+              <Text variant="body3">Hiwan Golf Club</Text>
+            </div>
+          </div>
+          {Object.entries(rsvps).map(([name, rsvp]) => (
+            <AcceptDecline
+              key={name}
+              name={name}
+              property="attendance"
+              attendance={rsvp.attendance}
+              onChange={updateRsvp}
+            />
+          ))}
+        </motion.div>
+        <div className={css.rowItems}>
+          <Button variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
+        </div>
+      </motion.form>
+    </>
   );
 };
