@@ -5,4 +5,5 @@
   font-family: var(--font-family-body);
   color: var(--grey-70);
   background-color: transparent;
+  outline-color: var(--lime);
 }

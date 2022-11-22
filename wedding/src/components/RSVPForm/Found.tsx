@@ -20,10 +20,8 @@ export const Found = ({ invitations, onChange, onCancel }: FoundProps) => {
     <div className={css.rsvpForm}>
       {!firstTime && (
         <div>
-          <Text variant="body1" bold>
-            Welcome back!{` `}
-            <Text variant="body1">Here&apos;s a recap of your RSVP.</Text>
-          </Text>
+          <Text variant="heading1">Welcome back!</Text>
+          <Text variant="body2">Here&apos;s a recap of your RSVP.</Text>
         </div>
       )}
       <div>

@@ -3,7 +3,7 @@ import { Button } from '../../components/Button';
 import { Text } from '../../components/Text';
 import css from './index.module.scss';
 import { Attendance, Person } from '@prisma/client';
-import { Calendar, MapPin } from 'react-feather';
+import { Calendar, MapPin, User } from 'react-feather';
 import { AcceptDecline, AttendanceProps } from './AcceptDecline';
 import { motion } from 'framer-motion';
 
@@ -78,9 +78,7 @@ export const EditingForm = ({
       >
         <motion.div variants={item}>
           <div className={css.eventInfo}>
-            <Text variant="body1" bold>
-              Friday Morning Golf
-            </Text>
+            <Text variant="heading3">Friday Morning Golf</Text>
             <div className={css.iconRow}>
               <Calendar size={18} />
               <Text variant="body3">Friday, August 25, 2022 at 8:00am</Text>
@@ -88,6 +86,10 @@ export const EditingForm = ({
             <div className={css.iconRow}>
               <MapPin size={18} />
               <Text variant="body3">Hiwan Golf Club</Text>
+            </div>
+            <div className={css.iconRow}>
+              <User size={18} />
+              <Text variant="body3">Golf</Text>
             </div>
           </div>
           {Object.entries(rsvps).map(([name, rsvp]) => (
@@ -102,9 +104,7 @@ export const EditingForm = ({
         </motion.div>
         <motion.div variants={item}>
           <div className={css.eventInfo}>
-            <Text variant="body1" bold>
-              Welcome Party
-            </Text>
+            <Text variant="heading3">Welcome Party</Text>
             <div className={css.iconRow}>
               <Calendar size={18} />
               <Text variant="body3">Friday, August 25, 2022 at 6:00pm</Text>
@@ -112,6 +112,10 @@ export const EditingForm = ({
             <div className={css.iconRow}>
               <MapPin size={18} />
               <Text variant="body3">Location TBD</Text>
+            </div>
+            <div className={css.iconRow}>
+              <User size={18} />
+              <Text variant="body3">Casual</Text>
             </div>
           </div>
           {Object.entries(rsvps).map(([name, rsvp]) => (
@@ -126,9 +130,7 @@ export const EditingForm = ({
         </motion.div>
         <motion.div variants={item}>
           <div className={css.eventInfo}>
-            <Text variant="body1" bold>
-              Wedding Ceremony & Reception
-            </Text>
+            <Text variant="heading3">Wedding Ceremony & Reception</Text>
             <div className={css.iconRow}>
               <Calendar size={18} />
               <Text variant="body3">Saturday, August 26, 2022 at 5:00pm</Text>
@@ -136,6 +138,10 @@ export const EditingForm = ({
             <div className={css.iconRow}>
               <MapPin size={18} />
               <Text variant="body3">Hiwan Golf Club</Text>
+            </div>
+            <div className={css.iconRow}>
+              <User size={18} />
+              <Text variant="body3">Cocktail</Text>
             </div>
           </div>
           {Object.entries(rsvps).map(([name, rsvp]) => (

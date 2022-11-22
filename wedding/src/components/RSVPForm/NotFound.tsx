@@ -10,9 +10,7 @@ interface NotFoundProps {
 
 export const NotFound = ({ onRetry, onStartOver }: NotFoundProps) => (
   <div className={css.rsvpForm}>
-    <Text variant="heading3">
-      Uh oh! There was an error finding your invite.
-    </Text>
+    <Text variant="body1">Uh oh! There was an error finding your invite.</Text>
     <div className={css.rowItems}>
       <Button onClick={onStartOver}>Search again</Button>
       <Button onClick={onRetry}>Retry</Button>

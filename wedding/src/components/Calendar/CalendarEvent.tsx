@@ -61,7 +61,7 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                   style={styles.popper}
                   {...attributes.popper}
                 >
-                  <Text variant="heading1">
+                  <Text variant="heading2">
                     {`${event.emoji} ${event.name}`}
                   </Text>
                   <Text variant="body2" tag="p">
