@@ -10,15 +10,6 @@ const prisma = new PrismaClient();
 async function main() {
   const firstPersonId = 1;
   const firstGroupId = 1000;
-  await prisma.group.upsert({
-    where: {
-      id: firstGroupId,
-    },
-    create: {
-      id: firstGroupId,
-    },
-    update: {},
-  });
 
   await prisma.person.upsert({
     where: {

@@ -17,13 +17,7 @@ model Person {
   attendance Attendance @default(UNKNOWN)
   golf       Attendance @default(UNKNOWN)
   welcome    Attendance @default(UNKNOWN)
-  group      Group      @relation(fields: [groupId], references: [id])
   groupId    Int
-}
-
-model Group {
-  id     Int      @id @default(autoincrement())
-  people Person[]
 }
 
 enum Attendance {
