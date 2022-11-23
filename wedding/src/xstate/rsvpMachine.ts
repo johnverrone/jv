@@ -62,7 +62,9 @@ export const rsvpMachine = createMachine<RSVPContext>({
         },
         onError: {
           target: 'notFound',
-          actions: assign({ error: (_, event) => event.data }),
+          actions: assign({
+            error: (_, event) => event.data.message,
+          }),
         },
       },
     },

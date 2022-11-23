@@ -34,6 +34,9 @@ export const RSVPForm = () => {
     <NotFound
       onRetry={() => send('RETRY')}
       onStartOver={() => send('START_OVER')}
+      errorMessage={
+        state.context.error ?? 'There was an error with your search.'
+      }
     />
   ) : state.matches('editing') ? (
     <EditingForm

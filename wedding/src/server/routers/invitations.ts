@@ -25,7 +25,7 @@ export const invitationsRouter = createRouter()
   .query('find', {
     input: z.string(),
     async resolve({ input }) {
-      const invite = await prisma.person.findFirstOrThrow({
+      const invites = await prisma.person.findMany({
         where: {
           name: {
             contains: input,
@@ -34,18 +34,30 @@ export const invitationsRouter = createRouter()
         },
         select: defaultPersonSelect,
       });
+
+      if (!invites.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Invite not found for ${input}.`,
+        });
+      }
+
+      const invite = invites[0];
+      const foundGroup = invite.groupId;
+      if (invites.some((i) => i.groupId !== foundGroup)) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `Multiple invites found for ${input}. Try again with your full name.`,
+        });
+      }
+
       const groupsInvitations = await prisma.person.findMany({
         where: {
-          groupId: invite?.groupId,
+          groupId: invite.groupId,
         },
         select: defaultPersonSelect,
       });
-      if (!invite) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: `Invite not found for ${input}`,
-        });
-      }
+
       return groupsInvitations;
     },
   })

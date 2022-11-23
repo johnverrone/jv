@@ -17,7 +17,9 @@ model Person {
   attendance Attendance @default(UNKNOWN)
   golf       Attendance @default(UNKNOWN)
   welcome    Attendance @default(UNKNOWN)
-  groupId    Int
+  groupId    Int        @map("group_id")
+
+  @@map("person")
 }
 
 enum Attendance {
