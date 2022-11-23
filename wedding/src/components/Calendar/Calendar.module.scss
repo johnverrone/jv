@@ -3,6 +3,8 @@
   --day-separator-color: hsla(0deg 0% 0% / 20%);
   --event-color: var(--lime);
   --line-position: 50%;
+  --height: 784px;
+  height: var(--height);
 }
 
 .eventLine {
@@ -10,7 +12,7 @@
 
   position: absolute;
   width: 3px;
-  height: 1000px;
+  height: calc(var(--height) - 50px);
   top: 50px;
   left: calc(var(--line-position) - 1px);
 }

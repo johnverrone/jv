@@ -18,11 +18,15 @@ export const Found = ({ invitations, onChange, onCancel }: FoundProps) => {
 
   return (
     <div className={css.rsvpForm}>
-      {!firstTime && (
+      {!firstTime ? (
         <div>
-          <Text variant="body1">
-            Welcome back! Here&apos;s a recap of your RSVP.
-          </Text>
+          <Text variant="heading1">Welcome back!</Text>
+          <Text variant="body2">Here&apos;s a recap of your RSVP.</Text>
+        </div>
+      ) : (
+        <div>
+          <Text variant="heading1">Hello!</Text>
+          <Text variant="body2">We look forward to hearing from you.</Text>
         </div>
       )}
       <div>
@@ -54,7 +58,7 @@ export const Found = ({ invitations, onChange, onCancel }: FoundProps) => {
           Done
         </Button>
         <Button variant="primary" onClick={onChange}>
-          Change Response
+          {firstTime ? 'RSVP' : 'Change Response'}
         </Button>
       </div>
     </div>

@@ -10,7 +10,7 @@ interface SubmittedProps {
 
 export const Submitted = ({ onAck }: SubmittedProps) => (
   <div className={css.rsvpForm}>
-    <Text variant="body1">Response received, thanks!</Text>
+    <Text variant="heading3">Response received, thanks!</Text>
     <Link href="/weekend" className={css.submitButton}>
       <Button>See the Schedule</Button>
     </Link>

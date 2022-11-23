@@ -11,18 +11,16 @@ datasource db {
 }
 
 model Person {
-  id          Int         @id @default(autoincrement())
-  name        String      
-  email       String?     @unique
-  attendance  Attendance  @default(UNKNOWN)
-  golf        Attendance  @default(UNKNOWN)
-  group       Group       @relation(fields: [groupId], references: [id])
-  groupId     Int
-}
+  id         Int        @id @default(autoincrement())
+  name       String
+  email      String?    @unique
+  groupId    Int        @map("group_id")
+  updatedAt  DateTime   @default(now()) @updatedAt
+  attendance Attendance @default(UNKNOWN)
+  golf       Attendance @default(UNKNOWN)
+  welcome    Attendance @default(UNKNOWN)
 
-model Group {
-  id      Int       @id @default(autoincrement())
-  people  Person[]
+  @@map("person")
 }
 
 enum Attendance {

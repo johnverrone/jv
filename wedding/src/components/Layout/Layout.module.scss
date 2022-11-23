@@ -1,0 +1,15 @@
+.fill {
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+}
+
+.main {
+  flex: 1;
+}
+
+.footer {
+  background-image: url('/s/evergreens.png');
+  background-position: bottom;
+  height: 375px;
+}

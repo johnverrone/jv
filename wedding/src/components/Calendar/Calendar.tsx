@@ -48,7 +48,7 @@ export function Calendar({ events }: CalendarProps) {
       <div id="calendar" className={css.calendar}>
         <div className={css.eventLine} />
         <div className={css.dayName}>
-          <Text variant="heading2">Friday</Text>
+          <Text variant="heading3">Friday</Text>
         </div>
         <div className={css.day}>
           {fridayEvents.map((e) => (
@@ -61,7 +61,7 @@ export function Calendar({ events }: CalendarProps) {
           ))}
         </div>
         <div className={css.dayName}>
-          <Text variant="heading2">Saturday</Text>
+          <Text variant="heading3">Saturday</Text>
         </div>
         <div className={css.day}>
           {saturdayEvents.map((e) => (
@@ -73,10 +73,9 @@ export function Calendar({ events }: CalendarProps) {
             />
           ))}
         </div>
-        <div className={css.dayName}>
-          <Text variant="heading2">Sunday</Text>
+        <div className={css.dayName} style={{ height: 2 }}>
+          <Text variant="heading3">Sunday</Text>
         </div>
-        <div className={css.day}></div>
       </div>
     </>
   );

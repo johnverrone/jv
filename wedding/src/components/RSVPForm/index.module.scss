@@ -1,7 +1,7 @@
 .rsvpForm {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 2rem;
 }
 
 .formItem {
@@ -18,7 +18,20 @@
   margin: 1em 0;
   display: flex;
   align-items: center;
+  gap: 4px;
+}
+
+.eventInfo {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
+
+  .iconRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 }
 
 .rowItems {
@@ -29,8 +42,8 @@
 
 .editRow {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
 .submitButton {

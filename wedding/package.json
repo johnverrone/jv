@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "teaser": "NEXT_PUBLIC_TEASER_MODE=1 next dev",
-    "vercel-build": "prisma generate && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -18,7 +18,7 @@
   "dependencies": {
     "@fullstory/browser": "^1.6.2",
     "@next/font": "^13.0.0",
-    "@prisma/client": "^4.2.1",
+    "@prisma/client": "^4.6.1",
     "@trpc/client": "^9.26.2",
     "@trpc/next": "^9.26.2",
     "@trpc/react": "^9.26.2",
@@ -39,9 +39,10 @@
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
     "classnames": "^2.3.2",
+    "date-fns": "^2.29.3",
     "eslint": "^8.23.1",
     "eslint-config-next": "^13.0.0",
-    "prisma": "^4.2.1",
+    "prisma": "^4.6.1",
     "react-popper": "^2.3.0",
     "react-refresh": "0.10.0",
     "sass": "^1.55.0",

@@ -1,5 +1,5 @@
 .primary {
-  background-color: var(--snow-90);
+  background-color: var(--lime);
   color: white;
 
   cursor: pointer;
@@ -8,7 +8,7 @@
   padding: 10px 20px;
   border-radius: 4px;
   border: none;
-  box-shadow: 2px 2px 0px var(--snow-70);
+  box-shadow: 2px 2px 0px var(--light-moss);
 
   transition-property: background-color, transform, box-shadow;
   transition-duration: 100ms;
@@ -17,27 +17,27 @@
 
 @media (hover: hover) {
   .primary:hover {
-    background-color: var(--snow-50);
+    background-color: var(--light-moss);
   }
 }
 
 .primary:active {
-  background-color: var(--snow-100);
+  background-color: var(--dark-moss);
   transform: translate(2px, 2px);
   box-shadow: none;
 }
 
 .secondary {
   background-color: transparent;
-  color: var(--snow-90);
+  color: var(--lime);
 
   cursor: pointer;
   touch-action: manipulation;
 
   padding: 10px 20px;
   border-radius: 4px;
-  border: 1px solid var(--snow-70);
-  box-shadow: 2px 2px 0px var(--snow-70);
+  border: 1px solid var(--lime);
+  box-shadow: 2px 2px 0px var(--lime);
 
   transition-property: background-color, transform, box-shadow;
   transition-duration: 100ms;

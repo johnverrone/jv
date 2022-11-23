@@ -7,9 +7,12 @@ import heroImage from '../../public/s/mt-evans.jpg';
 import teaserDesktop from '../../public/s/teaser-desktop.png';
 import teaserMobile from '../../public/s/teaser-mobile.png';
 import css from './index.module.scss';
+import { Countdown, getDaysRemaining } from '../components/Countdown';
 
 export default function Home() {
   const teaserMode = process.env.NEXT_PUBLIC_TEASER_MODE === '1';
+  const daysRemaining = getDaysRemaining();
+
   return (
     <>
       <Head>
@@ -53,7 +56,7 @@ export default function Home() {
           </div>
         </>
       ) : (
-        <>
+        <div className={css.homeContainer}>
           <div className={css.splashImage}>
             <Image
               src={heroImage}
@@ -69,8 +72,11 @@ export default function Home() {
           <SectionHeader
             title="The Wedding"
             subtitle="August 26, 2023 &middot; Evergreen, CO"
+            subsubtitle={`${daysRemaining} day${
+              daysRemaining > 1 ? 's' : ''
+            } to go!`}
           />
-        </>
+        </div>
       )}
     </>
   );
