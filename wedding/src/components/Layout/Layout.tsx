@@ -13,7 +13,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       {showNav && <MobileNav />}
       <div className={css.fill}>
         <main className={css.main}>{children}</main>
-        <footer className={css.footer} />
+        {showNav && <footer className={css.footer} />}
       </div>
     </>
   );
