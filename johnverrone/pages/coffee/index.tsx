@@ -1,11 +1,10 @@
 import React from 'react';
 import { SEO } from '@components/SEO';
-import Link from 'next/link';
 import { getAllCoffeeBrews } from '@lib/coffee/brews';
 import { GetServerSideProps } from 'next';
 import { CoffeeBrew } from '@lib/coffee/types';
 import { CoffeeCard, CoffeeCardList } from '@components/CoffeeCard';
-import { SiteTitle } from '@components/SiteTitle';
+import { WheelNav } from '@components/Navigation';
 
 const coffeeSortFn = (a: CoffeeBrew, b: CoffeeBrew) => {
   const currentlyBrewingFirst =
@@ -23,9 +22,7 @@ const CoffeePage: React.FC<CoffeePageProps> = ({ coffees }) => {
   return (
     <>
       <SEO title="Coffee" />
-      <Link href="/" passHref>
-        <SiteTitle>johnverrone</SiteTitle>
-      </Link>
+      <WheelNav />
       <CoffeeCardList>
         {coffees.sort(coffeeSortFn).map((coffee) => (
           <CoffeeCard coffee={coffee} key={coffee.id} />
