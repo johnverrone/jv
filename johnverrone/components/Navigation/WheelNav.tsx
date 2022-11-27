@@ -69,7 +69,7 @@ const Menu = styled(motion.ol)`
 
   @media (min-width: ${(p) => p.theme.responsive.small}) {
     left: revert;
-    right: -40px;
+    right: 0;
   }
 `;
 
