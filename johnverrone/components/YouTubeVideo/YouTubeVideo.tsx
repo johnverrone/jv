@@ -11,6 +11,12 @@ const VideoTitle = styled.h3`
   margin-bottom: 12px;
 `;
 
+const IFrame = styled.iframe`
+  width: min(100%, 800px);
+  height: 100%;
+  aspect-ratio: 16/9;
+`;
+
 interface YouTubeVideoProps {
   videoId: string;
   title: string;
@@ -22,14 +28,12 @@ export const YouTubeVideo: React.FC<YouTubeVideoProps> = ({
 }) => (
   <Wrapper>
     <VideoTitle>{title}</VideoTitle>
-    <iframe
-      width="800"
-      height="450"
+    <IFrame
       src={`https://www.youtube.com/embed/${videoId}`}
       title="YouTube video player"
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
-    ></iframe>
+    ></IFrame>
   </Wrapper>
 );

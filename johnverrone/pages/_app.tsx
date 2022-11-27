@@ -16,7 +16,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Component {...pageProps} />
-      <CoffeeButton />
     </ThemeProvider>
   );
 }
