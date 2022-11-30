@@ -12,6 +12,10 @@ const WorkPage: React.FC = () => {
       <AppContainer>
         <WorkList>
           <WorkItem
+            title="Advent of Code 2022"
+            link="https://github.com/johnverrone/aoc2022"
+          />
+          <WorkItem
             title="Advent of Code 2021"
             link="https://github.com/johnverrone/aoc2021"
           />
