@@ -21,16 +21,8 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
     null
   );
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: 'top',
-    modifiers: [
-      { name: 'offset', options: { offset: [0, 10] } },
-      {
-        name: 'flip',
-        options: {
-          padding: { top: 10 },
-        },
-      },
-    ],
+    placement: 'bottom',
+    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }],
   });
 
   return (
