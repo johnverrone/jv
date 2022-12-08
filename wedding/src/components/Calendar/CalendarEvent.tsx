@@ -25,7 +25,7 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
     modifiers: [
       { name: 'offset', options: { offset: [0, 10] } },
       {
-        name: 'preventOverflow',
+        name: 'flip',
         options: {
           padding: { top: 10 },
         },
