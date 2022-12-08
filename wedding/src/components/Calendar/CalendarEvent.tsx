@@ -27,7 +27,7 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
       {
         name: 'preventOverflow',
         options: {
-          rootBoundary: 'document',
+          padding: { top: 10 },
         },
       },
     ],
