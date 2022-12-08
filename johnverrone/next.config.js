@@ -12,7 +12,7 @@ module.exports = {
     return [
       {
         source: '/music',
-        destination: 'http://top-tracks-2021.vercel.app/',
+        destination: 'http://jv-top-tracks.vercel.app/',
         permanent: true,
         basePath: false,
       },
