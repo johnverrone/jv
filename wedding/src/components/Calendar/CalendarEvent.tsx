@@ -22,7 +22,15 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
   );
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'top',
-    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }],
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 10] } },
+      {
+        name: 'preventOverflow',
+        options: {
+          rootBoundary: 'document',
+        },
+      },
+    ],
   });
 
   return (
