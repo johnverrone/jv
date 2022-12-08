@@ -69,13 +69,12 @@ export default function Home() {
               }}
             />
           </div>
-          <SectionHeader
-            title="The Wedding"
-            subtitle="August 26, 2023 &middot; Evergreen, CO"
-            subsubtitle={`${daysRemaining} day${
+          <SectionHeader title="The Wedding">
+            <Text variant="body1">August 26, 2023 &middot; Evergreen, CO</Text>
+            <Text variant="body1">{`${daysRemaining} day${
               daysRemaining > 1 ? 's' : ''
-            } to go!`}
-          />
+            } to go!`}</Text>
+          </SectionHeader>
         </div>
       )}
     </>

@@ -19,10 +19,10 @@ export const NavLinks = ({ onClick, activeRoute }: NavLinksProps) => {
       </NavLink>
       <NavLink
         onClick={onClick}
-        href="/our-story"
-        active={activeRoute === '/our-story'}
+        href="/travel"
+        active={activeRoute === '/travel'}
       >
-        Our Story
+        Before You Go
       </NavLink>
       <NavLink
         onClick={onClick}

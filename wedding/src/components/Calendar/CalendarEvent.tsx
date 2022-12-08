@@ -6,6 +6,7 @@ import { WeddingEvent } from './types';
 import { Text } from '../Text';
 import css from './Calendar.module.scss';
 import Link from 'next/link';
+import { Calendar, MapPin } from 'react-feather';
 
 interface EventProps {
   event: WeddingEvent;
@@ -64,22 +65,28 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                   <Text variant="heading2">
                     {`${event.emoji} ${event.name}`}
                   </Text>
-                  <Text variant="body2" tag="p">
-                    {event.locationUrl ? (
-                      <Link
-                        href={event.locationUrl}
-                        target="_blank"
-                        className="link"
-                      >
-                        {event.location}
-                      </Link>
-                    ) : (
-                      event.location
-                    )}
-                  </Text>
-                  <Text variant="body2" tag="p">
-                    {`${event.day} ${getTimeString(event)}`}
-                  </Text>
+                  <div className={css.iconRow}>
+                    <Calendar size={18} />
+                    <Text variant="body3">
+                      {`${event.day} ${getTimeString(event)}`}
+                    </Text>
+                  </div>
+                  <div className={css.iconRow}>
+                    <MapPin size={18} />
+                    <Text variant="body3">
+                      {event.locationUrl ? (
+                        <Link
+                          href={event.locationUrl}
+                          target="_blank"
+                          className="link"
+                        >
+                          {event.location}
+                        </Link>
+                      ) : (
+                        event.location
+                      )}
+                    </Text>
+                  </div>
                   <Text variant="body2" tag="p">
                     {event.description}
                   </Text>
