@@ -1,12 +1,13 @@
 .homeContainer {
   text-align: center;
+  max-width: min(1100px, 95%);
+  margin: 0 auto;
 }
 
 .splashImage {
   position: relative;
-  max-width: min(1100px, 95%);
+  max-height: 750px;
   aspect-ratio: 4 / 5;
-  margin: 0 auto;
 }
 
 .teaserImage {

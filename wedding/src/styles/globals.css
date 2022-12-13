@@ -38,7 +38,7 @@ select {
 }
 
 :root,
-html[data-theme='light'] {
+html {
   --font-family-body: var(--catamaran-font);
   --font-family-heading: var(--fiona-font);
 
@@ -82,6 +82,9 @@ html[data-theme='light'] {
   --foreground-primary: black;
   --foreground-inverse: var(--ivory);
   --foreground-pink: hsl(330deg, 100%, 75%);
+
+  --swiper-navigation-size: 3rem;
+  --swiper-theme-color: var(--orange);
 }
 
 html[data-theme='dark'] {

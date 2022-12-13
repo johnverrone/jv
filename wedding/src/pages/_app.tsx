@@ -2,11 +2,15 @@ import { withTRPC } from '@trpc/next';
 import { Layout } from '../components//Layout';
 import { AppProps } from 'next/app';
 import { AppRouter } from '../server/routers/_app';
-import '../styles/globals.css';
 import { Catamaran } from '@next/font/google';
 import localFont from '@next/font/local';
 import * as FullStory from '@fullstory/browser';
 import { useEffect } from 'react';
+import 'swiper/scss';
+import 'swiper/scss/pagination';
+import 'swiper/scss/navigation';
+import 'swiper/scss/a11y';
+import '../styles/globals.css';
 
 const fionaFont = localFont({
   src: '../styles/fiona.woff2',

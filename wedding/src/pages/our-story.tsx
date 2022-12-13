@@ -2,7 +2,7 @@ import { SectionHeader } from '../components/SectionHeader';
 import { Text } from '../components/Text';
 import { StoryImage } from '../components/StoryImage';
 import Head from 'next/head';
-import React, { ComponentProps } from 'react';
+import React from 'react';
 import css from './our-story.module.scss';
 import * as photos from '../photos';
 

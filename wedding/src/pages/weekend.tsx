@@ -76,8 +76,6 @@ export default function Home({}) {
           <Calendar events={events} />
         </section>
 
-        <Waves />
-
         <section className={css.thingsBackground}>
           <div className={css.thingsContainer}>
             <SectionHeader title="Things to Do in Evergreen" />
@@ -124,8 +122,6 @@ export default function Home({}) {
             </div>
           </div>
         </section>
-
-        <Waves inverted />
       </div>
     </>
   );

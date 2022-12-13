@@ -12,7 +12,7 @@
 
   position: absolute;
   width: 3px;
-  height: calc(var(--height) - 50px);
+  height: calc(var(--height) + 50px);
   top: 50px;
   left: calc(var(--line-position) - 1px);
 }
