@@ -73,7 +73,7 @@ export default function Home() {
             //   disableOnInteraction: false,
             // }}
             onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
+            // onSwiper={(swiper) => console.log(swiper)}
           >
             <SwiperSlide>
               <div className={css.splashImage}>
