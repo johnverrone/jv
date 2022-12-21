@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Cloud, Coffee, MapPin } from 'react-feather';
 import { Text } from '../components/Text';
 import css from './evergreen.module.scss';
@@ -25,7 +25,7 @@ const food: ThingToDo[] = [
     Perched on a little hill with some biergarten-style outdoor
     seating and plenty of TVs indoor, this is a perfect spot for
     some casual grub or to catch a game.`,
-    location: 'Downtown Evergreen',
+    location: '3 minutes from Evergreen',
     link: 'https://goo.gl/maps/7DiLDcyxvH1d5de29',
   },
   {
@@ -47,6 +47,30 @@ const food: ThingToDo[] = [
     couches, games, and giant cinnamon rolls.`,
     location: 'Downtown Evergreen',
     link: 'https://goo.gl/maps/AJyha3QWAnfcWUMs7',
+  },
+];
+
+const hikes: ThingToDo[] = [
+  {
+    name: 'Three Sisters Park',
+    description: `Easy to moderate hikes from this trailhead with great views of Evergreen and Mt. Evans.`,
+    location: '6 minutes from Evergreen',
+    link: 'https://goo.gl/maps/q2cTgAHfPDcvhekQ8',
+  },
+  {
+    name: 'Bergen Peak',
+    description: `Challenging 10+ mile hike starting in Elk Meadow Park that will reward you with some fantastic views.
+    You'll need at least 5 - 6 hours to summit Bergen Peak and return to the trailhead so plan accordingly! We recommended
+    strolling the trails of Elk Meadow without attempting a Bergen Peak summit if you are looking for something casual.`,
+    location: '8 minutes from Evergreen',
+    link: 'https://goo.gl/maps/iDpZvwfypiwWaXbY8',
+  },
+  {
+    name: 'Evergreen Golf Course',
+    description: `A short and unique golf course that's right along Evergreen lake. Beautiful scenery and you'll usually
+    spot some wildlife. You won't need your driver but you will need some creativity to navigate some interesting hole layouts.`,
+    location: '4 minutes from Evergreen',
+    link: 'https://goo.gl/maps/iDpZvwfypiwWaXbY8',
   },
 ];
 
@@ -72,29 +96,18 @@ export default function Evergreen({}) {
           <Coffee size={56} strokeWidth={1} />
           <Text variant="heading3">Food & Coffee</Text>
           <ul>
-            {food.map((f) => (
-              <ThingToDo key={f.name} thing={f} />
+            {food.map((thing) => (
+              <ThingToDo key={thing.name} thing={thing} />
             ))}
           </ul>
         </div>
         <div className={css.category}>
           <Cloud size={56} strokeWidth={1} />
-          <Text variant="heading3">Hiking</Text>
+          <Text variant="heading3">Hike & Golf</Text>
           <ul>
-            <li>
-              <Text variant="heading2">Three Sisters Park</Text>
-            </li>
-            <li>
-              <Text variant="heading2">Bergen Peak</Text>
-            </li>
-          </ul>
-        </div>
-        <div className={css.category}>
-          <Text variant="heading3">Golf</Text>
-          <ul>
-            <li>
-              <Text variant="heading2">Evergreen Golf Course</Text>
-            </li>
+            {hikes.map((thing) => (
+              <ThingToDo key={thing.name} thing={thing} />
+            ))}
           </ul>
         </div>
         <div className={css.category}>
