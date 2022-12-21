@@ -37,6 +37,10 @@ select {
   font: inherit;
 }
 
+p {
+  margin: 0;
+}
+
 :root,
 html {
   --font-family-body: var(--catamaran-font);

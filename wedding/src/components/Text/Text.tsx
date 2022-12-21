@@ -14,6 +14,7 @@ interface TextProps<T extends ElementType> {
   variant: Variant;
   bold?: boolean;
   tag?: T;
+  justify?: boolean;
   children?: React.ReactNode;
 }
 
@@ -21,6 +22,7 @@ export const Text = <T extends ElementType>({
   variant,
   bold = false,
   tag,
+  justify = false,
   children,
   ...rest
 }: TextProps<T> & Omit<ComponentProps<T>, keyof TextProps<T>>) => {
@@ -29,6 +31,7 @@ export const Text = <T extends ElementType>({
     <Component
       className={classNames(css.text, getClassName(variant), {
         [css.bold]: bold,
+        [css.justify]: justify,
       })}
       {...rest}
     >

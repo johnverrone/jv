@@ -4,7 +4,7 @@ import { useHover } from '../../hooks/useHover';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
-import css from './NavLinks.module.css';
+import css from './NavLinks.module.scss';
 
 interface NavLinksProps {
   onClick?: React.ComponentProps<typeof NavLink>['onClick'];
@@ -48,7 +48,7 @@ export const NavLinks = ({ onClick, activeRoute }: NavLinksProps) => {
       >
         Registry
       </NavLink>
-      <NavLink onClick={onClick} href="/rsvp" active={activeRoute === '/rsvp'}>
+      <NavLink onClick={onClick} href="/rsvp" button>
         RSVP
       </NavLink>
     </>
@@ -58,17 +58,25 @@ export const NavLinks = ({ onClick, activeRoute }: NavLinksProps) => {
 interface NavLinkProps extends React.ComponentPropsWithoutRef<typeof Link> {
   onClick?: React.ComponentProps<'a'>['onClick'];
   active?: boolean;
+  button?: boolean;
 }
 
 const NavLink = ({
   onClick,
   active = false,
+  button = false,
   children,
   ...linkProps
 }: NavLinkProps) => {
   const [ref, hovered] = useHover<HTMLAnchorElement>();
 
-  return (
+  return button ? (
+    <li>
+      <Link href={linkProps.href} onClick={onClick} className={css.buttonLink}>
+        <span>{children}</span>
+      </Link>
+    </li>
+  ) : (
     <motion.li whileHover={{ scale: 1.2 }}>
       <Link
         {...linkProps}

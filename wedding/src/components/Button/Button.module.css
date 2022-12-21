@@ -1,3 +1,13 @@
+.small {
+  --button-padding: 0 20px;
+  --button-offset: 1px;
+}
+
+.medium {
+  --button-padding: 10px 20px;
+  --button-offset: 2px;
+}
+
 .primary {
   background-color: var(--lime);
   color: white;
@@ -5,10 +15,10 @@
   cursor: pointer;
   touch-action: manipulation;
 
-  padding: 10px 20px;
+  padding: var(--button-padding);
   border-radius: 4px;
   border: none;
-  box-shadow: 2px 2px 0px var(--light-moss);
+  box-shadow: var(--button-offset) var(--button-offset) 0px var(--light-moss);
 
   transition-property: background-color, transform, box-shadow;
   transition-duration: 100ms;
@@ -23,7 +33,7 @@
 
 .primary:active {
   background-color: var(--dark-moss);
-  transform: translate(2px, 2px);
+  transform: translate(var(--button-offset), var(--button-offset));
   box-shadow: none;
 }
 
@@ -34,10 +44,10 @@
   cursor: pointer;
   touch-action: manipulation;
 
-  padding: 10px 20px;
+  padding: var(--button-padding);
   border-radius: 4px;
   border: 1px solid var(--lime);
-  box-shadow: 2px 2px 0px var(--lime);
+  box-shadow: var(--button-offset) var(--button-offset) 0px var(--lime);
 
   transition-property: background-color, transform, box-shadow;
   transition-duration: 100ms;
@@ -52,6 +62,6 @@
 
 .secondary:active {
   background-color: hsla(0deg 0% 0% / 10%);
-  transform: translate(2px, 2px);
+  transform: translate(var(--button-offset), var(--button-offset));
   box-shadow: none;
 }

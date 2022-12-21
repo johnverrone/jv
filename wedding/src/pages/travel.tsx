@@ -25,7 +25,7 @@ export default function Travel({}) {
         </div>
         <div className={css.travelInformation}>
           <div className={css.spot}>
-            <Send size={iconSize} strokeWidth={0.5} />
+            <Send size={iconSize} strokeWidth={1} />
             <Text variant="heading3">Flight</Text>
             <Text variant="heading2">Denver International Airport</Text>
             <Text variant="body2" tag="p">
@@ -34,7 +34,7 @@ export default function Travel({}) {
           </div>
 
           <div className={css.spot}>
-            <Cloud size={iconSize} strokeWidth={0.5} />
+            <Cloud size={iconSize} strokeWidth={1} />
             <Text variant="heading3">Hotels</Text>
             <Text variant="heading2">Comfort Suites Golden West</Text>
             <Text variant="body2" tag="p">
@@ -43,7 +43,7 @@ export default function Travel({}) {
           </div>
 
           <div className={css.spot}>
-            <Home size={iconSize} strokeWidth={0.5} />
+            <Home size={iconSize} strokeWidth={1} />
             <Text variant="heading3">House & Rentals</Text>
             <Text variant="heading2">Airbnb or Vrbo</Text>
             <Text variant="body2" tag="p">
