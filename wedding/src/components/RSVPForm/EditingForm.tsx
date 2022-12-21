@@ -3,7 +3,7 @@ import { Button } from '../../components/Button';
 import { Text } from '../../components/Text';
 import css from './index.module.scss';
 import { Attendance, Person } from '@prisma/client';
-import { Calendar, MapPin, User } from 'react-feather';
+import { Calendar, DollarSign, MapPin, User } from 'react-feather';
 import { AcceptDecline, AttendanceProps } from './AcceptDecline';
 import { motion } from 'framer-motion';
 
@@ -78,7 +78,13 @@ export const EditingForm = ({
       >
         <motion.div variants={item}>
           <div className={css.eventInfo}>
-            <Text variant="heading3">Friday Morning Golf</Text>
+            <Text variant="heading3">
+              Friday Morning Golf &mdash; *optional*
+            </Text>
+            <div className={css.iconRow}>
+              <DollarSign size={18} />
+              <Text variant="body3">cost per player</Text>
+            </div>
             <div className={css.iconRow}>
               <Calendar size={18} />
               <Text variant="body3">Friday, August 25, 2022 at 8:00am</Text>

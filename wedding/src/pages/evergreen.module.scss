@@ -1,0 +1,28 @@
+.thingsContainer {
+  padding: 0 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+
+  .header {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  .category {
+    margin-bottom: 40px;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      li {
+        display: grid;
+        place-content: center;
+      }
+    }
+  }
+}

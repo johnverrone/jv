@@ -1,4 +1,4 @@
-.travelContainer {
+.calendarContainer {
   width: min(90%, 500px);
   margin: 0 auto;
 
@@ -6,13 +6,5 @@
     text-align: center;
     margin-top: 20px;
     margin-bottom: 30px;
-  }
-
-  .travelInformation {
-    text-align: center;
-
-    .spot {
-      margin-bottom: 80px;
-    }
   }
 }
