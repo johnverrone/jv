@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import css from './MobileNav.module.css';
 import { NavLinks } from './NavLinks';
-import { Menu, X } from 'react-feather';
 
 export const MobileNav = () => {
   const [open, setOpen] = useState(false);
@@ -16,7 +15,11 @@ export const MobileNav = () => {
         className={css.mobileNavHamburger}
         onClick={() => setOpen((p) => !p)}
       >
-        {open ? <X /> : <Menu />}
+        {open ? (
+          <i className="las la-times la-2x" />
+        ) : (
+          <i className="las la-bars la-2x" />
+        )}
       </button>
       <AnimatePresence>
         {open && (

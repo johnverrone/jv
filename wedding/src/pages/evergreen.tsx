@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
-import { Cloud, Coffee, MapPin } from 'react-feather';
 import { Text } from '../components/Text';
 import css from './evergreen.module.scss';
 
@@ -37,7 +36,8 @@ const food: ThingToDo[] = [
   },
   {
     name: 'Wildflower Cafe',
-    description: `Brunch spot with insane pancakes, omeletes, and hash bowls.`,
+    description: `Brunch spot with insane skillets, benedicts, and omelettes. They serve booze too so post up here with a mimosa or a bloody
+    mary to really get the day started. It's usually pretty busy so expect a bit of a wait, especially if you have a large party.`,
     location: 'Downtown Evergreen',
     link: 'https://goo.gl/maps/pUjvoM3mHg19pi7n7',
   },
@@ -93,7 +93,7 @@ export default function Evergreen({}) {
         </div>
 
         <div className={css.category}>
-          <Coffee size={56} strokeWidth={1} />
+          <i className="las la-utensils la-3x"></i>
           <Text variant="heading3">Food & Coffee</Text>
           <ul>
             {food.map((thing) => (
@@ -102,7 +102,7 @@ export default function Evergreen({}) {
           </ul>
         </div>
         <div className={css.category}>
-          <Cloud size={56} strokeWidth={1} />
+          <i className="las la-mountain la-3x"></i>
           <Text variant="heading3">Hike & Golf</Text>
           <ul>
             {hikes.map((thing) => (
@@ -111,6 +111,7 @@ export default function Evergreen({}) {
           </ul>
         </div>
         <div className={css.category}>
+          <i className="las la-binoculars la-3x"></i>
           <Text variant="heading3">Sightseeing</Text>
           <ul>
             <li>
@@ -133,7 +134,7 @@ export const ThingToDo = ({ thing }: ThingToDoProps) => {
       <Text variant="heading2">{thing.name}</Text>
       <div className={css.locationInfo}>
         <div className={css.iconRow}>
-          <MapPin size={12} />
+          <i className="las la-map-marker" />
           <Text variant="body3">{thing.location}</Text>
         </div>
         <Link href={thing.link} className="link" target="_blank">
@@ -141,7 +142,7 @@ export const ThingToDo = ({ thing }: ThingToDoProps) => {
         </Link>
       </div>
       <div className={css.description}>
-        <Text variant="body2" tag="p" justify>
+        <Text variant="body2" tag="p">
           {thing.description}
         </Text>
       </div>

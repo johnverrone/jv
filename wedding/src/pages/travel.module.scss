@@ -1,18 +1,34 @@
 .travelContainer {
   width: min(85%, 450px);
   margin: 0 auto;
+  text-align: center;
 
   .header {
-    text-align: center;
     margin-top: 20px;
     margin-bottom: 30px;
   }
 
-  .travelInformation {
-    text-align: center;
+  .travelCategory {
+    margin-bottom: 80px;
 
-    .spot {
-      margin-bottom: 80px;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
     }
+  }
+}
+
+.spot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  .description {
+    text-align: justify;
   }
 }

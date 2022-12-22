@@ -18,6 +18,10 @@ class MyDocument extends Document {
             rel="icon"
             href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👩‍❤️‍💋‍👨</text></svg>"
           />
+          <link
+            rel="stylesheet"
+            href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+          />
 
           {/* PWA */}
           <link rel="manifest" href="/manifest.json" />

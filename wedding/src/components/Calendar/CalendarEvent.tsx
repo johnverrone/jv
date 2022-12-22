@@ -6,7 +6,6 @@ import { WeddingEvent } from './types';
 import { Text } from '../Text';
 import css from './Calendar.module.scss';
 import Link from 'next/link';
-import { Calendar, MapPin } from 'react-feather';
 
 interface EventProps {
   event: WeddingEvent;
@@ -64,13 +63,13 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                 >
                   <Text variant="heading2">{event.name}</Text>
                   <div className={css.iconRow}>
-                    <Calendar size={18} />
+                    <i className="las la-calendar"></i>
                     <Text variant="body3">
                       {`${event.day} ${getTimeString(event)}`}
                     </Text>
                   </div>
                   <div className={css.iconRow}>
-                    <MapPin size={18} />
+                    <i className="las la-map-pin"></i>
                     <Text variant="body3">
                       {event.locationUrl ? (
                         <Link
