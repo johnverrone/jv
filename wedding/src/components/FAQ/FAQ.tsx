@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Text } from '../Text';
 import css from './FAQ.module.scss';
 
 interface FAQProps {
   question: string;
-  answer: string;
+  answer: ReactNode;
 }
 
 export const FAQ = ({ question, answer }: FAQProps) => {

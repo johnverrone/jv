@@ -3,6 +3,7 @@ import Head from 'next/head';
 import React from 'react';
 import css from './faq.module.scss';
 import { FAQ } from '../components/FAQ';
+import Link from 'next/link';
 
 export default function Faq({}) {
   return (
@@ -33,7 +34,15 @@ export default function Faq({}) {
         />
         <FAQ
           question="Is there transportation to the ceremony?"
-          answer="Yes, check the 'Travel' page for more details."
+          answer={
+            <>
+              Yes, see the{' '}
+              <Link className="link" href="/travel">
+                travel page
+              </Link>{' '}
+              for more details.
+            </>
+          }
         />
         <FAQ
           question="Will I be able to Uber around Evergreen?"
