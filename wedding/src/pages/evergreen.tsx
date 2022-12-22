@@ -74,6 +74,16 @@ const hikes: ThingToDo[] = [
   },
 ];
 
+const sights: ThingToDo[] = [
+  {
+    name: 'Red Rocks Amphitheatre',
+    description: `World famous music venue tucked into incredible red stone cliffs. There are hiking and biking trails around
+    the area as well. Definitely worth a visit if you haven't been.`,
+    location: '24 minutes from Evergreen',
+    link: 'https://goo.gl/maps/GrwpZ5kAJbnUA65T9',
+  },
+];
+
 export default function Evergreen({}) {
   return (
     <>
@@ -114,9 +124,9 @@ export default function Evergreen({}) {
           <i className="las la-binoculars la-3x"></i>
           <Text variant="heading3">Sightseeing</Text>
           <ul>
-            <li>
-              <Text variant="heading2">Elk wandering around</Text>
-            </li>
+            {sights.map((thing) => (
+              <ThingToDo key={thing.name} thing={thing} />
+            ))}
           </ul>
         </div>
       </section>
