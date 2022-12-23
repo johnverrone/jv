@@ -10,7 +10,7 @@ import 'swiper/scss';
 import 'swiper/scss/pagination';
 import 'swiper/scss/navigation';
 import 'swiper/scss/a11y';
-import '../styles/globals.css';
+import '../styles/globals.scss';
 
 const fionaFont = localFont({
   src: '../styles/fiona.woff2',

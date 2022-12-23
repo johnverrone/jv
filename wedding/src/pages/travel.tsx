@@ -20,7 +20,7 @@ export default function Travel({}) {
             Some recommendations for out of town guests.
           </Text>
         </div>
-        <section className={css.travelCategory}>
+        <section className={css.travelCategory} id="flight">
           <i className="las la-plane la-3x"></i>
           <Text variant="heading3">Flight</Text>
           <div>
@@ -30,7 +30,7 @@ export default function Travel({}) {
             </Text>
           </div>
         </section>
-        <section className={css.travelCategory}>
+        <section className={css.travelCategory} id="hotels">
           <i className="las la-hotel la-3x"></i>
           <Text variant="heading3">Hotels</Text>
           <ul>
@@ -48,7 +48,7 @@ export default function Travel({}) {
             </li>
           </ul>
         </section>
-        <section className={css.travelCategory}>
+        <section className={css.travelCategory} id="rentals">
           <i className="las la-home la-3x"></i>
           <Text variant="heading3">House & Rentals</Text>
           <div>
@@ -58,7 +58,7 @@ export default function Travel({}) {
             </Text>
           </div>
         </section>
-        <section className={css.travelCategory}>
+        <section className={css.travelCategory} id="shuttle">
           <i className="las la-bus la-3x"></i>
           <Text variant="heading3">Shuttle</Text>
           <div className={css.spot}>

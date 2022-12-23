@@ -37,7 +37,7 @@ export default function Faq({}) {
           answer={
             <>
               Yes, see the{' '}
-              <Link className="link" href="/travel">
+              <Link className="link" href="/travel#shuttle">
                 travel page
               </Link>{' '}
               for more details.

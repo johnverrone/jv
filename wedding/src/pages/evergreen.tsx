@@ -19,15 +19,6 @@ const food: ThingToDo[] = [
     link: 'https://goo.gl/maps/eeLdHUYKiGz6fPDy8',
   },
   {
-    name: 'Lariatt Lodge',
-    description: `A microbrewery with great pretzels, burgers, fries, and beer.
-    Perched on a little hill with some biergarten-style outdoor
-    seating and plenty of TVs indoor, this is a perfect spot for
-    some casual grub or to catch a game.`,
-    location: '3 minutes from Evergreen',
-    link: 'https://goo.gl/maps/7DiLDcyxvH1d5de29',
-  },
-  {
     name: "Kiki's Bowls",
     description: `Fresh poke, juices, and acai bowls. Quick and easy and best for
     a pickup order.`,
@@ -48,6 +39,27 @@ const food: ThingToDo[] = [
     location: 'Downtown Evergreen',
     link: 'https://goo.gl/maps/AJyha3QWAnfcWUMs7',
   },
+  {
+    name: 'Lariatt Lodge',
+    description: `A microbrewery with great pretzels, burgers, fries, and beer.
+    Perched on a little hill with some biergarten-style outdoor
+    seating and plenty of TVs indoor, this is a perfect spot for
+    some casual grub or to catch a game.`,
+    location: '3 minutes from Evergreen',
+    link: 'https://goo.gl/maps/7DiLDcyxvH1d5de29',
+  },
+  {
+    name: 'Espresso Evergreen',
+    description: ``,
+    location: '7 minutes from Evergreen',
+    link: 'https://goo.gl/maps/x62obRVnRfWrTFik7',
+  },
+  {
+    name: 'Evergreen Bread & Cocktail Lounge',
+    description: ``,
+    location: '10 minutes from Evergreen',
+    link: 'https://goo.gl/maps/uQNwPyeLh6BN8j5y8',
+  },
 ];
 
 const hikes: ThingToDo[] = [
@@ -65,6 +77,9 @@ const hikes: ThingToDo[] = [
     location: '8 minutes from Evergreen',
     link: 'https://goo.gl/maps/iDpZvwfypiwWaXbY8',
   },
+];
+
+const golf: ThingToDo[] = [
   {
     name: 'Evergreen Golf Course',
     description: `A short and unique golf course that's right along Evergreen lake. Beautiful scenery and you'll usually
@@ -72,15 +87,72 @@ const hikes: ThingToDo[] = [
     location: '4 minutes from Evergreen',
     link: 'https://goo.gl/maps/iDpZvwfypiwWaXbY8',
   },
+  {
+    name: 'Arrowhead Golf Course',
+    description: ``,
+    location: '45 minutes from Evergreen',
+    link: 'https://goo.gl/maps/NeK2TxuVGro7QhAi7',
+  },
+  {
+    name: 'CommonGround Golf Course',
+    description: ``,
+    location: '1 hour from Evergreen',
+    link: 'https://goo.gl/maps/BgrJQnktk162dDN49',
+  },
 ];
 
-const sights: ThingToDo[] = [
+const attractions: ThingToDo[] = [
+  {
+    name: 'Evergreen Lake',
+    description: ``,
+    location: 'Downtown Evergreen',
+    link: 'https://goo.gl/maps/GrwpZ5kAJbnUA65T9',
+  },
   {
     name: 'Red Rocks Amphitheatre',
     description: `World famous music venue tucked into incredible red stone cliffs. There are hiking and biking trails around
     the area as well. Definitely worth a visit if you haven't been.`,
     location: '24 minutes from Evergreen',
     link: 'https://goo.gl/maps/GrwpZ5kAJbnUA65T9',
+  },
+  {
+    name: 'Coors Brewery Tour',
+    description: ``,
+    location: '33 minutes from Evergreen',
+    link: 'https://goo.gl/maps/L9wW7sdBrX3u6EPH8',
+  },
+  {
+    name: 'Mt. Evans / Echo Lake',
+    description: ``,
+    location: '45 minutes from Evergreen',
+    link: 'https://goo.gl/maps/Jz3cVkUsja68PJKj6',
+  },
+];
+
+const towns: ThingToDo[] = [
+  {
+    name: 'Idaho Springs',
+    description: ``,
+    location: '30 minutes from Evergreen',
+    link: '',
+  },
+  {
+    name: 'Golden',
+    description: ``,
+    location: '30 minutes from Evergreen',
+    link: '',
+  },
+  {
+    name: 'Denver',
+    description: ``,
+    location: '45 minutes from Evergreen',
+    link: '',
+  },
+  {
+    name: 'Boulder',
+    description: ``,
+    location: '1 hour from Evergreen',
+    link: '',
   },
 ];
 
@@ -102,7 +174,7 @@ export default function Evergreen({}) {
           </Text>
         </div>
 
-        <div className={css.category}>
+        <div className={css.category} id="food">
           <i className="las la-utensils la-3x"></i>
           <Text variant="heading3">Food & Coffee</Text>
           <ul>
@@ -111,20 +183,38 @@ export default function Evergreen({}) {
             ))}
           </ul>
         </div>
-        <div className={css.category}>
+        <div className={css.category} id="hiking">
           <i className="las la-mountain la-3x"></i>
-          <Text variant="heading3">Hike & Golf</Text>
+          <Text variant="heading3">Hiking</Text>
           <ul>
             {hikes.map((thing) => (
               <ThingToDo key={thing.name} thing={thing} />
             ))}
           </ul>
         </div>
-        <div className={css.category}>
-          <i className="las la-binoculars la-3x"></i>
-          <Text variant="heading3">Sightseeing</Text>
+        <div className={css.category} id="golf">
+          <i className="las la-golf-ball la-3x"></i>
+          <Text variant="heading3">Golf</Text>
           <ul>
-            {sights.map((thing) => (
+            {golf.map((thing) => (
+              <ThingToDo key={thing.name} thing={thing} />
+            ))}
+          </ul>
+        </div>
+        <div className={css.category} id="attractions">
+          <i className="las la-binoculars la-3x"></i>
+          <Text variant="heading3">Sightseeing & Attractions</Text>
+          <ul>
+            {attractions.map((thing) => (
+              <ThingToDo key={thing.name} thing={thing} />
+            ))}
+          </ul>
+        </div>
+        <div className={css.category} id="towns">
+          <i className="las la-city la-3x"></i>
+          <Text variant="heading3">Nearby Towns</Text>
+          <ul>
+            {towns.map((thing) => (
               <ThingToDo key={thing.name} thing={thing} />
             ))}
           </ul>

@@ -43,6 +43,142 @@ const images: JollyImage[] = [
     src: photos.pinkAgenda2018,
     caption: 'Molly and John at the annual Pink Agenda Gala',
   },
+  {
+    id: 'arches',
+    src: photos.arches,
+    caption: '',
+  },
+  {
+    id: 'austinF1',
+    src: photos.austinF1,
+    caption: '',
+  },
+  {
+    id: 'canyons',
+    src: photos.canyons,
+    caption: '',
+  },
+  {
+    id: 'capitalReef',
+    src: photos.capitalReef,
+    caption: '',
+  },
+  {
+    id: 'devilsKitchen',
+    src: photos.devilsKitchen,
+    caption: '',
+  },
+  {
+    id: 'f1',
+    src: photos.f1,
+    caption: '',
+  },
+  {
+    id: 'florence',
+    src: photos.florence,
+    caption: '',
+  },
+  {
+    id: 'getaway',
+    src: photos.getaway,
+    caption: '',
+  },
+  {
+    id: 'goingAway',
+    src: photos.goingAway,
+    caption: '',
+  },
+  {
+    id: 'grandJunction',
+    src: photos.grandJunction,
+    caption: '',
+  },
+  {
+    id: 'halloween',
+    src: photos.halloween,
+    caption: '',
+  },
+  {
+    id: 'jackies',
+    src: photos.jackies,
+    caption: '',
+  },
+  {
+    id: 'lakeComo',
+    src: photos.lakeComo,
+    caption: '',
+  },
+  {
+    id: 'mirrors',
+    src: photos.mirrors,
+    caption: '',
+    objectFit: 'cover',
+  },
+  {
+    id: 'moving',
+    src: photos.moving,
+    caption: '',
+  },
+  {
+    id: 'proposal',
+    src: photos.proposal,
+    caption: '',
+  },
+  {
+    id: 'proposalKnee',
+    src: photos.proposalKnee,
+    caption: '',
+  },
+  {
+    id: 'scottsdaleGolf',
+    src: photos.scottsdaleGolf,
+    caption: '',
+  },
+  {
+    id: 'shivanas',
+    src: photos.shivanas,
+    caption: '',
+  },
+  {
+    id: 'slcHike',
+    src: photos.slcHike,
+    caption: '',
+  },
+  {
+    id: 'snowbasin',
+    src: photos.snowbasin,
+    caption: '',
+  },
+  {
+    id: 'steamboat',
+    src: photos.steamboat,
+    caption: '',
+  },
+  {
+    id: 'telluride',
+    src: photos.telluride,
+    caption: '',
+  },
+  {
+    id: 'theWorksFam',
+    src: photos.theWorksFam,
+    caption: '',
+  },
+  {
+    id: 'theWorks',
+    src: photos.theWorks,
+    caption: '',
+  },
+  {
+    id: 'vaFam',
+    src: photos.vaFam,
+    caption: '',
+  },
+  {
+    id: 'zilker',
+    src: photos.zilker,
+    caption: '',
+  },
 ];
 
 export default function Home() {
@@ -98,13 +234,13 @@ export default function Home() {
             spaceBetween={50}
             slidesPerView={1}
             keyboard={{ enabled: true }}
-            pagination={{ clickable: true }}
+            pagination={{ clickable: true, dynamicBullets: true }}
             navigation={true}
             loop={true}
-            // autoplay={{
-            //   delay: 5000,
-            //   disableOnInteraction: false,
-            // }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
             onSlideChange={() => console.log('slide change')}
           >
             {images.map(
@@ -121,7 +257,11 @@ export default function Home() {
                         objectPosition,
                       }}
                     />
-                    <figcaption>{caption}</figcaption>
+                    {!!caption && (
+                      <figcaption>
+                        <Text variant="body3">{caption}</Text>
+                      </figcaption>
+                    )}
                   </figure>
                 </SwiperSlide>
               )
