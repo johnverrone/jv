@@ -14,13 +14,13 @@ export default function Travel({}) {
         />
       </Head>
 
-      <section className={css.travelContainer}>
+      <div className={css.travelContainer}>
         <div className={css.header}>
           <Text variant="body3" tag="p">
             Some recommendations for out of town guests.
           </Text>
         </div>
-        <div className={css.travelCategory}>
+        <section className={css.travelCategory}>
           <i className="las la-plane la-3x"></i>
           <Text variant="heading3">Flight</Text>
           <div>
@@ -29,8 +29,8 @@ export default function Travel({}) {
               DIA is cool now.
             </Text>
           </div>
-        </div>
-        <div className={css.travelCategory}>
+        </section>
+        <section className={css.travelCategory}>
           <i className="las la-hotel la-3x"></i>
           <Text variant="heading3">Hotels</Text>
           <ul>
@@ -47,8 +47,8 @@ export default function Travel({}) {
               </Text>
             </li>
           </ul>
-        </div>
-        <div className={css.travelCategory}>
+        </section>
+        <section className={css.travelCategory}>
           <i className="las la-home la-3x"></i>
           <Text variant="heading3">House & Rentals</Text>
           <div>
@@ -57,8 +57,8 @@ export default function Travel({}) {
               Good luck!
             </Text>
           </div>
-        </div>
-        <div className={css.travelCategory}>
+        </section>
+        <section className={css.travelCategory}>
           <i className="las la-bus la-3x"></i>
           <Text variant="heading3">Shuttle</Text>
           <div className={css.spot}>
@@ -73,8 +73,8 @@ export default function Travel({}) {
               </Text>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 }

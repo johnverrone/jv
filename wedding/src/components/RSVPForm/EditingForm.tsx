@@ -82,14 +82,14 @@ export const EditingForm = ({
             </Text>
             <div className={css.iconRow}>
               <i className="las la-dollar-sign la-lg" />
-              <Text variant="body3">cost per player</Text>
+              <Text variant="body3">Cost per player</Text>
             </div>
             <div className={css.iconRow}>
               <i className="las la-calendar la-lg" />
               <Text variant="body3">Friday, August 25, 2022 at 8:00am</Text>
             </div>
             <div className={css.iconRow}>
-              <i className="las la-map-pin la-lg" />
+              <i className="las la-map-marker la-lg" />
               <Text variant="body3">Hiwan Golf Club</Text>
             </div>
             <div className={css.iconRow}>
@@ -115,7 +115,7 @@ export const EditingForm = ({
               <Text variant="body3">Friday, August 25, 2022 at 6:00pm</Text>
             </div>
             <div className={css.iconRow}>
-              <i className="las la-map-pin la-lg" />
+              <i className="las la-map-marker la-lg" />
               <Text variant="body3">Location TBD</Text>
             </div>
             <div className={css.iconRow}>
@@ -141,7 +141,7 @@ export const EditingForm = ({
               <Text variant="body3">Saturday, August 26, 2022 at 5:00pm</Text>
             </div>
             <div className={css.iconRow}>
-              <i className="las la-map-pin la-lg" />
+              <i className="las la-map-marker la-lg" />
               <Text variant="body3">Hiwan Golf Club</Text>
             </div>
             <div className={css.iconRow}>

@@ -4,13 +4,46 @@ import { SectionHeader } from '../components/SectionHeader';
 import { Text } from '../components/Text';
 import Head from 'next/head';
 import Image from 'next/image';
-import React from 'react';
+import React, { ComponentPropsWithoutRef, CSSProperties } from 'react';
 import heroImage from '../../public/s/mt-evans.jpg';
 import teaserDesktop from '../../public/s/teaser-desktop.png';
 import teaserMobile from '../../public/s/teaser-mobile.png';
 import css from './index.module.scss';
 import { getDaysRemaining } from '../components/Countdown';
 import * as photos from '../photos';
+
+type JollyImage = {
+  id: string;
+  src: ComponentPropsWithoutRef<typeof Image>['src'];
+  caption: string;
+  objectFit?: CSSProperties['objectFit'];
+  objectPosition?: CSSProperties['objectPosition'];
+};
+
+const images: JollyImage[] = [
+  {
+    id: 'mt-evans',
+    src: heroImage,
+    caption: 'Molly and John on the summit of Mt. Evans',
+    objectFit: 'cover',
+    objectPosition: '66%',
+  },
+  {
+    id: 'storage',
+    src: photos.storageUnit,
+    caption: 'Molly in the storage unit where Molly and John first met',
+  },
+  {
+    id: 'music-midtown',
+    src: photos.musicMidtown,
+    caption: 'Molly and John at the 2018 Music Midtown festival',
+  },
+  {
+    id: 'pink-agenda',
+    src: photos.pinkAgenda2018,
+    caption: 'Molly and John at the annual Pink Agenda Gala',
+  },
+];
 
 export default function Home() {
   const teaserMode = process.env.NEXT_PUBLIC_TEASER_MODE === '1';
@@ -73,58 +106,26 @@ export default function Home() {
             //   disableOnInteraction: false,
             // }}
             onSlideChange={() => console.log('slide change')}
-            // onSwiper={(swiper) => console.log(swiper)}
           >
-            <SwiperSlide>
-              <div className={css.splashImage}>
-                <Image
-                  src={heroImage}
-                  alt="John & Molly on the summit of Mt. Evans"
-                  priority
-                  fill
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: '66%',
-                  }}
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={css.splashImage}>
-                <Image
-                  src={photos.storageUnit}
-                  alt="Molly in the storage unit"
-                  fill
-                  style={{
-                    objectFit: 'contain',
-                  }}
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={css.splashImage}>
-                <Image
-                  src={photos.musicMidtown}
-                  alt="Selfie of John and Molly at the 2018 Music Midtown festival"
-                  fill
-                  style={{
-                    objectFit: 'contain',
-                  }}
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={css.splashImage}>
-                <Image
-                  src={photos.pinkAgenda2018}
-                  alt="John and Molly at the annual Pink Agenda Gala"
-                  fill
-                  style={{
-                    objectFit: 'contain',
-                  }}
-                />
-              </div>
-            </SwiperSlide>
+            {images.map(
+              ({ id, src, caption, objectFit = 'contain', objectPosition }) => (
+                <SwiperSlide key={id}>
+                  <figure className={css.splashImage}>
+                    <Image
+                      src={src}
+                      alt={caption}
+                      priority
+                      fill
+                      style={{
+                        objectFit,
+                        objectPosition,
+                      }}
+                    />
+                    <figcaption>{caption}</figcaption>
+                  </figure>
+                </SwiperSlide>
+              )
+            )}
           </Swiper>
           <SectionHeader title="The Wedding">
             <Text variant="body1">August 26, 2023 &middot; Evergreen, CO</Text>

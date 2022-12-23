@@ -63,13 +63,13 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                 >
                   <Text variant="heading2">{event.name}</Text>
                   <div className={css.iconRow}>
-                    <i className="las la-calendar"></i>
+                    <i className="las la-calendar la-lg"></i>
                     <Text variant="body3">
                       {`${event.day} ${getTimeString(event)}`}
                     </Text>
                   </div>
                   <div className={css.iconRow}>
-                    <i className="las la-map-pin"></i>
+                    <i className="las la-map-marker la-lg"></i>
                     <Text variant="body3">
                       {event.locationUrl ? (
                         <Link
