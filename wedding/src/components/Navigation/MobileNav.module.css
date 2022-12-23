@@ -43,4 +43,5 @@
   padding: 24px 0;
   font-family: var(--font-family-heading, var(--system-font));
   font-size: 1.75rem;
+  text-transform: lowercase;
 }

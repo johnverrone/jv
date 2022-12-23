@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import css from './MobileNav.module.css';
 import { NavLinks } from './NavLinks';
+import { useRouter } from 'next/router';
 
 export const MobileNav = () => {
+  const { asPath } = useRouter();
   const [open, setOpen] = useState(false);
 
   const handleLinkClick = () => setOpen(false);
@@ -31,7 +33,7 @@ export const MobileNav = () => {
           >
             <nav className={css.mobileNav}>
               <ul>
-                <NavLinks onClick={handleLinkClick} />
+                <NavLinks onClick={handleLinkClick} activeRoute={asPath} />
               </ul>
             </nav>
           </motion.div>
