@@ -1,11 +1,22 @@
-export interface WeddingEvent {
+import { ReactNode } from 'react';
+
+export interface IWeddingEvent {
   id: string;
   name: string;
   location: string;
   locationUrl?: string;
   description?: string;
-  day: 'Friday' | 'Saturday' | 'Sunday';
   startTime: Date;
   endTime: Date;
-  emoji?: string;
+  type: 'wedding';
 }
+
+export interface IFreeSpace {
+  id: string;
+  name: string;
+  startTime: Date;
+  endTime: Date;
+  type: 'free';
+}
+
+export type ICalendarEvent = IWeddingEvent | IFreeSpace;

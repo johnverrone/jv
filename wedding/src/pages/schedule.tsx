@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import React from 'react';
-import { Calendar, WeddingEvent } from '../components/Calendar';
+import { Calendar, ICalendarEvent } from '../components/Calendar';
 import { Text } from '../components/Text';
 import css from './schedule.module.scss';
 
-const events: WeddingEvent[] = [
+const events: ICalendarEvent[] = [
   // {
   //   id: 'golf',
   //   name: 'Golf Event (optional)',
@@ -14,20 +14,25 @@ const events: WeddingEvent[] = [
   //     "A fun round of golf at Hiwan Golf Club. We ask you pay the cost to cover greens fees. Maybe a fun game format with some light gambling will be in store? More details to come. Don't forget to accept 'Friday Golf Round' in your RSVP if interested so can book the appropriate number of tee times.",
   //   startTime: new Date(2023, 7, 25, 8),
   //   endTime: new Date(2023, 7, 25, 13),
-  //   day: 'Friday',
-  //   emoji: '🏌️‍♂️',
+  //   type: 'wedding',
   // },
-  // {
-  //   id: 'welcome-party',
-  //   name: 'Welcome Party',
-  //   location: 'Revival Brewing',
-  //   description:
-  //     'Join us for drinks and jolly good times in downtown Evergreen as we kick off the weekend!',
-  //   startTime: new Date(2023, 7, 25, 18),
-  //   endTime: new Date(2023, 7, 25, 21),
-  //   day: 'Friday',
-  //   emoji: '🥳',
-  // },
+  {
+    id: 'friday-free',
+    name: 'Free Time',
+    startTime: new Date(2023, 7, 25, 8),
+    endTime: new Date(2023, 7, 25, 24),
+    type: 'free',
+  },
+  {
+    id: 'welcome-party',
+    name: 'Welcome Party',
+    location: 'Revival Brewing',
+    description:
+      'Join us for drinks and jolly good times in downtown Evergreen as we kick off the weekend!',
+    startTime: new Date(2023, 7, 24, 19),
+    endTime: new Date(2023, 7, 24, 22),
+    type: 'wedding',
+  },
   {
     id: 'ceremony',
     name: 'Ceremony & Reception',
@@ -37,8 +42,7 @@ const events: WeddingEvent[] = [
       "Y'all know the drill! The big event! Dinner, drinks, and dancing to follow the ceremony.",
     startTime: new Date(2023, 7, 26, 16),
     endTime: new Date(2023, 7, 26, 22),
-    day: 'Saturday',
-    emoji: '👰‍♀️',
+    type: 'wedding',
   },
   // {
   //   id: 'afterparty',
@@ -50,6 +54,7 @@ const events: WeddingEvent[] = [
   //   endTime: new Date(2023, 7, 26, 24),
   //   day: 'Saturday',
   //   emoji: '💃🏼',
+  //   type: 'wedding',
   // },
 ];
 
