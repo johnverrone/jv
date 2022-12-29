@@ -1,6 +1,10 @@
-.registryWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
+.registryContainer {
+  width: min(85%, 450px);
+  margin: 0 auto;
+  text-align: center;
+
+  .header {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
 }

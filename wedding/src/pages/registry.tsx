@@ -27,8 +27,12 @@ export default function Registry({}) {
         />
       </Head>
 
-      <div className={css.registryWrapper}>
-        <Text variant="body2">coming soon...</Text>
+      <div className={css.registryContainer}>
+        <div className={css.header}>
+          <Text variant="body3" tag="p">
+            coming soon...
+          </Text>
+        </div>
         {/* <a
           className="zola-registry-embed"
           href="www.zola.com/registry/johnmolly"
