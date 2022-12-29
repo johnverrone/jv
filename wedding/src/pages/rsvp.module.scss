@@ -1,6 +1,4 @@
 .pageContainer {
-  width: 100%;
-  max-width: 500px;
-  padding: 0 30px;
+  width: min(85%, 450px);
   margin: 0 auto;
 }

@@ -12,7 +12,8 @@
 
   position: absolute;
   width: 3px;
-  height: calc(var(--height) - 50px);
+  border-radius: 2px;
+  height: calc(var(--height) + 50px);
   top: 50px;
   left: calc(var(--line-position) - 1px);
 }
@@ -29,6 +30,7 @@
     flex: 1;
     height: 2px;
     margin-left: 10px;
+    border-radius: 2px;
   }
 }
 

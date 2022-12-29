@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Text } from '../../components/Text';
-import { Check, HelpCircle, X } from 'react-feather';
 import css from './index.module.scss';
 import { Button } from '../../components/Button';
 import { Person } from '@prisma/client';
@@ -37,7 +36,13 @@ export const Found = ({ invitations, onChange, onCancel }: FoundProps) => {
           return (
             <Fragment key={inv.name}>
               <div className={css.foundInvite}>
-                {unknown ? <HelpCircle /> : attending ? <Check /> : <X />}
+                {unknown ? (
+                  <i className="las la-question-circle la-2x" />
+                ) : attending ? (
+                  <i className="las la-check-circle la-2x" />
+                ) : (
+                  <i className="las la-times-circle la-2x" />
+                )}
                 <Text variant="body2">
                   <strong>{inv.name}</strong>
                   {`${

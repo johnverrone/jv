@@ -1,12 +1,28 @@
 .homeContainer {
   text-align: center;
+  max-width: min(1100px, 95%);
+  margin: 0 auto;
 }
 
 .splashImage {
   position: relative;
-  max-width: min(1100px, 95%);
+  max-height: 750px;
   aspect-ratio: 4 / 5;
-  margin: 0 auto;
+  margin: 0;
+  margin-bottom: 36px;
+
+  figcaption {
+    position: absolute;
+    bottom: 0;
+    background: hsla(var(--ivory-raw) / 0.7);
+    padding: 4px 20px;
+    width: 100%;
+
+    // span {
+    //   display: inline-block;
+    //   text-align: justify;
+    // }
+  }
 }
 
 .teaserImage {

@@ -1,4 +1,72 @@
 .travelContainer {
-  width: min(90%, 500px);
+  width: min(85%, 450px);
   margin: 0 auto;
+  text-align: center;
+
+  .header {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  .altitudeReminder {
+    margin-bottom: 30px;
+    background-color: var(--sunset-20);
+    border: 1px solid var(--sunset-40);
+    border-radius: 4px;
+    padding: 8px 16px;
+
+    p {
+      text-align: justify;
+    }
+  }
+
+  .travelCategory {
+    margin-bottom: 30px;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    &:not(:last-of-type):after {
+      content: '';
+      display: block;
+      height: 2px;
+      width: 100%;
+      margin: 0 auto;
+      background-color: var(--foreground-primary);
+      margin-top: 30px;
+    }
+  }
+}
+
+.spot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  .description {
+    text-align: center;
+
+    p {
+      text-align: justify;
+    }
+  }
+
+  &.recommended {
+    // border: 2px solid var(--light-orange);
+    // border-radius: 8px;
+    // padding: 8px 16px;
+
+    &:before {
+      content: '✨ recommended option ✨';
+      color: var(--light-orange);
+      font-style: italic;
+    }
+  }
 }

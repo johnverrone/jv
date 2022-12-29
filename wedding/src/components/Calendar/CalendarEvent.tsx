@@ -6,7 +6,6 @@ import { WeddingEvent } from './types';
 import { Text } from '../Text';
 import css from './Calendar.module.scss';
 import Link from 'next/link';
-import { Calendar, MapPin } from 'react-feather';
 
 interface EventProps {
   event: WeddingEvent;
@@ -62,17 +61,15 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                   style={styles.popper}
                   {...attributes.popper}
                 >
-                  <Text variant="heading2">
-                    {`${event.emoji} ${event.name}`}
-                  </Text>
+                  <Text variant="heading2">{event.name}</Text>
                   <div className={css.iconRow}>
-                    <Calendar size={18} />
+                    <i className="las la-calendar la-lg"></i>
                     <Text variant="body3">
                       {`${event.day} ${getTimeString(event)}`}
                     </Text>
                   </div>
                   <div className={css.iconRow}>
-                    <MapPin size={18} />
+                    <i className="las la-map-marker la-lg"></i>
                     <Text variant="body3">
                       {event.locationUrl ? (
                         <Link
