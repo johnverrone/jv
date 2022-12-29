@@ -6,7 +6,7 @@ import { NavLinks } from './NavLinks';
 import { useRouter } from 'next/router';
 
 export const MobileNav = () => {
-  const { asPath } = useRouter();
+  const { basePath } = useRouter();
   const [open, setOpen] = useState(false);
 
   const handleLinkClick = () => setOpen(false);
@@ -33,7 +33,7 @@ export const MobileNav = () => {
           >
             <nav className={css.mobileNav}>
               <ul>
-                <NavLinks onClick={handleLinkClick} activeRoute={asPath} />
+                <NavLinks onClick={handleLinkClick} activeRoute={basePath} />
               </ul>
             </nav>
           </motion.div>
