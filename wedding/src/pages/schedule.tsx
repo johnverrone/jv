@@ -16,22 +16,29 @@ const events: ICalendarEvent[] = [
   //   endTime: new Date(2023, 7, 25, 13),
   //   type: 'wedding',
   // },
+  // {
+  //   id: 'welcome-party',
+  //   name: 'Welcome Party',
+  //   location: 'Location TBD',
+  //   description:
+  //     'Join us for drinks and jolly good times in downtown Evergreen as we kick off the weekend!',
+  //   startTime: new Date(2023, 7, 24, 19),
+  //   endTime: new Date(2023, 7, 24, 22),
+  //   type: 'wedding',
+  // },
+  {
+    id: 'thursday-free',
+    name: 'Free Time',
+    startTime: new Date(2023, 7, 24, 8),
+    endTime: new Date(2023, 7, 24, 24),
+    type: 'free',
+  },
   {
     id: 'friday-free',
     name: 'Free Time',
     startTime: new Date(2023, 7, 25, 8),
     endTime: new Date(2023, 7, 25, 24),
     type: 'free',
-  },
-  {
-    id: 'welcome-party',
-    name: 'Welcome Party',
-    location: 'Revival Brewing',
-    description:
-      'Join us for drinks and jolly good times in downtown Evergreen as we kick off the weekend!',
-    startTime: new Date(2023, 7, 24, 19),
-    endTime: new Date(2023, 7, 24, 22),
-    type: 'wedding',
   },
   {
     id: 'ceremony',
