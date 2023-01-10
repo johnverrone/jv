@@ -144,27 +144,29 @@ const attractions: ThingToDo[] = [
 const towns: ThingToDo[] = [
   {
     name: 'Idaho Springs',
-    description: ``,
+    description: `A small mountain town with a few breweries and restaurants. A cool place to grab some BBQ and learn about history of mining in the area.`,
     location: '30 minutes from Evergreen',
-    link: '',
+    link: 'https://goo.gl/maps/AtmuQ7eiT7TyQwH96',
   },
   {
     name: 'Golden',
-    description: ``,
+    description: `Home to the Colorado School of Mines and Coors Brewing, Golden is a awesome little town with bars, restaurants, and nature.`,
     location: '30 minutes from Evergreen',
-    link: '',
+    link: 'https://goo.gl/maps/4fkDspZHgsJCGXR77',
   },
   {
     name: 'Denver',
-    description: ``,
+    description: `Obviously the largest 'town' on the list. Denver is a capital of Colorado and is home to major league sports teams, businesses, concert halls
+     as well as museums, zoos, and parks. We recommend exploring the Highlands or RiNo neighborhoods for food, drinks, and coffee shops.`,
     location: '45 minutes from Evergreen',
-    link: '',
+    link: 'https://goo.gl/maps/F1SsfRXKPme8myTo7',
   },
   {
     name: 'Boulder',
-    description: ``,
+    description: `A beautiful city tucked in the foothills of the mountains. Check out the pedestrian mall downtown (Pearl Street)
+    to explore art galleries, cafes, restaurants, and shopping.`,
     location: '1 hour from Evergreen',
-    link: '',
+    link: 'https://goo.gl/maps/52Qwem2fiLXcHK4M9',
   },
 ];
 
