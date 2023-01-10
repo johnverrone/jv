@@ -1,6 +1,7 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Text } from '../components/Text';
 import css from './evergreen.module.scss';
 
@@ -174,55 +175,68 @@ export default function Evergreen({}) {
           </Text>
         </div>
 
-        <div className={css.category} id="food">
-          <i className="las la-utensils la-3x"></i>
-          <Text variant="heading3">Food & Coffee</Text>
-          <ul>
-            {food.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
-        <div className={css.category} id="hiking">
-          <i className="las la-mountain la-3x"></i>
-          <Text variant="heading3">Hiking</Text>
-          <ul>
-            {hikes.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
-        <div className={css.category} id="golf">
-          <i className="las la-golf-ball la-3x"></i>
-          <Text variant="heading3">Golf</Text>
-          <ul>
-            {golf.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
-        <div className={css.category} id="attractions">
-          <i className="las la-binoculars la-3x"></i>
-          <Text variant="heading3">Sightseeing & Attractions</Text>
-          <ul>
-            {attractions.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
-        <div className={css.category} id="towns">
-          <i className="las la-city la-3x"></i>
-          <Text variant="heading3">Nearby Towns</Text>
-          <ul>
-            {towns.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
+        <Category
+          id="food"
+          icon="la-utensils"
+          name="Food & Coffee"
+          items={food}
+        />
+        <Category id="hiking" icon="la-mountain" name="Hiking" items={hikes} />
+        <Category id="golf" icon="la-golf-ball" name="Golf" items={golf} />
+        <Category
+          id="attractions"
+          icon="la-binoculars"
+          name="Sightseeing & Attractions"
+          items={attractions}
+        />
+        <Category id="towns" icon="la-city" name="Nearby Towns" items={towns} />
       </section>
     </>
   );
 }
+
+interface CategoryProps {
+  id: string;
+  icon: string;
+  name: string;
+  items: ThingToDo[];
+}
+
+export const Category = ({ id, icon, name, items }: CategoryProps) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className={css.category} id={id}>
+      <button
+        className={css.categoryHeading}
+        onClick={() => setOpen((p) => !p)}
+      >
+        <div className={css.categoryName}>
+          <i className={`las ${icon} la-2x`}></i>
+          <Text variant="heading3">{name}</Text>
+        </div>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.ul
+            key="answer"
+            initial="collapsed"
+            animate="open"
+            exit="collapsed"
+            variants={{
+              open: { opacity: 1, height: 'auto' },
+              collapsed: { opacity: 0, height: 0 },
+            }}
+          >
+            {items.map((thing) => (
+              <ThingToDo key={thing.name} thing={thing} />
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 interface ThingToDoProps {
   thing: ThingToDo;

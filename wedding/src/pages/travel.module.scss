@@ -58,6 +58,14 @@
     }
   }
 
+  .tag {
+    border-radius: 8px;
+    background-color: var(--sunset-20);
+    color: black;
+    padding: 0 8px;
+    line-height: 1;
+  }
+
   &.recommended {
     // border: 2px solid var(--light-orange);
     // border-radius: 8px;

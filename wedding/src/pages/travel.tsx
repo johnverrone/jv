@@ -27,9 +27,10 @@ export default function Travel({}) {
           </Text>
           <Text variant="body3" tag="p">
             Our ceremony and reception will take place at an elevation of{' '}
-            <b>7,662 ft</b>. Be sure to stay well hydrated during your stay! We
-            recommend the <i>Hampton Inn Denver West</i> hotel (5,800 ft.) if
-            you have any medical conditions or concerns with high elevation.
+            <i>7,662 ft</i>. We recommend the{' '}
+            <b>Hampton Inn Denver West/Golden</b> hotel (5,800 ft.) if you have
+            any medical conditions or concerns with high elevation. Be sure to
+            stay well hydrated during your stay!
           </Text>
         </div>
         <section className={css.travelCategory} id="flight">
@@ -56,15 +57,8 @@ export default function Travel({}) {
               <Text variant="heading2">Comfort Suites Golden West</Text>
               <div className={css.description}>
                 <Text variant="body2" tag="p">
-                  Closest hotel to downtown Evergreen and the venue! Et
-                  voluptate non enim eu ex laborum mollit irure ullamco
-                  adipisicing velit aute. Cupidatat esse id non Lorem. Consequat
-                  qui aliqua ea eiusmod esse Lorem quis culpa ipsum enim. Tempor
-                  duis excepteur velit minim sunt proident aliqua id id in est
-                  labore cupidatat. Quis elit nisi excepteur laborum ut tempor
-                  nulla consequat culpa adipisicing. Tempor aliqua sunt eiusmod
-                  labore sunt occaecat consequat reprehenderit aliqua
-                  adipisicing nulla eu aute ad.
+                  Closest hotel to downtown Evergreen and the venue! This hotel
+                  is at high elevation.
                 </Text>
               </div>
             </li>
@@ -72,16 +66,13 @@ export default function Travel({}) {
               <Text variant="heading2">Hampton Inn Denver West/Golden</Text>
               <div className={css.description}>
                 <Text variant="body2" tag="p">
-                  Reprehenderit mollit officia mollit dolore ullamco Lorem
-                  proident officia in magna aute laborum. Laborum dolor sunt
-                  duis pariatur eiusmod. Fugiat aute non officia id tempor
-                  occaecat voluptate pariatur officia mollit ex sit ipsum
-                  dolore. Voluptate dolore excepteur quis ad mollit laborum
-                  irure do. Qui sit sit incididunt officia aliqua cupidatat
-                  consectetur sit eiusmod laboris anim laboris. Ullamco commodo
-                  officia magna consectetur labore incididunt cillum sit nulla
-                  excepteur anim nostrud culpa. Officia deserunt anim deserunt
-                  eu mollit nisi minim voluptate quis aliqua dolore id et.
+                  Hotel just down the mountain from Evergreen. This is the
+                  closest group rate hotel to Denver. The room block
+                  confirmation is <strong>#84640251</strong>. You must call this
+                  hotel and ask to be added to the block directly. There are a
+                  mix of king rooms ($257 per night) and double rooms ($265 per
+                  night). Please let us know if your preferred option is booked
+                  up or if there are any issues.
                 </Text>
               </div>
             </li>
@@ -89,12 +80,19 @@ export default function Travel({}) {
         </section>
         <section className={css.travelCategory} id="rentals">
           <i className="las la-home la-3x"></i>
-          <Text variant="heading3">House & Rentals</Text>
-          <div>
+          <Text variant="heading3">House Rentals</Text>
+          <div className={css.spot}>
             <Text variant="heading2">Airbnb or Vrbo</Text>
-            <Text variant="body2" tag="p">
-              Good luck!
-            </Text>
+            <div className={css.description}>
+              <Text variant="body2" tag="p">
+                There are many wonderful mountain homes around Evergreen but
+                unfortunately not many on rental sites. If you come across any
+                homes and are curious about the location, feel free to shoot
+                Molly or John a text. Know that if you go this route, we will be
+                unable to guarantee transportation (Ubers and Lyfts are
+                extremely limited) so you may need to designate a sober driver.
+              </Text>
+            </div>
           </div>
         </section>
         <section className={css.travelCategory} id="transportation">
@@ -105,10 +103,9 @@ export default function Travel({}) {
               <Text variant="heading2">Rental Car</Text>
               <div className={css.description}>
                 <Text variant="body2" tag="p">
-                  Non commodo ipsum nisi commodo in ea cillum et. Occaecat sint
-                  amet ad et qui et Lorem culpa sunt Lorem id quis ea.
-                  Consectetur cupidatat laboris ut enim adipisicing pariatur
-                  irure. Labore dolore sunt nisi quis.
+                  We strongly recommend getting a rental car as transportation
+                  around Evergreen is impossible without a vehicle. This will
+                  also be helpful to get you to and from the airport.
                 </Text>
               </div>
             </li>
@@ -119,7 +116,10 @@ export default function Travel({}) {
                   We will provide shuttles that will run from the hotels to
                   Hiwan before the ceremony, from Hiwan to downtown Evergreen
                   after the reception, and from downtown Evergreen to hotels
-                  throughout the night.
+                  throughout the night. We can not accomidate shuttles stopping
+                  at every place where guests may be staying so if you plan to
+                  utilize the shuttles and are not staying at the hotels, please
+                  let us know so we can get an accurate head count!
                 </Text>
               </div>
             </li>

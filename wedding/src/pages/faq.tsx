@@ -30,14 +30,25 @@ export default function Faq({}) {
           />
           <FAQ
             question="Can I bring a date?"
-            answer="Your invitation will explicitly state 'and guest' if we have planned for you to bring a guest."
+            answer={
+              <>
+                Your invitation will explicitly state &quot;<b>and guest</b>
+                &quot; if we have planned for you to bring a guest.
+              </>
+            }
           />
           <FAQ
             question="What is the dress code?"
-            answer="We don't care, be comfortable. But if we had to put a label on our vision, 'Cocktail attire' would best fit the bill."
+            answer={
+              <>
+                Our dress code is <b>cocktail attire</b> but we want you to be
+                comfortable. Make sure it&apos;s good for dancing and know we
+                always welcome over-dressed.
+              </>
+            }
           />
           <FAQ
-            question="Is there transportation to the ceremony?"
+            question="Will transportation be provided to the ceremony?"
             answer={
               <>
                 Yes, see the{' '}
@@ -54,7 +65,7 @@ export default function Faq({}) {
           />
           <FAQ
             question="Will there be cake?"
-            answer="You may be asking yourself 'Why is this question even on here?' We have opted to not have a cake at our reception and apparently a lot of y'all are flabergasted at this decision. There will be dessert, but we don't want anything taking away from the dance party and frankly, we don't care too much about sweets. Just wanted to set the expectation ahead of time that no cake will be present. 😂"
+            answer="You may be asking yourself Why is this question even on here?' We have opted to not have a cake at our reception and apparently a lot of y'all are flabergasted at this decision. There will be dessert, but we don't want anything taking away from the dance party and frankly, we don't care too much about sweets. Just wanted to set the expectation ahead of time that no cake will be present. 😂"
           />
         </ul>
       </section>
