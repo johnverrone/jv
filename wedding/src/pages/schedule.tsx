@@ -22,17 +22,17 @@ const events: ICalendarEvent[] = [
   //   location: 'Location TBD',
   //   description:
   //     'Join us for drinks and jolly good times in downtown Evergreen as we kick off the weekend!',
-  //   startTime: new Date(2023, 7, 24, 19),
-  //   endTime: new Date(2023, 7, 24, 22),
+  //   startTime: new Date(2023, 7, 25, 19),
+  //   endTime: new Date(2023, 7, 25, 22),
   //   type: 'wedding',
   // },
-  {
-    id: 'thursday-free',
-    name: 'Free Time',
-    startTime: new Date(2023, 7, 24, 8),
-    endTime: new Date(2023, 7, 24, 24),
-    type: 'free',
-  },
+  // {
+  //   id: 'thursday-free',
+  //   name: 'Free Time',
+  //   startTime: new Date(2023, 7, 24, 8),
+  //   endTime: new Date(2023, 7, 24, 24),
+  //   type: 'free',
+  // },
   {
     id: 'friday-free',
     name: 'Free Time',
@@ -45,10 +45,18 @@ const events: ICalendarEvent[] = [
     name: 'Ceremony & Reception',
     location: 'Hiwan Golf Club',
     locationUrl: 'https://g.page/Hiwan?share',
-    description:
-      "Y'all know the drill! The big event! Dinner, drinks, and dancing to follow the ceremony.",
-    startTime: new Date(2023, 7, 26, 16),
-    endTime: new Date(2023, 7, 26, 22),
+    description: (
+      <>
+        5:00 pm - Ceremony
+        <br />
+        5:30 pm - Cocktail Hour
+        <br />
+        6:30 pm - Reception
+      </>
+    ),
+    startTime: new Date(2023, 7, 26, 17),
+    endTime: new Date(2023, 7, 26, 23),
+    attire: 'Cocktail',
     type: 'wedding',
   },
   // {

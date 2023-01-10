@@ -8,7 +8,6 @@
     cursor: pointer;
     width: 100%;
     text-align: left;
-    padding: 0 0 20px 0;
 
     display: flex;
     justify-content: space-between;
@@ -17,5 +16,16 @@
 
   .answer {
     overflow: hidden;
+    padding-inline: 10px;
+  }
+
+  &:not(:last-of-type):after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: var(--foreground-primary);
+    margin-top: 20px;
   }
 }

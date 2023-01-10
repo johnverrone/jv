@@ -51,11 +51,13 @@ export default function Faq({}) {
             question="Will transportation be provided to the ceremony?"
             answer={
               <>
-                Yes, see the{' '}
-                <Link className="link" href="/travel#transportation">
-                  travel page
-                </Link>{' '}
-                for more details.
+                We will provide shuttles that will run from the hotels to Hiwan
+                before the ceremony, from Hiwan to downtown Evergreen after the
+                reception, and from downtown Evergreen to hotels throughout the
+                night. We can not accomidate shuttles stopping at every place
+                where guests may be staying so if you plan to utilize the
+                shuttles and are not staying at the hotels, please let us know
+                so we can get an accurate head count!
               </>
             }
           />

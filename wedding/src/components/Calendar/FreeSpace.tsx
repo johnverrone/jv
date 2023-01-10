@@ -25,7 +25,7 @@ export const FreeSpace = ({ event }: FreeSpaceProps) => {
       className={css['free-space']}
     >
       <div>
-        <Text variant="heading3">No events today!</Text>
+        {/* <Text variant="heading3">No events today!</Text>
         <Text variant="body3" tag="p">
           Check out the{' '}
           <Link href="/evergreen" className="link">
@@ -33,6 +33,10 @@ export const FreeSpace = ({ event }: FreeSpaceProps) => {
           </Link>{' '}
           page for food, drink, golf, hike, and sightseeing recommendations. We
           hope you enjoy exploring Colorado.
+        </Text> */}
+        <Text variant="heading3">Friday Schedule Coming Soon</Text>
+        <Text variant="body3" tag="p">
+          We are finalizing the details of a welcome party.
         </Text>
       </div>
     </div>

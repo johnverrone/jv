@@ -46,12 +46,18 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
         <Text variant="heading3" style={{ margin: 0 }}>
           {event.name}
         </Text>
-        <Text variant="body3" tag="p">
-          {getTimeString(event)}
-        </Text>
-        <Text variant="body3" tag="p">
-          {event.location}
-        </Text>
+        <div className={css.iconRow}>
+          <i className="las la-calendar la-lg"></i>
+          <Text variant="body3" tag="p">
+            {getTimeString(event)}
+          </Text>
+        </div>
+        <div className={css.iconRow}>
+          <i className="las la-map-marker la-lg"></i>
+          <Text variant="body3" tag="p">
+            {event.location}
+          </Text>
+        </div>
       </button>
       {typeof window !== 'undefined'
         ? ReactDOM.createPortal(
@@ -72,9 +78,7 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                     <Text variant="heading3">{event.name}</Text>
                     <div className={css.iconRow}>
                       <i className="las la-calendar la-lg"></i>
-                      <Text variant="body3">{`${getDayString(
-                        event.startTime
-                      )} ${getTimeString(event)}`}</Text>
+                      <Text variant="body3">{getTimeString(event)}</Text>
                     </div>
                     <div className={css.iconRow}>
                       <i className="las la-map-marker la-lg"></i>
@@ -91,6 +95,10 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                           event.location
                         )}
                       </Text>
+                    </div>
+                    <div className={css.iconRow}>
+                      <i className="las la-tshirt la-lg"></i>
+                      <Text variant="body3">{event.attire}</Text>
                     </div>
                   </div>
 

@@ -36,9 +36,11 @@ export const FAQ = ({ question, answer }: FAQProps) => {
             }}
             className={css.answer}
           >
-            <Text variant="body2" tag="p">
-              {answer}
-            </Text>
+            <div style={{ paddingBlock: '20px' }}>
+              <Text variant="body2" tag="p">
+                {answer}
+              </Text>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

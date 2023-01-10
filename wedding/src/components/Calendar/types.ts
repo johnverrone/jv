@@ -5,9 +5,10 @@ export interface IWeddingEvent {
   name: string;
   location: string;
   locationUrl?: string;
-  description?: string;
+  description?: ReactNode;
   startTime: Date;
   endTime: Date;
+  attire?: string;
   type: 'wedding';
 }
 
