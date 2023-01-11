@@ -1,4 +1,9 @@
 .pageContainer {
   width: min(85%, 450px);
   margin: 0 auto;
+
+  .comingSoon {
+    text-align: center;
+    margin-top: 20px;
+  }
 }

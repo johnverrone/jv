@@ -245,7 +245,9 @@ export default function Home() {
           <Swiper
             modules={[Autoplay, Pagination, A11y, Navigation, Keyboard]}
             spaceBetween={50}
-            slidesPerView={1}
+            slidesPerView={'auto'}
+            loopedSlides={3}
+            centeredSlides={true}
             keyboard={{ enabled: true }}
             pagination={{ clickable: true, dynamicBullets: true }}
             navigation={true}
@@ -254,7 +256,6 @@ export default function Home() {
               delay: 5000,
               disableOnInteraction: false,
             }}
-            onSlideChange={() => console.log('slide change')}
           >
             {images.map(
               ({ id, src, caption, objectFit = 'contain', objectPosition }) => (
@@ -280,12 +281,17 @@ export default function Home() {
               )
             )}
           </Swiper>
-          <SectionHeader title="The Wedding">
-            <Text variant="body1">August 26, 2023 &middot; Evergreen, CO</Text>
-            <Text variant="body1">{`${daysRemaining} day${
-              daysRemaining > 1 ? 's' : ''
-            } to go!`}</Text>
+          <SectionHeader title="August 26, 2023">
+            <Text variant="body1">Hiwan Golf Club</Text>
           </SectionHeader>
+          <Text variant="body2" tag="p">
+            30671 Clubhouse Ln.
+            <br />
+            Evergreen, CO 80439
+          </Text>
+          {/* <Text variant="body2" tag="p">{`${daysRemaining} day${
+            daysRemaining > 1 ? 's' : ''
+          } to go!`}</Text> */}
         </div>
       )}
     </>

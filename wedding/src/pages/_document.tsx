@@ -33,7 +33,7 @@ class MyDocument extends Document {
           />
           <meta
             property="og:description"
-            content="Your complete guide to the wedding of Molly Dickinson and John Verrone. Find travel information, registry details, and RSVP here."
+            content="Your complete guide to the wedding of Molly Dickinson and John Verrone on August 26, 2023. Find travel information, registry details, and RSVP here."
           />
           <meta
             property="og:image"

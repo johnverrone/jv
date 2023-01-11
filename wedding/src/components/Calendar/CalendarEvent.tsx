@@ -2,26 +2,32 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CSSProperties, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { usePopper } from 'react-popper';
-import { WeddingEvent } from './types';
+import { IWeddingEvent } from './types';
 import { Text } from '../Text';
 import css from './Calendar.module.scss';
+import { getDayString, getTimeString, height, position } from './utils';
 import Link from 'next/link';
 
 interface EventProps {
-  event: WeddingEvent;
+  event: IWeddingEvent;
   open: boolean;
   onClick?: () => void;
 }
 
 export function CalendarEvent({ event, open, onClick }: EventProps) {
-  const [referenceElement, setReferenceElement] =
-    useState<HTMLDivElement | null>(null);
+  const eventTop = position(event.startTime);
+  const eventHeight = height(event.startTime, event.endTime);
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
+    null
+  );
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'bottom',
-    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }],
+    modifiers: [
+      { name: 'offset', options: { offset: [0, -Math.max(eventHeight, 92)] } },
+    ],
   });
 
   return (
@@ -29,22 +35,29 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
       <button
         style={
           {
-            '--top': `${position(event.startTime)}px`,
-            '--height': `${height(event.startTime, event.endTime)}px`,
+            '--top': `${eventTop}px`,
+            '--height': `${eventHeight}px`,
           } as CSSProperties
         }
         className={css.event}
         onClick={onClick}
+        ref={setReferenceElement}
       >
-        <div className={css.eventTime}>
+        <Text variant="heading3" style={{ margin: 0 }}>
+          {event.name}
+        </Text>
+        <div className={css.iconRow}>
+          <i className="las la-calendar la-lg"></i>
           <Text variant="body3" tag="p">
-            {event.startTime.toLocaleTimeString(undefined, {
-              timeStyle: 'short',
-            })}
+            {getTimeString(event)}
           </Text>
         </div>
-        <div className={css.eventDot} ref={setReferenceElement} />
-        <Text variant="body3">{event.name}</Text>
+        <div className={css.iconRow}>
+          <i className="las la-map-marker la-lg"></i>
+          <Text variant="body3" tag="p">
+            {event.location}
+          </Text>
+        </div>
       </button>
       {typeof window !== 'undefined'
         ? ReactDOM.createPortal(
@@ -61,29 +74,34 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
                   style={styles.popper}
                   {...attributes.popper}
                 >
-                  <Text variant="heading2">{event.name}</Text>
-                  <div className={css.iconRow}>
-                    <i className="las la-calendar la-lg"></i>
-                    <Text variant="body3">
-                      {`${event.day} ${getTimeString(event)}`}
-                    </Text>
+                  <div className={css.metadata}>
+                    <Text variant="heading3">{event.name}</Text>
+                    <div className={css.iconRow}>
+                      <i className="las la-calendar la-lg"></i>
+                      <Text variant="body3">{getTimeString(event)}</Text>
+                    </div>
+                    <div className={css.iconRow}>
+                      <i className="las la-map-marker la-lg"></i>
+                      <Text variant="body3">
+                        {event.locationUrl ? (
+                          <Link
+                            href={event.locationUrl}
+                            target="_blank"
+                            className="link"
+                          >
+                            {event.location}
+                          </Link>
+                        ) : (
+                          event.location
+                        )}
+                      </Text>
+                    </div>
+                    <div className={css.iconRow}>
+                      <i className="las la-tshirt la-lg"></i>
+                      <Text variant="body3">{event.attire}</Text>
+                    </div>
                   </div>
-                  <div className={css.iconRow}>
-                    <i className="las la-map-marker la-lg"></i>
-                    <Text variant="body3">
-                      {event.locationUrl ? (
-                        <Link
-                          href={event.locationUrl}
-                          target="_blank"
-                          className="link"
-                        >
-                          {event.location}
-                        </Link>
-                      ) : (
-                        event.location
-                      )}
-                    </Text>
-                  </div>
+
                   <Text variant="body2" tag="p">
                     {event.description}
                   </Text>
@@ -96,33 +114,3 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
     </>
   );
 }
-
-// 320px to represent 16 times (8am => midnight)
-// 8am => 0
-// 10am => 40px
-// 12pm => 80px
-// 2pm => 120px
-// 4pm => 160px
-// 6pm => 200px
-// 8pm => 240px
-// 10pm => 280px
-// midnight => 320px
-const position = (date: Date) => {
-  const hours = date.getHours();
-  return (hours - 8) * 20;
-};
-
-const height = (startTime: Date, endTime: Date) => {
-  const bottom = position(endTime);
-  const top = position(startTime);
-  const height = bottom < 0 ? 320 - top : bottom - top;
-  return height;
-};
-
-const getTimeString = (event: WeddingEvent) => {
-  return `${event.startTime.toLocaleTimeString(undefined, {
-    timeStyle: 'short',
-  })} - ${event.endTime.toLocaleTimeString(undefined, {
-    timeStyle: 'short',
-  })}`;
-};

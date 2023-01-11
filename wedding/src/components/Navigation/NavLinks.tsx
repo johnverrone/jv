@@ -26,10 +26,10 @@ export const NavLinks = ({ onClick, activeRoute }: NavLinksProps) => {
       </NavLink>
       <NavLink
         onClick={onClick}
-        href="/travel"
-        active={activeRoute === '/travel'}
+        href="/hotels"
+        active={activeRoute === '/hotels'}
       >
-        Travel
+        Hotels
       </NavLink>
       <NavLink
         onClick={onClick}

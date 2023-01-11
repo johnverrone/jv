@@ -29,3 +29,6 @@ export { default as theWorksFam } from './the-works-fam.jpeg';
 export { default as theWorks } from './the-works.jpeg';
 export { default as vaFam } from './va-fam.jpeg';
 export { default as zilker } from './zilker.jpeg';
+
+export { default as hamptonInn } from './travel/hampton-inn.jpeg';
+export { default as comfortSuites } from './travel/comfort-suites.jpeg';

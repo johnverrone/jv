@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { ReactNode, useState } from 'react';
 import { Text } from '../Text';
 import css from './FAQ.module.scss';
 
@@ -8,12 +9,41 @@ interface FAQProps {
 }
 
 export const FAQ = ({ question, answer }: FAQProps) => {
+  const [open, setOpen] = useState(false);
+
+  const toggleOpen = () => setOpen((prev) => !prev);
+
   return (
-    <div className={css.faq}>
-      <Text variant="heading2">{question}</Text>
-      <Text variant="body2" tag="p">
-        {answer}
-      </Text>
-    </div>
+    <li className={css.faq}>
+      <button className={css.faqToggle} onClick={toggleOpen}>
+        <Text variant="heading2">{question}</Text>
+        {open ? (
+          <i className="las la-minus la-2x" />
+        ) : (
+          <i className="las la-plus la-2x" />
+        )}
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="answer"
+            initial="collapsed"
+            animate="open"
+            exit="collapsed"
+            variants={{
+              open: { opacity: 1, height: 'auto' },
+              collapsed: { opacity: 0, height: 0 },
+            }}
+            className={css.answer}
+          >
+            <div style={{ paddingBlock: '20px' }}>
+              <Text variant="body2" tag="p">
+                {answer}
+              </Text>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </li>
   );
 };

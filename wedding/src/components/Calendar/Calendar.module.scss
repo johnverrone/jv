@@ -1,21 +1,8 @@
 .calendar {
   position: relative;
   --day-separator-color: hsla(0deg 0% 0% / 20%);
-  --event-color: var(--lime);
-  --line-position: 50%;
-  --height: 784px;
-  height: var(--height);
-}
-
-.eventLine {
-  background-color: var(--event-color);
-
-  position: absolute;
-  width: 3px;
-  border-radius: 2px;
-  height: calc(var(--height) + 50px);
-  top: 50px;
-  left: calc(var(--line-position) - 1px);
+  --event-bg-color: var(--lime);
+  --event-fg-color: var(--foreground-inverse);
 }
 
 .dayName {
@@ -35,7 +22,7 @@
 }
 
 .day {
-  height: 320px;
+  height: 340px;
   position: relative;
 
   .hourLines {
@@ -54,59 +41,71 @@
   }
 
   .event {
-    --dot-width: 40px;
-
     position: absolute;
-    display: grid;
-    grid-template-columns: 1fr var(--dot-width) 1fr;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    gap: 16px;
+    padding: 10px 20px;
     top: var(--top);
     color: inherit;
     background: unset;
     border: none;
-    padding: 0;
     text-align: unset;
     cursor: pointer;
+    gap: 8px;
 
-    .eventTime {
-      justify-self: end;
-    }
-
-    .eventDot {
-      background-color: var(--event-color);
-      border-radius: calc(var(--dot-width) * 0.5);
-      width: var(--dot-width);
-      height: var(--height);
-      flex: 0 0 auto;
-    }
+    background-color: var(--event-bg-color);
+    color: var(--event-fg-color);
+    border-radius: 16px;
+    height: max(92px, var(--height));
 
     p {
       margin: 0;
     }
   }
+
+  .free-space {
+    position: absolute;
+    top: var(--top);
+    height: var(--height);
+    display: grid;
+    place-items: center;
+    padding-inline: 48px;
+    text-align: justify;
+    width: 100%;
+
+    h3 {
+      text-align: center;
+    }
+  }
 }
 
 .eventBubble {
-  background-color: var(--event-color);
-  color: var(--foreground-inverse);
+  background-color: var(--event-bg-color);
+  color: var(--event-fg-color);
   border-radius: 20px;
-  padding: 16px 32px;
+  padding: 10px 20px;
   z-index: 3;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 24px;
+  width: 100%;
 
-  h2 {
-    margin-top: 0;
-  }
-
-  .iconRow {
+  .metadata {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 8px;
+
+    h3 {
+      margin: 0;
+    }
   }
+}
+
+.iconRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .overlay {

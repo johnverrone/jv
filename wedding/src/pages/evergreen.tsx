@@ -1,6 +1,7 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Text } from '../components/Text';
 import css from './evergreen.module.scss';
 
@@ -50,13 +51,17 @@ const food: ThingToDo[] = [
   },
   {
     name: 'Espresso Evergreen',
-    description: ``,
+    description: `A tiny little drive-thru shack for coffee and simple breakfast. 
+    There's also a walk-up window and two outdoor tables but this is a great 
+    option to grab something on the go.`,
     location: '7 minutes from Evergreen',
     link: 'https://goo.gl/maps/x62obRVnRfWrTFik7',
   },
   {
     name: 'Evergreen Bread & Cocktail Lounge',
-    description: ``,
+    description: `More than just a bread shop. Cozy little breakfast spot not
+     far off I-70 with great breakfast and sandwiches. They also serve alcohol
+     if you are looking for a bloody mary or mimosa to pair with a BEC.`,
     location: '10 minutes from Evergreen',
     link: 'https://goo.gl/maps/uQNwPyeLh6BN8j5y8',
   },
@@ -89,13 +94,15 @@ const golf: ThingToDo[] = [
   },
   {
     name: 'Arrowhead Golf Course',
-    description: `Aliquip duis ea adipisicing consectetur voluptate est. In eiusmod sint mollit veniam. Do exercitation consectetur anim adipisicing dolor consectetur Lorem officia laboris irure adipisicing. Magna ad laboris enim dolor nostrud culpa. Consequat reprehenderit reprehenderit aliqua sunt eu eiusmod aute anim do eu. Cillum ipsum commodo dolor aliqua et Lorem exercitation irure nostrud laborum. Nisi ut consectetur aliqua adipisicing eu veniam ex dolore proident dolor occaecat.`,
+    description: `A famous Colorado course nestled in the foothils of Littleon with majestic red rock shards piercing through the fairways.
+     A must play for everyone!`,
     location: '45 minutes from Evergreen',
     link: 'https://goo.gl/maps/NeK2TxuVGro7QhAi7',
   },
   {
     name: 'CommonGround Golf Course',
-    description: `Irure ullamco occaecat commodo reprehenderit laboris qui voluptate deserunt in veniam ad. Ex nostrud culpa occaecat adipisicing id nulla reprehenderit in. Eu exercitation qui labore culpa enim veniam aliquip eiusmod ullamco qui tempor Lorem magna. Et mollit quis pariatur Lorem sit. Sit ullamco nostrud duis nostrud commodo magna commodo. Sit laboris dolore ipsum velit pariatur dolor nulla laborum Lorem mollit cupidatat. Anim ipsum cupidatat esse nulla officia dolore.`,
+    description: `A Tom Doak designed course near the heart of Denver that's extremely fun for golfers 
+    of any skill level.`,
     location: '1 hour from Evergreen',
     link: 'https://goo.gl/maps/BgrJQnktk162dDN49',
   },
@@ -104,7 +111,10 @@ const golf: ThingToDo[] = [
 const attractions: ThingToDo[] = [
   {
     name: 'Evergreen Lake',
-    description: `Amet Lorem voluptate magna cillum incididunt magna nostrud do ullamco adipisicing consectetur nulla ullamco. Ut minim aute est magna esse est laboris. Dolor mollit pariatur aliquip nisi amet ipsum voluptate id ipsum.`,
+    description: `The heart of Evergreen! A beautiful mountain lake bustling with life. In the summer, you will 
+    find paddle boarders, fisherman, golfers, walkers, runners, and dogs surrounding the lake. In the winter, ice 
+    skaters, hockey players, sledders, and ice fisherman. Definitely check out downtown Evergreen and walk around 
+    the lake while you are in town.`,
     location: 'Downtown Evergreen',
     link: 'https://goo.gl/maps/GrwpZ5kAJbnUA65T9',
   },
@@ -117,13 +127,15 @@ const attractions: ThingToDo[] = [
   },
   {
     name: 'Coors Brewery Tour',
-    description: ``,
+    description: `Get a tour of one of the largest breweries in the world. Tours are 60 minutes long and require reservations!`,
     location: '33 minutes from Evergreen',
     link: 'https://goo.gl/maps/L9wW7sdBrX3u6EPH8',
   },
   {
     name: 'Mt. Evans / Echo Lake',
-    description: ``,
+    description: `Echo Lake is a beautiful high altitude lake (10,000+ feet) nestled near Mt. Evans (one of Colorado's many 14ers).
+     There are walking trails and picnic tables around the lake and it's a beautiful spot to hang out and enjoy views. If you are 
+     so inclined to drive to the summit of Mt. Evans, know you will need at least 2 additional hours and to concur any fear of heights!`,
     location: '45 minutes from Evergreen',
     link: 'https://goo.gl/maps/Jz3cVkUsja68PJKj6',
   },
@@ -132,27 +144,29 @@ const attractions: ThingToDo[] = [
 const towns: ThingToDo[] = [
   {
     name: 'Idaho Springs',
-    description: ``,
+    description: `A small mountain town with a few breweries and restaurants. A cool place to grab some BBQ and learn about history of mining in the area.`,
     location: '30 minutes from Evergreen',
-    link: '',
+    link: 'https://goo.gl/maps/AtmuQ7eiT7TyQwH96',
   },
   {
     name: 'Golden',
-    description: ``,
+    description: `Home to the Colorado School of Mines and Coors Brewing, Golden is a awesome little town with bars, restaurants, and nature.`,
     location: '30 minutes from Evergreen',
-    link: '',
+    link: 'https://goo.gl/maps/4fkDspZHgsJCGXR77',
   },
   {
     name: 'Denver',
-    description: ``,
+    description: `Obviously the largest 'town' on the list. Denver is a capital of Colorado and is home to major league sports teams, businesses, concert halls
+     as well as museums, zoos, and parks. We recommend exploring the Highlands or RiNo neighborhoods for food, drinks, and coffee shops.`,
     location: '45 minutes from Evergreen',
-    link: '',
+    link: 'https://goo.gl/maps/F1SsfRXKPme8myTo7',
   },
   {
     name: 'Boulder',
-    description: ``,
+    description: `A beautiful city tucked in the foothills of the mountains. Check out the pedestrian mall downtown (Pearl Street)
+    to explore art galleries, cafes, restaurants, and shopping.`,
     location: '1 hour from Evergreen',
-    link: '',
+    link: 'https://goo.gl/maps/52Qwem2fiLXcHK4M9',
   },
 ];
 
@@ -174,55 +188,75 @@ export default function Evergreen({}) {
           </Text>
         </div>
 
-        <div className={css.category} id="food">
-          <i className="las la-utensils la-3x"></i>
-          <Text variant="heading3">Food & Coffee</Text>
-          <ul>
-            {food.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
-        <div className={css.category} id="hiking">
-          <i className="las la-mountain la-3x"></i>
-          <Text variant="heading3">Hiking</Text>
-          <ul>
-            {hikes.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
-        <div className={css.category} id="golf">
-          <i className="las la-golf-ball la-3x"></i>
-          <Text variant="heading3">Golf</Text>
-          <ul>
-            {golf.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
-        <div className={css.category} id="attractions">
-          <i className="las la-binoculars la-3x"></i>
-          <Text variant="heading3">Sightseeing & Attractions</Text>
-          <ul>
-            {attractions.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
-        <div className={css.category} id="towns">
-          <i className="las la-city la-3x"></i>
-          <Text variant="heading3">Nearby Towns</Text>
-          <ul>
-            {towns.map((thing) => (
-              <ThingToDo key={thing.name} thing={thing} />
-            ))}
-          </ul>
-        </div>
+        <Category
+          id="food"
+          icon="la-utensils"
+          name="Food & Coffee"
+          items={food}
+        />
+        <Category id="hiking" icon="la-mountain" name="Hiking" items={hikes} />
+        <Category id="golf" icon="la-golf-ball" name="Golf" items={golf} />
+        <Category
+          id="attractions"
+          icon="la-binoculars"
+          name="Sightseeing & Attractions"
+          items={attractions}
+        />
+        <Category id="towns" icon="la-city" name="Nearby Towns" items={towns} />
       </section>
     </>
   );
 }
+
+interface CategoryProps {
+  id: string;
+  icon: string;
+  name: string;
+  items: ThingToDo[];
+}
+
+export const Category = ({ id, icon, name, items }: CategoryProps) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className={css.category} id={id}>
+      <button
+        className={css.categoryHeading}
+        onClick={() => setOpen((p) => !p)}
+      >
+        <div className={css.categoryName}>
+          <i className={`las ${icon} la-2x`}></i>
+          <Text variant="heading2">{name}</Text>
+        </div>
+        {open ? (
+          <i className="las la-minus la-2x" />
+        ) : (
+          <i className="las la-plus la-2x" />
+        )}
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.ul
+            key="answer"
+            initial="collapsed"
+            animate="open"
+            exit="collapsed"
+            variants={{
+              open: { opacity: 1, height: 'auto' },
+              collapsed: { opacity: 0, height: 0 },
+            }}
+          >
+            <div className={css.thingsList}>
+              {items.map((thing) => (
+                <ThingToDo key={thing.name} thing={thing} />
+              ))}
+            </div>
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 interface ThingToDoProps {
   thing: ThingToDo;
@@ -231,7 +265,7 @@ interface ThingToDoProps {
 export const ThingToDo = ({ thing }: ThingToDoProps) => {
   return (
     <li className={css.thing}>
-      <Text variant="heading2">{thing.name}</Text>
+      <Text variant="heading3">{thing.name}</Text>
       <div className={css.locationInfo}>
         <div className={css.iconRow}>
           <i className="las la-map-marker" />

@@ -1,9 +1,31 @@
 .faq {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
-  p {
-    display: inline-block;
-    text-align: justify;
-    text-align-last: center;
+  .faqToggle {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .answer {
+    overflow: hidden;
+    padding-inline: 10px;
+  }
+
+  &:not(:last-of-type):after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: var(--foreground-primary);
+    margin-top: 20px;
   }
 }
