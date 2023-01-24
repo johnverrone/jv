@@ -20,6 +20,6 @@
 
 .navbar ul li {
   font-family: var(--font-family-heading, var(--system-font));
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-transform: lowercase;
 }

@@ -15,6 +15,8 @@ import '../styles/globals.scss';
 const fionaFont = localFont({
   src: '../styles/fiona.woff2',
   variable: '--fiona-font',
+  display: 'swap',
+  declarations: [{ prop: 'size-adjust', value: '150%' }],
 });
 
 const catamaran = Catamaran({
