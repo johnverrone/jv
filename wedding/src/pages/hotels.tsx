@@ -56,8 +56,8 @@ export default function Hotels({}) {
               </ol>
               <br />
               <Text variant="body2" tag="p">
-                The last date to make a reservation is July 24. If you have any
-                issues booking, please reach out to Molly or John.
+                The last date to make a reservation with the group rate is{' '}
+                <b>July 24</b>.
               </Text>
               <br />
               <Link
@@ -84,34 +84,61 @@ export default function Hotels({}) {
             <div className={css.description}>
               <Text variant="body2" tag="p">
                 This hotel is a 20 min drive to Hiwan. We have a room block with
-                a mix of king rooms ($257 per night) and double rooms ($265 per
-                night).
+                a special rate of $209 per night.
               </Text>
               <br />
               <Text variant="body2" tag="p">
                 To book:
               </Text>
-              <ol style={{ textAlign: 'left' }}>
+              <ul style={{ textAlign: 'left' }}>
+                <li>
+                  Use this link:{' '}
+                  <a
+                    href="https://www.hilton.com/en/book/reservation/deeplink/?ctyhocn=DENGDHX&groupCode=CHHDVW&arrivaldate=2023-08-24&departuredate=2023-08-27&cid=OM,WW,HILTONLINK,EN,DirectLink&fromId=HILTONLINKDIRECT"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="link"
+                  >
+                    <b>book now</b>
+                  </a>
+                  ; or
+                </li>
                 <li>
                   Call the hotel{' '}
                   <a href="tel:303-278-6600" className="link">
-                    <b>303-278-6600</b>
-                  </a>
+                    303-278-6600
+                  </a>{' '}
+                  and ask for the Dickinson Verrone Wedding (special booking
+                  code <strong>DVW</strong>)
                 </li>
-                <li>
-                  Give them our group confirmation number: <b>#84640251</b>
-                </li>
-                <li>Tell them your room preference: king or double</li>
-              </ol>
+              </ul>
               <br />
               <Text variant="body2" tag="p">
-                The last date to make a reservation is August 3. If you have any
-                issues booking, please reach out to Molly or John.
+                <i>
+                  Note: The hotel has guaranteed to honor our group rate for 3
+                  days prior to 8/24 and after 8/27. However; you must contact
+                  the hotel directly to do so (the link only works for Thursday
+                  - Sunday):
+                </i>
+              </Text>
+              <div className={css.hotelContact}>
+                <Text variant="body2" tag="div">
+                  <b>Cassie Willis</b>
+                </Text>
+                <Text variant="body2" tag="div">
+                  <a href="tel:303-278-6600,112" className="link">
+                    303-278-6600 x 112
+                  </a>
+                </Text>
+              </div>
+              <Text variant="body2" tag="p">
+                The last date to make a reservation with the group rate is{' '}
+                <b>July 24</b>.
               </Text>
               <br />
               <Link
                 className="link"
-                href="https://www.hilton.com/en/hotels/dengdhx-hampton-denver-west-golden/?SEO_id=GMB-AMER-HX-DENGDHX&y_source=1_MjA4MjY0My03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D"
+                href="https://www.hilton.com/en/book/reservation/deeplink/?ctyhocn=DENGDHX&groupCode=CHHDVW&arrivaldate=2023-08-24&departuredate=2023-08-27&cid=OM,WW,HILTONLINK,EN,DirectLink&fromId=HILTONLINKDIRECT"
               >
                 Visit Website
               </Link>
