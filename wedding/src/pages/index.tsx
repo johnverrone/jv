@@ -258,18 +258,24 @@ export default function Home() {
             }}
           >
             {images.map(
-              ({ id, src, caption, objectFit = 'contain', objectPosition }) => (
+              (
+                { id, src, caption, objectFit = 'contain', objectPosition },
+                idx
+              ) => (
                 <SwiperSlide key={id}>
                   <figure className={css.splashImage}>
                     <Image
                       src={src}
                       alt={caption}
-                      priority
+                      priority={idx === 0}
                       fill
                       style={{
                         objectFit,
                         objectPosition,
                       }}
+                      sizes="(max-width: 550px) 100vw,
+                              (max-width: 1200px) 70vw,
+                              50vw"
                     />
                     {!!caption && (
                       <figcaption>

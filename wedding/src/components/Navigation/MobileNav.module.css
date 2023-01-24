@@ -42,6 +42,6 @@
 .mobileNav ul li {
   padding: 24px 0;
   font-family: var(--font-family-heading, var(--system-font));
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   text-transform: lowercase;
 }
