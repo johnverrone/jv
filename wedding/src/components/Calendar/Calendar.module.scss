@@ -1,6 +1,6 @@
 .calendar {
   position: relative;
-  --day-separator-color: hsla(0deg 0% 0% / 20%);
+  --day-separator-color: hsla(0deg 0% 100% / 30%);
   --event-bg-color: var(--lime);
   --event-fg-color: var(--foreground-inverse);
 }
@@ -116,5 +116,5 @@
   right: 0;
   z-index: 2;
 
-  background-color: hsla(var(--ivory-raw) / 80%);
+  background-color: hsla(0deg 0% 0% / 60%);
 }

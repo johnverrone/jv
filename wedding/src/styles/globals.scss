@@ -65,8 +65,10 @@ html {
   --sunset-100: hsla(33, 51%, 20%, 1);
   --grey-10: hsla(0, 0%, 93.3%, 1);
   --grey-20: hsla(0, 0%, 86.7%, 1);
+  --grey-30: hsla(0, 0%, 77.7%, 1);
   --grey-40: hsla(0, 0%, 66.7%, 1);
-  --grey-50: hsla(0, 0%, 50.2%, 1);
+  --grey-50: hsl(0, 0%, 55%);
+  --grey-60: hsl(0, 0%, 44%);
   --grey-70: hsla(0, 0%, 32.9%, 1);
   --grey-90: hsla(0, 0%, 20%, 1);
 
@@ -84,13 +86,17 @@ html {
   --ivory: hsl(var(--ivory-raw));
   --dark-ivory: hsl(60deg 60% 94%);
 
-  --background-primary: var(--ivory);
-  --foreground-primary: black;
+  --dark-green-raw: 118deg 80% 6%;
+  --dark-green: hsl(var(--dark-green-raw));
+
+  --background-primary: var(--dark-green);
+  --foreground-primary: var(--grey-10);
   --foreground-inverse: var(--ivory);
   --foreground-pink: hsl(330deg, 100%, 75%);
 
   --swiper-navigation-size: 3rem;
   --swiper-theme-color: var(--orange);
+  --swiper-pagination-bullet-inactive-color: var(--foreground-primary);
 }
 
 html[data-theme='dark'] {

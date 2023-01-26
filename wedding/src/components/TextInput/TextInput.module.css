@@ -1,9 +1,9 @@
 .input {
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid var(--grey-50);
+  border: 1px solid var(--grey-40);
   font-family: var(--font-family-body);
-  color: var(--grey-70);
+  color: var(--grey-10);
   background-color: transparent;
   outline-color: var(--lime);
 }
