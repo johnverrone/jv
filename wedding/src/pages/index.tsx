@@ -295,9 +295,6 @@ export default function Home() {
             <br />
             Evergreen, CO 80439
           </Text>
-          {/* <Text variant="body2" tag="p">{`${daysRemaining} day${
-            daysRemaining > 1 ? 's' : ''
-          } to go!`}</Text> */}
         </div>
       )}
     </>

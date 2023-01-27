@@ -72,7 +72,11 @@ const NavLink = ({
 
   return button ? (
     <li>
-      <Link href={linkProps.href} onClick={onClick} className={css.buttonLink}>
+      <Link
+        href={linkProps.href}
+        onClick={onClick}
+        className={classNames('buttonLink', css.buttonLink)}
+      >
         <span>{children}</span>
       </Link>
     </li>

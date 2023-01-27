@@ -6,31 +6,11 @@
 }
 
 .buttonLink {
-  background-color: var(--lime);
-  color: white;
-
-  padding: 0 20px;
-  border-radius: 4px;
-
-  transition-property: background-color, box-shadow;
-  transition-duration: 100ms;
-  transition-timing-function: ease-in-out;
-
   position: relative;
   top: 3px;
 
   span {
     position: relative;
     top: -3px;
-  }
-
-  @media (hover: hover) {
-    &:hover {
-      background-color: var(--light-moss);
-    }
-  }
-
-  &:active {
-    background-color: var(--dark-moss);
   }
 }

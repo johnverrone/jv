@@ -1,8 +1,8 @@
 .calendar {
   position: relative;
-  --day-separator-color: hsla(0deg 0% 100% / 30%);
-  --event-bg-color: var(--lime);
-  --event-fg-color: var(--foreground-inverse);
+  --day-separator-color: var(--grey-60);
+  --event-bg-color: var(--light-green);
+  --event-fg-color: white;
 }
 
 .dayName {
