@@ -32,3 +32,5 @@ export { default as zilker } from './zilker.jpeg';
 
 export { default as hamptonInn } from './travel/hampton-inn.jpeg';
 export { default as comfortSuites } from './travel/comfort-suites.jpeg';
+
+export { default as jollyLogo } from './jolly.svg';

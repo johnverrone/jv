@@ -63,10 +63,10 @@ export function Calendar({ events }: CalendarProps) {
         )}
       </AnimatePresence>
       <div id="calendar" className={css.calendar}>
-        <div className={css.dayName}>
+        {/* <div className={css.dayName}>
           <Text variant="heading3">Thursday</Text>
         </div>
-        <div className={css.day}>{renderDay(thursdayEvents)}</div>
+        <div className={css.day}>{renderDay(thursdayEvents)}</div> */}
         <div className={css.dayName}>
           <Text variant="heading3">Friday</Text>
         </div>

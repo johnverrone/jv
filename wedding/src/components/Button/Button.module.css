@@ -9,7 +9,7 @@
 }
 
 .primary {
-  background-color: var(--lime);
+  background-color: var(--light-green);
   color: white;
 
   cursor: pointer;
@@ -39,15 +39,15 @@
 
 .secondary {
   background-color: transparent;
-  color: var(--lime);
+  color: var(--lighter-green);
 
   cursor: pointer;
   touch-action: manipulation;
 
   padding: var(--button-padding);
   border-radius: 4px;
-  border: 1px solid var(--lime);
-  box-shadow: var(--button-offset) var(--button-offset) 0px var(--lime);
+  border: 1px solid var(--lighter-green);
+  box-shadow: var(--button-offset) var(--button-offset) 0px var(--light-green);
 
   transition-property: background-color, transform, box-shadow;
   transition-duration: 100ms;
@@ -56,12 +56,12 @@
 
 @media (hover: hover) {
   .secondary:hover {
-    background-color: hsla(0deg 0% 0% / 5%);
+    background-color: hsla(0deg 0% 100% / 5%);
   }
 }
 
 .secondary:active {
-  background-color: hsla(0deg 0% 0% / 10%);
+  background-color: hsla(0deg 0% 100% / 10%);
   transform: translate(var(--button-offset), var(--button-offset));
   box-shadow: none;
 }

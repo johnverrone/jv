@@ -17,8 +17,11 @@
 .footer {
   // background-image: url('/s/evergreens.png');
   // background-position: bottom left;
-  // height: 375px;
+  // background-color: var(--champagne-pink);
+  display: grid;
+  place-items: center;
   position: relative;
+  padding-block: 50px;
 
   .withLove {
     color: var(--ivory);

@@ -16,6 +16,7 @@ export const MobileNav = () => {
       <button
         className={css.mobileNavHamburger}
         onClick={() => setOpen((p) => !p)}
+        name="hamburger menu button"
       >
         {open ? (
           <i className="las la-times la-2x" />

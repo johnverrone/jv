@@ -15,7 +15,7 @@
     .categoryHeading {
       background: unset;
       border: none;
-      color: inherit;
+      color: var(--foreground-secondary);
       margin: 0;
       padding: 0;
       width: 100%;
@@ -58,7 +58,7 @@
       height: 2px;
       width: 100%;
       margin: 0 auto;
-      background-color: var(--foreground-primary);
+      background-color: var(--grey-60);
       margin-top: 30px;
     }
   }
@@ -79,7 +79,7 @@
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
-    color: var(--grey-70);
+    color: var(--grey-50);
   }
 
   .description {

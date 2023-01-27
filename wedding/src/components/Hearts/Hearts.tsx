@@ -14,8 +14,8 @@ export interface Heart {
 
 const generateHeart = (): Heart => {
   const color = `hsl(${random(25, 60)}deg, ${random(50, 100)}%, ${random(
-    50,
-    80
+    30,
+    70
   )}%)`;
 
   return {

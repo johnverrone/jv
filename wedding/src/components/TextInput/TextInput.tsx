@@ -1,5 +1,5 @@
 import React from 'react';
-import css from './TextInput.module.css';
+import css from './TextInput.module.scss';
 
 interface TextInputProps extends React.ComponentProps<'input'> {}
 
