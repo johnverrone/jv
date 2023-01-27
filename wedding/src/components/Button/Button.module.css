@@ -9,8 +9,8 @@
 }
 
 .primary {
-  background-color: var(--light-green);
-  color: white;
+  background-color: var(--peach);
+  color: var(--foreground-inverse);
 
   cursor: pointer;
   touch-action: manipulation;
@@ -18,38 +18,34 @@
   padding: var(--button-padding);
   border-radius: 4px;
   border: none;
-  box-shadow: var(--button-offset) var(--button-offset) 0px var(--light-moss);
 
-  transition-property: background-color, transform, box-shadow;
+  transition-property: background-color;
   transition-duration: 100ms;
   transition-timing-function: ease-in-out;
 }
 
 @media (hover: hover) {
   .primary:hover {
-    background-color: var(--light-moss);
+    background-color: var(--peach-hover);
   }
 }
 
 .primary:active {
-  background-color: var(--dark-moss);
-  transform: translate(var(--button-offset), var(--button-offset));
-  box-shadow: none;
+  background-color: var(--peach-press);
 }
 
 .secondary {
   background-color: transparent;
-  color: var(--lighter-green);
+  color: var(--peach);
 
   cursor: pointer;
   touch-action: manipulation;
 
   padding: var(--button-padding);
   border-radius: 4px;
-  border: 1px solid var(--lighter-green);
-  box-shadow: var(--button-offset) var(--button-offset) 0px var(--light-green);
+  border: 1px solid var(--peach);
 
-  transition-property: background-color, transform, box-shadow;
+  transition-property: background-color;
   transition-duration: 100ms;
   transition-timing-function: ease-in-out;
 }
@@ -62,6 +58,4 @@
 
 .secondary:active {
   background-color: hsla(0deg 0% 100% / 10%);
-  transform: translate(var(--button-offset), var(--button-offset));
-  box-shadow: none;
 }
