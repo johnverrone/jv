@@ -8,11 +8,11 @@
   background: none;
   border: none;
   position: absolute;
-  top: 14px;
-  left: 28px;
+  top: 12px;
+  left: 20px;
   z-index: 3;
   padding: 0;
-  color: var(--foreground-primary);
+  color: var(--foreground-secondary);
 }
 
 .mobileNavHamburger > svg {
