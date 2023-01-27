@@ -47,14 +47,15 @@ html {
   --font-family-body: var(--catamaran-font);
   --font-family-heading: var(--fiona-font);
 
-  --grey-10: hsl(60deg 20% 93.3%);
-  --grey-20: hsl(60deg 8% 86.7%);
-  --grey-30: hsl(60deg 8% 79%);
-  --grey-40: hsl(60deg 8% 66.7%);
-  --grey-50: hsl(60deg 8% 55%);
-  --grey-60: hsl(60deg 8% 44%);
-  --grey-70: hsl(60deg 8% 32.9%);
-  --grey-90: hsl(60deg 8% 20%);
+  --grey-10: hsl(100deg 20% 93.3%);
+  --grey-20: hsl(100deg 8% 86.7%);
+  --grey-30: hsl(100deg 8% 79%);
+  --grey-40: hsl(100deg 8% 66.7%);
+  --grey-50: hsl(100deg 8% 55%);
+  --grey-60: hsl(100deg 8% 44%);
+  --grey-70: hsl(100deg 8% 32.9%);
+  --grey-80: hsl(100deg 8% 26%);
+  --grey-90: hsl(100deg 8% 20%);
 
   --champagne-pink: hsl(25deg 58% 80%);
 
@@ -65,17 +66,24 @@ html {
   --orange: hsl(30deg 100% 47%);
   --dark-orange: hsl(25deg 100% 31%);
 
+  --peach: hsl(25deg 100% 76%);
+  --peach-hover: hsl(25deg 90% 71%);
+  --peach-press: hsl(25deg 80% 60%);
+
   --ivory-raw: 60deg 100% 97%;
   --ivory: hsl(var(--ivory-raw));
 
-  --dark-green: hsl(118deg 80% 8%);
+  --dark-green: hsl(157deg 93% 8%);
+  --dark-green: #012719;
 
+  --light-green: hsl(129deg 40% 60%);
   --light-green: hsl(122deg 32% 43%);
   --lighter-green: hsl(122deg 50% 75%);
 
   --background-primary: var(--dark-green);
-  --foreground-primary: var(--grey-30);
-  --foreground-secondary: var(--grey-10);
+  --foreground-primary: var(--grey-10);
+  --foreground-secondary: white;
+  --foreground-inverse: var(--dark-green);
 
   --swiper-navigation-size: 3rem;
   --swiper-theme-color: var(--orange);
@@ -89,8 +97,8 @@ html {
 }
 
 .buttonLink {
-  background-color: var(--light-green);
-  color: white;
+  background-color: var(--peach);
+  color: var(--foreground-inverse);
 
   padding: 0 20px;
   border-radius: 4px;
@@ -101,11 +109,11 @@ html {
 
   @media (hover: hover) {
     &:hover {
-      background-color: var(--light-moss);
+      background-color: var(--peach-hover);
     }
   }
 
   &:active {
-    background-color: var(--dark-moss);
+    background-color: var(--peach-press);
   }
 }
