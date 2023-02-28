@@ -256,6 +256,7 @@ export default function Home() {
               delay: 5000,
               disableOnInteraction: false,
             }}
+            cssMode
           >
             {images.map(
               (
