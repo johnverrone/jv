@@ -135,7 +135,7 @@ const attractions: ThingToDo[] = [
     name: 'Mt. Evans / Echo Lake',
     description: `Echo Lake is a beautiful high altitude lake (10,000+ feet) nestled near Mt. Evans (one of Colorado's many 14ers).
      There are walking trails and picnic tables around the lake and it's a beautiful spot to hang out and enjoy views. If you are 
-     so inclined to drive to the summit of Mt. Evans, know you will need at least 2 additional hours and to concur any fear of heights!`,
+     so inclined to drive to the summit of Mt. Evans, know you will need at least 2 additional hours!`,
     location: '45 minutes from Evergreen',
     link: 'https://goo.gl/maps/Jz3cVkUsja68PJKj6',
   },
