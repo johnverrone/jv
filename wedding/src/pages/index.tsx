@@ -201,7 +201,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Molly and John - 8.26.23</title>
+        <title>Molly & John - 8.26.23</title>
         <meta
           name="description"
           content="Your complete guide to the wedding of Molly Dickinson and John Verrone. Find travel information, registry details, and RSVP here."

@@ -48,7 +48,7 @@ export default function Registry({}) {
           </a>
           <a
             className={css.registryLink}
-            href="https://www.zola.com/registry/johnmolly"
+            href="https://www.amazon.com/wedding/share/jollycolorado"
             target="_blank"
             rel="noreferrer"
           >
