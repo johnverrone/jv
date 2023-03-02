@@ -1,7 +1,9 @@
 import Head from 'next/head';
-import React, { useEffect } from 'react';
-import { Text } from '../components/Text';
+import Image from 'next/image';
+import React from 'react';
 import css from './registry.module.scss';
+import zolaLogo from '../photos/registry/zola.png';
+import amazonLogo from '../photos/registry/amazon.png';
 
 export default function Registry({}) {
   // useEffect(() => {
@@ -28,18 +30,38 @@ export default function Registry({}) {
       </Head>
 
       <div className={css.registryContainer}>
-        <div className={css.header}>
-          <Text variant="body3" tag="p">
-            coming soon...
-          </Text>
-        </div>
-        {/* <a
-          className="zola-registry-embed"
-          href="www.zola.com/registry/johnmolly"
-          data-registry-key="johnmolly"
-        >
-          Our Zola Wedding Registry
-        </a> */}
+        <ul className={css.registryGrid}>
+          <a
+            className={css.registryLink}
+            href="https://www.zola.com/registry/johnmolly"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Image
+              src={zolaLogo}
+              alt="Zola Logo"
+              style={{ objectFit: 'contain', padding: 30 }}
+              fill
+              sizes="(max-width: 700px) 360px
+                      450px"
+            />
+          </a>
+          <a
+            className={css.registryLink}
+            href="https://www.zola.com/registry/johnmolly"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Image
+              src={amazonLogo}
+              alt="Amazon Logo"
+              style={{ objectFit: 'contain', padding: 30 }}
+              fill
+              sizes="(max-width: 700px) 360px
+                      450px"
+            />
+          </a>
+        </ul>
       </div>
     </>
   );
