@@ -8,7 +8,7 @@ const FAQs: IFAQ[] = [
   {
     question: 'Are kids welcome?',
     answer:
-      'We have opted to make this a kid-free event. We ask that you make arrangements for your children for both the ceremony and reception.',
+      'We have opted to make this a kid-free event. We ask that you make arrangements for your children for the welcome party, ceremony, and reception.',
   },
   {
     question: 'Can I bring a date?',
