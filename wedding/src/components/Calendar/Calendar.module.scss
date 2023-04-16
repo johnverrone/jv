@@ -44,6 +44,7 @@
     position: absolute;
     display: flex;
     flex-direction: column;
+    gap: 4px;
     width: 100%;
     padding: 10px 20px;
     top: var(--top);
@@ -52,12 +53,14 @@
     border: none;
     text-align: unset;
     cursor: pointer;
-    gap: 8px;
 
     background-color: var(--event-bg-color);
     color: var(--event-fg-color);
     border-radius: 16px;
-    height: max(92px, var(--height));
+    height: max(
+      103px,
+      var(--height)
+    ); // needs to match popover offset on CalendarEvent.tsx L29
 
     p {
       margin: 0;
