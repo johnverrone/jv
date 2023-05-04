@@ -26,7 +26,7 @@ export function CalendarEvent({ event, open, onClick }: EventProps) {
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'bottom',
     modifiers: [
-      { name: 'offset', options: { offset: [0, -Math.max(eventHeight, 92)] } },
+      { name: 'offset', options: { offset: [0, -Math.max(eventHeight, 103)] } }, // needs to match max css height on L61
     ],
   });
 
