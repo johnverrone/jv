@@ -19,9 +19,10 @@ const events: ICalendarEvent[] = [
   {
     id: 'welcome-party',
     name: 'Welcome Party',
-    location: 'Location TBD',
+    location: 'The Wild Game Evergreen',
+    locationUrl: 'https://goo.gl/maps/rxeWAnAb2TREcyeMA',
     description:
-      'Join us for drinks and jolly good times in downtown Evergreen as we kick off the weekend!',
+      'Join us for drinks, games, and food in Evergreen as we kick off the weekend!',
     startTime: new Date(2023, 7, 25, 19),
     endTime: new Date(2023, 7, 25, 22),
     attire: 'Casual',

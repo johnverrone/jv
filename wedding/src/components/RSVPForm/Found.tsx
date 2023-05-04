@@ -17,22 +17,21 @@ export const Found = ({ invitations, onChange, onCancel }: FoundProps) => {
 
   return (
     <div className={css.rsvpForm}>
-      {!firstTime ? (
-        <div>
-          <Text variant="heading1">Welcome back!</Text>
-          <Text variant="body2">Here&apos;s a recap of your RSVP.</Text>
-        </div>
-      ) : (
+      {firstTime ? (
         <div>
           <Text variant="heading1">Hello!</Text>
           <Text variant="body2">We look forward to hearing from you.</Text>
+        </div>
+      ) : (
+        <div>
+          <Text variant="heading1">Welcome back!</Text>
+          <Text variant="body2">Here&apos;s a recap of your RSVP.</Text>
         </div>
       )}
       <div>
         {invitations.map((inv) => {
           const attending = inv.attendance === 'ATTENDING';
           const unknown = inv.attendance === 'UNKNOWN';
-          const golfing = inv.golf === 'ATTENDING';
           return (
             <Fragment key={inv.name}>
               <div className={css.foundInvite}>
@@ -49,7 +48,7 @@ export const Found = ({ invitations, onChange, onCancel }: FoundProps) => {
                     unknown
                       ? ' has not responded'
                       : attending
-                      ? ` is attending${golfing ? ' and golfing' : ''}`
+                      ? ' is attending'
                       : ' is not attending'
                   }`}
                 </Text>
