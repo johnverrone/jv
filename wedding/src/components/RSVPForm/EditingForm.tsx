@@ -4,7 +4,7 @@ import { Text } from '../../components/Text';
 import css from './index.module.scss';
 import { Attendance, Person } from '@prisma/client';
 import { AcceptDecline, AttendanceProps } from './AcceptDecline';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const container = {
   hide: { opacity: 0 },
@@ -25,6 +25,9 @@ type PersonByName = {
   [key: string]: Person;
 };
 
+const weddingAttendeesFilter = ([name, rsvp]: [string, Person]) =>
+  rsvp.attendance === 'ATTENDING';
+
 interface EditingForm {
   initialState: Person[];
   onSubmit: (rsvps: Person[]) => void;
@@ -42,7 +45,7 @@ export const EditingForm = ({
   }, {});
   const [rsvps, setRsvps] = useState(inital);
 
-  const showFridayEvents = Object.values(rsvps).some(
+  const showShuttleQuestion = Object.values(rsvps).some(
     (rsvp) => rsvp.attendance === 'ATTENDING'
   );
 
@@ -77,46 +80,14 @@ export const EditingForm = ({
       >
         <motion.div variants={item}>
           <div className={css.eventInfo}>
-            <Text variant="heading3">
-              Friday Morning Golf &mdash; *optional*
-            </Text>
-            <div className={css.iconRow}>
-              <i className="las la-dollar-sign la-lg" />
-              <Text variant="body3">Cost per player</Text>
-            </div>
-            <div className={css.iconRow}>
-              <i className="las la-calendar la-lg" />
-              <Text variant="body3">Friday, August 25, 2022 at 8:00am</Text>
-            </div>
-            <div className={css.iconRow}>
-              <i className="las la-map-marker la-lg" />
-              <Text variant="body3">Hiwan Golf Club</Text>
-            </div>
-            <div className={css.iconRow}>
-              <i className="las la-tshirt la-lg" />
-              <Text variant="body3">Golf</Text>
-            </div>
-          </div>
-          {Object.entries(rsvps).map(([name, rsvp]) => (
-            <AcceptDecline
-              key={name}
-              name={name}
-              property="golf"
-              attendance={rsvp.golf}
-              onChange={updateRsvp}
-            />
-          ))}
-        </motion.div>
-        <motion.div variants={item}>
-          <div className={css.eventInfo}>
             <Text variant="heading3">Welcome Party</Text>
             <div className={css.iconRow}>
               <i className="las la-calendar la-lg" />
-              <Text variant="body3">Friday, August 25, 2022 at 6:00pm</Text>
+              <Text variant="body3">Friday, August 25, 2022 at 7:00pm</Text>
             </div>
             <div className={css.iconRow}>
               <i className="las la-map-marker la-lg" />
-              <Text variant="body3">Location TBD</Text>
+              <Text variant="body3">The Wild Game Evergreen</Text>
             </div>
             <div className={css.iconRow}>
               <i className="las la-tshirt la-lg" />
@@ -159,6 +130,32 @@ export const EditingForm = ({
             />
           ))}
         </motion.div>
+        <AnimatePresence>
+          {showShuttleQuestion && (
+            <motion.div variants={item}>
+              <div className={css.eventInfo}>
+                <Text variant="heading3">Transportation</Text>
+                <Text variant="body3">
+                  There will be a shuttle running from the Comfort Suites Golden
+                  West to the venue and back. Are the attending guests planning
+                  on utilizing this shuttle?
+                </Text>
+              </div>
+              {Object.entries(rsvps)
+                .filter(weddingAttendeesFilter)
+                .map(([name, rsvp]) => (
+                  <AcceptDecline
+                    key={name}
+                    name={name}
+                    property="shuttle"
+                    attendance={rsvp.shuttle}
+                    onChange={updateRsvp}
+                    yesNo
+                  />
+                ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div className={css.rowItems}>
           <Button variant="secondary" onClick={onCancel}>
             Cancel

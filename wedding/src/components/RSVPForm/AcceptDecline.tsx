@@ -18,6 +18,7 @@ interface AcceptDeclineProps {
     property: AttendanceProps,
     value: Attendance
   ) => void;
+  yesNo?: boolean;
 }
 
 export const AcceptDecline = ({
@@ -25,6 +26,7 @@ export const AcceptDecline = ({
   property,
   attendance,
   onChange,
+  yesNo = false,
 }: AcceptDeclineProps) => {
   const attending = attendance === 'ATTENDING';
   const notAttending = attendance === 'NOT_ATTENDING';
@@ -35,6 +37,11 @@ export const AcceptDecline = ({
       property,
       e.target.value === 'attending' ? 'ATTENDING' : 'NOT_ATTENDING'
     );
+
+    // say no to shuttle if they are not attending the wedding
+    if (property === 'attendance' && e.target.value === 'not-attending') {
+      onChange(name, 'shuttle', 'NOT_ATTENDING');
+    }
   };
 
   return (
@@ -58,7 +65,7 @@ export const AcceptDecline = ({
             variant="body2"
             htmlFor={`${name}-${property}-attendance-yes`}
           >
-            Accepts
+            {yesNo ? 'Yes' : 'Accepts'}
           </Text>
           <div style={{ display: 'inline-block', width: 8 }} />
           <input
@@ -75,7 +82,7 @@ export const AcceptDecline = ({
             variant="body2"
             htmlFor={`${name}-${property}-attendance-no`}
           >
-            Declines
+            {yesNo ? 'No' : 'Declines'}
           </Text>
         </div>
       </div>
