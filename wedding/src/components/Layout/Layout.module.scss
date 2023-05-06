@@ -1,12 +1,12 @@
 .fill {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 60px); // mobile header height
+  min-height: calc(100vh - 74px); // mobile header height
 }
 
-@media (min-width: 550px) {
+@media (min-width: 924px) {
   .fill {
-    min-height: calc(100vh - 144px); // desktop header height
+    min-height: calc(100vh - 1021px); // desktop header height
   }
 }
 

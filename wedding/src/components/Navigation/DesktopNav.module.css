@@ -2,7 +2,7 @@
   display: none;
 }
 
-@media (min-width: 550px) {
+@media (min-width: 924px) {
   .navbar {
     display: block;
     margin-top: 30px;
@@ -12,7 +12,7 @@
 
 .navbar ul {
   display: flex;
-  gap: 24px;
+  gap: 48px;
   padding: 0;
   margin: 0;
   list-style-type: none;
@@ -20,6 +20,6 @@
 
 .navbar ul li {
   font-family: var(--font-family-heading, var(--system-font));
-  font-size: 1rem;
+  font-size: 1.75rem;
   text-transform: lowercase;
 }

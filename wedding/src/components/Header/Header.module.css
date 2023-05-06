@@ -6,3 +6,9 @@
   justify-content: center;
   align-items: center;
 }
+
+@media (min-width: 924px) {
+  .header {
+    margin-block: 24px;
+  }
+}

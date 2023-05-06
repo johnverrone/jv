@@ -1,3 +1,5 @@
+export { default as heroImage } from './engagement-session-2.jpeg';
+
 export { default as arches } from './arches.jpeg';
 export { default as austinF1 } from './austin-f1.jpeg';
 export { default as canyons } from './canyons.jpeg';

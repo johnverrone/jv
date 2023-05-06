@@ -1,0 +1,27 @@
+.photosContainer {
+  text-align: center;
+  max-width: min(2200px, 90%);
+  margin: 0 auto;
+}
+
+.splashImage {
+  position: relative;
+  max-height: 750px;
+  aspect-ratio: 4 / 5;
+  margin: 0 auto;
+  margin-bottom: 36px;
+
+  figcaption {
+    position: absolute;
+    bottom: 0;
+    background: hsla(var(--dark-green-raw) / 0.9);
+    padding: 4px 20px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 924px) {
+  .splashImage {
+    aspect-ratio: 9 / 6;
+  }
+}

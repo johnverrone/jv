@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import css from './Logo.module.css';
+import useWindowSize from '../../hooks/useWindowSize';
 
-const johnVariants = {
+const johnVariants = (mobile: boolean) => ({
   and: {
-    marginRight: 6,
+    marginRight: mobile ? 6 : 12,
   },
   o: {
     marginRight: 1,
   },
-};
+});
 
 const mollyVariants = {
   and: {
@@ -22,6 +23,8 @@ const mollyVariants = {
 
 export const Logo = () => {
   const [jollyMode, setJollyMode] = useState(false);
+  const { width } = useWindowSize();
+  const mobile = width < 924;
 
   const toggleJollyMode = () => setJollyMode((prev) => !prev);
 
@@ -33,7 +36,7 @@ export const Logo = () => {
       onClick={toggleJollyMode}
       whileTap={{ scale: 1.2 }}
     >
-      <motion.span variants={johnVariants}>
+      <motion.span variants={johnVariants(mobile)}>
         {jollyMode ? 'J' : 'John'}
       </motion.span>
       <Heartpersand />
@@ -44,20 +47,20 @@ export const Logo = () => {
   );
 };
 
-const containerVariants = {
+const containerVariants = (mobile: boolean) => ({
   and: {
-    width: 34,
-    height: 30,
+    width: mobile ? 34 : 56,
+    height: mobile ? 30 : 50,
     viewBox: '0 0 34 30',
     strokeWidth: 2,
   },
   o: {
-    width: 15,
-    height: 24,
+    width: mobile ? 15 : 25,
+    height: mobile ? 24 : 40,
     viewBox: '0 0 26 24',
     strokeWidth: 3,
   },
-};
+});
 
 const pathVariants = {
   and: {
@@ -68,16 +71,21 @@ const pathVariants = {
   },
 };
 
-const Heartpersand = () => (
-  <motion.svg
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    variants={containerVariants}
-  >
-    <motion.path
-      className={css.heartpersand}
-      strokeLinecap="square"
-      variants={pathVariants}
-    />
-  </motion.svg>
-);
+const Heartpersand = () => {
+  const { width } = useWindowSize();
+  const mobile = width < 924;
+
+  return (
+    <motion.svg
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      variants={containerVariants(mobile)}
+    >
+      <motion.path
+        className={css.heartpersand}
+        strokeLinecap="square"
+        variants={pathVariants}
+      />
+    </motion.svg>
+  );
+};
