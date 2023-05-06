@@ -1,5 +1,5 @@
 .header {
-  margin-block: 4px;
+  min-height: 60px;
   background-color: var(--background-primary);
   display: flex;
   flex-direction: column;
