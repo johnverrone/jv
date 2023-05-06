@@ -6,7 +6,7 @@
 
 .info {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -27,6 +27,7 @@
 
 @media (min-width: 924px) {
   .info {
+    flex-direction: row;
     gap: 24px;
 
     .address {
