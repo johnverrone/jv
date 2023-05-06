@@ -4,7 +4,7 @@ import css from './Logo.module.css';
 
 const johnVariants = {
   and: {
-    marginRight: 6,
+    marginRight: 12,
   },
   o: {
     marginRight: 1,
@@ -46,14 +46,14 @@ export const Logo = () => {
 
 const containerVariants = {
   and: {
-    width: 34,
-    height: 30,
+    width: 56,
+    height: 50,
     viewBox: '0 0 34 30',
     strokeWidth: 2,
   },
   o: {
-    width: 15,
-    height: 24,
+    width: 25,
+    height: 40,
     viewBox: '0 0 26 24',
     strokeWidth: 3,
   },

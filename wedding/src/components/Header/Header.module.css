@@ -1,8 +1,14 @@
 .header {
-  min-height: 60px;
+  margin-block: 4px;
   background-color: var(--background-primary);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+@media (min-width: 924px) {
+  .header {
+    margin-block: 24px;
+  }
 }
