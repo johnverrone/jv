@@ -3,28 +3,28 @@ import { motion } from 'framer-motion';
 import css from './Logo.module.css';
 import useWindowSize from '../../hooks/useWindowSize';
 
-const johnVariants = (mobile: boolean) => ({
-  and: {
-    marginRight: mobile ? 6 : 12,
-  },
-  o: {
-    marginRight: 1,
-  },
-});
-
-const mollyVariants = {
-  and: {
-    marginLeft: 1,
-  },
-  o: {
-    marginLeft: 1,
-  },
-};
-
 export const Logo = () => {
   const [jollyMode, setJollyMode] = useState(false);
   const { width } = useWindowSize();
   const mobile = width < 924;
+
+  const johnVariants = {
+    and: {
+      marginRight: mobile ? 6 : 12,
+    },
+    o: {
+      marginRight: 1,
+    },
+  };
+
+  const mollyVariants = {
+    and: {
+      marginLeft: 1,
+    },
+    o: {
+      marginLeft: 1,
+    },
+  };
 
   const toggleJollyMode = () => setJollyMode((prev) => !prev);
 
@@ -36,7 +36,7 @@ export const Logo = () => {
       onClick={toggleJollyMode}
       whileTap={{ scale: 1.2 }}
     >
-      <motion.span variants={johnVariants(mobile)}>
+      <motion.span custom={mobile} variants={johnVariants} key={`j-${mobile}`}>
         {jollyMode ? 'J' : 'John'}
       </motion.span>
       <Heartpersand />
@@ -46,21 +46,6 @@ export const Logo = () => {
     </motion.div>
   );
 };
-
-const containerVariants = (mobile: boolean) => ({
-  and: {
-    width: mobile ? 34 : 56,
-    height: mobile ? 30 : 50,
-    viewBox: '0 0 34 30',
-    strokeWidth: 2,
-  },
-  o: {
-    width: mobile ? 15 : 25,
-    height: mobile ? 24 : 40,
-    viewBox: '0 0 26 24',
-    strokeWidth: 3,
-  },
-});
 
 const pathVariants = {
   and: {
@@ -75,11 +60,27 @@ const Heartpersand = () => {
   const { width } = useWindowSize();
   const mobile = width < 924;
 
+  const containerVariants = {
+    and: {
+      width: mobile ? 34 : 56,
+      height: mobile ? 30 : 50,
+      viewBox: '0 0 34 30',
+      strokeWidth: 2,
+    },
+    o: {
+      width: mobile ? 15 : 25,
+      height: mobile ? 24 : 40,
+      viewBox: '0 0 26 24',
+      strokeWidth: 3,
+    },
+  };
+
   return (
     <motion.svg
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      variants={containerVariants(mobile)}
+      variants={containerVariants}
+      key={`heart-${mobile}`}
     >
       <motion.path
         className={css.heartpersand}
