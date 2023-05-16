@@ -23,12 +23,13 @@ export default function Home() {
         <div className={css.splashImage}>
           <Image
             src={heroImage}
-            alt="The date Aug 26, 2023 overlayed on a picture of John and Molly on Mt. Evans"
+            alt="A photo of Molly and John soft smiling from their engagement photo shoot"
             priority
             fill
             style={{
               objectFit: 'contain',
               objectPosition: '66%',
+              borderRadius: 16,
             }}
           />
         </div>
