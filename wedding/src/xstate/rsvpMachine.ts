@@ -2,23 +2,11 @@ import { Person } from '@prisma/client';
 import { AppRouter } from '../server/routers/_app';
 import { createMachine, assign } from 'xstate';
 import { inferRouterInputs } from '@trpc/server';
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import { trpcClient } from '../utils/trpc';
 
 type RouterInput = inferRouterInputs<AppRouter>;
 type FindInvitationRequest = RouterInput['invitations']['find'];
 type InvitationUpdateRequest = RouterInput['invitations']['update'];
-
-const url = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc`
-  : 'http://localhost:3000/api/trpc';
-
-export const trpcClient = createTRPCProxyClient<AppRouter>({
-  links: [
-    httpBatchLink({
-      url,
-    }),
-  ],
-});
 
 const findInvitations = async (search: FindInvitationRequest) => {
   return trpcClient.invitations.find.query(search);

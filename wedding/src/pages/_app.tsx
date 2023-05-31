@@ -9,7 +9,7 @@ import 'swiper/scss/pagination';
 import 'swiper/scss/navigation';
 import 'swiper/scss/a11y';
 import '../styles/globals.scss';
-import { trpcClient } from '../utils/trpc';
+// import { trpcClient } from '../utils/trpc';
 
 const fionaFont = localFont({
   src: '../styles/fiona.woff2',
@@ -49,4 +49,5 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default trpcClient.withTRPC(MyApp);
+export default MyApp;
+// export default trpcClient.withTRPC(MyApp);
