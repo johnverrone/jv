@@ -120,7 +120,7 @@ export const EditingForm = ({
             </div>
             <div className={css.iconRow}>
               <i className="las la-tshirt la-lg" />
-              <Text variant="body3">Cocktail</Text>
+              <Text variant="body3">Semi-formal</Text>
             </div>
           </div>
           {Object.entries(rsvps).map(([name, rsvp]) => (

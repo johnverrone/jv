@@ -23,9 +23,9 @@ const FAQs: IFAQ[] = [
     question: 'What is the dress code?',
     answer: (
       <>
-        Our dress code is <b>cocktail attire</b> but we want you to be
-        comfortable. Make sure it&apos;s good for dancing and know we always
-        welcome over-dressed.
+        Our dress code is <b>semi-formal</b> but we want you to be comfortable.
+        Make sure it&apos;s good for dancing and know we always welcome
+        over-dressed.
       </>
     ),
   },

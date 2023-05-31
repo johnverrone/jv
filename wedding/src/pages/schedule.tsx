@@ -51,7 +51,7 @@ const events: ICalendarEvent[] = [
     ),
     startTime: new Date(2023, 7, 26, 17),
     endTime: new Date(2023, 7, 26, 23),
-    attire: 'Cocktail',
+    attire: 'Semi-formal',
     type: 'wedding',
   },
   // {
