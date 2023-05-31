@@ -1,7 +1,7 @@
 import { Layout } from '../components//Layout';
 import { AppProps } from 'next/app';
-import { Catamaran } from '@next/font/google';
-import localFont from '@next/font/local';
+import { Catamaran } from "next/font/google";
+import localFont from "next/font/local";
 import * as FullStory from '@fullstory/browser';
 import { useEffect } from 'react';
 import 'swiper/scss';
