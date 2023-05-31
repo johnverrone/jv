@@ -12,6 +12,7 @@ const defaultPersonSelect = Prisma.validator<Prisma.PersonSelect>()({
   shuttle: true,
   welcome: true,
   groupId: true,
+  notes: true,
 });
 
 export const invitationsRouter = createRouter()
@@ -81,14 +82,15 @@ export const invitationsRouter = createRouter()
           z.literal('NOT_ATTENDING'),
           z.literal('UNKNOWN'),
         ]),
+        notes: z.string().nullable(),
       })
     ),
     async resolve({ input }) {
       for (const i of input) {
-        const { id, attendance, shuttle, welcome } = i;
+        const { id, attendance, shuttle, welcome, notes } = i;
         await prisma.person.update({
           where: { id },
-          data: { attendance, shuttle, welcome },
+          data: { attendance, shuttle, welcome, notes },
           select: defaultPersonSelect,
         });
       }

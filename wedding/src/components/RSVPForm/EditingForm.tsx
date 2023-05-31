@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import { Button } from '../../components/Button';
 import { Text } from '../../components/Text';
+import { TextArea } from '../../components/TextArea';
 import css from './index.module.scss';
 import { Attendance, Person } from '@prisma/client';
 import { AcceptDecline, AttendanceProps } from './AcceptDecline';
@@ -44,6 +45,7 @@ export const EditingForm = ({
     return acc;
   }, {});
   const [rsvps, setRsvps] = useState(inital);
+  const [notes, setNotes] = useState(initialState[0]?.notes ?? '');
 
   const showShuttleQuestion = Object.values(rsvps).some(
     (rsvp) => rsvp.attendance === 'ATTENDING'
@@ -51,7 +53,8 @@ export const EditingForm = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    onSubmit(Object.values(rsvps));
+    const rsvpsWithNotes = Object.values(rsvps).map((p) => ({ ...p, notes }));
+    onSubmit(rsvpsWithNotes);
   };
 
   const updateRsvp = (
@@ -155,6 +158,23 @@ export const EditingForm = ({
                 ))}
             </motion.div>
           )}
+        </AnimatePresence>
+        <AnimatePresence>
+          <motion.div variants={item}>
+            <div className={css.eventInfo}>
+              <Text variant="heading3">Dietary Restrictions</Text>
+              <Text variant="body3">
+                Please inform us of any dietary restrictions for anyone in your
+                party so we can accomadate everyone accordingly.
+              </Text>
+            </div>
+            <TextArea
+              id="notes"
+              placeholder=""
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+          </motion.div>
         </AnimatePresence>
         <div className={css.rowItems}>
           <Button variant="secondary" onClick={onCancel}>
