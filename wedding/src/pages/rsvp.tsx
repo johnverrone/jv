@@ -19,7 +19,9 @@ export default function Rsvp({}) {
 
       <div className={css.pageContainer}>
         {rsvpEnabled ? (
-          <RSVPForm />
+          typeof window === 'undefined' ? null : (
+            <RSVPForm />
+          )
         ) : (
           <div className={css.comingSoon}>
             <Text variant="body1" tag="p">
