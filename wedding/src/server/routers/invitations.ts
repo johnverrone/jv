@@ -82,7 +82,7 @@ export const invitationsRouter = createRouter()
           z.literal('NOT_ATTENDING'),
           z.literal('UNKNOWN'),
         ]),
-        notes: z.string(),
+        notes: z.string().nullable(),
       })
     ),
     async resolve({ input }) {
