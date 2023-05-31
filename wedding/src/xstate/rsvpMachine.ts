@@ -1,27 +1,31 @@
 import { Person } from '@prisma/client';
 import { AppRouter } from '../server/routers/_app';
-import { createTRPCClient } from '@trpc/client';
-import { InferMutationInput, InferQueryInput } from '../utils/trpc';
 import { createMachine, assign } from 'xstate';
+import { inferRouterInputs } from '@trpc/server';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+
+type RouterInput = inferRouterInputs<AppRouter>;
+type FindInvitationRequest = RouterInput['invitations']['find'];
+type InvitationUpdateRequest = RouterInput['invitations']['update'];
 
 const url = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc`
   : 'http://localhost:3000/api/trpc';
 
-const client = createTRPCClient<AppRouter>({
-  url,
+export const trpcClient = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url,
+    }),
+  ],
 });
 
-type FindInvitationRequest = InferQueryInput<'invitations.find'>;
-
 const findInvitations = async (search: FindInvitationRequest) => {
-  return client.query('invitations.find', search);
+  return trpcClient.invitations.find.query(search);
 };
 
-type InvitationUpdateRequest = InferMutationInput<'invitations.update'>;
-
 const submitRSVPs = async (rsvps: InvitationUpdateRequest) => {
-  return client.mutation('invitations.update', rsvps);
+  return trpcClient.invitations.update.mutate(rsvps);
 };
 
 interface RSVPContext {
