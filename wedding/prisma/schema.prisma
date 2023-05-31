@@ -19,6 +19,7 @@ model Person {
   attendance Attendance @default(UNKNOWN)
   shuttle    Attendance @default(UNKNOWN)
   welcome    Attendance @default(UNKNOWN)
+  notes      String?
 
   @@map("person")
 }
