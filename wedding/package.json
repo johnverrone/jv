@@ -2,7 +2,7 @@
   "name": "wedding",
   "version": "0.0.1",
   "engines": {
-    "node": "^14.20.0"
+    "node": "18.x"
   },
   "scripts": {
     "dev": "source .env && next dev",
