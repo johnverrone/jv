@@ -1,7 +1,6 @@
-import Head from 'next/head';
 import React from 'react';
-import { Calendar, ICalendarEvent } from '../components/Calendar';
-import { Text } from '../components/Text';
+import { Calendar, ICalendarEvent } from '@/components/Calendar';
+import { Text } from '@/components/Text';
 import css from './schedule.module.scss';
 
 const events: ICalendarEvent[] = [
@@ -68,25 +67,20 @@ const events: ICalendarEvent[] = [
   // },
 ];
 
-export default function Schedule({}) {
-  return (
-    <>
-      <Head>
-        <title>Molly &amp; John&apos;s Wedding Schedule</title>
-        <meta
-          name="description"
-          content="Schedule of Molly and John's wedding."
-        />
-      </Head>
+export const metadata = {
+  title: "Molly & John's Wedding Schedule",
+  description: "Schedule of Molly and John's wedding weekend.",
+};
 
-      <section className={css.calendarContainer}>
-        <div className={css.header}>
-          <Text variant="body3" tag="p">
-            Tap on an event to see more details.
-          </Text>
-        </div>
-        <Calendar events={events} />
-      </section>
-    </>
+export default function Schedule() {
+  return (
+    <section className={css.calendarContainer}>
+      <div className={css.header}>
+        <Text variant="body3" tag="p">
+          Tap on an event to see more details.
+        </Text>
+      </div>
+      <Calendar events={events} />
+    </section>
   );
 }

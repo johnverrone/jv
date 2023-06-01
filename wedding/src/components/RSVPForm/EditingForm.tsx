@@ -1,11 +1,11 @@
 import React, { FormEvent, useState } from 'react';
-import { Button } from '../../components/Button';
-import { Text } from '../../components/Text';
-import { TextArea } from '../../components/TextArea';
-import css from './index.module.scss';
+import { Button } from '@/components/Button';
+import { Text } from '@/components/Text';
+import { TextArea } from '@/components/TextArea';
 import { Attendance, Person } from '@prisma/client';
 import { AcceptDecline, AttendanceProps } from './AcceptDecline';
 import { AnimatePresence, motion } from 'framer-motion';
+import css from './index.module.scss';
 
 const container = {
   hide: { opacity: 0 },

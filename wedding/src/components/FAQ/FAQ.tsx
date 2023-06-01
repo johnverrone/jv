@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { ReactNode, useState } from 'react';
 import { Text } from '../Text';

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useMachine } from '@xstate/react';
 import { rsvpMachine } from '../../xstate/rsvpMachine';

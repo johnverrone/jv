@@ -1,8 +1,8 @@
 import React, { FormEvent, useState } from 'react';
-import { TextInput } from '../../components/TextInput';
-import { Text } from '../../components/Text';
+import { Button } from '@/components/Button';
+import { TextInput } from '@/components/TextInput';
+import { Text } from '@/components/Text';
 import css from './index.module.scss';
-import { Button } from '../../components/Button';
 
 interface LookupFormProps {
   search: string;

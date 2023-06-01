@@ -1,8 +1,9 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
-import Head from 'next/head';
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
-import { Text } from '../components/Text';
+import { Text } from '../../components/Text';
 import css from './evergreen.module.scss';
 
 type ThingToDo = {
@@ -170,41 +171,31 @@ const towns: ThingToDo[] = [
   },
 ];
 
-export default function Evergreen({}) {
+export default function Evergreen() {
   return (
-    <>
-      <Head>
-        <title>Molly &amp; John&apos;s Evergreen Guide</title>
-        <meta
-          name="description"
-          content="Molly and John's guide to Evergreen."
-        />
-      </Head>
+    <section className={css.thingsContainer}>
+      <div className={css.header}>
+        <Text variant="body3" tag="p">
+          Here are a few of our favorite things to do in the area.
+        </Text>
+      </div>
 
-      <section className={css.thingsContainer}>
-        <div className={css.header}>
-          <Text variant="body3" tag="p">
-            Here are a few of our favorite things to do in the area.
-          </Text>
-        </div>
-
-        <Category
-          id="food"
-          icon="la-utensils"
-          name="Food & Coffee"
-          items={food}
-        />
-        <Category id="hiking" icon="la-mountain" name="Hiking" items={hikes} />
-        <Category id="golf" icon="la-golf-ball" name="Golf" items={golf} />
-        <Category
-          id="attractions"
-          icon="la-binoculars"
-          name="Sightseeing & Attractions"
-          items={attractions}
-        />
-        <Category id="towns" icon="la-city" name="Nearby Towns" items={towns} />
-      </section>
-    </>
+      <Category
+        id="food"
+        icon="la-utensils"
+        name="Food & Coffee"
+        items={food}
+      />
+      <Category id="hiking" icon="la-mountain" name="Hiking" items={hikes} />
+      <Category id="golf" icon="la-golf-ball" name="Golf" items={golf} />
+      <Category
+        id="attractions"
+        icon="la-binoculars"
+        name="Sightseeing & Attractions"
+        items={attractions}
+      />
+      <Category id="towns" icon="la-city" name="Nearby Towns" items={towns} />
+    </section>
   );
 }
 
@@ -215,7 +206,7 @@ interface CategoryProps {
   items: ThingToDo[];
 }
 
-export const Category = ({ id, icon, name, items }: CategoryProps) => {
+const Category = ({ id, icon, name, items }: CategoryProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -262,7 +253,7 @@ interface ThingToDoProps {
   thing: ThingToDo;
 }
 
-export const ThingToDo = ({ thing }: ThingToDoProps) => {
+const ThingToDo = ({ thing }: ThingToDoProps) => {
   return (
     <li className={css.thing}>
       <Text variant="heading3">{thing.name}</Text>

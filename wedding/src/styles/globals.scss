@@ -43,7 +43,8 @@ p {
 }
 
 :root,
-html {
+html,
+body {
   --font-family-body: var(--catamaran-font);
   --font-family-heading: var(--fiona-font);
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import css from './Calendar.module.scss';

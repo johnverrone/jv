@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Text } from '../components/Text';
-import css from './404.module.scss';
+import { Text } from '@/components/Text';
+import css from './not-found.module.scss';
 
 export default function Custom404() {
   return (

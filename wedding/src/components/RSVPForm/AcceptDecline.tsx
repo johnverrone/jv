@@ -1,6 +1,6 @@
 import { Attendance, Person } from '@prisma/client';
 import React from 'react';
-import { Text } from '../Text';
+import { Text } from '@/components/Text';
 import css from './index.module.scss';
 
 export type AttendanceProps = keyof {

@@ -1,8 +1,8 @@
-import { Text } from '../components/Text';
+import { Text } from '@/components/Text';
+import { FAQ, IFAQ } from '@/components/FAQ';
 import Head from 'next/head';
 import React from 'react';
 import css from './faq.module.scss';
-import { FAQ, IFAQ } from '../components/FAQ';
 
 const FAQs: IFAQ[] = [
   {
@@ -51,30 +51,25 @@ const FAQs: IFAQ[] = [
   },
 ];
 
-export default function Faq({}) {
+export const metadata = {
+  title: "Molly & John's Wedding FAQ",
+  description: "Frequently asked questions for Molly and John's wedding.",
+};
+
+export default function Faq() {
   return (
-    <>
-      <Head>
-        <title>Molly &amp; John&apos;s Wedding FAQ</title>
-        <meta
-          name="description"
-          content="Frequently asked questions for Molly and John's wedding."
-        />
-      </Head>
+    <section className={css.faqContainer}>
+      <div className={css.header}>
+        <Text variant="body3" tag="p">
+          Please reach out to us directly if you have additional questions!
+        </Text>
+      </div>
 
-      <section className={css.faqContainer}>
-        <div className={css.header}>
-          <Text variant="body3" tag="p">
-            Please reach out to us directly if you have additional questions!
-          </Text>
-        </div>
-
-        <ul className={css.faqList}>
-          {FAQs.map(({ question, answer }) => (
-            <FAQ key={question} question={question} answer={answer} />
-          ))}
-        </ul>
-      </section>
-    </>
+      <ul className={css.faqList}>
+        {FAQs.map(({ question, answer }) => (
+          <FAQ key={question} question={question} answer={answer} />
+        ))}
+      </ul>
+    </section>
   );
 }

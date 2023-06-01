@@ -1,12 +1,14 @@
+'use client';
+
 import React from 'react';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import css from './MobileNav.module.css';
 import { NavLinks } from './NavLinks';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 export const MobileNav = () => {
-  const { basePath } = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   const handleLinkClick = () => setOpen(false);
@@ -34,7 +36,10 @@ export const MobileNav = () => {
           >
             <nav className={css.mobileNav}>
               <ul>
-                <NavLinks onClick={handleLinkClick} activeRoute={basePath} />
+                <NavLinks
+                  onClick={handleLinkClick}
+                  activeRoute={pathname ?? undefined}
+                />
               </ul>
             </nav>
           </motion.div>
