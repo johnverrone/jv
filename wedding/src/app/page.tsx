@@ -1,4 +1,4 @@
-import { Text } from '../components/Text';
+import { Text } from '@/components/Text';
 import Image from 'next/image';
 import React from 'react';
 import { heroImage } from '../photos';

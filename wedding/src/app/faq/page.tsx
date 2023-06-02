@@ -1,6 +1,5 @@
 import { Text } from '@/components/Text';
 import { FAQ, IFAQ } from '@/components/FAQ';
-import Head from 'next/head';
 import React from 'react';
 import css from './faq.module.scss';
 

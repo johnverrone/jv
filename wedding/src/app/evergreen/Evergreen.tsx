@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
-import { Text } from '../../components/Text';
+import { Text } from '@/components/Text';
 import css from './evergreen.module.scss';
 
 type ThingToDo = {
