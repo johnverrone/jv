@@ -1,12 +1,12 @@
 import { Autoplay, Pagination, A11y, Navigation, Keyboard } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Text } from '../components/Text';
+import { Text } from '@/components/Text';
 import Head from 'next/head';
 import Image from 'next/image';
 import React, { ComponentPropsWithoutRef, CSSProperties } from 'react';
 import heroImage from '../../public/s/mt-evans.jpg';
 import css from './photos.module.scss';
-import * as photos from '../photos';
+import * as photos from '../../photos';
 
 type JollyImage = {
   id: string;
