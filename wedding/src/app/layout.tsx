@@ -4,7 +4,7 @@ import { Catamaran } from 'next/font/google';
 import { jollyLogo } from '../photos';
 import { Header } from '../components/Header';
 import css from './layout.module.scss';
-import '../styles/line-awesome/css/line-awesome.min.css';
+import 'line-awesome/dist/line-awesome/css/line-awesome.min.css';
 import '../styles/globals.scss';
 
 export const metadata = {
