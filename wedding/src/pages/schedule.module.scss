@@ -1,10 +1,12 @@
-.calendarContainer {
-  width: min(85%, 450px);
-  margin: 0 auto;
+.scheduleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
 
-  .header {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
-  }
+.scheduleImage {
+  position: relative;
+  min-height: 600px;
+  aspect-ratio: 2 / 3;
 }

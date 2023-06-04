@@ -1,116 +1,51 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { CSSProperties, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { usePopper } from 'react-popper';
-import { IWeddingEvent } from './types';
+import React from 'react';
 import { Text } from '../Text';
 import css from './Calendar.module.scss';
-import { getDayString, getTimeString, height, position } from './utils';
+import { ICalendarEvent } from './types';
 import Link from 'next/link';
 
-interface EventProps {
-  event: IWeddingEvent;
-  open: boolean;
-  onClick?: () => void;
-}
+interface CalendarEvenProps extends ICalendarEvent {}
 
-export function CalendarEvent({ event, open, onClick }: EventProps) {
-  const eventTop = position(event.startTime);
-  const eventHeight = height(event.startTime, event.endTime);
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
-    null
-  );
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
-    null
-  );
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: 'bottom',
-    modifiers: [
-      { name: 'offset', options: { offset: [0, -Math.max(eventHeight, 103)] } }, // needs to match max css height on L61
-    ],
-  });
-
+export const CalendarEvent = ({
+  attire,
+  description,
+  location,
+  locationUrl,
+  name,
+  time,
+}: CalendarEvenProps) => {
   return (
-    <>
-      <button
-        style={
-          {
-            '--top': `${eventTop}px`,
-            '--height': `${eventHeight}px`,
-          } as CSSProperties
-        }
-        className={css.event}
-        onClick={onClick}
-        ref={setReferenceElement}
-      >
-        <Text variant="heading3" style={{ margin: 0 }}>
-          {event.name}
-        </Text>
+    <li>
+      <Text variant="heading2" className={css.eventTitle}>
+        {name}
+      </Text>
+      <div className={css.metadata}>
         <div className={css.iconRow}>
           <i className="las la-calendar la-lg"></i>
-          <Text variant="body3" tag="p">
-            {getTimeString(event)}
+          <Text variant="body2" tag="p">
+            {time}
           </Text>
         </div>
         <div className={css.iconRow}>
           <i className="las la-map-marker la-lg"></i>
-          <Text variant="body3" tag="p">
-            {event.location}
+          <Text variant="body2" tag="p">
+            {locationUrl ? (
+              <Link href={locationUrl} target="_blank" className="link">
+                {location}
+              </Link>
+            ) : (
+              location
+            )}
           </Text>
         </div>
-      </button>
-      {typeof window !== 'undefined'
-        ? ReactDOM.createPortal(
-            <AnimatePresence>
-              {open && (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  ref={setPopperElement}
-                  role="dialog"
-                  className={css.eventBubble}
-                  style={styles.popper}
-                  {...attributes.popper}
-                >
-                  <div className={css.metadata}>
-                    <Text variant="heading3">{event.name}</Text>
-                    <div className={css.iconRow}>
-                      <i className="las la-calendar la-lg"></i>
-                      <Text variant="body3">{getTimeString(event)}</Text>
-                    </div>
-                    <div className={css.iconRow}>
-                      <i className="las la-map-marker la-lg"></i>
-                      <Text variant="body3">
-                        {event.locationUrl ? (
-                          <Link
-                            href={event.locationUrl}
-                            target="_blank"
-                            className="link"
-                          >
-                            {event.location}
-                          </Link>
-                        ) : (
-                          event.location
-                        )}
-                      </Text>
-                    </div>
-                    <div className={css.iconRow}>
-                      <i className="las la-tshirt la-lg"></i>
-                      <Text variant="body3">{event.attire}</Text>
-                    </div>
-                  </div>
-
-                  <Text variant="body2" tag="p">
-                    {event.description}
-                  </Text>
-                </motion.div>
-              )}
-            </AnimatePresence>,
-            document.querySelector('#calendar') ?? document.body
-          )
-        : null}
-    </>
+        <div className={css.iconRow}>
+          <i className="las la-tshirt la-lg"></i>
+          <Text variant="body2">{attire}</Text>
+        </div>
+      </div>
+      <Text variant="body2" tag="p">
+        {description}
+      </Text>
+    </li>
   );
-}
+};

@@ -1,2 +1,4 @@
 export { Calendar } from './Calendar';
-export type { IWeddingEvent, ICalendarEvent } from './types';
+export { CalendarEvent } from './CalendarEvent';
+export { Day } from './Day';
+export type { ICalendarEvent } from './types';
