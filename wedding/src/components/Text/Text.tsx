@@ -22,14 +22,20 @@ export const Text = <T extends ElementType>({
   bold = false,
   tag,
   children,
+  className,
   ...rest
 }: TextProps<T> & Omit<ComponentProps<T>, keyof TextProps<T>>) => {
   const Component = tag ? tag : getComponent(variant);
   return (
     <Component
-      className={classNames(css.text, getClassName(variant), {
-        [css.bold]: bold,
-      })}
+      className={classNames(
+        css.text,
+        getClassName(variant),
+        {
+          [css.bold]: bold,
+        },
+        className
+      )}
       {...rest}
     >
       {children}

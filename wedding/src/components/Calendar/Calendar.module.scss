@@ -1,123 +1,46 @@
+// <Calendar />
+
 .calendar {
-  position: relative;
-  --day-separator-color: var(--grey-60);
-  --event-bg-color: var(--peach);
-  --event-fg-color: var(--foreground-inverse);
-}
-
-.dayName {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  color: var(--day-separator-color);
-
-  &::after {
-    content: '';
-    background-color: var(--day-separator-color);
-    flex: 1;
-    height: 2px;
-    margin-left: 10px;
-    border-radius: 2px;
-  }
-}
-
-.day {
-  height: 340px;
-  position: relative;
-
-  .hourLines {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 20px 0;
-
-    .hourLine {
-      background-color: hsla(0deg 0% 0% / 8%);
-      height: 1px;
-      width: 75%;
-    }
-  }
-
-  .event {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 100%;
-    padding: 10px 20px;
-    top: var(--top);
-    color: inherit;
-    background: unset;
-    border: none;
-    text-align: unset;
-    cursor: pointer;
-
-    background-color: var(--event-bg-color);
-    color: var(--event-fg-color);
-    border-radius: 16px;
-    height: max(
-      103px,
-      var(--height)
-    ); // needs to match popover offset on CalendarEvent.tsx L29
-
-    p {
-      margin: 0;
-    }
-  }
-
-  .free-space {
-    position: absolute;
-    top: var(--top);
-    height: var(--height);
-    display: grid;
-    place-items: center;
-    padding-inline: 48px;
-    text-align: justify;
-    width: 100%;
-
-    h3 {
-      text-align: center;
-    }
-  }
-}
-
-.eventBubble {
-  background-color: var(--event-bg-color);
-  color: var(--event-fg-color);
-  border-radius: 20px;
-  padding: 10px 20px;
-  z-index: 3;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  width: 100%;
+  gap: 55px;
+  width: min(85%, 450px);
+}
 
-  .metadata {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+// <Day />
 
-    h3 {
-      margin: 0;
-    }
-  }
+h3.dayLabel {
+  text-transform: uppercase;
+  letter-spacing: 1rem;
+  margin: 0;
+}
+
+.eventList {
+  margin: 0;
+  padding-inline-start: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// <CalendarEvent />
+
+h2.eventTitle {
+  color: var(--peach);
+  text-transform: lowercase;
+  margin: 1rem 0;
+}
+
+.metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .iconRow {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-
-  background-color: hsla(0deg 0% 0% / 60%);
 }
