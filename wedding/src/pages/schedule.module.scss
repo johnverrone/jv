@@ -3,10 +3,13 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 32px;
+  max-width: min(85%, 1600px);
+  margin: 0 auto;
 }
 
 .scheduleImage {
   position: relative;
-  width: min(85%, 400px);
+  flex: 1 1 400px;
+  max-width: 500px;
   aspect-ratio: 2 / 3;
 }
