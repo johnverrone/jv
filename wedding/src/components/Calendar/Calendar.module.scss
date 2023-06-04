@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: 55px;
-  width: min(85%, 450px);
+  max-width: 400px;
 }
 
 // <Day />
