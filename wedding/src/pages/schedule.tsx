@@ -21,21 +21,21 @@ export default function Schedule() {
           <Day label="Friday">
             <CalendarEvent
               attire="Casual"
-              description="Join us for drinks, games, and food in Evergreen as we kick off the weekend!"
+              description="Join us for food, drinks, and games in Evergreen as we kick off the weekend!"
               location="The Wild Game Evergreen"
               locationUrl="https://goo.gl/maps/rxeWAnAb2TREcyeMA"
               name="Welcome Party"
-              time="6:30 pm - 9:30 pm"
+              time="6:30 &ndash; 9:30pm"
             />
           </Day>
           <Day label="Saturday">
             <CalendarEvent
               attire="Semi-formal"
-              description="Have a seat as we make this thing official! If you plan on taking the provided shuttles from the hotel, please be ready by 4:15pm."
+              description="Have a seat as we make this thing official! Please arrive by 4:45pm."
               location="Hiwan Golf Club"
               locationUrl="https://g.page/Hiwan?share"
               name="Ceremony"
-              time="5:00 pm - 5:30 pm"
+              time="5:00 &ndash; 5:30pm"
             />
             <CalendarEvent
               attire="Semi-formal"
@@ -43,15 +43,15 @@ export default function Schedule() {
               location="Hiwan Golf Club"
               locationUrl="https://g.page/Hiwan?share"
               name="Cocktail Hour"
-              time="5:30 pm - 6:30 pm"
+              time="5:30 &ndash; 6:30pm"
             />
             <CalendarEvent
               attire="Semi-formal"
-              description="Dinner, drinks, and dancing"
+              description="You know the drill! Dinner, drinks, and dancing."
               location="Hiwan Golf Club"
               locationUrl="https://g.page/Hiwan?share"
               name="Reception"
-              time="6:30 pm - 10:30 pm"
+              time="6:30 &ndash; 10:30pm"
             />
           </Day>
         </Calendar>
