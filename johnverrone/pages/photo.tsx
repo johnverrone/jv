@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
 import { WheelNav } from '@components/Navigation';
@@ -23,54 +23,70 @@ const CollectionWrapper = styled.div`
 `;
 
 const PhotoPage: React.FC = () => {
-  return (
-    <>
-      <SEO title="photo" />
-      <WheelNav />
-      <AppContainer>
-        <CollectionWrapper>
-          <CollectionTitle>Zion National Park, United States</CollectionTitle>
-          <PhotoList>
-            <Image
-              src={overlook}
-              alt="Sunrise view of Zion Canyon Overlook"
-              objectFit="cover"
-            />
-            <Image
-              src={patriarchs}
-              alt="Court of the Patriarchs in Zion National Park"
-              objectFit="cover"
-            />
-            <Image
-              src={tinyHome}
-              alt="Tiny home outside of Zion National Park"
-              objectFit="cover"
-            />
-          </PhotoList>
-        </CollectionWrapper>
-        <CollectionWrapper>
-          <CollectionTitle>Galápagos Islands, Ecuador</CollectionTitle>
-          <PhotoList>
-            <Image
-              src={iguana}
-              alt="Iguana in the Galápagos Islands, Ecuador"
-              objectFit="cover"
-            />
-            <Image
-              src={pelican}
-              alt="Pelican in the Galápagos Islands, Ecuador"
-              objectFit="cover"
-            />
-            <Image
-              src={seaLion}
-              alt="Sea Lion in the Galápagos Islands, Ecuador"
-              objectFit="cover"
-            />
-          </PhotoList>
-        </CollectionWrapper>
-      </AppContainer>
-    </>
-  );
+  return <>
+    <SEO title="photo" />
+    <WheelNav />
+    <AppContainer>
+      <CollectionWrapper>
+        <CollectionTitle>Zion National Park, United States</CollectionTitle>
+        <PhotoList>
+          <Image
+            src={overlook}
+            alt="Sunrise view of Zion Canyon Overlook"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              objectFit: "cover"
+            }} />
+          <Image
+            src={patriarchs}
+            alt="Court of the Patriarchs in Zion National Park"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              objectFit: "cover"
+            }} />
+          <Image
+            src={tinyHome}
+            alt="Tiny home outside of Zion National Park"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              objectFit: "cover"
+            }} />
+        </PhotoList>
+      </CollectionWrapper>
+      <CollectionWrapper>
+        <CollectionTitle>Galápagos Islands, Ecuador</CollectionTitle>
+        <PhotoList>
+          <Image
+            src={iguana}
+            alt="Iguana in the Galápagos Islands, Ecuador"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              objectFit: "cover"
+            }} />
+          <Image
+            src={pelican}
+            alt="Pelican in the Galápagos Islands, Ecuador"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              objectFit: "cover"
+            }} />
+          <Image
+            src={seaLion}
+            alt="Sea Lion in the Galápagos Islands, Ecuador"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              objectFit: "cover"
+            }} />
+        </PhotoList>
+      </CollectionWrapper>
+    </AppContainer>
+  </>;
 };
 
 export default PhotoPage;
