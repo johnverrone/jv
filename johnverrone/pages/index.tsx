@@ -33,16 +33,16 @@ const IndexPage: React.FC = () => (
     <SEO description="Personal blog" />
     <Title>johnverrone</Title>
     <Bio>
-      <Link href="/work" passHref>
+      <Link href="/work" passHref legacyBehavior>
         <Emphasis>dev</Emphasis>
       </Link>
-      <Link href="/photo" passHref>
+      <Link href="/photo" passHref legacyBehavior>
         <Emphasis>photos</Emphasis>
       </Link>
-      <Link href="/video" passHref>
+      <Link href="/video" passHref legacyBehavior>
         <Emphasis>videos</Emphasis>
       </Link>
-      <Link href="/coffee" passHref>
+      <Link href="/coffee" passHref legacyBehavior>
         <Emphasis>coffee</Emphasis>
       </Link>
     </Bio>

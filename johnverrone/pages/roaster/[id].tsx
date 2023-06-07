@@ -11,7 +11,7 @@ const RoasterDetailPage: React.FC = () => {
   return (
     <>
       <SEO title="Coffee" />
-      <Link href="/" passHref>
+      <Link href="/" passHref legacyBehavior>
         <SiteTitle>johnverrone</SiteTitle>
       </Link>
       <AppContainer>

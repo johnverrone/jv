@@ -27,11 +27,11 @@ interface RouteProps extends ParsedUrlQuery {
 const CoffeeDetailPage: React.FC<CoffeeDetailPageProps> = ({ coffee }) => (
   <>
     <SEO title="Coffee" />
-    <Link href="/" passHref>
+    <Link href="/" passHref legacyBehavior>
       <SiteTitle>johnverrone</SiteTitle>
     </Link>
     <AppContainer>
-      <Link href="/coffee" passHref>
+      <Link href="/coffee" passHref legacyBehavior>
         <A>← all coffee</A>
       </Link>
       <Wrapper>
