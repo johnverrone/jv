@@ -3,7 +3,6 @@
 import { SEO } from '@components/SEO';
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import React from 'react';
 
 const Title = styled.h1`
   width: 100%;
@@ -30,7 +29,7 @@ const Emphasis = styled.a`
   text-decoration: none;
 `;
 
-const IndexPage: React.FC = () => (
+const IndexPage = () => (
   <>
     <SEO description="Personal blog" />
     <Title>johnverrone</Title>

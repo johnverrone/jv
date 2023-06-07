@@ -1,7 +1,6 @@
-import React from 'react';
-import Head from 'next/head';
-import styled from '@emotion/styled';
 import { AppContainer } from '@components/AppContainer';
+import styled from '@emotion/styled';
+import Head from 'next/head';
 
 const Error = styled.div`
   display: flex;
@@ -14,7 +13,7 @@ const Error = styled.div`
   }
 `;
 
-const NotFoundPage: React.FC = () => (
+const NotFoundPage = () => (
   <>
     <Head>
       <title>oopsies</title>

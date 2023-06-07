@@ -9,7 +9,6 @@ import { CoffeeBrew } from '@lib/coffee/types';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { ParsedUrlQuery } from 'querystring';
-import React from 'react';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -24,7 +23,7 @@ interface RouteProps extends ParsedUrlQuery {
   id: string;
 }
 
-const CoffeeDetailPage: React.FC<CoffeeDetailPageProps> = ({ coffee }) => (
+const CoffeeDetailPage = ({ coffee }: CoffeeDetailPageProps) => (
   <>
     <SEO title="Coffee" />
     <Link href="/" passHref legacyBehavior>

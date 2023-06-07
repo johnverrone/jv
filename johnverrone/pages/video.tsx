@@ -1,10 +1,9 @@
-import React from 'react';
-import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
 import { WheelNav } from '@components/Navigation';
+import { SEO } from '@components/SEO';
 import { YouTubeVideo } from '@components/YouTubeVideo';
 
-const VideoPage: React.FC = () => {
+const VideoPage = () => {
   return (
     <>
       <SEO title="video" />

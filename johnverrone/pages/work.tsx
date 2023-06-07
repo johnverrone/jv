@@ -1,10 +1,9 @@
-import React from 'react';
-import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
 import { WheelNav } from '@components/Navigation';
+import { SEO } from '@components/SEO';
 import { WorkItem, WorkList } from '@components/WorkList';
 
-const WorkPage: React.FC = () => {
+const WorkPage = () => {
   return (
     <>
       <SEO title="work" />

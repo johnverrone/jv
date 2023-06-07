@@ -1,15 +1,15 @@
-import styled from '@emotion/styled';
-import { CoffeeBrew } from '@lib/coffee/types';
-import Image from "next/image";
-import Link from 'next/link';
-import React, { Fragment } from 'react';
 import { A } from '@components/A';
-import { CurrentlyBrewing } from './CurrentlyBrewing';
 import {
   PropertyList,
   PropertyTitle,
   PropertyValue,
 } from '@components/PropertyList';
+import styled from '@emotion/styled';
+import { CoffeeBrew } from '@lib/coffee/types';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { Fragment, ReactNode } from 'react';
+import { CurrentlyBrewing } from './CurrentlyBrewing';
 
 const Wrapper = styled.article`
   border-radius: var(--border-radius-tight);
@@ -37,10 +37,11 @@ const ImageContainer = styled.div`
   position: relative;
 `;
 interface CoffeeCardProps {
+  children?: ReactNode;
   coffee: CoffeeBrew;
 }
 
-export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee }) => {
+export const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
   const coffeeRoasterString = coffee.roaster.map((r) => r.name).join(', ');
   const coffeeRoasterNode: React.ReactNode = coffee.roaster.map(
     (roaster, i) => (
@@ -63,8 +64,9 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee }) => {
             fill
             sizes="100vw"
             style={{
-              objectFit: "cover"
-            }} />
+              objectFit: 'cover',
+            }}
+          />
         </ImageContainer>
       )}
       <CoffeeInfo>

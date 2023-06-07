@@ -1,18 +1,17 @@
-import React from 'react';
-import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
+import { SEO } from '@components/SEO';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
 interface BlogPageProps {
-  post: { slug: string, title: string };
+  post: { slug: string; title: string };
 }
 
 interface RouteProps extends ParsedUrlQuery {
   slug: string;
 }
 
-const BlogPage: React.FC<BlogPageProps> = ({ post }) => {
+const BlogPage = ({ post }: BlogPageProps) => {
   return (
     <>
       <SEO title={post.title} />

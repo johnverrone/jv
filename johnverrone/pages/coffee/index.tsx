@@ -1,10 +1,9 @@
-import React from 'react';
-import { SEO } from '@components/SEO';
-import { getAllCoffeeBrews } from '@lib/coffee/brews';
-import { GetServerSideProps } from 'next';
-import { CoffeeBrew } from '@lib/coffee/types';
 import { CoffeeCard, CoffeeCardList } from '@components/CoffeeCard';
 import { WheelNav } from '@components/Navigation';
+import { SEO } from '@components/SEO';
+import { getAllCoffeeBrews } from '@lib/coffee/brews';
+import { CoffeeBrew } from '@lib/coffee/types';
+import { GetServerSideProps } from 'next';
 
 const coffeeSortFn = (a: CoffeeBrew, b: CoffeeBrew) => {
   const currentlyBrewingFirst =
@@ -18,7 +17,7 @@ interface CoffeePageProps {
   coffees: CoffeeBrew[];
 }
 
-const CoffeePage: React.FC<CoffeePageProps> = ({ coffees }) => {
+const CoffeePage = ({ coffees }: CoffeePageProps) => {
   return (
     <>
       <SEO title="Coffee" />
@@ -32,10 +31,11 @@ const CoffeePage: React.FC<CoffeePageProps> = ({ coffees }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<CoffeePageProps> =
-  async () => {
-    const coffees = await getAllCoffeeBrews();
-    return { props: { coffees } };
-  };
+export const getServerSideProps: GetServerSideProps<
+  CoffeePageProps
+> = async () => {
+  const coffees = await getAllCoffeeBrews();
+  return { props: { coffees } };
+};
 
 export default CoffeePage;

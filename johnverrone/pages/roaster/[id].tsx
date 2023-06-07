@@ -3,9 +3,8 @@ import { SEO } from '@components/SEO';
 import { SiteTitle } from '@components/SiteTitle';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
 
-const RoasterDetailPage: React.FC = () => {
+const RoasterDetailPage = () => {
   const router = useRouter();
   const { id } = router.query;
   return (

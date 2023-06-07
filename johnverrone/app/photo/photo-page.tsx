@@ -12,7 +12,6 @@ import overlook from '@images/photos/zion/overlook.jpg';
 import patriarchs from '@images/photos/zion/patriarchs.jpg';
 import tinyHome from '@images/photos/zion/tiny-home.jpg';
 import Image from 'next/image';
-import React from 'react';
 
 const CollectionTitle = styled.h3`
   font-family: var(--font-family-heading);
@@ -24,7 +23,7 @@ const CollectionWrapper = styled.div`
   margin-bottom: 48px;
 `;
 
-const PhotoPage: React.FC = () => {
+const PhotoPage = () => {
   return (
     <>
       <SEO title="photo" />

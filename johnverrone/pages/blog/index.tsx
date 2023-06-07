@@ -1,15 +1,14 @@
-import React from 'react';
-import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
-import { GetStaticProps } from 'next';
-import { WheelNav } from '@components/Navigation';
 import { ComingSoon } from '@components/ComingSoon';
+import { WheelNav } from '@components/Navigation';
+import { SEO } from '@components/SEO';
+import { GetStaticProps } from 'next';
 
 interface BlogPageProps {
   posts: { slug: string; title: string }[];
 }
 
-const BlogPage: React.FC<BlogPageProps> = ({ posts }) => {
+const BlogPage = ({ posts }: BlogPageProps) => {
   return (
     <>
       <SEO title="Blog" />

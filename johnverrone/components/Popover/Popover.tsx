@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { BasePlacement, VariationPlacement } from '@popperjs/core';
+import { ReactNode, useState } from 'react';
 import { PopperProps, usePopper } from 'react-popper';
 
 const Arrow = styled.div`
@@ -32,19 +32,20 @@ const PopperDiv = styled.div`
 `;
 
 export interface PopoverProps {
+  children: ReactNode;
   anchor: HTMLDivElement | null;
   open: boolean;
   offset?: number;
   placement?: BasePlacement | VariationPlacement;
 }
 
-export const Popover: React.FC<PopoverProps> = ({
+export const Popover = ({
   anchor,
   open,
   offset = 0,
   placement = 'bottom',
   children,
-}) => {
+}: PopoverProps) => {
   const [popperRef, setPopperRef] = useState<HTMLDivElement | null>(null);
   const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
   const modifiers: PopperProps<any>['modifiers'] = [
