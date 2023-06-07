@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { CoffeeBrew } from '@lib/coffee/types';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { A } from '@components/A';
@@ -60,9 +60,11 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee }) => {
           <Image
             src={coffee.imageUrl}
             alt={`Coffee bag artwork for ${coffee.name} from ${coffeeRoasterString}`}
-            layout="fill"
-            objectFit="cover"
-          />
+            fill
+            sizes="100vw"
+            style={{
+              objectFit: "cover"
+            }} />
         </ImageContainer>
       )}
       <CoffeeInfo>
