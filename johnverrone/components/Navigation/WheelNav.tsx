@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react';
-import styled from '@emotion/styled';
+'use client';
+
 import { Button } from '@components/Button';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import styled from '@emotion/styled';
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { NavItem } from './NavItem';
 import { MENU_ITEMS } from './contants';
 
@@ -102,7 +104,7 @@ const MenuWrapper = styled.div`
 
 export const WheelNav = () => {
   const [open, setOpen] = useState(false);
-  const { pathname } = useRouter();
+  const pathname = usePathname();
 
   const currentPage = MENU_ITEMS.find((item) => item.slug === pathname)?.name;
 

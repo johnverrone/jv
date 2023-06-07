@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@emotion/core": "^11.0.0",
-    "@emotion/react": "^11.4.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@fullstory/browser": "^1.4.9",
     "@notionhq/client": "^1.0.4",
-    "framer-motion": "^4.1.17",
+    "framer-motion": "^10.12.16",
     "gray-matter": "^4.0.3",
     "next": "^13.4.4",
     "react": "^18.2.0",
@@ -22,12 +22,12 @@
   },
   "devDependencies": {
     "@popperjs/core": "^2.10.1",
-    "@types/node": "^17.0.18",
-    "@types/react": "17.0.21",
+    "@types/node": "^20.2.5",
+    "@types/react": "^18.2.8",
     "eslint": "7.32.0",
     "eslint-config-next": "^13.4.4",
     "prettier": "^2.4.0",
     "react-popper": "^2.2.5",
-    "typescript": "4.4.3"
+    "typescript": "^5.1.3"
   }
 }

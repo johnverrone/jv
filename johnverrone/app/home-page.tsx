@@ -1,7 +1,9 @@
-import React from 'react';
-import styled from '@emotion/styled';
+'use client';
+
 import { SEO } from '@components/SEO';
+import styled from '@emotion/styled';
 import Link from 'next/link';
+import React from 'react';
 
 const Title = styled.h1`
   width: 100%;
