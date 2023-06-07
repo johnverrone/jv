@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { SEO } from '@components/SEO';
 import { AppContainer } from '@components/AppContainer';
 import { WheelNav } from '@components/Navigation';
