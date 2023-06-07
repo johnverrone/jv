@@ -136,7 +136,7 @@ export const WheelNav = () => {
   return (
     <Container>
       <Wrapper>
-        <Link href="/" passHref>
+        <Link href="/" passHref legacyBehavior>
           <PageTitle>johnverrone</PageTitle>
         </Link>
         <Divider />
@@ -161,7 +161,7 @@ export const WheelNav = () => {
                 {MENU_ITEMS.filter((item) => item.name !== currentPage).map(
                   (item) => (
                     <MenuItem key={item.slug} variants={menuItemVariants}>
-                      <Link href={item.slug} passHref>
+                      <Link href={item.slug} passHref legacyBehavior>
                         <NavItem>{item.name}</NavItem>
                       </Link>
                     </MenuItem>

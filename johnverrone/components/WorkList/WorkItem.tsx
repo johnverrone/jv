@@ -33,7 +33,7 @@ export const WorkItem: React.FC<WorkItemProps> = ({ title, link }) => {
     </>
   );
   return link ? (
-    <Link href={link} passHref>
+    <Link href={link} passHref legacyBehavior>
       <LinkWrapper target="_blank" rel="noopener noreferrer">
         {component}
       </LinkWrapper>

@@ -45,7 +45,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee }) => {
   const coffeeRoasterNode: React.ReactNode = coffee.roaster.map(
     (roaster, i) => (
       <Fragment key={roaster.id}>
-        <Link href={`/roaster/${roaster.id}`} passHref>
+        <Link href={`/roaster/${roaster.id}`} passHref legacyBehavior>
           <A>{roaster.name}</A>
         </Link>
         {i < coffee.roaster.length - 1 && ', '}
@@ -69,7 +69,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee }) => {
       )}
       <CoffeeInfo>
         <CoffeeName>
-          <Link href={`/coffee/${coffee.id}`} passHref>
+          <Link href={`/coffee/${coffee.id}`} passHref legacyBehavior>
             <A>{coffee.name}</A>
           </Link>
         </CoffeeName>

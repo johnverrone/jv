@@ -23,7 +23,7 @@ const Wrapper = styled.a`
 
 export const CoffeeButton: React.FC = () => {
   return (
-    <Link href="/coffee" passHref>
+    <Link href="/coffee" passHref legacyBehavior>
       <Wrapper>☕️</Wrapper>
     </Link>
   );
