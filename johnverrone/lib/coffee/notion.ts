@@ -10,7 +10,7 @@ export const notion = new Client({ auth: process.env.NOTION_COFFEE_TOKEN });
 export const coffeeDatabaseId = process.env.NOTION_COFFEE_DATABASE_ID || '';
 export const roasterDatabaseId = process.env.NOTION_ROASTER_DATABASE_ID || '';
 
-export const hasProperties = <P>(
+export const hasProperties = <P extends {}>(
   page: P
 ): page is Extract<P, { properties: any }> => {
   return 'properties' in page;
