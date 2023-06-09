@@ -1,6 +1,5 @@
 import 'server-only';
 
-import React from 'react';
 import {
   coffeeDatabaseId,
   getImageUrl,
@@ -70,49 +69,45 @@ export const getRoastersById = async (): Promise<{
     );
 };
 
-export const getAllCoffeeBrews = React.cache(
-  async (): Promise<CoffeeBrew[]> => {
-    const roastersById = await getRoastersById();
+export const getAllCoffeeBrews = async (): Promise<CoffeeBrew[]> => {
+  const roastersById = await getRoastersById();
 
-    const brews = await notion.databases.query({
-      database_id: coffeeDatabaseId,
-    });
+  const brews = await notion.databases.query({
+    database_id: coffeeDatabaseId,
+  });
 
-    const brewsById = brews.results
-      .filter(hasProperties)
-      .reduce<{ [id: string]: CoffeeBrew }>((acc, { id, properties }) => {
-        const coffee = notionResultToCoffeeBrew(id, properties, roastersById);
-        return {
-          ...acc,
-          [id]: coffee,
-        };
-      }, {});
+  const brewsById = brews.results
+    .filter(hasProperties)
+    .reduce<{ [id: string]: CoffeeBrew }>((acc, { id, properties }) => {
+      const coffee = notionResultToCoffeeBrew(id, properties, roastersById);
+      return {
+        ...acc,
+        [id]: coffee,
+      };
+    }, {});
 
-    return Object.values(brewsById);
-  }
-);
+  return Object.values(brewsById);
+};
 
-export const getCoffeeBrewById = React.cache(
-  async (id: string): Promise<CoffeeBrew> => {
-    const roastersById = await getRoastersById();
+export const getCoffeeBrewById = async (id: string): Promise<CoffeeBrew> => {
+  const roastersById = await getRoastersById();
 
-    const brewsQuery = await notion.databases.query({
-      database_id: coffeeDatabaseId,
-      filter: {
-        property: CoffeeProperties.slug.name,
-        [CoffeeProperties.slug.type]: {
-          contains: id,
-        },
+  const brewsQuery = await notion.databases.query({
+    database_id: coffeeDatabaseId,
+    filter: {
+      property: CoffeeProperties.slug.name,
+      [CoffeeProperties.slug.type]: {
+        contains: id,
       },
-    });
+    },
+  });
 
-    const brews = brewsQuery.results.filter(hasProperties);
-    if (!brews.length) throw new Error(`Unable to find coffee with id: ${id}`);
-    const brew = brews[0];
+  const brews = brewsQuery.results.filter(hasProperties);
+  if (!brews.length) throw new Error(`Unable to find coffee with id: ${id}`);
+  const brew = brews[0];
 
-    return notionResultToCoffeeBrew(brew.id, brew.properties, roastersById);
-  }
-);
+  return notionResultToCoffeeBrew(brew.id, brew.properties, roastersById);
+};
 
 const notionResultToCoffeeBrew = (
   id: string,
