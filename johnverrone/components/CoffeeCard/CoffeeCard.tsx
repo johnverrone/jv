@@ -46,9 +46,7 @@ export const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
   const coffeeRoasterNode: React.ReactNode = coffee.roaster.map(
     (roaster, i) => (
       <Fragment key={roaster.id}>
-        <Link href={`/roaster/${roaster.id}`} passHref legacyBehavior>
-          <A>{roaster.name}</A>
-        </Link>
+        {roaster.name}
         {i < coffee.roaster.length - 1 && ', '}
       </Fragment>
     )
@@ -61,10 +59,12 @@ export const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
           <Image
             src={coffee.imageUrl}
             alt={`Coffee bag artwork for ${coffee.name} from ${coffeeRoasterString}`}
-            fill
-            sizes="100vw"
+            width={400}
+            height={400}
             style={{
+              height: 'auto',
               objectFit: 'cover',
+              aspectRatio: '1/1',
             }}
           />
         </ImageContainer>

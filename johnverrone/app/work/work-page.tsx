@@ -1,12 +1,12 @@
+'use client';
+
 import { AppContainer } from '@components/AppContainer';
 import { WheelNav } from '@components/Navigation';
-import { SEO } from '@components/SEO';
 import { WorkItem, WorkList } from '@components/WorkList';
 
 const WorkPage = () => {
   return (
     <>
-      <SEO title="work" />
       <WheelNav />
       <AppContainer>
         <WorkList>
