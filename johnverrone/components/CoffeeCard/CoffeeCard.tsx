@@ -1,15 +1,15 @@
-import styled from '@emotion/styled';
-import { CoffeeBrew } from '@lib/coffee/types';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { Fragment } from 'react';
 import { A } from '@components/A';
-import { CurrentlyBrewing } from './CurrentlyBrewing';
 import {
   PropertyList,
   PropertyTitle,
   PropertyValue,
 } from '@components/PropertyList';
+import styled from '@emotion/styled';
+import { CoffeeBrew } from '@lib/coffee/types';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { Fragment, ReactNode } from 'react';
+import { CurrentlyBrewing } from './CurrentlyBrewing';
 
 const Wrapper = styled.article`
   border-radius: var(--border-radius-tight);
@@ -37,17 +37,16 @@ const ImageContainer = styled.div`
   position: relative;
 `;
 interface CoffeeCardProps {
+  children?: ReactNode;
   coffee: CoffeeBrew;
 }
 
-export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee }) => {
+export const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
   const coffeeRoasterString = coffee.roaster.map((r) => r.name).join(', ');
   const coffeeRoasterNode: React.ReactNode = coffee.roaster.map(
     (roaster, i) => (
       <Fragment key={roaster.id}>
-        <Link href={`/roaster/${roaster.id}`} passHref>
-          <A>{roaster.name}</A>
-        </Link>
+        {roaster.name}
         {i < coffee.roaster.length - 1 && ', '}
       </Fragment>
     )
@@ -60,14 +59,19 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({ coffee }) => {
           <Image
             src={coffee.imageUrl}
             alt={`Coffee bag artwork for ${coffee.name} from ${coffeeRoasterString}`}
-            layout="fill"
-            objectFit="cover"
+            width={400}
+            height={400}
+            style={{
+              height: 'auto',
+              objectFit: 'cover',
+              aspectRatio: '1/1',
+            }}
           />
         </ImageContainer>
       )}
       <CoffeeInfo>
         <CoffeeName>
-          <Link href={`/coffee/${coffee.id}`} passHref>
+          <Link href={`/coffee/${coffee.id}`} passHref legacyBehavior>
             <A>{coffee.name}</A>
           </Link>
         </CoffeeName>

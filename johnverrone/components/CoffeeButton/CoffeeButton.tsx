@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
@@ -21,9 +20,9 @@ const Wrapper = styled.a`
   text-decoration: none;
 `;
 
-export const CoffeeButton: React.FC = () => {
+export const CoffeeButton = () => {
   return (
-    <Link href="/coffee" passHref>
+    <Link href="/coffee" passHref legacyBehavior>
       <Wrapper>☕️</Wrapper>
     </Link>
   );

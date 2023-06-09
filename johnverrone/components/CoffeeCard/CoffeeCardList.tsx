@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import { ReactNode } from 'react';
 
 const Wrapper = styled.section`
   margin: 0 auto;
@@ -16,7 +16,7 @@ const EmptySpace = styled.div`
   height: 120px;
 `;
 
-export const CoffeeCardList: React.FC = ({ children }) => {
+export const CoffeeCardList = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Wrapper>{children}</Wrapper>

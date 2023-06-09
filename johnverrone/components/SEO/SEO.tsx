@@ -1,4 +1,3 @@
-import React from 'react';
 import Head from 'next/head';
 
 interface SEOProps {
@@ -8,7 +7,7 @@ interface SEOProps {
   lang?: string;
 }
 
-export const SEO: React.FC<SEOProps> = ({ title = '', description = '' }) => {
+export const SEO = ({ title = '', description = '' }: SEOProps) => {
   const fullTitle = `John Verrone${title ? ` | ${title}` : ''}`;
   return (
     <>

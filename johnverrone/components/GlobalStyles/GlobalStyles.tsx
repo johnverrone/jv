@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+
 import { Global, css } from '@emotion/react';
 
 export const GlobalStyles = () => {
@@ -6,11 +7,11 @@ export const GlobalStyles = () => {
     <Global
       styles={css`
         :root {
-          --font-family-heading: 'Oxygen';
-          --font-family-body: 'Fira Sans';
+          --font-family-heading: var(--font-oxygen, 'Oxygen');
+          --font-family-body: var(--font-fira-sans, 'Fira Sans');
           /* --font-family-body: system-ui, 'Segoe UI', Roboto, Helvetica, Arial,
             sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', */
-          --font-family-mono: 'Fira Code';
+          --font-family-mono: var(--font-fira-code, 'Fira Code');
 
           --font-size-heading2: 1.5rem;
           --font-size-property-key: 0.625rem;

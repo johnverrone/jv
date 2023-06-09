@@ -1,14 +1,16 @@
+import 'server-only';
+
 import {
-  notion,
   coffeeDatabaseId,
-  roasterDatabaseId,
-  hasProperties,
+  getImageUrl,
   getPageTitle,
   getProperty,
-  getImageUrl,
+  hasProperties,
+  notion,
+  roasterDatabaseId,
 } from './notion';
-import { CoffeeBrew, CoffeeRoaster } from './types';
 import { PageProperties } from './notionTypes';
+import { CoffeeBrew, CoffeeRoaster } from './types';
 
 const CoffeeProperties = {
   currentlyBrewing: {

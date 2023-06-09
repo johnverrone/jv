@@ -1,7 +1,6 @@
-import React from 'react';
 import styled from '@emotion/styled';
-import { Work } from './types';
 import Link from 'next/link';
+import { Work } from './types';
 
 const Wrapper = styled.div`
   height: 200px;
@@ -26,14 +25,14 @@ const Title = styled.h3`
 
 interface WorkItemProps extends Work {}
 
-export const WorkItem: React.FC<WorkItemProps> = ({ title, link }) => {
+export const WorkItem = ({ title, link }: WorkItemProps) => {
   const component = (
     <>
       <Title>{title}</Title>
     </>
   );
   return link ? (
-    <Link href={link} passHref>
+    <Link href={link} passHref legacyBehavior>
       <LinkWrapper target="_blank" rel="noopener noreferrer">
         {component}
       </LinkWrapper>

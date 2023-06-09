@@ -19,7 +19,7 @@ export const NavBar = () => {
   return (
     <Wrapper>
       {MENU_ITEMS.map((item) => (
-        <Link key={item.slug} href={item.slug} passHref>
+        <Link key={item.slug} href={item.slug} passHref legacyBehavior>
           <NavItem>{item.name}</NavItem>
         </Link>
       ))}

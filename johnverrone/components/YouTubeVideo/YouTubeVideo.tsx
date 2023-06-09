@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div`
@@ -22,10 +21,7 @@ interface YouTubeVideoProps {
   title: string;
 }
 
-export const YouTubeVideo: React.FC<YouTubeVideoProps> = ({
-  videoId,
-  title,
-}) => (
+export const YouTubeVideo = ({ videoId, title }: YouTubeVideoProps) => (
   <Wrapper>
     <VideoTitle>{title}</VideoTitle>
     <IFrame
