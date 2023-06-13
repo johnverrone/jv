@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import supabase from '../../lib/supabase';
 import PhotoPage from './photo-page';
 
-export async function getAllImages() {
+async function getAllImages() {
   const { data, error } = await supabase.storage
     .from('portfolio')
     .list(undefined, {
