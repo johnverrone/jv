@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@fullstory/browser": "^1.4.9",
     "@notionhq/client": "^1.0.4",
+    "@supabase/supabase-js": "^2.24.0",
     "framer-motion": "^10.12.16",
     "gray-matter": "^4.0.3",
     "next": "^13.4.4",
