@@ -14,8 +14,19 @@ module.exports = {
         port: '',
         pathname: '/.attachments/**',
       },
+      {
+        protocol: 'https',
+        hostname: 's3.us-west-2.amazonaws.com',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.shopify.com',
+        port: '',
+        pathname: '**',
+      },
     ],
-    domains: ['s3.us-west-2.amazonaws.com', 'cdn.shopify.com'],
   },
   reactStrictMode: true,
   async redirects() {
