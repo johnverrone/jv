@@ -1,11 +1,11 @@
-import React, { FormEvent, useState } from 'react';
+import { Attendance, Person } from '@prisma/client';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FormEvent, useState } from 'react';
 import { Button } from '../../components/Button';
 import { Text } from '../../components/Text';
 import { TextArea } from '../../components/TextArea';
-import css from './index.module.scss';
-import { Attendance, Person } from '@prisma/client';
 import { AcceptDecline, AttendanceProps } from './AcceptDecline';
-import { AnimatePresence, motion } from 'framer-motion';
+import css from './index.module.scss';
 
 const container = {
   hide: { opacity: 0 },
@@ -165,7 +165,7 @@ export const EditingForm = ({
               <Text variant="heading3">Dietary Restrictions</Text>
               <Text variant="body3">
                 Please inform us of any dietary restrictions for anyone in your
-                party so we can accomadate everyone accordingly.
+                party so we can accommodate everyone accordingly.
               </Text>
             </div>
             <TextArea
