@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import React from 'react';
 import Image from 'next/image';
 import { Calendar, CalendarEvent, Day } from '../components/Calendar';
 import { bedDance } from '../photos';
@@ -20,7 +19,7 @@ export default function Schedule() {
         <Calendar>
           <Day label="Friday">
             <CalendarEvent
-              attire="Casual"
+              attire="Smart casual"
               description="Join us for food, drinks, and games in Evergreen as we kick off the weekend!"
               location="The Wild Game Evergreen"
               locationUrl="https://goo.gl/maps/rxeWAnAb2TREcyeMA"

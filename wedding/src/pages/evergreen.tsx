@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Text } from '../components/Text';
 import css from './evergreen.module.scss';
 
@@ -98,6 +98,12 @@ const golf: ThingToDo[] = [
      A must play for everyone!`,
     location: '45 minutes from Evergreen',
     link: 'https://goo.gl/maps/NeK2TxuVGro7QhAi7',
+  },
+  {
+    name: 'Fossil Trace Golf Club',
+    description: `A top rated Denver course with incredible views of the Rockies, unique rock formations, and dinosaur fossils!`,
+    location: '25 minutes from Evergreen',
+    link: 'https://goo.gl/maps/MEUiqhKuY2UzmSaS6',
   },
   {
     name: 'CommonGround Golf Course',
