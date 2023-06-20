@@ -94,7 +94,7 @@ export const EditingForm = ({
             </div>
             <div className={css.iconRow}>
               <i className="las la-tshirt la-lg" />
-              <Text variant="body3">Casual</Text>
+              <Text variant="body3">Smart casual</Text>
             </div>
           </div>
           {Object.entries(rsvps).map(([name, rsvp]) => (
