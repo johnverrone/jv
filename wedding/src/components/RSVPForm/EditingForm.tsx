@@ -86,7 +86,7 @@ export const EditingForm = ({
             <Text variant="heading3">Welcome Party</Text>
             <div className={css.iconRow}>
               <i className="las la-calendar la-lg" />
-              <Text variant="body3">Friday, August 25, 2022 at 7:00pm</Text>
+              <Text variant="body3">Friday, August 25, 2022 at 6:30pm</Text>
             </div>
             <div className={css.iconRow}>
               <i className="las la-map-marker la-lg" />
