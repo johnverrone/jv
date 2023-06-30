@@ -28,7 +28,7 @@ const food: ThingToDo[] = [
   },
   {
     name: 'Wildflower Cafe',
-    description: `Brunch spot with insane skillets, benedicts, and omelettes. They serve booze too so post up here with a mimosa or a bloody
+    description: `Brunch spot with insane skillets, benedicts, and omelets. They serve booze too so post up here with a mimosa or a bloody
     mary to really get the day started. It's usually pretty busy so expect a bit of a wait, especially if you have a large party.`,
     location: 'Downtown Evergreen',
     link: 'https://goo.gl/maps/pUjvoM3mHg19pi7n7',
@@ -41,10 +41,10 @@ const food: ThingToDo[] = [
     link: 'https://goo.gl/maps/AJyha3QWAnfcWUMs7',
   },
   {
-    name: 'Lariatt Lodge',
+    name: 'Lariat Lodge',
     description: `A microbrewery with great pretzels, burgers, fries, and beer.
     Perched on a little hill with some biergarten-style outdoor
-    seating and plenty of TVs indoor, this is a perfect spot for
+    seating and plenty of TVs indoors, this is a perfect spot for
     some casual grub or to catch a game.`,
     location: '3 minutes from Evergreen',
     link: 'https://goo.gl/maps/7DiLDcyxvH1d5de29',
@@ -87,21 +87,21 @@ const hikes: ThingToDo[] = [
 const golf: ThingToDo[] = [
   {
     name: 'Evergreen Golf Course',
-    description: `A short and unique golf course that's right along Evergreen lake. Beautiful scenery and you'll usually
+    description: `A short and unique golf course that's right along Evergreen Lake. Beautiful scenery and you'll usually
     spot some wildlife. You won't need your driver but you will need some creativity to navigate some interesting hole layouts.`,
     location: '4 minutes from Evergreen',
     link: 'https://goo.gl/maps/iDpZvwfypiwWaXbY8',
   },
   {
     name: 'Arrowhead Golf Course',
-    description: `A famous Colorado course nestled in the foothils of Littleon with majestic red rock shards piercing through the fairways.
-     A must play for everyone!`,
+    description: `A famous Colorado course nestled in the foothills of Littleton with majestic red rock shards piercing through the fairways.
+     A must-play for everyone!`,
     location: '45 minutes from Evergreen',
     link: 'https://goo.gl/maps/NeK2TxuVGro7QhAi7',
   },
   {
     name: 'Fossil Trace Golf Club',
-    description: `A top rated Denver course with incredible views of the Rockies, unique rock formations, and dinosaur fossils!`,
+    description: `A top-rated Denver course with incredible views of the Rockies, unique rock formations, and dinosaur fossils!`,
     location: '25 minutes from Evergreen',
     link: 'https://goo.gl/maps/MEUiqhKuY2UzmSaS6',
   },
@@ -118,8 +118,8 @@ const attractions: ThingToDo[] = [
   {
     name: 'Evergreen Lake',
     description: `The heart of Evergreen! A beautiful mountain lake bustling with life. In the summer, you will 
-    find paddle boarders, fisherman, golfers, walkers, runners, and dogs surrounding the lake. In the winter, ice 
-    skaters, hockey players, sledders, and ice fisherman. Definitely check out downtown Evergreen and walk around 
+    find paddle boarders, fishermen, golfers, walkers, runners, and dogs surrounding the lake. In the winter, ice 
+    skaters, hockey players, sledders, and ice fishermen. Definitely check out downtown Evergreen and walk around 
     the lake while you are in town.`,
     location: 'Downtown Evergreen',
     link: 'https://goo.gl/maps/GrwpZ5kAJbnUA65T9',
@@ -139,7 +139,7 @@ const attractions: ThingToDo[] = [
   },
   {
     name: 'Mt. Evans / Echo Lake',
-    description: `Echo Lake is a beautiful high altitude lake (10,000+ feet) nestled near Mt. Evans (one of Colorado's many 14ers).
+    description: `Echo Lake is a beautiful high-altitude lake (10,000+ feet) nestled near Mt. Evans (one of Colorado's many 14ers).
      There are walking trails and picnic tables around the lake and it's a beautiful spot to hang out and enjoy views. If you are 
      so inclined to drive to the summit of Mt. Evans, know you will need at least 2 additional hours!`,
     location: '45 minutes from Evergreen',
@@ -150,19 +150,19 @@ const attractions: ThingToDo[] = [
 const towns: ThingToDo[] = [
   {
     name: 'Idaho Springs',
-    description: `A small mountain town with a few breweries and restaurants. A cool place to grab some BBQ and learn about history of mining in the area.`,
+    description: `A small mountain town with a few breweries and restaurants. A cool place to grab some BBQ and learn about the history of mining in the area.`,
     location: '30 minutes from Evergreen',
     link: 'https://goo.gl/maps/AtmuQ7eiT7TyQwH96',
   },
   {
     name: 'Golden',
-    description: `Home to the Colorado School of Mines and Coors Brewing, Golden is a awesome little town with bars, restaurants, and nature.`,
+    description: `Home to the Colorado School of Mines and Coors Brewing, Golden is an awesome little town with bars, restaurants, and nature.`,
     location: '30 minutes from Evergreen',
     link: 'https://goo.gl/maps/4fkDspZHgsJCGXR77',
   },
   {
     name: 'Denver',
-    description: `Obviously the largest 'town' on the list. Denver is a capital of Colorado and is home to major league sports teams, businesses, concert halls
+    description: `Obviously the largest 'town' on the list. Denver is the capital of Colorado and is home to major league sports teams, businesses, concert halls
      as well as museums, zoos, and parks. We recommend exploring the Highlands or RiNo neighborhoods for food, drinks, and coffee shops.`,
     location: '45 minutes from Evergreen',
     link: 'https://goo.gl/maps/F1SsfRXKPme8myTo7',
