@@ -22,10 +22,11 @@ export const invitationsRouter = router({
     })
   ),
   find: publicProcedure.input(z.string()).query(async ({ input }) => {
+    const trimmedInput = input.trim();
     const invites = await prisma.person.findMany({
       where: {
         name: {
-          contains: input,
+          contains: trimmedInput,
           mode: 'insensitive',
         },
       },

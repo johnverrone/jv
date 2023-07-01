@@ -36,7 +36,10 @@ export const Found = ({ invitations, onChange, onCancel }: FoundProps) => {
             <Fragment key={inv.name}>
               <div className={css.foundInvite}>
                 {unknown ? (
-                  <i className="las la-question-circle la-2x" />
+                  <i
+                    className="las la-question-circle la-2x"
+                    onClick={onChange}
+                  />
                 ) : attending ? (
                   <i className="las la-check-circle la-2x" />
                 ) : (
