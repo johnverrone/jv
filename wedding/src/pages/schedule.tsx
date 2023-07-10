@@ -31,11 +31,15 @@ export default function Schedule() {
           <Day label="Saturday">
             <div className={css.shuttle}>
               <i className="las la-bus la-lg" />
-              <Text variant="body3">shuttle from hotel to Hiwan @ 3:45pm</Text>
+              <Text variant="body3">
+                shuttle from Comfort Suites to Hiwan @ 3:45pm
+              </Text>
             </div>
             <div className={css.shuttle}>
               <i className="las la-bus la-lg" />
-              <Text variant="body3">shuttle from hotel to Hiwan @ 4:15pm</Text>
+              <Text variant="body3">
+                shuttle from Comfort Suites to Hiwan @ 4:15pm
+              </Text>
             </div>
             <CalendarEvent
               attire="Semi-formal"
@@ -64,7 +68,7 @@ export default function Schedule() {
             <div className={css.shuttle}>
               <i className="las la-bus la-lg" />
               <Text variant="body3">
-                shuttle from Hiwan to hotel @ 10:45pm (tbd)
+                shuttle from Hiwan to Comfort Suites @ 10:45pm (tbd)
               </Text>
             </div>
             <div className={css.shuttle}>
@@ -76,7 +80,7 @@ export default function Schedule() {
             <div className={css.shuttle}>
               <i className="las la-bus la-lg" />
               <Text variant="body3">
-                shuttle from afterparty to hotel @ 12:15am (tbd)
+                shuttle from afterparty to Comfort Suites @ 12:15am (tbd)
               </Text>
             </div>
           </Day>
