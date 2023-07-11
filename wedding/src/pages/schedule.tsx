@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { Text } from '../components/Text';
 import { Calendar, CalendarEvent, Day } from '../components/Calendar';
 import { bedDance } from '../photos';
 import css from './schedule.module.scss';
@@ -28,9 +29,21 @@ export default function Schedule() {
             />
           </Day>
           <Day label="Saturday">
+            <div className={css.shuttle}>
+              <i className="las la-bus la-lg" />
+              <Text variant="body3">
+                shuttle from Comfort Suites to Hiwan @ 3:45pm
+              </Text>
+            </div>
+            <div className={css.shuttle}>
+              <i className="las la-bus la-lg" />
+              <Text variant="body3">
+                shuttle from Comfort Suites to Hiwan @ 4:15pm
+              </Text>
+            </div>
             <CalendarEvent
               attire="Semi-formal"
-              description="Have a seat as we make this thing official! Please arrive by 4:45pm."
+              description="Have a seat as we make this thing official! Please arrive by 4:45pm. The shuttle will make two trips from the Comfort Suites to the venue starting at a 3:45pm. Please be ready early and fill up the first bus so nobody misses the ceremony!"
               location="Hiwan Golf Club"
               locationUrl="https://g.page/Hiwan?share"
               name="Ceremony"
@@ -52,6 +65,24 @@ export default function Schedule() {
               name="Reception"
               time="6:30 &ndash; 10:30pm"
             />
+            <div className={css.shuttle}>
+              <i className="las la-bus la-lg" />
+              <Text variant="body3">
+                shuttle from Hiwan to Comfort Suites @ 10:45pm (tbd)
+              </Text>
+            </div>
+            <div className={css.shuttle}>
+              <i className="las la-bus la-lg" />
+              <Text variant="body3">
+                shuttle from Hiwan to afterparty @ 11:15pm (tbd)
+              </Text>
+            </div>
+            <div className={css.shuttle}>
+              <i className="las la-bus la-lg" />
+              <Text variant="body3">
+                shuttle from afterparty to Comfort Suites @ 12:15am (tbd)
+              </Text>
+            </div>
           </Day>
         </Calendar>
 

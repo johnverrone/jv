@@ -21,7 +21,7 @@ h3.dayLabel {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
 }
 
 // <CalendarEvent />
@@ -29,7 +29,7 @@ h3.dayLabel {
 h2.eventTitle {
   color: var(--peach);
   text-transform: lowercase;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
 }
 
 .metadata {
