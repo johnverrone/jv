@@ -33,9 +33,10 @@ const FAQs: IFAQ[] = [
     question: 'Will transportation be provided to the ceremony?',
     answer: (
       <>
-        We will provide shuttles to the venue from the hotels (and back). If you
-        plan to utilize the shuttles and are not staying at the hotels, please
-        make sure you let us know in your RSVP!
+        We will provide a shuttle to the venue from the Comfort Suites hotel
+        (and back). If you plan to utilize the shuttle, please make sure you let
+        us know in your RSVP! Transportation will not be provided to the Welcome
+        Party on Friday so please make arrangements for a designated driver.
       </>
     ),
   },
