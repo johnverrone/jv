@@ -8,8 +8,10 @@ export const Navigation = () => {
   const pathname = usePathname();
 
   const linkClasses = (route: string) =>
-    `inline-block py-2 -mb-px hover:border-b hover:border-black ${
-      pathname === route ? 'font-bold border-b-2 border-black' : 'font-medium'
+    `inline-block py-2 -mb-px ${
+      pathname === route
+        ? 'font-bold border-b-2 border-black'
+        : 'font-medium hover:border-b hover:border-black'
     }`;
 
   return (
