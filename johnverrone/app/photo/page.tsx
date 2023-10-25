@@ -13,6 +13,7 @@ async function getAllImages() {
     });
 
   if (error) {
+    console.error(error.message);
     throw new Error('failed to fetch images from supabase');
   }
 
