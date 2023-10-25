@@ -11,6 +11,10 @@ const WorkPage = () => {
       <AppContainer>
         <WorkList>
           <WorkItem
+            title="Bunkie Bois"
+            link="https://github.com/johnverrone/bunkie-bois"
+          />
+          <WorkItem
             title="Advent of Code 2022"
             link="https://github.com/johnverrone/aoc2022"
           />
