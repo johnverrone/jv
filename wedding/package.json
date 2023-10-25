@@ -23,7 +23,7 @@
     "@trpc/server": "^10.28.1",
     "@xstate/react": "^3.2.2",
     "framer-motion": "^10.12.16",
-    "next": "^13.5.3",
+    "next": "^13.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-jsx": "^5.1.2",
