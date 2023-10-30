@@ -3,6 +3,7 @@ import { Fira_Code, Fira_Sans, Oxygen } from 'next/font/google';
 import React from 'react';
 import { GlobalStyles } from '../components/GlobalStyles';
 import { ThemeProvider } from './theme-provider';
+import { FullStory } from '@components/FullStory';
 
 const firaCode = Fira_Code({
   weight: ['300', '400', '500', '600', '700'],
@@ -58,6 +59,7 @@ export default function RootLayout({
     >
       <body>
         <GlobalStyles />
+        <FullStory />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
