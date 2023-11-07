@@ -9,7 +9,7 @@ export const Navigation = () => {
 
   const linkClasses = (route: string) =>
     `inline-block py-2 -mb-px ${
-      pathname === route
+      pathname.startsWith(route)
         ? 'font-bold border-b-2 border-black'
         : 'font-medium hover:border-b hover:border-black'
     }`;
