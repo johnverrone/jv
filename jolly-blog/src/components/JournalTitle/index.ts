@@ -1,1 +1,0 @@
-export { JournalTitle } from './JournalTitle';
