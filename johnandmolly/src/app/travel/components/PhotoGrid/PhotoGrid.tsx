@@ -26,7 +26,7 @@ export async function PhotoGrid({ dir }: { dir: string }) {
   const images = await getImages(dir);
 
   return (
-    <ul className="mt-10 grid grid-cols-3 gap-3">
+    <ul className="mt-10 grid grid-cols-3 gap-3 full-bleed px-3">
       {images.map((image) =>
         image.endsWith('.jpg') ? (
           <li key={image}>

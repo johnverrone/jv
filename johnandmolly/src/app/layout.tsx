@@ -21,7 +21,7 @@ export default function RootLayout({
         <div className="layout">
           <div className="text-4xl font-bold my-7">John & Molly</div>
           <Navigation />
-          <main className="py-8">{children}</main>
+          <main className="py-8 layout full-bleed">{children}</main>
         </div>
       </body>
     </html>
