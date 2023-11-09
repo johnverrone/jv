@@ -3,6 +3,8 @@ import React from 'react';
 import supabase from '../../../../lib/supabase';
 import { cache } from 'react';
 
+export const revalidate = 600; // revalidate the data every 10 minutes
+
 async function getImages(dir: string) {
   const { data, error } = await supabase.from('johnandmolly').list(dir, {
     sortBy: { column: 'name', order: 'asc' },
