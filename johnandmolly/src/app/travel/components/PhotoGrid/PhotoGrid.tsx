@@ -3,11 +3,9 @@ import React from 'react';
 import supabase from '../../../../lib/supabase';
 
 async function getImages(dir: string) {
-  const { data, error } = await supabase.storage
-    .from('johnandmolly')
-    .list(dir, {
-      sortBy: { column: 'name', order: 'asc' },
-    });
+  const { data, error } = await supabase.from('johnandmolly').list(dir, {
+    sortBy: { column: 'name', order: 'asc' },
+  });
 
   if (error) {
     console.error(error.message);
@@ -16,7 +14,7 @@ async function getImages(dir: string) {
 
   return (
     data?.map((image) => {
-      const { data } = supabase.storage
+      const { data } = supabase
         .from('johnandmolly')
         .getPublicUrl(`${dir}/${image.name}`);
       return data.publicUrl;
@@ -36,7 +34,7 @@ export async function PhotoGrid({ dir }: { dir: string }) {
               <Image
                 src={image}
                 alt="some alt text"
-                width={600}
+                width={640}
                 height={800}
                 style={{
                   height: 'auto',
