@@ -24,7 +24,7 @@ body {
   grid-template-columns: 1fr min(90%, 768px) 1fr;
 }
 
-.layout * {
+.layout > * {
   grid-column: 2;
 }
 

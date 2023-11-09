@@ -7,8 +7,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'picsum.photos',
-        pathname: '/**',
+        hostname: 'wnnjdgkrwtehvvxfqohk.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/johnandmolly/**',
       },
     ],
   },
