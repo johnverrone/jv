@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import supabase from '../../../../lib/supabase';
+import { cache } from 'react';
 
 async function getImages(dir: string) {
   const { data, error } = await supabase.from('johnandmolly').list(dir, {
@@ -22,8 +23,10 @@ async function getImages(dir: string) {
   );
 }
 
+const cachedGetAllImages = cache(getImages);
+
 export async function PhotoGrid({ dir }: { dir: string }) {
-  const images = await getImages(dir);
+  const images = await cachedGetAllImages(dir);
 
   return (
     <ul className="mt-10 grid grid-cols-3 gap-3 full-bleed px-3">
