@@ -31,7 +31,7 @@ export async function PhotoGrid({ dir }: { dir: string }) {
   const images = await cachedGetAllImages(dir);
 
   return (
-    <ul className="grid grid-cols-3 gap-3 full-bleed px-3">
+    <ul className="grid grid-cols-[repeat(auto-fit,_minmax(max(250px,calc((100%-24px)/3)),_1fr))] gap-3 full-bleed px-3">
       {images.map((image) =>
         image.endsWith('.jpg') ? (
           <li key={image}>

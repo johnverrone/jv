@@ -1,4 +1,5 @@
 import { HeroImage } from '../components/HeroImage/HeroImage';
+import { PhotoCarousel } from '../components/PhotoCarousel/PhotoCarousel';
 import { PhotoGrid } from '../components/PhotoGrid/PhotoGrid';
 
 export const metadata = {
@@ -28,6 +29,8 @@ around the cobblestone alleys and popping into a bunch of different spots for
 food and drinks. Mandalay was where we had a proper meal. The sashimi, spicy
 tuna roll, and sake were all delicious and our waiter was super friendly.
 
+<PhotoCarousel photos={['/s/bergen/mandalay1.JPG']} />
+
 <div className="h-4" />
 
 ### [Trekroneren](https://maps.app.goo.gl/WXY6fJbceFYGx7q19)
@@ -38,11 +41,23 @@ reindeer dog. The thing was so scortching hot that we both burnt the roofs of
 our mouths. The glizzy was good but it had a sort of bologna like texture that
 made it feel weird.
 
+<PhotoCarousel
+  photos={['/s/bergen/trekroneren1.JPG', '/s/bergen/trekroneren2.JPG']}
+/>
+
 <div className="h-6" />
 
 ## Coffee
 
 ### [Kaffemisjonen](https://maps.app.goo.gl/vbuWv3tBTw7awMvr5)
+
+On day 2 we found a little coffee shop tucked up on a hill to post up for some
+journaling and planning. We both had some great flat white's and ham and cheese
+croissants.
+
+<PhotoCarousel
+  photos={['/s/bergen/kaffemisjonen1.JPG', '/s/bergen/kaffemisjonen2.JPG']}
+/>
 
 <div className="h-6" />
 
@@ -55,8 +70,8 @@ cable car down. There was some pretty low fog the morning we did this but it
 made for a dramatic moody hike and we caught glimpses of the view as the clouds
 rolled through.
 
-<div className="h-6" />
+<PhotoCarousel photos={['/s/bergen/fløyen1.JPG', '/s/bergen/fløyen2.JPG']} />
 
-## Photos
+<div className="h-32" />
 
 <PhotoGrid dir="bergen" />
