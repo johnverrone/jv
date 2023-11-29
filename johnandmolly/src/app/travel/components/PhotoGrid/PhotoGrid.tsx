@@ -1,28 +1,15 @@
 import Image from 'next/image';
 import React from 'react';
-import supabase from '../../../../lib/supabase';
+import storage from '../../../../lib/storage';
 import { cache } from 'react';
 
 export const revalidate = 600; // revalidate the data every 10 minutes
 
 async function getImages(dir: string) {
-  const { data, error } = await supabase.from('johnandmolly').list(dir, {
-    sortBy: { column: 'name', order: 'asc' },
+  const [files] = await storage.bucket('johnandmolly').getFiles();
+  return files.map((f) => {
+    return `https://storage.googleapis.com/${f.cloudStorageURI.hostname}${f.cloudStorageURI.pathname}`;
   });
-
-  if (error) {
-    console.error(error.message);
-    throw new Error('failed to fetch images from supabase');
-  }
-
-  return (
-    data?.map((image) => {
-      const { data } = supabase
-        .from('johnandmolly')
-        .getPublicUrl(`${dir}/${image.name}`);
-      return data.publicUrl;
-    }) ?? []
-  );
 }
 
 const cachedGetAllImages = cache(getImages);

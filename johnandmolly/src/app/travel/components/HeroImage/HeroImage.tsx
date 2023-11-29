@@ -5,7 +5,7 @@ export function HeroImage({ name }: { name: string }) {
   return (
     <div className="full-bleed -mt-8">
       <Image
-        src={`https://wnnjdgkrwtehvvxfqohk.supabase.co/storage/v1/object/public/johnandmolly/heros/${name}.jpg`}
+        src={`https://storage.googleapis.com/johnandmolly/heros/${name}.jpg`}
         alt="some alt text"
         width={1920}
         height={1280}
