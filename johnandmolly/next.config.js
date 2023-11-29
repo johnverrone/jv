@@ -7,9 +7,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'wnnjdgkrwtehvvxfqohk.supabase.co',
+        hostname: 'storage.googleapis.com',
         port: '',
-        pathname: '/storage/v1/object/public/johnandmolly/**',
+        pathname: '/johnandmolly/**',
       },
     ],
   },
