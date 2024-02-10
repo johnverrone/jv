@@ -2,8 +2,15 @@
 import Link from 'next/link';
 import React from 'react';
 
+type TravelLoc = {
+  slug: string;
+  name: string;
+  date: string;
+  img: string;
+};
+
 export default function TravelPage() {
-  const locations = [
+  const locations: TravelLoc[] = [
     {
       slug: 'bergen',
       name: 'Bergen',
