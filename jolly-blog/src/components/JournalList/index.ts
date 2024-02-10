@@ -1,1 +1,0 @@
-export { JournalList } from './JournalList';
