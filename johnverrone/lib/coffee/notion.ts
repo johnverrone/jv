@@ -53,6 +53,7 @@ export const getImageUrl = (
   filesObject: Extract<Property, { type: 'files' }>
 ): string => {
   const image = filesObject.files[0];
+  if (!image) return '';
   if (image.type === 'external') {
     return image.external.url;
   }

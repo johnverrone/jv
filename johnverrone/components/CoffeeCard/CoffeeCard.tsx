@@ -54,8 +54,8 @@ export const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
 
   return (
     <Wrapper>
-      {coffee.imageUrl && (
-        <ImageContainer>
+      <ImageContainer>
+        {coffee.imageUrl && (
           <Image
             src={coffee.imageUrl}
             alt={`Coffee bag artwork for ${coffee.name} from ${coffeeRoasterString}`}
@@ -67,8 +67,8 @@ export const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
               aspectRatio: '1/1',
             }}
           />
-        </ImageContainer>
-      )}
+        )}
+      </ImageContainer>
       <CoffeeInfo>
         <CoffeeName>
           <Link href={`/coffee/${coffee.id}`} passHref legacyBehavior>
