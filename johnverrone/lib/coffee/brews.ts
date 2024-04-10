@@ -39,7 +39,7 @@ const CoffeeProperties = {
   },
   singleOrigin: {
     name: 'Single Origin',
-    type: 'checkbox',
+    type: 'formula',
   },
   flavors: {
     name: 'Flavors',
@@ -131,7 +131,7 @@ const notionResultToCoffeeBrew = (
   const singleOrigin = getProperty(
     properties,
     CoffeeProperties.singleOrigin
-  ).checkbox;
+  ).formula;
   const flavors = getProperty(
     properties,
     CoffeeProperties.flavors
@@ -147,7 +147,7 @@ const notionResultToCoffeeBrew = (
     currentlyBrewing,
     rating,
     origin,
-    singleOrigin,
+    singleOrigin: singleOrigin.type === 'boolean' ? singleOrigin.boolean ?? false : false,
     flavors,
     process,
   };
