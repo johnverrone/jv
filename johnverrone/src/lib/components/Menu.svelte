@@ -34,7 +34,7 @@
 	let size = spring(1);
 </script>
 
-<OutClick on:outclick={() => (open = false)} includeSelf>
+<OutClick on:outclick={() => (open = false)}>
 	<div class="menu-wrapper">
 		<button
 			on:click={toggleMenu}
@@ -47,7 +47,9 @@
 			{currentPage}
 		</button>
 		{#if open}
-			<ol transition:slide>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			<ol transition:slide on:click={() => (open = false)}>
 				{#each MENU_ITEMS.filter((i) => i.name !== currentPage) as item, index}
 					<MenuItem {item} {index} />
 				{/each}
