@@ -1,36 +1,38 @@
 {
-  "name": "johnverrone",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@emotion/core": "^11.0.0",
-    "@emotion/react": "^11.11.0",
-    "@emotion/styled": "^11.11.0",
-    "@fullstory/browser": "^1.4.9",
-    "@notionhq/client": "^1.0.4",
-    "@supabase/supabase-js": "^2.24.0",
-    "framer-motion": "^10.12.16",
-    "gray-matter": "^4.0.3",
-    "next": "^14.2.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "sharp": "^0.33.3"
-  },
-  "devDependencies": {
-    "@popperjs/core": "^2.10.1",
-    "@types/node": "^20.2.5",
-    "@types/react": "^18.2.8",
-    "@types/webpack-env": "^1.18.1",
-    "eslint": "7.32.0",
-    "eslint-config-next": "^13.4.4",
-    "prettier": "^2.4.0",
-    "react-popper": "^2.2.5",
-    "typescript": "^5.1.3"
-  }
+	"name": "johnverrone",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@iconify-json/fa-solid": "^1.1.8",
+		"@notionhq/client": "^2.2.15",
+		"@supabase/supabase-js": "^2.42.7",
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/eslint": "^8.56.0",
+		"@typescript-eslint/eslint-plugin": "^7.0.0",
+		"@typescript-eslint/parser": "^7.0.0",
+		"eslint": "^8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.35.1",
+		"prettier": "^3.1.1",
+		"prettier-plugin-svelte": "^3.1.2",
+		"svelte": "^4.2.7",
+		"svelte-check": "^3.6.0",
+		"svelte-outclick": "^3.7.1",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0",
+		"unplugin-icons": "^0.18.5",
+		"vite": "^5.0.3"
+	},
+	"type": "module"
 }

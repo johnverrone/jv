@@ -1,0 +1,20 @@
+:root {
+	--font-family-body: 'Fira Sans';
+	--font-family-heading: 'Oxygen';
+	--font-family-mono: 'Fira Code';
+
+	--font-size-property-key: 0.625rem;
+
+	--color-text-primary: #232923;
+	--color-text-secondary: #767676;
+	--color-background: rgba(255, 255, 255, 0.5);
+	--color-accent: #bf8640;
+	--color-card-bg: #1e2127;
+	--color-card-fg: #98c379;
+	--color-menu-bg: hsl(0deg 0% 90% / 90%);
+	--color-rating: hsl(67deg 95% 40% / 85%);
+
+	--border-radius: 6px;
+
+	font-family: var(--font-family-body);
+}
