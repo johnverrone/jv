@@ -2,6 +2,7 @@
 	import type { CoffeeBrew, CoffeeRoaster } from '$lib/coffee/types';
 	import type { PageData } from './$types';
 	import IconStar from '~icons/fa-solid/star';
+	import CoffeeMaker from '~icons/material-symbols/coffee-maker';
 
 	export let data: PageData;
 
@@ -25,16 +26,25 @@
 					height={400}
 				/>
 			</div>
-			<div class="title-row">
-				<h2>{coffee.name}</h2>
-				<span class="rating">
-					{#each Array(coffee.rating.length / 2) as i}
-						<IconStar data-key={i} />
-					{/each}
-				</span>
+			<div class="coffee-info">
+				<div>
+					<div class="title-row">
+						<h2>{coffee.name}</h2>
+						<span class="rating">
+							{#each Array(coffee.rating.length / 2) as i}
+								<IconStar data-key={i} />
+							{/each}
+						</span>
+					</div>
+					<h4>{coffeeRoasterString(coffee.roaster)}</h4>
+				</div>
+				<div class="bottom-row">
+					<span class="origin">{coffee.origin}</span>
+					{#if coffee.currentlyBrewing}
+						<span class="coffee-maker"><CoffeeMaker /></span>
+					{/if}
+				</div>
 			</div>
-			<h4>{coffeeRoasterString(coffee.roaster)}</h4>
-			<span class="origin">{coffee.origin}</span>
 		</article>
 	{/each}
 </div>
@@ -74,6 +84,13 @@
 		height: 100%;
 	}
 
+	.coffee-info {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
 	.title-row {
 		display: flex;
 		justify-content: space-between;
@@ -81,10 +98,22 @@
 		gap: 8px;
 	}
 
+	.bottom-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		gap: 8px;
+	}
+
 	.rating {
 		font-size: 0.5rem;
 		display: flex;
 		color: var(--color-rating);
+	}
+
+	.coffee-maker {
+		font-size: 2rem;
+		color: var(--color-hint);
 	}
 
 	h4 {
