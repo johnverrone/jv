@@ -1,1 +1,0 @@
-export { SiteTitle } from './SiteTitle';
