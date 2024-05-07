@@ -43,7 +43,7 @@
 	header {
 		position: sticky;
 		top: 0;
-		background-color: white;
+		background-color: var(--color-background);
 		z-index: 1;
 	}
 

@@ -62,7 +62,8 @@
 	}
 
 	.coffee-card {
-		background-color: rgba(41, 118, 67, 0.08);
+		background-color: var(--color-card-bg);
+		color: var(--color-card-fg);
 		border-radius: var(--border-radius);
 		padding: 12px;
 
@@ -118,7 +119,7 @@
 
 	h4 {
 		font-weight: normal;
-		color: var(--color-text-secondary);
+		opacity: 0.7;
 		margin-bottom: 8px;
 	}
 
