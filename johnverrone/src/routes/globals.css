@@ -5,9 +5,9 @@
 
 	--font-size-property-key: 0.625rem;
 
-	--color-text-primary: #232923;
+	--color-text-primary: #262526; /* #232923; */
 	--color-text-secondary: #767676;
-	--color-background: rgba(255, 255, 255, 0.5);
+	--color-background: #ffffff;
 	--color-accent: #bf8640;
 	--color-hint: #dcd8c8;
 	--color-card-bg: #1e2127;
@@ -17,5 +17,16 @@
 
 	--border-radius: 6px;
 
+	background: var(--color-background);
+	color: var(--color-text-primary);
 	font-family: var(--font-family-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-family-heading);
 }

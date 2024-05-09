@@ -1,3 +1,7 @@
+<script lang="ts">
+	import Link from '$lib/components/Link.svelte';
+</script>
+
 <svelte:head>
 	<title>John Verrone</title>
 	<meta name="description" content="Personal blog" />
@@ -6,10 +10,10 @@
 <h1>johnverrone</h1>
 
 <ul class="link-container">
-	<a href="/work">dev</a>
-	<a href="/photo">photos</a>
-	<a href="/video">videos</a>
-	<a href="/coffee">coffee</a>
+	<Link href="/work">dev</Link>
+	<Link href="/photo">photos</Link>
+	<Link href="/video">videos</Link>
+	<Link href="/coffee">coffee</Link>
 </ul>
 
 <style>
@@ -30,11 +34,5 @@
 		flex-flow: column;
 		gap: 1rem;
 		align-items: center;
-	}
-
-	a {
-		font-weight: bold;
-		color: var(--color-accent);
-		text-decoration: none;
 	}
 </style>
