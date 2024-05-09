@@ -3,7 +3,7 @@
 </script>
 
 <YouTubeVideo videoId="GAp0sDY30U4" title="Colorado Hiking" />
-<div class="spacer" />
+<div class="spacer"></div>
 <YouTubeVideo videoId="B4JxmDm1bA0" title="Southwest Roadtrip" />
 
 <style>

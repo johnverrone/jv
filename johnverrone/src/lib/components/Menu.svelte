@@ -2,8 +2,8 @@
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
 	import { spring } from 'svelte/motion';
-	import OutClick from 'svelte-outclick';
 	import MenuItem from './MenuItem.svelte';
+	import { get } from 'svelte/store';
 
 	const MENU_ITEMS = [
 		{
@@ -24,39 +24,55 @@
 		}
 	];
 
-	$: currentPage = MENU_ITEMS.find((i) => `/(pages)${i.slug}` === $page.route.id)?.name;
+	const currentPage = $derived(
+		MENU_ITEMS.find((i) => `/(pages)${i.slug}` === get(page).route.id)?.name
+	);
 
-	let open = false;
+	let open = $state(false);
 	function toggleMenu() {
 		open = !open;
+	}
+
+	function outclick(node: HTMLElement) {
+		const handleClick = (event: MouseEvent) => {
+			if (event.target instanceof Element && !node.contains(event.target)) {
+				node.dispatchEvent(new CustomEvent('outclick'));
+			}
+		};
+
+		document.addEventListener('click', handleClick, true);
+
+		return {
+			destroy() {
+				document.removeEventListener('click', handleClick, true);
+			}
+		};
 	}
 
 	let size = spring(1);
 </script>
 
-<OutClick on:outclick={() => (open = false)}>
-	<div class="menu-wrapper">
-		<button
-			on:click={toggleMenu}
-			on:mouseenter={() => size.set(1.2)}
-			on:mouseleave={() => size.set(1)}
-			on:mousedown={() => size.set(0.9)}
-			on:mouseup={() => size.set(1)}
-			style={`transform: scale(${$size})`}
-		>
-			{currentPage}
-		</button>
-		{#if open}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-			<ol transition:slide on:click={() => (open = false)}>
-				{#each MENU_ITEMS.filter((i) => i.name !== currentPage) as item, index}
-					<MenuItem {item} {index} />
-				{/each}
-			</ol>
-		{/if}
-	</div>
-</OutClick>
+<div class="menu-wrapper" use:outclick onoutclick={() => (open = false)}>
+	<button
+		onclick={toggleMenu}
+		onmouseenter={() => size.set(1.2)}
+		onmouseleave={() => size.set(1)}
+		onmousedown={() => size.set(0.9)}
+		onmouseup={() => size.set(1)}
+		style={`transform: scale(${$size})`}
+	>
+		{currentPage}
+	</button>
+	{#if open}
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+		<ol transition:slide onclick={() => (open = false)}>
+			{#each MENU_ITEMS.filter((i) => i.name !== currentPage) as item, index}
+				<MenuItem {item} {index} />
+			{/each}
+		</ol>
+	{/if}
+</div>
 
 <style>
 	.menu-wrapper {
