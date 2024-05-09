@@ -33,10 +33,26 @@
 		open = !open;
 	}
 
+	function outclick(node: HTMLElement) {
+		const handleClick = (event: MouseEvent) => {
+			if (event.target instanceof Element && !node.contains(event.target)) {
+				node.dispatchEvent(new CustomEvent('outclick'));
+			}
+		};
+
+		document.addEventListener('click', handleClick, true);
+
+		return {
+			destroy() {
+				document.removeEventListener('click', handleClick, true);
+			}
+		};
+	}
+
 	let size = spring(1);
 </script>
 
-<div class="menu-wrapper">
+<div class="menu-wrapper" use:outclick onoutclick={() => (open = false)}>
 	<button
 		onclick={toggleMenu}
 		onmouseenter={() => size.set(1.2)}
