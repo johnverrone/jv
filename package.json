@@ -1,7 +1,0 @@
-{
-  "name": "jv",
-  "workspaces": [
-    "jolly-blog",
-    "wedding"
-  ]
-}
