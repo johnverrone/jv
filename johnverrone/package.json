@@ -34,5 +34,8 @@
 		"unplugin-icons": "^0.18.5",
 		"vite": "^5.0.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@types/dom-view-transitions": "^1.0.5"
+	}
 }
