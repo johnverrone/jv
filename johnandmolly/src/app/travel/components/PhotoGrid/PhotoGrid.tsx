@@ -6,7 +6,9 @@ import { cache } from 'react';
 export const revalidate = 600; // revalidate the data every 10 minutes
 
 async function getImages(dir: string) {
-  const [files] = await storage.bucket('johnandmolly').getFiles();
+  const [files] = await storage.bucket('johnandmolly').getFiles({
+    prefix: dir,
+  });
   return files.map((f) => {
     return `https://storage.googleapis.com/${f.cloudStorageURI.hostname}${f.cloudStorageURI.pathname}`;
   });
@@ -36,7 +38,7 @@ export async function PhotoGrid({ dir }: { dir: string }) {
               />
             </a>
           </li>
-        ) : null
+        ) : null,
       )}
     </ul>
   );
