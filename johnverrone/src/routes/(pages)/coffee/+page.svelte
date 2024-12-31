@@ -23,12 +23,14 @@
 	{#each data.coffees.sort(coffeeSortFn) as coffee}
 		<article class="coffee-card">
 			<div class="image-container">
-				<img
-					src={coffee.imageUrl}
-					alt={`Coffee bag artwork for ${coffee.name}`}
-					width={400}
-					height={400}
-				/>
+				{#if coffee.imageUrl}
+					<img
+						src={coffee.imageUrl}
+						alt={`Coffee bag artwork for ${coffee.name}`}
+						width={400}
+						height={400}
+					/>
+				{/if}
 			</div>
 			<div class="coffee-info">
 				<div>

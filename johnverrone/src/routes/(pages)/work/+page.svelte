@@ -10,18 +10,8 @@
 		</a>
 	</li>
 	<li class="list-item">
-		<a href="https://github.com/johnverrone/aoc2022" class="link" target="_blank">
-			<h3>Advent of Code 2022</h3>
-		</a>
-	</li>
-	<li class="list-item">
-		<a href="https://github.com/johnverrone/aoc2021" class="link" target="_blank">
-			<h3>Advent of Code 2021</h3>
-		</a>
-	</li>
-	<li class="list-item">
-		<a href="https://johnverrone-aoc2021.vercel.app" class="link" target="_blank">
-			<h3>Advent of CSS/JS 2021</h3>
+		<a href="https://github.com/johnverrone/aoc" class="link" target="_blank">
+			<h3>Advent of Code</h3>
 		</a>
 	</li>
 </ul>
