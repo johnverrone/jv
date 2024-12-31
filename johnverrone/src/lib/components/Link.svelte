@@ -16,7 +16,7 @@
 	{href}
 	onmouseenter={() => size.set(1.2)}
 	onmouseleave={() => size.set(1)}
-	style={`transform: scale(${$size})`}
+	style={`transform: scale(${size.current})`}
 >
 	{@render children?.()}
 </a>

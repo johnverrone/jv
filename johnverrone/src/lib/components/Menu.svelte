@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { slide } from 'svelte/transition';
-	import { spring } from 'svelte/motion';
+	import { Spring } from 'svelte/motion';
 	import MenuItem from './MenuItem.svelte';
-	import { get } from 'svelte/store';
 
 	const MENU_ITEMS = [
 		{
@@ -24,9 +23,7 @@
 		}
 	];
 
-	const currentPage = $derived(
-		MENU_ITEMS.find((i) => `/(pages)${i.slug}` === get(page).route.id)?.name
-	);
+	const currentPage = $derived(MENU_ITEMS.find((i) => `/(pages)${i.slug}` === page.route.id)?.name);
 
 	let open = $state(false);
 	function toggleMenu() {
@@ -49,7 +46,7 @@
 		};
 	}
 
-	let size = spring(1);
+	let size = new Spring(1);
 </script>
 
 <div class="menu-wrapper" use:outclick onoutclick={() => (open = false)}>
@@ -59,7 +56,7 @@
 		onmouseleave={() => size.set(1)}
 		onmousedown={() => size.set(0.9)}
 		onmouseup={() => size.set(1)}
-		style={`transform: scale(${$size})`}
+		style={`transform: scale(${size.current})`}
 	>
 		{currentPage}
 	</button>
