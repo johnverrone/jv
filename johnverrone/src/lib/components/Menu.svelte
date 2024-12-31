@@ -7,7 +7,7 @@
 	const MENU_ITEMS = [
 		{
 			slug: '/work',
-			name: 'web'
+			name: 'dev'
 		},
 		{
 			slug: '/photo',
