@@ -1,18 +1,24 @@
 <script lang="ts">
-	import { spring } from 'svelte/motion';
+	import { Spring } from 'svelte/motion';
+	import type { Snippet } from 'svelte';
 
-	export let href: string;
+	interface Props {
+		href: string;
+		children?: Snippet;
+	}
 
-	let size = spring(1);
+	let { href, children }: Props = $props();
+
+	let size = new Spring(1);
 </script>
 
 <a
 	{href}
-	on:mouseenter={() => size.set(1.2)}
-	on:mouseleave={() => size.set(1)}
+	onmouseenter={() => size.set(1.2)}
+	onmouseleave={() => size.set(1)}
 	style={`transform: scale(${$size})`}
 >
-	<slot />
+	{@render children?.()}
 </a>
 
 <style>

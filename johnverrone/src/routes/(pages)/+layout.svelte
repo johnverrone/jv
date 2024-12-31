@@ -1,6 +1,13 @@
 <script lang="ts">
 	import Menu from '$lib/components/Menu.svelte';
 	import PageTitle from '$lib/components/PageTitle.svelte';
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		children?: Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <header>
@@ -14,7 +21,7 @@
 </header>
 
 <div class="app-container">
-	<slot />
+	{@render children?.()}
 </div>
 
 <style>

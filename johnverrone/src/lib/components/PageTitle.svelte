@@ -1,10 +1,17 @@
 <script lang="ts">
-	export let href: string;
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		href: string;
+		children?: Snippet;
+	}
+
+	let { href, children }: Props = $props();
 </script>
 
 <h1>
 	<a {href}>
-		<slot />
+		{@render children?.()}
 	</a>
 </h1>
 

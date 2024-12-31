@@ -4,7 +4,11 @@
 	import IconStar from '~icons/fa-solid/star';
 	import CoffeeMaker from '~icons/material-symbols/coffee-maker';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const coffeeRoasterString = (c: CoffeeRoaster[]) => c.map((r) => r.name).join(', ');
 	const coffeeSortFn = (a: CoffeeBrew, b: CoffeeBrew) => {

@@ -1,6 +1,10 @@
 <script lang="ts">
-	export let title: string;
-	export let videoId: string;
+	interface Props {
+		title: string;
+		videoId: string;
+	}
+
+	let { title, videoId }: Props = $props();
 </script>
 
 <div class="wrapper">

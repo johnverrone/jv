@@ -2,15 +2,19 @@
 	import { fade } from 'svelte/transition';
 	import { spring } from 'svelte/motion';
 
-	export let item: { slug: string; name: string };
-	export let index: number;
+	interface Props {
+		item: { slug: string; name: string };
+		index: number;
+	}
+
+	let { item, index }: Props = $props();
 
 	let size = spring(1);
 </script>
 
 <li
-	on:mouseenter={() => size.set(1.2)}
-	on:mouseleave={() => size.set(1)}
+	onmouseenter={() => size.set(1.2)}
+	onmouseleave={() => size.set(1)}
 	style={`transform: scale(${$size})`}
 	transition:fade|global={{ delay: 100 * (index + 1) }}
 >
