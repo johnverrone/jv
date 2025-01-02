@@ -16,6 +16,8 @@
 		"@iconify-json/fa-solid": "^1.2.1",
 		"@iconify-json/material-symbols": "^1.2.12",
 		"@notionhq/client": "^2.2.15",
+		"@sanity/client": "^6.24.1",
+		"@sanity/visual-editing": "^2.11.3",
 		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/kit": "^2.15.1",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
