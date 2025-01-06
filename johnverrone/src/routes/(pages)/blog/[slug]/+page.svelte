@@ -13,12 +13,12 @@
 <article>
 	<hgroup>
 		<h1>{data.meta.title}</h1>
-		<p>Published at {formatDate(data.meta.date)}</p>
+		<p>{formatDate(data.meta.date)}</p>
 	</hgroup>
 
 	<div class="tags">
 		{#each data.meta.categories as category}
-			<span class="surface-4">&num;{category}</span>
+			<span>&num;{category}</span>
 		{/each}
 	</div>
 
@@ -29,26 +29,26 @@
 
 <style>
 	article {
-		max-inline-size: var(--size-content-3);
-		margin-inline: auto;
-
 		h1 {
 			text-transform: capitalize;
 		}
 
 		h1 + p {
-			margin-top: var(--size-2);
-			color: var(--text-2);
+			font-size: 0.75rem;
+			margin-top: 0.5rem;
+			color: var(--color-text-secondary);
 		}
 
 		.tags {
 			display: flex;
-			gap: var(--size-3);
-			margin-top: var(--size-7);
+			gap: 0.75rem;
+			margin-top: 1rem;
 
 			> * {
-				padding: var(--size-2) var(--size-3);
-				border-radius: var(--radius-round);
+				font-size: 0.75rem;
+				padding: 0.25rem 0.5rem;
+				border-radius: var(--border-radius);
+				background-color: var(--color-background-secondary);
 			}
 		}
 	}

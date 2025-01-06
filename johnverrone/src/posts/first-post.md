@@ -15,6 +15,13 @@ published: true
 
 This is my first post!
 
+1. an ordered
+2. list
+
 ## Let's get started
 
 Lorem ipsum dolor sit amet...
+
+```
+and a code block
+```
