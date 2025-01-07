@@ -6,24 +6,30 @@
 
 	const MENU_ITEMS = [
 		{
-			slug: '/work',
+			slug: '/dev',
 			name: 'dev'
-		},
-		{
-			slug: '/photo',
-			name: 'photo'
-		},
-		{
-			slug: '/video',
-			name: 'video'
 		},
 		{
 			slug: '/coffee',
 			name: 'coffee'
+		},
+		{
+			slug: '/notes',
+			name: 'notes'
+		},
+		{
+			slug: '/photo',
+			name: 'photos'
+		},
+		{
+			slug: '/video',
+			name: 'videos'
 		}
 	];
 
-	const currentPage = $derived(MENU_ITEMS.find((i) => `/(pages)${i.slug}` === page.route.id)?.name);
+	const currentPage = $derived(
+		MENU_ITEMS.find((i) => page.route.id && page.route.id.startsWith(`/(pages)${i.slug}`))?.name
+	);
 
 	let open = $state(false);
 	function toggleMenu() {

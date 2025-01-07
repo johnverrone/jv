@@ -32,6 +32,10 @@ h6 {
 	font-family: var(--font-family-heading);
 }
 
+h1 {
+	font-size: 1.5rem;
+}
+
 .prose {
 	p {
 		:not(:is(h2, h3, h4, h5, h6) + p) {
@@ -50,16 +54,15 @@ h6 {
 	}
 
 	:is(ul, ol) {
-		list-style-type: '🔥';
 		padding-left: 1.5rem;
 	}
 
 	:is(ul, ol) li {
-		margin-block: 0.5rem;
-		padding-inline-start: 0.75rem;
+		margin-block: 0.375rem;
 	}
 
 	pre {
+		background-color: var(--color-background-secondary);
 		max-inline-size: 100%;
 		padding: 1rem;
 		border-radius: 8px;

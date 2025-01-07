@@ -9,19 +9,41 @@
 
 <h1>johnverrone</h1>
 
+<div class="container">
+	<p>
+		welcome! this site is a mixed bag of things. a home to act as a portfolio for my digital
+		hobbies, a database for my coffee reviews and cocktail recipes, a notebook for current musings,
+		and whatever else I feel like providing the entire internet access to.
+	</p>
+	<p>
+		as a developer, this site also serves a little side project to learn the latest tech. it is
+		constantly changing, but at the moment it is built with SvelteKit and hosted on Vercel. two
+		technologies I have enjoyed working with.
+	</p>
+	<p>cheers,<br />jv</p>
+</div>
+
 <ul class="link-container">
-	<Link href="/work">dev</Link>
+	<Link href="/dev">dev</Link>
+	<Link href="/coffee">coffee</Link>
+	<Link href="/notes">notes</Link>
 	<Link href="/photo">photos</Link>
 	<Link href="/video">videos</Link>
-	<Link href="/coffee">coffee</Link>
 </ul>
 
 <style>
+	.container {
+		max-width: 290px;
+		margin-inline: auto;
+
+		p {
+			margin-bottom: 2rem;
+		}
+	}
+
 	h1 {
-		width: 100%;
-		margin: 0;
-		margin-block: 3rem;
-		text-align: center;
+		max-width: 290px;
+		margin: 3rem auto;
 		font-family: var(--font-family-heading);
 		font-size: 1.5rem;
 	}
