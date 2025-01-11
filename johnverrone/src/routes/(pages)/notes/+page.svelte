@@ -6,21 +6,29 @@
 </script>
 
 <section class="container">
-	<ul class="flex flex-col items-center">
-		{#each data.posts as post}
-			<li class="post">
-				<a href={`/notes/${post.slug}`} class="title">{post.title}</a>
-				<p class="date">{formatDate(post.date)}</p>
-				<p class="description">{post.description}</p>
-			</li>
-		{/each}
-	</ul>
+	{#if data.posts.length}
+		<ul class="flex flex-col items-center">
+			{#each data.posts as post}
+				<li class="post">
+					<a href={`/notes/${post.slug}`} class="title">{post.title}</a>
+					<p class="date">{formatDate(post.date)}</p>
+					<p class="description">{post.description}</p>
+				</li>
+			{/each}
+		</ul>
+	{:else}
+		<div class="no_posts">no notes yet 🫠</div>
+	{/if}
 </section>
 
 <style>
 	.container {
 		max-width: min(90vw, 500px);
 		margin: 0 auto;
+
+		.no_posts {
+			text-align: center;
+		}
 	}
 
 	ul {

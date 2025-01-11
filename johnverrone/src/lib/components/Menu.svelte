@@ -3,6 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import { Spring } from 'svelte/motion';
 	import MenuItem from './MenuItem.svelte';
+	import Link from './Link.svelte';
 
 	const MENU_ITEMS = [
 		{
@@ -55,6 +56,16 @@
 	let size = new Spring(1);
 </script>
 
+<div class="desktop-nav">
+	<ul class="link-container">
+		<Link href="/dev">dev</Link>
+		<Link href="/coffee">coffee</Link>
+		<Link href="/notes">notes</Link>
+		<Link href="/photo">photos</Link>
+		<Link href="/video">videos</Link>
+	</ul>
+</div>
+
 <div class="menu-wrapper" use:outclick onoutclick={() => (open = false)}>
 	<button
 		onclick={toggleMenu}
@@ -78,6 +89,19 @@
 </div>
 
 <style>
+	.desktop-nav {
+		display: none;
+	}
+
+	.link-container {
+		margin: 0;
+		padding: 0;
+
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+	}
+
 	.menu-wrapper {
 		position: relative;
 	}
@@ -111,9 +135,11 @@
 	}
 
 	@media screen and (min-width: 35rem) {
-		ol {
-			left: revert;
-			right: 0;
+		.desktop-nav {
+			display: block;
+		}
+		.menu-wrapper {
+			display: none;
 		}
 	}
 </style>

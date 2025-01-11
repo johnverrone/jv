@@ -7,33 +7,36 @@
 	<meta name="description" content="Personal blog" />
 </svelte:head>
 
-<h1>johnverrone</h1>
-
 <div class="container">
-	<p>
-		welcome! this site is a mixed bag of things. a home to act as a portfolio for my digital
-		hobbies, a database for my coffee reviews and cocktail recipes, a notebook for current musings,
-		and whatever else I feel like providing the entire internet access to.
-	</p>
-	<p>
-		as a developer, this site also serves a little side project to learn the latest tech. it is
-		constantly changing, but at the moment it is built with SvelteKit and hosted on Vercel. two
-		technologies I have enjoyed working with.
-	</p>
-	<p>cheers,<br />jv</p>
-</div>
+	<h1>johnverrone</h1>
 
-<ul class="link-container">
-	<Link href="/dev">dev</Link>
-	<Link href="/coffee">coffee</Link>
-	<Link href="/notes">notes</Link>
-	<Link href="/photo">photos</Link>
-	<Link href="/video">videos</Link>
-</ul>
+	<section>
+		<p>
+			welcome! this site is a mixed bag of things. a home to act as a portfolio for my digital
+			hobbies, a database for my coffee reviews and cocktail recipes, a notebook for current
+			musings, and whatever else I feel like providing the entire internet access to.
+		</p>
+		<p>
+			as a developer, this site also serves a little side project to learn the latest tech. it is
+			constantly changing, but at the moment it is built with SvelteKit and hosted on Vercel. two
+			technologies I have enjoyed working with.
+		</p>
+		<p>cheers,<br />jv</p>
+	</section>
+
+	<ul class="link-container">
+		<Link href="/dev">dev</Link>
+		<Link href="/coffee">coffee</Link>
+		<Link href="/notes">notes</Link>
+		<Link href="/photo">photos</Link>
+		<Link href="/video">videos</Link>
+	</ul>
+</div>
 
 <style>
 	.container {
-		max-width: 290px;
+		padding: 50px;
+		max-width: 450px;
 		margin-inline: auto;
 
 		p {
@@ -42,8 +45,7 @@
 	}
 
 	h1 {
-		max-width: 290px;
-		margin: 3rem auto;
+		margin-bottom: 3rem;
 		font-family: var(--font-family-heading);
 		font-size: 1.5rem;
 	}
@@ -56,5 +58,16 @@
 		flex-flow: column;
 		gap: 1rem;
 		align-items: center;
+	}
+
+	@media screen and (min-width: 450px) {
+		h1 {
+			text-align: center;
+		}
+
+		.link-container {
+			flex-flow: row;
+			justify-content: center;
+		}
 	}
 </style>

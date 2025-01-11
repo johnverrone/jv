@@ -72,8 +72,8 @@
 		}
 
 		.nav-container {
-			width: calc(100% - 80px);
-			margin: 0 40px;
+			padding-inline: 50px;
+			width: min(90vw, 80rem);
 		}
 	}
 </style>
