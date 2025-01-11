@@ -8,6 +8,7 @@
 	--color-text-primary: #262526; /* #232923; */
 	--color-text-secondary: #767676;
 	--color-background: #ffffff;
+	--color-background-secondary: #eaeaea;
 	--color-accent: #bf8640;
 	--color-hint: #dcd8c8;
 	--color-card-bg: #1e2127;
@@ -29,4 +30,42 @@ h4,
 h5,
 h6 {
 	font-family: var(--font-family-heading);
+}
+
+h1 {
+	font-size: 1.5rem;
+}
+
+.prose {
+	p {
+		:not(:is(h2, h3, h4, h5, h6) + p) {
+			margin-top: 1.5rem;
+		}
+
+		/* ignore paragraph tag around images */
+		&:has(img) {
+			display: contents;
+		}
+	}
+
+	:is(h2, h3, h4, h5, h6) {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	:is(ul, ol) {
+		padding-left: 1.5rem;
+	}
+
+	:is(ul, ol) li {
+		margin-block: 0.375rem;
+	}
+
+	pre {
+		background-color: var(--color-background-secondary);
+		max-inline-size: 100%;
+		padding: 1rem;
+		border-radius: 8px;
+		tab-size: 2;
+	}
 }

@@ -3,27 +3,34 @@
 	import { slide } from 'svelte/transition';
 	import { Spring } from 'svelte/motion';
 	import MenuItem from './MenuItem.svelte';
+	import Link from './Link.svelte';
 
 	const MENU_ITEMS = [
 		{
-			slug: '/work',
+			slug: '/dev',
 			name: 'dev'
-		},
-		{
-			slug: '/photo',
-			name: 'photo'
-		},
-		{
-			slug: '/video',
-			name: 'video'
 		},
 		{
 			slug: '/coffee',
 			name: 'coffee'
+		},
+		{
+			slug: '/notes',
+			name: 'notes'
+		},
+		{
+			slug: '/photo',
+			name: 'photos'
+		},
+		{
+			slug: '/video',
+			name: 'videos'
 		}
 	];
 
-	const currentPage = $derived(MENU_ITEMS.find((i) => `/(pages)${i.slug}` === page.route.id)?.name);
+	const currentPage = $derived(
+		MENU_ITEMS.find((i) => page.route.id && page.route.id.startsWith(`/(pages)${i.slug}`))?.name
+	);
 
 	let open = $state(false);
 	function toggleMenu() {
@@ -49,6 +56,16 @@
 	let size = new Spring(1);
 </script>
 
+<div class="desktop-nav">
+	<ul class="link-container">
+		<Link href="/dev">dev</Link>
+		<Link href="/coffee">coffee</Link>
+		<Link href="/notes">notes</Link>
+		<Link href="/photo">photos</Link>
+		<Link href="/video">videos</Link>
+	</ul>
+</div>
+
 <div class="menu-wrapper" use:outclick onoutclick={() => (open = false)}>
 	<button
 		onclick={toggleMenu}
@@ -72,6 +89,19 @@
 </div>
 
 <style>
+	.desktop-nav {
+		display: none;
+	}
+
+	.link-container {
+		margin: 0;
+		padding: 0;
+
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+	}
+
 	.menu-wrapper {
 		position: relative;
 	}
@@ -105,9 +135,11 @@
 	}
 
 	@media screen and (min-width: 35rem) {
-		ol {
-			left: revert;
-			right: 0;
+		.desktop-nav {
+			display: block;
+		}
+		.menu-wrapper {
+			display: none;
 		}
 	}
 </style>
