@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import Menu from '$lib/components/Menu.svelte';
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import type { Snippet } from 'svelte';
@@ -8,6 +9,33 @@
 	}
 
 	let { children }: Props = $props();
+
+	const MENU_ITEMS = [
+		{
+			slug: '/dev',
+			name: 'dev'
+		},
+		{
+			slug: '/coffee',
+			name: 'coffee'
+		},
+		{
+			slug: '/notes',
+			name: 'notes'
+		},
+		{
+			slug: '/photo',
+			name: 'photos'
+		},
+		{
+			slug: '/video',
+			name: 'videos'
+		}
+	];
+
+	const currentPage = $derived(
+		MENU_ITEMS.find((i) => page.route.id && page.route.id.startsWith(`/(pages)${i.slug}`))?.name
+	);
 </script>
 
 <header>
@@ -15,8 +43,10 @@
 		<div class="page-title">
 			<PageTitle href="/">johnverrone</PageTitle>
 		</div>
-		<hr class="divider" />
-		<Menu />
+		{#if currentPage}
+			<hr class="divider" />
+			<Menu menuItems={MENU_ITEMS} {currentPage} />
+		{/if}
 	</div>
 </header>
 
@@ -60,6 +90,7 @@
 		width: 50%;
 		display: flex;
 		align-items: baseline;
+		justify-content: center;
 	}
 
 	@media screen and (min-width: 35rem) {

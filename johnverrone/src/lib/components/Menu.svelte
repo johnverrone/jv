@@ -1,36 +1,20 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import { slide } from 'svelte/transition';
 	import { Spring } from 'svelte/motion';
 	import MenuItem from './MenuItem.svelte';
 	import Link from './Link.svelte';
 
-	const MENU_ITEMS = [
-		{
-			slug: '/dev',
-			name: 'dev'
-		},
-		{
-			slug: '/coffee',
-			name: 'coffee'
-		},
-		{
-			slug: '/notes',
-			name: 'notes'
-		},
-		{
-			slug: '/photo',
-			name: 'photos'
-		},
-		{
-			slug: '/video',
-			name: 'videos'
-		}
-	];
+	export interface MenuItemType {
+		slug: string;
+		name: string;
+	}
 
-	const currentPage = $derived(
-		MENU_ITEMS.find((i) => page.route.id && page.route.id.startsWith(`/(pages)${i.slug}`))?.name
-	);
+	interface Props {
+		menuItems: MenuItemType[];
+		currentPage: string;
+	}
+
+	let { menuItems, currentPage }: Props = $props();
 
 	let open = $state(false);
 	function toggleMenu() {
@@ -81,7 +65,7 @@
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<ol transition:slide onclick={() => (open = false)}>
-			{#each MENU_ITEMS.filter((i) => i.name !== currentPage) as item, index}
+			{#each menuItems.filter((i) => i.name !== currentPage) as item, index}
 				<MenuItem {item} {index} />
 			{/each}
 		</ol>
