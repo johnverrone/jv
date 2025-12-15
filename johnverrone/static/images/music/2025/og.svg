@@ -1,0 +1,15 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)" />
+  <rect x="80" y="110" width="280" height="280" rx="18" fill="#111827" stroke="#334155" stroke-width="6" />
+  <rect x="120" y="150" width="200" height="200" rx="12" fill="#22d3ee" opacity="0.12" />
+  <text x="420" y="210" fill="#e2e8f0" font-family="'Oxygen', 'Inter', sans-serif" font-size="46" font-weight="700">Top Songs of 2025</text>
+  <text x="420" y="270" fill="#94a3b8" font-family="'Fira Sans', 'Inter', sans-serif" font-size="26">A year of bright synths & late-night drives</text>
+  <line x1="420" y1="290" x2="950" y2="290" stroke="#334155" stroke-width="4" />
+  <text x="420" y="350" fill="#22d3ee" font-family="'Fira Code', monospace" font-size="22">johnverrone.com/music/2025</text>
+</svg>

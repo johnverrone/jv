@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { music2025, defaultTrackSearch } from '$lib/music/2025';
+	import { music2025 } from '$lib/music/2025';
 
 	const data = music2025;
 
 	let shareState: 'idle' | 'copied' | 'error' = 'idle';
-	let openSong = -1;
 
 	const artistCounts = data.songs.reduce<Record<string, number>>((acc, song) => {
-		acc[song.artist] = (acc[song.artist] || 0) + 1;
+		for (const artist of song.artist) {
+			acc[artist] = (acc[artist] || 0) + 1;
+		}
 		return acc;
 	}, {});
 
@@ -16,13 +17,6 @@
 		.sort((a, b) => b[1] - a[1]);
 
 	const totalGenrePercent = data.genreMix.reduce((sum, slice) => sum + slice.percent, 0);
-
-	const songUrl = (title: string, artist: string, url?: string) =>
-		url || defaultTrackSearch(title, artist);
-
-	const toggleSong = (index: number) => {
-		openSong = openSong === index ? -1 : index;
-	};
 
 	const share = async () => {
 		try {
@@ -47,7 +41,7 @@
 		property="og:description"
 		content="A minimal, shareable snapshot of my top songs and albums from 2025."
 	/>
-	<meta property="og:image" content="/images/music/2025/og.svg" />
+	<meta property="og:image" content="/images/music/2025/jv25.webp" />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://johnverrone.com/music/2025" />
 	<meta name="twitter:card" content="summary_large_image" />
@@ -56,7 +50,7 @@
 		name="twitter:description"
 		content="A minimal, shareable snapshot of my top songs and albums from 2025."
 	/>
-	<meta name="twitter:image" content="/images/music/2025/og.svg" />
+	<meta name="twitter:image" content="/images/music/2025/jv25.webp" />
 </svelte:head>
 
 <div id="top" aria-hidden="true"></div>
@@ -79,38 +73,29 @@
 		</div>
 	</div>
 	<div class="hero-art">
-		<div class="vinyl">
-			<div class="label">2025</div>
-		</div>
+		<img
+			src="/images/music/2025/jv25.webp"
+			alt="John Verrone's Top Music of 2025"
+			width="300"
+			height="300"
+		/>
 	</div>
 </section>
 
 <section aria-labelledby="top-songs">
 	<div class="section-header">
 		<h2 id="top-songs">Top Songs</h2>
-		<p class="section-sub">Ten tracks on repeat, ranked.</p>
+		<p class="section-sub">Twenty tracks of 2025 with drink pairings.</p>
 	</div>
 	<ol class="song-list">
-		{#each data.songs as song, index}
-			<li class={`song-card ${openSong === index ? 'open' : ''}`}>
-				<div
-					class="song-row"
-					aria-expanded={openSong === index}
-					role="button"
-					tabindex="0"
-					on:click={() => toggleSong(index)}
-					on:keydown={(event) => {
-						if (event.key === 'Enter' || event.key === ' ') {
-							event.preventDefault();
-							toggleSong(index);
-						}
-					}}
-				>
+		{#each data.songs as song}
+			<li class="song-card">
+				<div class="song-row">
 					<div class="rank">#{song.rank}</div>
 					<div class="song-info">
 						<a
 							class="song-title"
-							href={songUrl(song.title, song.artist, song.spotifyUrl)}
+							href={song.spotifyUrl}
 							target="_blank"
 							rel="noreferrer"
 							on:click|stopPropagation
@@ -118,21 +103,12 @@
 							{song.title}
 						</a>
 						<p class="song-meta">
-							{song.artist}
+							{song.artist.join(',')}
 							{song.album ? ` · ${song.album}` : ''}
 						</p>
 					</div>
-					<button
-						class="note-toggle"
-						type="button"
-						aria-label={`Toggle note for ${song.title}`}
-						aria-expanded={openSong === index}
-						on:click|stopPropagation={() => toggleSong(index)}
-					>
-						<span>{openSong === index ? 'Hide note' : 'Show note'}</span>
-					</button>
 				</div>
-				<p class="note">{song.note}</p>
+				<p class="note">{song.drinkPairing}</p>
 			</li>
 		{/each}
 	</ol>
@@ -163,7 +139,6 @@
 	<section aria-labelledby="live-highlight" class="performance">
 		<div class="section-header">
 			<h2 id="live-highlight">Favorite Live Performance</h2>
-			<p class="section-sub">A single night that stuck with me.</p>
 		</div>
 		<div class="performance-card">
 			<div>
@@ -231,7 +206,7 @@
 			style="border-radius:12px"
 			src={`https://open.spotify.com/embed/playlist/${data.playlistId}?utm_source=generator`}
 			width="100%"
-			height="360"
+			height="720"
 			frameborder="0"
 			allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
 			loading="lazy"
@@ -246,8 +221,8 @@
 
 <style>
 	:global(:root) {
-		--music-base: #2b1f3a;
-		--music-dark: #1f152c;
+		--music-base: #1e1016;
+		--music-dark: #1e1c1f;
 		--music-accent: #e2b76d;
 		--music-accent-2: #a56edb;
 		--music-soft: #f4ecff;
@@ -328,7 +303,7 @@
 	}
 
 	.button.primary {
-		background: linear-gradient(135deg, var(--music-accent), rgba(165, 110, 219, 0.9));
+		background: var(--music-accent);
 		color: #1a1227;
 		border-color: transparent;
 		box-shadow: 0 10px 30px var(--music-glow);
@@ -347,41 +322,6 @@
 
 	.hero-art {
 		justify-self: center;
-	}
-
-	.vinyl {
-		width: 180px;
-		height: 180px;
-		border-radius: 50%;
-		background: radial-gradient(
-			circle at 30% 30%,
-			var(--music-vinyl-mid) 0 40%,
-			var(--music-dark) 70%,
-			var(--music-base) 100%
-		);
-		position: relative;
-		box-shadow: 0 24px 40px rgba(0, 0, 0, 0.3);
-		display: grid;
-		place-items: center;
-	}
-
-	.vinyl::after {
-		content: '';
-		position: absolute;
-		inset: 20px;
-		border: 2px solid rgba(255, 255, 255, 0.05);
-		border-radius: 50%;
-	}
-
-	.label {
-		width: 70px;
-		height: 70px;
-		border-radius: 50%;
-		background: var(--music-accent);
-		display: grid;
-		place-items: center;
-		font-weight: 700;
-		color: var(--music-text-contrast);
 	}
 
 	.section-header {
@@ -459,30 +399,12 @@
 		font-size: 0.9rem;
 	}
 
-	.note-toggle {
-		display: none;
-		font-size: 0.9rem;
-		color: var(--music-base);
-		background: var(--music-surface-soft);
-		border-radius: 999px;
-		padding: 6px 10px;
-		border: 1px solid var(--music-border);
-		cursor: pointer;
-	}
-
 	.note {
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height 0.25s ease;
-		color: var(--music-text-strong);
+		color: var(--music-text-muted);
+		font-size: 0.9rem;
 		margin: 8px 4px 4px 58px;
 		line-height: 1.4;
-	}
-
-	.song-card:hover .note,
-	.song-card:focus-within .note,
-	.song-card.open .note {
-		max-height: 120px;
+		font-style: italic;
 	}
 
 	.album-grid {
@@ -640,10 +562,6 @@
 
 		.song-row {
 			grid-template-columns: auto 1fr;
-		}
-
-		.note-toggle {
-			display: inline-flex;
 		}
 	}
 </style>

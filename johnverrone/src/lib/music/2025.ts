@@ -1,10 +1,10 @@
 export interface Song {
 	rank: number;
 	title: string;
-	artist: string;
+	artist: string[];
 	album?: string;
-	note: string;
 	spotifyUrl?: string;
+	drinkPairing?: string;
 }
 
 export interface Album {
@@ -49,83 +49,150 @@ export const music2025: MusicYearData = {
 	songs: [
 		{
 			rank: 1,
-			title: 'cliche',
-			artist: 'mgk',
+			title: 'cliché',
+			artist: ['mgk'],
 			album: 'lost americana',
-			note: 'Carried me through countless night drives with its shimmering chorus.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-midnight-signal'
+			drinkPairing: 'Black Cherry Whiskey Coke'
 		},
 		{
 			rank: 2,
 			title: 'MAD',
-			artist: 'Martin Garrix, Lauv',
-			album: 'Skywriting',
-			note: 'A hopeful slow-burn that felt like a compass during chaotic weeks.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-north-star'
+			artist: ['Martin Garrix', 'Lauv'],
+			album: 'MAD',
+			drinkPairing: 'Vodka Soda with Lime'
 		},
 		{
 			rank: 3,
-			title: 'Loose Threads',
-			artist: 'Velvet Theory',
-			album: 'Patchwork',
-			note: 'That bassline plus the handclaps—instant dopamine.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-loose-threads'
+			title: 'Die For Me',
+			artist: ['A Day To Remember'],
+			album: 'Big Ole Album Vol. 1',
+			drinkPairing: 'Ice Cold Coors Light'
 		},
 		{
 			rank: 4,
-			title: 'Seabright',
-			artist: 'June Harbor',
-			album: 'Tidepools',
-			note: 'Warm guitars and salt-air nostalgia; my Sunday morning ritual.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-seabright'
+			title: 'What Was That',
+			artist: ['Lorde'],
+			album: 'What Was That',
+			drinkPairing: 'Natural Red Wine'
 		},
 		{
 			rank: 5,
-			title: 'Paper Planes (2025 mix)',
-			artist: 'Aiko & The Satellites',
-			album: 'Reprints',
-			note: 'An airy remix that somehow made an old favorite feel brand new.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-paper-planes'
+			title: "Will You Love Me When I'm Dead",
+			artist: ['Amira Elfeky'],
+			album: "Will You Love Me When I'm Dead",
+			drinkPairing: 'Smoked Mezcal Negroni'
 		},
 		{
 			rank: 6,
-			title: 'Switchback',
-			artist: 'Hillcrest Run',
-			album: 'Summit Club',
-			note: 'Perfectly timed beat drops for trail runs; never got old.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-switchback'
+			title: 'All My Friends',
+			artist: ['A Day To Remember'],
+			album: 'Big Ole Album Vol. 1',
+			drinkPairing: 'Tequila Shot'
 		},
 		{
 			rank: 7,
-			title: 'Soft Landing',
-			artist: 'Marisol Keane',
-			album: 'Windowseat',
-			note: 'A calm exhale after long days; strings that feel like sunlight.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-soft-landing'
+			title: 'Whatevrrrr',
+			artist: ['Spacey Jane'],
+			album: 'If That Makes Sense',
+			drinkPairing: 'Iced Vanilla Latte'
 		},
 		{
 			rank: 8,
-			title: 'Downtown Static',
-			artist: 'Analog Alley',
-			album: 'Frequencies',
-			note: 'Gritty synths that made every commute feel cinematic.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-downtown-static'
+			title: 'DAISIES',
+			artist: ['Justin Bieber'],
+			album: 'SWAG',
+			drinkPairing: 'Aperol Spritz'
 		},
 		{
 			rank: 9,
-			title: 'Goldenhour',
-			artist: 'Cielo Verde',
-			album: 'Canyon Echoes',
-			note: 'Acoustic glow with a subtle electronic heartbeat—great for sunsets.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-goldenhour'
+			title: 'SPEED DEMON',
+			artist: ['Justin Bieber'],
+			album: 'SWAG II',
+			drinkPairing: 'Espresso Martini'
 		},
 		{
 			rank: 10,
-			title: 'Palette Knife',
-			artist: 'Studio Season',
-			album: 'Wet Paint',
-			note: 'Playful indie-pop with percussive surprises; kept me grinning.',
-			spotifyUrl: 'https://open.spotify.com/track/placeholder-palette-knife'
+			title: 'vampire diaries',
+			artist: ['mgk'],
+			album: 'lost americana',
+			drinkPairing: 'Cheap Red Wine in Stemless Glass'
+		},
+		{
+			rank: 11,
+			title: 'Slow Motion',
+			artist: ['Marshmello', 'Jonas Brothers'],
+			album: 'Slow Motion',
+			drinkPairing: 'Gin & Tonic'
+		},
+		{
+			rank: 12,
+			title: 'TIT FOR TAT',
+			artist: ['Tate McRae'],
+			album: 'TIT FOR TAT',
+			drinkPairing: 'Spicy Margarita'
+		},
+		{
+			rank: 13,
+			title: 'Blowing Smoke',
+			artist: ['Gracie Abrams'],
+			album: 'The Secret of Us',
+			drinkPairing: 'Chamomile Tea'
+		},
+		{
+			rank: 14,
+			title: 'Story Of My Life (feat. Trippie Redd)',
+			artist: ['ILLENIUM', 'Sueco', 'Trippie Redd'],
+			album: 'Story Of My Life (feat. Trippie Redd)',
+			drinkPairing: 'Twisted Tea'
+		},
+		{
+			rank: 15,
+			title: 'Say That You Love Me',
+			artist: ['Letdown.'],
+			album: 'Say That You Love Me',
+			drinkPairing: 'Whiskey Neat'
+		},
+		{
+			rank: 16,
+			title: 'Elizabeth Taylor',
+			artist: ['Taylor Swift'],
+			album: 'The Life of a Showgirl',
+			drinkPairing: 'French 75'
+		},
+		{
+			rank: 17,
+			title: 'No Broke Boys - AVELLO Remix',
+			artist: ['Disco Lines', 'Tinashe', 'AVELLO'],
+			album: 'No Broke Boys (AVELLO Remix)',
+			drinkPairing: 'Watermelon High Noon'
+		},
+		{
+			rank: 18,
+			title: 'Dolphins',
+			artist: ['Drax'],
+			album: 'Dolphins',
+			drinkPairing: 'Cold Brew'
+		},
+		{
+			rank: 19,
+			title: 'The Fate of Ophelia',
+			artist: ['Taylor Swift'],
+			album: 'The Life of a Showgirl',
+			drinkPairing: 'Gin High Five'
+		},
+		{
+			rank: 20,
+			title: 'Trippin',
+			artist: ['LYVIA'],
+			album: 'Trippin',
+			drinkPairing: 'Paloma'
+		},
+		{
+			rank: 21,
+			title: 'cliché - sad version',
+			artist: ['mgk'],
+			album: 'cliché (sad version)',
+			drinkPairing: 'Hot Black Coffee'
 		}
 	],
 	albums: [
@@ -175,6 +242,3 @@ export const music2025: MusicYearData = {
 		note: 'Flooded the room with analog synth warmth and a wild light show; left grinning for days.'
 	}
 };
-
-export const defaultTrackSearch = (title: string, artist: string) =>
-	`https://open.spotify.com/search/${encodeURIComponent(`${title} ${artist}`)}`;
