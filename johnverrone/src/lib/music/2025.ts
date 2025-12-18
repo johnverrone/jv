@@ -87,7 +87,7 @@ export const music2025: MusicYearData = {
 			title: 'All My Friends',
 			artist: ['A Day To Remember'],
 			album: 'Big Ole Album Vol. 1',
-			drinkPairing: 'Tequila Shot'
+			drinkPairing: 'Tequila Shot and a Pitcher of Beer'
 		},
 		{
 			rank: 7,
