@@ -25,24 +25,15 @@
 
 <svelte:head>
 	<title>{data.title}</title>
-	<meta
-		name="description"
-		content="A minimal, shareable snapshot of my top songs and albums from 2025."
-	/>
+	<meta name="description" content="contributions to the annual music recap made by JV." />
 	<meta property="og:title" content={data.title} />
-	<meta
-		property="og:description"
-		content="A minimal, shareable snapshot of my top songs and albums from 2025."
-	/>
+	<meta property="og:description" content="contributions to the annual music recap made by JV." />
 	<meta property="og:image" content="/images/music/2025/jv25.webp" />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://johnverrone.com/music/2025" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={data.title} />
-	<meta
-		name="twitter:description"
-		content="A minimal, shareable snapshot of my top songs and albums from 2025."
-	/>
+	<meta name="twitter:description" content="contributions to the annual music recap made by JV." />
 	<meta name="twitter:image" content="/images/music/2025/jv25.webp" />
 </svelte:head>
 
