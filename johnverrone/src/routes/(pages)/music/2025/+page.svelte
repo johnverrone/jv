@@ -3,30 +3,23 @@
 
 	const data = music2025;
 
-	let shareState: 'idle' | 'copied' | 'error' = 'idle';
-
-	const artistCounts = data.songs.reduce<Record<string, number>>((acc, song) => {
-		for (const artist of song.artist) {
-			acc[artist] = (acc[artist] || 0) + 1;
-		}
-		return acc;
-	}, {});
-
-	const multipleArtists = Object.entries(artistCounts)
-		.filter(([, count]) => count > 1)
-		.sort((a, b) => b[1] - a[1]);
-
-	const totalGenrePercent = data.genreMix.reduce((sum, slice) => sum + slice.percent, 0);
-
-	const share = async () => {
+	const getYouTubeEmbed = (url: string | undefined) => {
+		if (!url) return null;
 		try {
-			await navigator.clipboard.writeText(window.location.href);
-			shareState = 'copied';
-			setTimeout(() => (shareState = 'idle'), 2000);
-		} catch (err) {
-			console.error(err);
-			shareState = 'error';
+			const parsed = new URL(url);
+			if (parsed.hostname === 'youtu.be') {
+				return `https://www.youtube.com/embed${parsed.pathname}`;
+			}
+			if (parsed.searchParams.has('v')) {
+				return `https://www.youtube.com/embed/${parsed.searchParams.get('v')}`;
+			}
+			if (parsed.pathname.startsWith('/embed/')) {
+				return `https://www.youtube.com${parsed.pathname}`;
+			}
+		} catch {
+			return null;
 		}
+		return null;
 	};
 </script>
 
@@ -59,17 +52,11 @@
 		<p class="eyebrow">Year in Review</p>
 		<h1>{data.title}</h1>
 		<p class="subtitle">{data.subtitle}</p>
+		<p class="subtitle">- jv</p>
 		<div class="actions">
 			<a class="button primary" href={data.playlistUrl} target="_blank" rel="noreferrer">
 				Open Spotify Playlist
 			</a>
-			<button class="button ghost" type="button" on:click={share} aria-live="polite">
-				{shareState === 'copied'
-					? 'Link copied'
-					: shareState === 'error'
-						? 'Could not copy'
-						: 'Share'}
-			</button>
 		</div>
 	</div>
 	<div class="hero-art">
@@ -84,8 +71,10 @@
 
 <section aria-labelledby="top-songs">
 	<div class="section-header">
-		<h2 id="top-songs">Top Songs</h2>
-		<p class="section-sub">Twenty tracks of 2025 with drink pairings.</p>
+		<h2 id="top-songs">Songs</h2>
+		<p class="section-sub">
+			My favorite twenty to twenty five tracks to wrap up twenty twenty five (with drink pairings).
+		</p>
 	</div>
 	<ol class="song-list">
 		{#each data.songs as song}
@@ -116,8 +105,12 @@
 
 <section aria-labelledby="top-albums">
 	<div class="section-header">
-		<h2 id="top-albums">Top Albums</h2>
-		<p class="section-sub">Five albums that anchored the year.</p>
+		<h2 id="top-albums">Albums</h2>
+		<p class="section-sub">
+			Unlike the rest of yas, I didn't do too much album listening. In fact, I just went through
+			some music articles "top albums of 2025" lists and didn't recognize 99% of them. But I did see
+			that Yellowcard dropped an album and I am sad I missed that one.
+		</p>
 	</div>
 	<div class="album-grid">
 		{#each data.albums as album}
@@ -128,7 +121,6 @@
 				<div class="album-body">
 					<h3>{album.title}</h3>
 					<p class="album-artist">{album.artist}</p>
-					<p class="album-note">{album.note}</p>
 				</div>
 			</article>
 		{/each}
@@ -141,59 +133,44 @@
 			<h2 id="live-highlight">Favorite Live Performance</h2>
 		</div>
 		<div class="performance-card">
+			{#if data.favoritePerformance.image}
+				<img
+					class="performance-image"
+					src={data.favoritePerformance.image}
+					alt={`Live performance image for ${data.favoritePerformance.artist}`}
+					loading="lazy"
+				/>
+			{/if}
 			<div>
 				<h3>{data.favoritePerformance.artist}</h3>
 				<p class="performance-where">
 					{data.favoritePerformance.venue}
 				</p>
 			</div>
+			<a
+				class="performance-link"
+				href={data.favoritePerformance.link}
+				target="_blank"
+				rel="noreferrer"
+			>
+				Watch on Apple TV+
+			</a>
 			<p class="performance-note">{data.favoritePerformance.note}</p>
+			{#if getYouTubeEmbed(data.favoritePerformance.sampleLink)}
+				<div class="performance-video">
+					<iframe
+						title={`${data.favoritePerformance.artist} performance sample`}
+						src={getYouTubeEmbed(data.favoritePerformance.sampleLink)}
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						loading="lazy"
+						referrerpolicy="strict-origin-when-cross-origin"
+						allowfullscreen
+					></iframe>
+				</div>
+			{/if}
 		</div>
 	</section>
 {/if}
-
-<section aria-labelledby="year-stats" class="stats">
-	<div class="section-header">
-		<h2 id="year-stats">Year Stats</h2>
-		<p class="section-sub">Lightweight data viz—no libraries.</p>
-	</div>
-	<div class="stats-grid">
-		<div>
-			<h3>Genre mix</h3>
-			<ul class="bars" aria-label="Genre breakdown">
-				{#each data.genreMix as slice}
-					<li>
-						<div class="bar-label">
-							<span>{slice.label}</span>
-							<span>{slice.percent}%</span>
-						</div>
-						<div class="bar-track" aria-hidden="true">
-							<div
-								class="bar-fill"
-								style={`width:${(slice.percent / totalGenrePercent) * 100}%`}
-							></div>
-						</div>
-					</li>
-				{/each}
-			</ul>
-		</div>
-		<div>
-			<h3>Artists with multiple appearances</h3>
-			{#if multipleArtists.length === 0}
-				<p class="muted">No repeats—variety win.</p>
-			{:else}
-				<ol class="artist-list">
-					{#each multipleArtists as [artist, count]}
-						<li>
-							<span>{artist}</span>
-							<span class="badge">{count}</span>
-						</li>
-					{/each}
-				</ol>
-			{/if}
-		</div>
-	</div>
-</section>
 
 <section aria-labelledby="playlist">
 	<div class="section-header">
@@ -230,7 +207,7 @@
 		--music-surface-soft: #fbf5ff;
 		--music-border: #e6d8f3;
 		--music-text-strong: #20162e;
-		--music-text-muted: #b2a6c7;
+		--music-text-muted: #98a39a;
 		--music-text-contrast: #1a1227;
 		--music-text-hero: #f3ecff;
 		--music-text-hero-strong: #fff7f0;
@@ -307,11 +284,6 @@
 		color: #1a1227;
 		border-color: transparent;
 		box-shadow: 0 10px 30px var(--music-glow);
-	}
-
-	.button.ghost:hover,
-	.button.ghost:focus-visible {
-		background: rgba(243, 236, 255, 0.12);
 	}
 
 	.button.primary:hover,
@@ -402,7 +374,7 @@
 	.note {
 		color: var(--music-text-muted);
 		font-size: 0.9rem;
-		margin: 8px 4px 4px 58px;
+		margin: 16px 4px 4px 4px;
 		line-height: 1.4;
 		font-style: italic;
 	}
@@ -425,7 +397,7 @@
 
 	.album-card img {
 		width: 100%;
-		height: 200px;
+		height: 400px;
 		object-fit: cover;
 	}
 
@@ -439,10 +411,6 @@
 		color: var(--music-text-muted);
 	}
 
-	.album-note {
-		color: var(--color-text-primary);
-	}
-
 	.performance-card {
 		border: 1px solid var(--color-background-secondary);
 		border-radius: 14px;
@@ -450,6 +418,15 @@
 		background: var(--music-base);
 		color: #f3ecff;
 		box-shadow: 0 14px 28px rgba(43, 31, 58, 0.25);
+		display: grid;
+		gap: 12px;
+	}
+
+	.performance-image {
+		width: 100%;
+		max-height: 320px;
+		object-fit: cover;
+		border-radius: 12px;
 	}
 
 	.performance-where {
@@ -462,64 +439,28 @@
 		color: #f3ecff;
 	}
 
-	.stats-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: 18px;
+	.performance-link {
+		color: var(--music-accent);
+		font-weight: 600;
+		text-decoration: none;
 	}
 
-	.bars {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: grid;
-		gap: 10px;
+	.performance-link:hover {
+		text-decoration: underline;
 	}
 
-	.bar-label {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		color: var(--color-text-primary);
-	}
-
-	.bar-track {
-		height: 10px;
-		background: var(--music-border);
-		border-radius: 999px;
+	.performance-video {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		border-radius: 12px;
 		overflow: hidden;
+		background: #120b15;
 	}
 
-	.bar-fill {
+	.performance-video iframe {
+		width: 100%;
 		height: 100%;
-		background: linear-gradient(90deg, var(--music-accent-2), var(--music-accent));
-		border-radius: inherit;
-	}
-
-	.artist-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		display: grid;
-		gap: 10px;
-	}
-
-	.artist-list li {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 10px 12px;
-		border-radius: 10px;
-		background: var(--music-surface-soft);
-		border: 1px solid var(--music-border);
-	}
-
-	.badge {
-		background: var(--music-base);
-		color: #f4e8c1;
-		border-radius: 999px;
-		padding: 4px 10px;
-		font-weight: 700;
+		border: 0;
 	}
 
 	.playlist {
@@ -528,10 +469,6 @@
 		padding: 12px;
 		background: #fdfaff;
 		box-shadow: 0 12px 24px rgba(43, 31, 58, 0.08);
-	}
-
-	.muted {
-		color: var(--color-text-secondary);
 	}
 
 	.footer {
