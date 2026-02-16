@@ -5,13 +5,24 @@
 </script>
 
 <article>
-	<h1>Guitar Progress</h1>
-	<section>
+	<section class="prose">
 		<SvelteMarked source={data.progress} />
 	</section>
 
-	<h1>Practice Plan</h1>
-	<section>
+	<hr />
+
+	<section class="prose">
 		<SvelteMarked source={data.plan} />
 	</section>
 </article>
+
+<style>
+	article {
+		max-width: min(90vw, 500px);
+		margin: 0 auto;
+	}
+
+	hr {
+		margin: 3rem 0;
+	}
+</style>
