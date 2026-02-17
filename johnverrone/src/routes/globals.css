@@ -37,11 +37,11 @@ h1 {
 }
 
 .prose {
-	p {
-		:not(:is(h2, h3, h4, h5, h6) + p) {
-			margin-top: 1.5rem;
-		}
+	:is(h2, h3, h4, h5, h6, p) + p {
+		margin-top: 1.5rem;
+	}
 
+	p {
 		/* ignore paragraph tag around images */
 		&:has(img) {
 			display: contents;

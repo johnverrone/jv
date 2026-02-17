@@ -4,22 +4,31 @@
 	let { data } = $props();
 </script>
 
-<article>
-	<section class="prose">
-		<SvelteMarked source={data.progress} />
-	</section>
+<div class="container">
+	<a href="/notes" class="back">back</a>
 
-	<hr />
+	<article>
+		<section class="prose">
+			<SvelteMarked source={data.progress} />
+		</section>
 
-	<section class="prose">
-		<SvelteMarked source={data.plan} />
-	</section>
-</article>
+		<hr />
+
+		<section class="prose">
+			<SvelteMarked source={data.plan} />
+		</section>
+	</article>
+</div>
 
 <style>
-	article {
+	.container {
 		max-width: min(90vw, 500px);
 		margin: 0 auto;
+
+		.back {
+			display: block;
+			margin-bottom: 1rem;
+		}
 	}
 
 	hr {

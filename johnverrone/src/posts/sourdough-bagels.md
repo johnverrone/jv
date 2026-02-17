@@ -1,11 +1,11 @@
 ---
-title: "Sourdough Bagels"
-description: "Was it beginners luck?"
-date: "2024-09-24"
+title: 'Sourdough Bagels'
+description: 'Was it beginners luck?'
+date: '2024-09-24'
 image: /first-post-banner.webp
 categories:
   - baking
-published: false
+published: true
 ---
 
 First time making sourdough bagels and they turned out FIRE.
