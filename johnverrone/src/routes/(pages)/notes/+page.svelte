@@ -15,10 +15,10 @@
 	</ul>
 
 	{#if data.posts.length}
-		<h3>misc</h3>
-		<ul class="flex flex-col items-center">
+		<h3 class="misc-header">misc</h3>
+		<ul class="posts">
 			{#each data.posts as post}
-				<li class="post">
+				<li>
 					<a href={`/notes/${post.slug}`} class="title">{post.title}</a>
 					<p class="date">{formatDate(post.date)}</p>
 					<p class="description">{post.description}</p>
@@ -68,6 +68,16 @@
 
 		display: grid;
 		place-items: center;
+	}
+
+	.misc-header {
+		margin-bottom: 1rem;
+	}
+
+	.posts {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
 	}
 
 	.date {
