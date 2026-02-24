@@ -10,7 +10,7 @@ published: true
 
 For a while now I've been noticing a pattern in how I build things. I reach for a database (well, I spend a long time researching the best database), set up some ORM, feel overwhelmed about migrations and connection strings and indexes and eventually burn out and stop working on the project. All that to look back and realize I'm storing like 40 records that barely ever change. Sound familiar?
 
-With AI tools changing how we interact with data, I've been asking myself: what if I didn't do all that? Do I actually need a database? For a surprising number of use cases, a GitHub repo full of flat files might be all you need.
+With AI tools changing how we interact with data, I've been asking myself: What if I didn't do all that? Do I actually need a database? For a surprising number of use cases, a GitHub repo full of flat files might be all you need.
 
 ## Structured and unstructured, side by side
 
