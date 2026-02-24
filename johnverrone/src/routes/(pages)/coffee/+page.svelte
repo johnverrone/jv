@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CoffeeBrew, CoffeeRoaster } from '$lib/coffee/types';
+	import type { CoffeeBean } from '$lib/coffee/types';
 	import type { PageData } from './$types';
 	import IconStar from '~icons/fa-solid/star';
 	import CoffeeMaker from '~icons/material-symbols/coffee-maker';
@@ -10,23 +10,27 @@
 
 	let { data }: Props = $props();
 
-	const coffeeRoasterString = (c: CoffeeRoaster[]) => c.map((r) => r.name).join(', ');
-	const coffeeSortFn = (a: CoffeeBrew, b: CoffeeBrew) => {
+	const roasterName = (bean: CoffeeBean) => {
+		const roaster = data.roastersBySlug.get(bean.roaster);
+		return roaster?.name ?? bean.roaster;
+	};
+
+	const coffeeSortFn = (a: CoffeeBean, b: CoffeeBean) => {
 		const currentFirst =
-			a.currentlyBrewing === b.currentlyBrewing ? 0 : a.currentlyBrewing ? -1 : 1;
-		const ratingDesc = b.rating.length - a.rating.length;
+			a.currently_brewing === b.currently_brewing ? 0 : a.currently_brewing ? -1 : 1;
+		const ratingDesc = (b.rating ?? 0) - (a.rating ?? 0);
 		return currentFirst || ratingDesc;
 	};
 </script>
 
 <div class="coffee-grid">
-	{#each data.coffees.sort(coffeeSortFn) as coffee}
+	{#each data.beans.sort(coffeeSortFn) as bean}
 		<article class="coffee-card">
 			<div class="image-container">
-				{#if coffee.imageUrl}
+				{#if bean.image_url}
 					<img
-						src={coffee.imageUrl}
-						alt={`Coffee bag artwork for ${coffee.name}`}
+						src={bean.image_url}
+						alt={`Coffee bag artwork for ${bean.name}`}
 						width={400}
 						height={400}
 					/>
@@ -35,18 +39,18 @@
 			<div class="coffee-info">
 				<div>
 					<div class="title-row">
-						<h2>{coffee.name}</h2>
+						<h2>{bean.name}</h2>
 						<span class="rating">
-							{#each Array(coffee.rating.length / 2) as i}
+							{#each Array(bean.rating ?? 0) as i}
 								<IconStar data-key={i} />
 							{/each}
 						</span>
 					</div>
-					<h4>{coffeeRoasterString(coffee.roaster)}</h4>
+					<h4>{roasterName(bean)}</h4>
 				</div>
 				<div class="bottom-row">
-					<span class="origin">{coffee.origin}</span>
-					{#if coffee.currentlyBrewing}
+					<span class="origin">{bean.origins.join(', ')}</span>
+					{#if bean.currently_brewing}
 						<span class="coffee-maker"><CoffeeMaker /></span>
 					{/if}
 				</div>
