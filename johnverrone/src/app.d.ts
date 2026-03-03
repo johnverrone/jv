@@ -5,7 +5,10 @@ import 'unplugin-icons/types/svelte';
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+			authenticated?: boolean;
+			githubToken?: string;
+		}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
