@@ -23,6 +23,12 @@
 	};
 </script>
 
+{#if data.authenticated}
+	<div class="add-link">
+		<a href="/coffee/new">+ Add bean</a>
+	</div>
+{/if}
+
 <div class="coffee-grid">
 	{#each data.beans.sort(coffeeSortFn) as bean}
 		<article class="coffee-card">
@@ -60,6 +66,18 @@
 </div>
 
 <style>
+	.add-link {
+		text-align: right;
+		width: 90%;
+		max-width: 80rem;
+		margin: 0 auto 1rem;
+	}
+
+	.add-link a {
+		font-size: 0.875rem;
+		opacity: 0.7;
+	}
+
 	.coffee-grid {
 		margin: 0 auto;
 
