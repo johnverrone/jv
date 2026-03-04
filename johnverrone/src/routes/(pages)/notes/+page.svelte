@@ -12,6 +12,11 @@
 				<h3>guitar</h3>
 			</a>
 		</li>
+		<li class="topic">
+			<a href="/music/2025" class="topic-link">
+				<h3>top songs of 2025</h3>
+			</a>
+		</li>
 	</ul>
 
 	{#if data.posts.length}
