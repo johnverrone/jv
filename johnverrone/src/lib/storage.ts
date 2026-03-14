@@ -4,7 +4,7 @@ import { env } from '$env/dynamic/private';
 let client: Storage;
 
 if (env.GCS_CREDENTIALS) {
-	const credentials = JSON.parse(env.GCS_CREDENTIALS);
+	const credentials = JSON.parse(env.GCS_CREDENTIALS.replace(/\n/g, '\\n'));
 	client = new Storage({ credentials });
 } else {
 	client = new Storage();
