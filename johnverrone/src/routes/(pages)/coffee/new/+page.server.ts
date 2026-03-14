@@ -67,7 +67,6 @@ export const actions = {
 				contentType: imageFile.type,
 				metadata: { cacheControl: 'public, max-age=31536000' }
 			});
-			await file.makePublic();
 
 			imageUrl = `https://storage.googleapis.com/johnverrone/${gcsPath}`;
 		}

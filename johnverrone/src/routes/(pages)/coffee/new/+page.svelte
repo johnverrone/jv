@@ -124,7 +124,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.25rem;
-		font-size: 0.875rem;
 		font-weight: 600;
 	}
 
@@ -141,24 +140,22 @@
 	select,
 	textarea {
 		padding: 0.5rem;
-		border: 1px solid var(--color-hint, #666);
+		border: 1px solid #ccc;
 		border-radius: 4px;
-		background: var(--color-card-bg, #1a1a1a);
-		color: inherit;
 		font-size: 1rem;
 	}
 
 	.hint {
 		font-weight: normal;
-		opacity: 0.6;
 		font-size: 0.75rem;
+		color: #888;
 	}
 
 	button {
 		padding: 0.75rem;
 		border: none;
 		border-radius: 4px;
-		background: var(--color-rating, #d4a);
+		background: #333;
 		color: white;
 		font-size: 1rem;
 		font-weight: 600;
@@ -184,15 +181,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		align-items: flex-start;
-	}
-
-	.success a {
-		color: var(--color-rating, #d4a);
 	}
 
 	.error {
-		color: #e55;
+		color: #c00;
 		margin-bottom: 0.5rem;
 	}
 
@@ -200,6 +192,6 @@
 		display: block;
 		margin-top: 2rem;
 		font-size: 0.8rem;
-		opacity: 0.6;
+		color: #888;
 	}
 </style>
