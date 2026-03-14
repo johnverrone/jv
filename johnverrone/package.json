@@ -20,6 +20,7 @@
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@types/dom-view-transitions": "^1.0.5",
 		"@types/eslint": "^9.6.1",
+		"@types/heic-convert": "^2.1.0",
 		"@typescript-eslint/eslint-plugin": "^8.19.0",
 		"@typescript-eslint/parser": "^8.19.0",
 		"eslint": "^9.17.0",
@@ -37,5 +38,11 @@
 		"vite": "^6.0.6",
 		"yaml": "^2.8.2"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@anthropic-ai/sdk": "^0.78.0",
+		"@types/sharp": "^0.31.1",
+		"heic-convert": "^2.1.0",
+		"sharp": "^0.34.5"
+	}
 }

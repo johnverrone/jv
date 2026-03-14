@@ -1,8 +1,10 @@
 import { fail, redirect } from '@sveltejs/kit';
+import { dev } from '$app/environment';
 import type { Actions, PageServerLoad } from './$types';
 import { getAllRoasters } from '$lib/coffee/api';
 import { serializeBeanToYaml } from '$lib/coffee/yaml';
 import { createCoffeeBeanPR } from '$lib/coffee/github';
+import { normalizeImage } from '$lib/coffee/image';
 import storage from '$lib/storage';
 import type { CoffeeBean } from '$lib/coffee/types';
 
@@ -54,21 +56,27 @@ export const actions = {
 		const rating = ratingStr ? parseInt(ratingStr) : null;
 		const price = priceStr ? parseFloat(priceStr) : null;
 
-		// Upload image to GCS
+		// Upload image to GCS (normalize to JPEG, handle HEIC, resize)
 		let imageUrl = '';
 		if (imageFile && imageFile.size > 0) {
-			const ext = imageFile.name.split('.').pop() || 'jpg';
-			const gcsPath = `coffee/${slug}.${ext}`;
-			const bucket = storage.bucket('johnverrone');
-			const file = bucket.file(gcsPath);
+			const rawBuffer = Buffer.from(await imageFile.arrayBuffer());
+			const { data: buffer } = await normalizeImage(rawBuffer, imageFile.type);
 
-			const buffer = Buffer.from(await imageFile.arrayBuffer());
-			await file.save(buffer, {
-				contentType: imageFile.type,
-				metadata: { cacheControl: 'public, max-age=31536000' }
-			});
+			const gcsPath = `coffee/${slug}.jpg`;
+			if (dev) {
+				console.log(`[DEV] Would upload image to GCS: ${gcsPath} (${buffer.length} bytes)`);
+				imageUrl = `https://placeholder.dev/${gcsPath}`;
+			} else {
+				const bucket = storage.bucket('johnverrone');
+				const file = bucket.file(gcsPath);
 
-			imageUrl = `https://storage.googleapis.com/johnverrone/${gcsPath}`;
+				await file.save(buffer, {
+					contentType: 'image/jpeg',
+					metadata: { cacheControl: 'public, max-age=31536000' }
+				});
+
+				imageUrl = `https://storage.googleapis.com/johnverrone/${gcsPath}`;
+			}
 		}
 
 		const today = new Date().toISOString().split('T')[0];
