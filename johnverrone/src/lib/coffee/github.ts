@@ -1,3 +1,5 @@
+import { dev } from '$app/environment';
+
 const REPO_OWNER = 'johnverrone';
 const REPO_NAME = 'hobbies';
 const API = 'https://api.github.com';
@@ -28,6 +30,13 @@ export async function createCoffeeBeanPR(
 	yamlContent: string,
 	name: string
 ): Promise<string> {
+	if (dev) {
+		console.log(`[DEV] Would create PR "Add coffee bean: ${name}"`);
+		console.log(`[DEV] File: hobbies/coffee/beans/${slug}.yaml`);
+		console.log(`[DEV] YAML content:\n${yamlContent}`);
+		return `https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/dev-preview`;
+	}
+
 	// 1. Get SHA of main HEAD
 	const ref = await ghFetch(token, `/repos/${REPO_OWNER}/${REPO_NAME}/git/ref/heads/main`);
 	const mainSha = ref.object.sha;

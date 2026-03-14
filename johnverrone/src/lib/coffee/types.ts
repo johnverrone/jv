@@ -14,6 +14,8 @@ export interface CoffeeBean {
 	created: string;
 }
 
+export type ParsedCoffeeBean = Partial<Omit<CoffeeBean, 'slug' | 'created' | 'image_url'>>;
+
 export interface CoffeeRoaster {
 	name: string;
 	slug: string;
