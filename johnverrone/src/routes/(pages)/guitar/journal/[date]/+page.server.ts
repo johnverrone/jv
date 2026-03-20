@@ -1,12 +1,10 @@
 import { error } from '@sveltejs/kit';
-
-const API = 'https://hobbies.johnverrone.workers.dev';
+import { getJournalEntry } from '$lib/guitar/api';
 
 export async function load({ fetch, params }) {
-	const res = await fetch(`${API}/guitar/journal/${params.date}`);
-	if (!res.ok) {
+	const entry = await getJournalEntry(fetch, params.date);
+	if (!entry) {
 		error(404, 'Journal entry not found');
 	}
-	const entry = await res.json();
 	return { entry };
 }

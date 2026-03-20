@@ -1,7 +1,6 @@
-const API = 'https://hobbies.johnverrone.workers.dev';
+import { getPlan } from '$lib/guitar/api';
 
 export async function load({ fetch }) {
-	const res = await fetch(`${API}/guitar/plan`);
-	const { content } = await res.json();
-	return { plan: content };
+	const plan = await getPlan(fetch);
+	return { plan };
 }

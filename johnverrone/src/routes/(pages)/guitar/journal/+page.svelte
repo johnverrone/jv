@@ -12,7 +12,7 @@
 	}
 
 	// Group entries by week
-	const groupedEntries = $derived(() => {
+	const groupedEntries = $derived.by(() => {
 		const groups = [];
 		let currentWeek = null;
 
@@ -32,7 +32,7 @@
 <h1>Practice Journal</h1>
 
 <div class="journal-list">
-	{#each groupedEntries() as group}
+	{#each groupedEntries as group}
 		<div class="week-group">
 			<h2>{group.weekLabel}</h2>
 			<ul>

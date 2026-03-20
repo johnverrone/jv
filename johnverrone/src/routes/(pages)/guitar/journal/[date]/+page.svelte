@@ -3,10 +3,8 @@
 
 	let { data } = $props();
 
-	const entry = $derived(data.entry);
-
-	const formattedDate = $derived(() => {
-		const date = new Date(entry.date + 'T12:00:00');
+	const formattedDate = $derived.by(() => {
+		const date = new Date(data.entry.date + 'T12:00:00');
 		return date.toLocaleDateString('en-US', {
 			weekday: 'long',
 			month: 'long',
@@ -20,16 +18,16 @@
 	<a href="/guitar/journal" class="back">&larr; all entries</a>
 
 	<header>
-		<h1>{formattedDate()}</h1>
+		<h1>{formattedDate}</h1>
 		<div class="meta">
-			<span>{entry.duration} hrs</span>
+			<span>{data.entry.duration} hrs</span>
 			<span class="separator">&middot;</span>
-			<span>Week {entry.week} — {entry.theme}</span>
+			<span>Week {data.entry.week} — {data.entry.theme}</span>
 		</div>
 	</header>
 
 	<article class="prose">
-		<SvelteMarked source={entry.content} />
+		<SvelteMarked source={data.entry.content} />
 	</article>
 </div>
 
