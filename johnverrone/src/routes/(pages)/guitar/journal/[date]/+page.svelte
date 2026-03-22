@@ -20,9 +20,9 @@
 	<header>
 		<h1>{formattedDate}</h1>
 		<div class="meta">
-			<span>{data.entry.duration} hrs</span>
+			<span>{data.entry.duration} min</span>
 			<span class="separator">&middot;</span>
-			<span>Week {data.entry.week} — {data.entry.theme}</span>
+			<span>{data.entry.theme}</span>
 		</div>
 	</header>
 
