@@ -11,16 +11,15 @@
 		});
 	}
 
-	// Group entries by week
+	// Group entries by theme
 	const groupedEntries = $derived.by(() => {
 		const groups = [];
-		let currentWeek = null;
+		let currentTheme = null;
 
 		for (const entry of data.entries) {
-			const weekKey = `Week ${entry.week} — ${entry.theme}`;
-			if (weekKey !== currentWeek) {
-				groups.push({ weekLabel: weekKey, entries: [] });
-				currentWeek = weekKey;
+			if (entry.theme !== currentTheme) {
+				groups.push({ themeLabel: entry.theme, entries: [] });
+				currentTheme = entry.theme;
 			}
 			groups[groups.length - 1].entries.push(entry);
 		}
@@ -34,13 +33,13 @@
 <div class="journal-list">
 	{#each groupedEntries as group}
 		<div class="week-group">
-			<h2>{group.weekLabel}</h2>
+			<h2>{group.themeLabel}</h2>
 			<ul>
 				{#each group.entries as entry}
 					<li>
 						<a href="/guitar/journal/{entry.date}">
 							<span class="date">{formatDate(entry.date)}</span>
-							<span class="duration">{entry.duration} hrs</span>
+							<span class="duration">{entry.duration} min</span>
 						</a>
 					</li>
 				{/each}
