@@ -44,7 +44,7 @@
 								<span class="date">{formatDate(entry.date)}</span>
 								<span class="theme">{entry.theme}</span>
 							</div>
-							<span class="duration">{entry.duration} hrs</span>
+							<span class="duration">{entry.duration} mins</span>
 						</a>
 					</li>
 				{/each}
