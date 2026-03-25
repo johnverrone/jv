@@ -11,15 +11,17 @@
 		});
 	}
 
-	// Group entries by theme
+	// Group entries by month
 	const groupedEntries = $derived.by(() => {
 		const groups = [];
-		let currentTheme = null;
+		let currentMonth = null;
 
 		for (const entry of data.entries) {
-			if (entry.theme !== currentTheme) {
-				groups.push({ themeLabel: entry.theme, entries: [] });
-				currentTheme = entry.theme;
+			const date = new Date(entry.date + 'T12:00:00');
+			const monthKey = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+			if (monthKey !== currentMonth) {
+				groups.push({ monthLabel: monthKey, entries: [] });
+				currentMonth = monthKey;
 			}
 			groups[groups.length - 1].entries.push(entry);
 		}
@@ -32,14 +34,17 @@
 
 <div class="journal-list">
 	{#each groupedEntries as group}
-		<div class="week-group">
-			<h2>{group.themeLabel}</h2>
+		<div class="month-group">
+			<h2>{group.monthLabel}</h2>
 			<ul>
 				{#each group.entries as entry}
 					<li>
 						<a href="/guitar/journal/{entry.date}">
-							<span class="date">{formatDate(entry.date)}</span>
-							<span class="duration">{entry.duration} min</span>
+							<div class="entry-info">
+								<span class="date">{formatDate(entry.date)}</span>
+								<span class="theme">{entry.theme}</span>
+							</div>
+							<span class="duration">{entry.duration} hrs</span>
 						</a>
 					</li>
 				{/each}
@@ -53,16 +58,27 @@
 		margin-bottom: 2rem;
 	}
 
-	.week-group {
+	.month-group {
 		margin-bottom: 2rem;
 	}
 
-	.week-group h2 {
+	.month-group h2 {
 		font-size: 1rem;
 		color: var(--color-text-secondary);
 		margin-bottom: 0.5rem;
 		font-family: var(--font-family-mono);
 		font-weight: 500;
+	}
+
+	.entry-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.125rem;
+	}
+
+	.theme {
+		font-size: 0.8125rem;
+		color: var(--color-text-secondary);
 	}
 
 	ul {
