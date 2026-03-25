@@ -40,7 +40,7 @@
     "react-popper": "^2.3.0",
     "react-refresh": "0.10.0",
     "sass": "^1.55.0",
-    "swiper": "^8.4.5",
+    "swiper": "^11.2.10",
     "typescript": "latest"
   }
 }

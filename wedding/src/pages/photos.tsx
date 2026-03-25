@@ -1,4 +1,4 @@
-import { Autoplay, Pagination, A11y, Navigation, Keyboard } from 'swiper';
+import { Autoplay, Pagination, A11y, Navigation, Keyboard } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Text } from '../components/Text';
 import Head from 'next/head';
@@ -202,7 +202,6 @@ export default function Home() {
           modules={[Autoplay, Pagination, A11y, Navigation, Keyboard]}
           spaceBetween={50}
           slidesPerView={'auto'}
-          loopedSlides={3}
           centeredSlides={true}
           keyboard={{ enabled: true }}
           pagination={{ clickable: true, dynamicBullets: true }}
