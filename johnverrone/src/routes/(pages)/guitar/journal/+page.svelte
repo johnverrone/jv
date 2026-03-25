@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	let { data } = $props();
 
-	function formatDate(dateStr) {
+	function formatDate(dateStr: string) {
 		const date = new Date(dateStr + 'T12:00:00');
 		return date.toLocaleDateString('en-US', {
 			weekday: 'short',
@@ -13,7 +13,7 @@
 
 	// Group entries by month
 	const groupedEntries = $derived.by(() => {
-		const groups = [];
+		const groups: { monthLabel: string; entries: typeof data.entries }[] = [];
 		let currentMonth = null;
 
 		for (const entry of data.entries) {
