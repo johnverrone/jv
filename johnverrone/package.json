@@ -5,8 +5,8 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"prebuild": "cd ../rustgame && ./build-wasm.sh --release",
 		"build:wasm": "cd ../rustgame && ./build-wasm.sh",
+		"build:wasm:release": "cd ../rustgame && ./build-wasm.sh --release",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

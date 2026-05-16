@@ -1,0 +1,92 @@
+name: Deploy johnverrone
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'johnverrone/**'
+      - 'rustgame/**'
+      - '.github/workflows/deploy-johnverrone.yml'
+  pull_request:
+    paths:
+      - 'johnverrone/**'
+      - 'rustgame/**'
+      - '.github/workflows/deploy-johnverrone.yml'
+
+concurrency:
+  group: deploy-johnverrone-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  WASM_BINDGEN_VERSION: '0.2.121'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Secrets aren't available to forked PRs; skip those.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rustgame -> target
+
+      - uses: cargo-bins/cargo-binstall@main
+
+      - name: Install wasm-bindgen-cli
+        run: cargo binstall -y --force wasm-bindgen-cli@${{ env.WASM_BINDGEN_VERSION }}
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Build WASM
+        working-directory: rustgame
+        run: ./build-wasm.sh --release
+
+      - name: Install Vercel CLI
+        run: bun add -g vercel@latest
+
+      - name: Set deploy target
+        id: target
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "env=production" >> "$GITHUB_OUTPUT"
+            echo "flag=--prod" >> "$GITHUB_OUTPUT"
+          else
+            echo "env=preview" >> "$GITHUB_OUTPUT"
+            echo "flag=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pull Vercel environment
+        working-directory: johnverrone
+        run: vercel pull --yes --environment=${{ steps.target.outputs.env }} --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build (Vercel)
+        working-directory: johnverrone
+        run: vercel build ${{ steps.target.outputs.flag }} --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy (Vercel)
+        id: deploy
+        working-directory: johnverrone
+        run: |
+          url=$(vercel deploy --prebuilt ${{ steps.target.outputs.flag }} --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Deployed to: $url"
+
+      - name: Comment preview URL
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: johnverrone-preview
+          message: |
+            **johnverrone preview:** ${{ steps.deploy.outputs.url }}
