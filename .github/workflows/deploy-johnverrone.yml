@@ -4,14 +4,14 @@ on:
   push:
     branches: [main]
     paths:
-      - 'johnverrone/**'
-      - 'rustgame/**'
-      - '.github/workflows/deploy-johnverrone.yml'
+      - "johnverrone/**"
+      - "rustgame/**"
+      - ".github/workflows/deploy-johnverrone.yml"
   pull_request:
     paths:
-      - 'johnverrone/**'
-      - 'rustgame/**'
-      - '.github/workflows/deploy-johnverrone.yml'
+      - "johnverrone/**"
+      - "rustgame/**"
+      - ".github/workflows/deploy-johnverrone.yml"
 
 concurrency:
   group: deploy-johnverrone-${{ github.ref }}
@@ -20,7 +20,7 @@ concurrency:
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  WASM_BINDGEN_VERSION: '0.2.121'
+  WASM_BINDGEN_VERSION: "0.2.121"
 
 jobs:
   deploy:
@@ -60,10 +60,10 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
-      - name: Build WASM
-        if: steps.cache-pkg.outputs.cache-hit != 'true'
-        working-directory: rustgame
-        run: ./build-wasm.sh --release
+      # - name: Build WASM
+      #   if: steps.cache-pkg.outputs.cache-hit != 'true'
+      #   working-directory: rustgame
+      #   run: ./build-wasm.sh --release
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
@@ -80,7 +80,6 @@ jobs:
           fi
 
       - name: Pull Vercel environment
-        working-directory: johnverrone
         run: vercel pull --yes --environment=${{ steps.target.outputs.env }} --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Install dependencies
@@ -89,11 +88,10 @@ jobs:
 
       - name: Build
         working-directory: johnverrone
-        run: bun --env-file=".vercel/.env.${{ steps.target.outputs.env }}.local" run build
+        run: bun --env-file="../.vercel/.env.${{ steps.target.outputs.env }}.local" run build
 
       - name: Deploy (Vercel)
         id: deploy
-        working-directory: johnverrone
         run: |
           url=$(vercel deploy --prebuilt ${{ steps.target.outputs.flag }} --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> "$GITHUB_OUTPUT"
