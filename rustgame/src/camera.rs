@@ -29,17 +29,17 @@ fn spawn_camera(mut commands: Commands) {
     commands.spawn((
         Camera3d::default(),
         Transform::from_xyz(0.0, 5.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
-        // Matches the clear color so the ground island fades into the void.
+        // Matches the clear color so the island edge fades into sky.
         DistanceFog {
-            color: Color::srgb(0.05, 0.06, 0.10),
+            color: Color::srgb(0.52, 0.78, 0.94),
             falloff: FogFalloff::Linear {
-                start: 13.0,
-                end: 22.0,
+                start: 20.0,
+                end: 35.0,
             },
             ..default()
         },
         FollowCamera {
-            offset: Vec3::new(0.0, 7.0, 10.0),
+            offset: Vec3::new(0.0, 5.0, 10.0),
             follow_speed: 5.0,
         },
         Name::new("Follow Camera"),

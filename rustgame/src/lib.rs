@@ -2,6 +2,7 @@ use avian3d::prelude::*;
 use bevy::prelude::*;
 
 mod baked_label;
+mod biosphere;
 mod camera;
 mod coffee;
 mod input;
@@ -27,15 +28,12 @@ pub fn run() {
         .add_plugins(PhysicsPlugins::default())
         // Heavier-than-Earth gravity so jumps feel snappy, not floaty.
         .insert_resource(Gravity(Vec3::new(0.0, -25.0, 0.0)))
-        // Deep navy "void" backdrop — the world reads as a lit island floating
-        // in dark space. Fog (set on the camera) matches this so the ground
-        // edge fades into the void instead of ending abruptly.
-        .insert_resource(ClearColor(Color::srgb(0.05, 0.06, 0.10)))
-        // Cool, slightly dim ambient so the warm sun does most of the shading
-        // and shadows feel crisp against the dark backdrop.
+        // Warm sky blue — matches the fog color so the island fades into sky.
+        .insert_resource(ClearColor(Color::srgb(0.52, 0.78, 0.94)))
+        // Warm ambient to fill shadows with sky-reflected light.
         .insert_resource(GlobalAmbientLight {
-            color: Color::srgb(0.78, 0.85, 1.0),
-            brightness: 70.0,
+            color: Color::srgb(0.82, 0.90, 1.0),
+            brightness: 50.0,
             ..default()
         })
         .add_plugins((
@@ -46,6 +44,7 @@ pub fn run() {
             camera::CameraPlugin,
             interaction::InteractionPlugin,
             coffee::CoffeePlugin,
+            biosphere::BiospherePlugin,
         ))
         .run();
 }
