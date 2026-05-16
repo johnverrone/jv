@@ -87,8 +87,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build
-        working-directory: johnverrone
-        run: bun --env-file="../.vercel/.env.${{ steps.target.outputs.env }}.local" run build
+        run: vercel build ${{ steps.target.outputs.flag }} --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy (Vercel)
         id: deploy
