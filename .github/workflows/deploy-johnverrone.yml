@@ -83,9 +83,18 @@ jobs:
         working-directory: johnverrone
         run: vercel pull --yes --environment=${{ steps.target.outputs.env }} --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Build (Vercel)
+      - name: Install dependencies
         working-directory: johnverrone
-        run: vercel build ${{ steps.target.outputs.flag }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: bun install --frozen-lockfile
+
+      - name: Build
+        working-directory: johnverrone
+        run: |
+          set -a
+          ENV_FILE=".vercel/.env.${{ steps.target.outputs.env }}.local"
+          [ -f "$ENV_FILE" ] && source "$ENV_FILE"
+          set +a
+          bun run build
 
       - name: Deploy (Vercel)
         id: deploy
