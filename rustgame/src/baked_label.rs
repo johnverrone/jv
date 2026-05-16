@@ -18,6 +18,7 @@
 use ab_glyph::{Font, FontRef, PxScale, ScaleFont, point};
 use bevy::asset::RenderAssetUsages;
 use bevy::image::Image;
+use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 
@@ -272,6 +273,7 @@ pub fn spawn_baked_label(
                 keep_apparent_size,
                 reference_distance: 8.0,
             },
+            NotShadowCaster,
         ))
         .id()
 }
@@ -310,7 +312,12 @@ pub fn spawn_baked_decal(
         .with_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2));
 
     commands
-        .spawn((Mesh3d(mesh), MeshMaterial3d(mat), transform))
+        .spawn((
+            Mesh3d(mesh),
+            MeshMaterial3d(mat),
+            transform,
+            NotShadowCaster,
+        ))
         .id()
 }
 

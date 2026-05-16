@@ -121,7 +121,7 @@ fn setup_world(
         MeshMaterial3d(materials.add(StandardMaterial {
             base_color: Color::srgb(0.47, 0.72, 0.33),
             base_color_texture: Some(grass_fade),
-            alpha_mode: AlphaMode::Blend,
+            alpha_mode: AlphaMode::Mask(0.01),
             perceptual_roughness: 1.0,
             reflectance: 0.0,
             ..default()
@@ -139,7 +139,7 @@ fn setup_world(
         MeshMaterial3d(materials.add(StandardMaterial {
             base_color: Color::srgb(0.82, 0.73, 0.56),
             base_color_texture: Some(beach_fade),
-            alpha_mode: AlphaMode::Blend,
+            alpha_mode: AlphaMode::Mask(0.01),
             perceptual_roughness: 0.95,
             reflectance: 0.0,
             ..default()
@@ -171,7 +171,7 @@ fn setup_world(
         "Coffee",
         StationKind::Coffee,
         Vec3::new(0.0, 0.0, -9.0),
-        Color::srgb(0.55, 0.35, 0.22),
+        Color::srgb(0.94, 0.92, 0.90), // white cabinet
     );
     spawn_station(
         &mut commands,

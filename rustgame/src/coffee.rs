@@ -104,9 +104,10 @@ mod tests {
     }
 }
 
-/// Height of the counter body (matches `Shape::Counter` in `world.rs`).
-/// Used here to compute where props on top of the counter sit.
+/// Height of the counter body (matches the Coffee Cuboid in `world.rs`).
 const COUNTER_HEIGHT: f32 = 0.7;
+/// Marble countertop slab sitting on top of the cabinet body.
+const SLAB_H: f32 = 0.04;
 
 /// How many of the most-recently-added coffees to display on the shelf.
 const RECENTS_COUNT: usize = 5;
@@ -153,7 +154,12 @@ impl Plugin for CoffeePlugin {
         app.insert_resource(load_coffees())
             .add_systems(
                 PostStartup,
-                (spawn_brew_diorama, spawn_recents_shelf, spawn_catalog_book),
+                (
+                    spawn_brew_diorama,
+                    spawn_recents_shelf,
+                    spawn_catalog_book,
+                    spawn_coffee_counter_props,
+                ),
             )
             .add_systems(Update, handle_page_input);
     }
@@ -173,15 +179,14 @@ fn spawn_brew_diorama(
         return;
     };
 
-    // Counter top = body center + half-height. Mug nudged toward the player
-    // (front of the counter faces +Z since the station sits at z = -14).
     let counter_top = counter_tf.translation.y + COUNTER_HEIGHT * 0.5;
-    let mug_radius = 0.18;
-    let mug_height = 0.25;
+    let surface_y = counter_top + SLAB_H; // actual sitting surface (top of marble slab)
+    let mug_radius = 0.08;
+    let mug_height = 0.15;
     let mug_pos = Vec3::new(
-        counter_tf.translation.x,
-        counter_top + mug_height * 0.5,
-        counter_tf.translation.z + 0.2,
+        counter_tf.translation.x + 0.65,
+        surface_y + mug_height * 0.5,
+        counter_tf.translation.z - 0.2,
     );
 
     let mug_mat = materials.add(StandardMaterial {
@@ -201,7 +206,7 @@ fn spawn_brew_diorama(
     // Thin dark disc just proud of the mug rim — reads as the coffee surface,
     // not a chocolate puck. Tiny upward offset avoids z-fighting with the mug
     // top face.
-    let liquid_height = 0.005;
+    let liquid_height = 0.002;
     let liquid_mat = materials.add(StandardMaterial {
         base_color: Color::srgb(0.22, 0.11, 0.06),
         perceptual_roughness: 1.0,
@@ -209,11 +214,11 @@ fn spawn_brew_diorama(
         ..default()
     });
     commands.spawn((
-        Mesh3d(meshes.add(Cylinder::new(mug_radius - 0.025, liquid_height))),
+        Mesh3d(meshes.add(Cylinder::new(mug_radius - 0.015, liquid_height))),
         MeshMaterial3d(liquid_mat),
         Transform::from_xyz(
             mug_pos.x,
-            mug_pos.y + mug_height * 0.5 + 0.001 + liquid_height * 0.5,
+            mug_pos.y + mug_height * 0.5 + liquid_height * 0.5 + 0.001,
             mug_pos.z,
         ),
         Name::new("Brew Liquid"),
@@ -242,10 +247,11 @@ fn spawn_catalog_book(
 
     let counter_pos = counter_tf.translation;
     let counter_top = counter_pos.y + COUNTER_HEIGHT * 0.5;
+    let surface_y = counter_top + SLAB_H;
     let book_size = Vec3::new(BOOK_HALF_WIDTH * 2.0, BOOK_HEIGHT, BOOK_DEPTH);
     let book_pos = Vec3::new(
-        counter_pos.x - 0.55,
-        counter_top + book_size.y * 0.5,
+        counter_pos.x + 0.2,
+        surface_y + book_size.y * 0.5,
         counter_pos.z + 0.2,
     );
 
@@ -421,6 +427,161 @@ fn spawn_book_page_content(
         .insert((BookPage, Name::new("Book Page Text")));
 }
 
+fn spawn_coffee_counter_props(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+    stations: Query<(&Transform, &Station)>,
+) {
+    let Some((counter_tf, _)) = stations.iter().find(|(_, s)| s.kind == StationKind::Coffee) else {
+        return;
+    };
+    let pos = counter_tf.translation;
+    let counter_top = pos.y + COUNTER_HEIGHT * 0.5;
+    let surface_y = counter_top + SLAB_H;
+
+    // Marble-white countertop slab — slightly overhangs the cabinet on all sides.
+    commands.spawn((
+        Mesh3d(meshes.add(Cuboid::new(2.1, SLAB_H, 0.85))),
+        MeshMaterial3d(materials.add(StandardMaterial {
+            base_color: Color::srgb(0.97, 0.96, 0.94),
+            perceptual_roughness: 0.5,
+            reflectance: 0.4,
+            ..default()
+        })),
+        Transform::from_xyz(pos.x, counter_top + SLAB_H * 0.5, pos.z),
+        Name::new("Countertop"),
+    ));
+
+    // Subway-tile backsplash behind the counter.
+    commands.spawn((
+        Mesh3d(meshes.add(Cuboid::new(2.1, 0.5, 0.04))),
+        MeshMaterial3d(materials.add(StandardMaterial {
+            base_color: Color::srgb(0.94, 0.92, 0.91),
+            perceptual_roughness: 0.5,
+            reflectance: 0.3,
+            ..default()
+        })),
+        Transform::from_xyz(pos.x, counter_top + 0.25, pos.z - 0.42),
+        Name::new("Backsplash"),
+    ));
+
+    // Brass bar handles — three, one per cabinet section.
+    let handle_mat = materials.add(StandardMaterial {
+        base_color: Color::srgb(0.83, 0.68, 0.24), // polished brass
+        perceptual_roughness: 0.08,
+        metallic: 1.0,
+        ..default()
+    });
+    for x_off in [-0.52_f32, 0.0, 0.52] {
+        commands.spawn((
+            Mesh3d(meshes.add(Cuboid::new(0.20, 0.025, 0.03))),
+            MeshMaterial3d(handle_mat.clone()),
+            Transform::from_xyz(pos.x + x_off, pos.y, pos.z + 0.41),
+            Name::new("Cabinet Handle"),
+        ));
+    }
+
+    // ---- Espresso machine ----
+    let black_mat = materials.add(StandardMaterial {
+        base_color: Color::srgb(0.09, 0.09, 0.10),
+        perceptual_roughness: 0.8,
+        reflectance: 0.2,
+        ..default()
+    });
+    let silver_mat = materials.add(StandardMaterial {
+        base_color: Color::srgb(0.9, 0.9, 0.9),
+        perceptual_roughness: 0.05,
+        metallic: 1.0,
+        ..default()
+    });
+    let machine_w = 0.44;
+    let machine_h = 0.50;
+    let machine_d = 0.32;
+    let machine_pos = Vec3::new(pos.x - 0.65, surface_y + machine_h * 0.5, pos.z - 0.10);
+
+    commands.spawn((
+        Mesh3d(meshes.add(Cuboid::new(machine_w, machine_h, machine_d))),
+        MeshMaterial3d(black_mat.clone()),
+        Transform::from_translation(machine_pos),
+        Name::new("Espresso Machine"),
+    ));
+    // Control panel strip on top — slightly lighter charcoal.
+    commands.spawn((
+        Mesh3d(meshes.add(Cuboid::new(machine_w - 0.04, 0.06, machine_d - 0.04))),
+        MeshMaterial3d(materials.add(StandardMaterial {
+            base_color: Color::srgb(0.16, 0.15, 0.18),
+            perceptual_roughness: 0.5,
+            reflectance: 0.4,
+            ..default()
+        })),
+        Transform::from_xyz(
+            machine_pos.x,
+            machine_pos.y + machine_h * 0.5 + 0.03,
+            machine_pos.z,
+        ),
+        Name::new("Machine Controls"),
+    ));
+    // Drip tray — thin flat platform sticking out from the front base.
+    commands.spawn((
+        Mesh3d(meshes.add(Cuboid::new(machine_w - 0.04, 0.02, 0.10))),
+        MeshMaterial3d(silver_mat.clone()),
+        Transform::from_xyz(
+            machine_pos.x,
+            surface_y + 0.01,
+            machine_pos.z + machine_d * 0.5 + 0.04,
+        ),
+        Name::new("Drip Tray"),
+    ));
+
+    // ---- Grinder (center-right, walnut base + black body + glass hopper) ----
+    let grinder_x = machine_pos.x + machine_w + 0.01;
+    let grinder_z = pos.z - 0.02;
+    let base_r = 0.12;
+    let base_h = 0.06;
+    let body_r = 0.10;
+    let body_h = 0.38;
+    let hopper_r = 0.085;
+    let hopper_h = 0.12;
+
+    commands.spawn((
+        Mesh3d(meshes.add(Cylinder::new(base_r, base_h))),
+        MeshMaterial3d(materials.add(StandardMaterial {
+            base_color: Color::srgb(0.52, 0.35, 0.18),
+            perceptual_roughness: 0.9,
+            reflectance: 0.05,
+            ..default()
+        })),
+        Transform::from_xyz(grinder_x, surface_y + base_h * 0.5, grinder_z),
+        Name::new("Grinder Base"),
+    ));
+
+    let body_center_y = surface_y + base_h + body_h * 0.5;
+    commands.spawn((
+        Mesh3d(meshes.add(Cylinder::new(body_r, body_h))),
+        MeshMaterial3d(black_mat.clone()),
+        Transform::from_xyz(grinder_x, body_center_y, grinder_z),
+        Name::new("Grinder Body"),
+    ));
+
+    commands.spawn((
+        Mesh3d(meshes.add(Cylinder::new(hopper_r, hopper_h))),
+        MeshMaterial3d(materials.add(StandardMaterial {
+            base_color: Color::srgba(0.22, 0.22, 0.26, 0.60),
+            alpha_mode: AlphaMode::Blend,
+            perceptual_roughness: 0.05,
+            reflectance: 0.9,
+            ..default()
+        })),
+        Transform::from_xyz(
+            grinder_x,
+            body_center_y + body_h * 0.5 + hopper_h * 0.5,
+            grinder_z,
+        ),
+        Name::new("Grinder Hopper"),
+    ));
+}
+
 fn spawn_recents_shelf(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -442,8 +603,8 @@ fn spawn_recents_shelf(
     let shelf_size = Vec3::new(1.6, 0.04, 0.18);
     let shelf_pos = Vec3::new(
         counter_pos.x,
-        // Above the counter top (0.7) by ~0.3.
-        1.0,
+        // Above the counter top (0.7) by ~0.5.
+        1.2,
         // Just behind the counter's back face.
         counter_pos.z - 0.55,
     );

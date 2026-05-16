@@ -91,7 +91,7 @@ fn station_env(kind: StationKind) -> Env {
             ambient_brightness: 55.0,
             sun_color: Vec3::new(1.0, 0.72, 0.45),
             sun_illuminance: 7_500.0,
-            sun_from: Vec3::new(8.0, 2.5, -3.0),
+            sun_from: Vec3::new(8.0, 2.5, 3.0),
             fog_start: 15.0,
             fog_end: 28.0,
         },

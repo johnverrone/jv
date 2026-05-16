@@ -79,8 +79,6 @@ fn spawn_prompt_ui(
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut images: ResMut<Assets<Image>>,
 ) {
-    // Baked once at startup; only the anchor moves at runtime as the prompt
-    // hops between stations.
     let prompt = spawn_baked_label(
         &mut commands,
         &mut meshes,
@@ -88,10 +86,7 @@ fn spawn_prompt_ui(
         &mut images,
         PROMPT_TEXT,
         &BakeConfig::default(),
-        // Anchor gets rewritten each frame by `update_prompt_ui`.
         Vec3::ZERO,
-        // Smaller than the station name card (0.6) so the prompt reads as
-        // secondary signage below the main label.
         0.35,
         false,
     );
@@ -145,8 +140,6 @@ fn update_prompt_ui(
 
     match nearest.0.and_then(|e| station_q.get(e).ok()) {
         Some(station) => {
-            // Park the prompt below the station name card. Both cards billboard
-            // toward the camera, so a world-Y offset reads as "below" on screen.
             label.anchor = station.label_anchor - Vec3::Y * 0.55;
             *visibility = Visibility::Inherited;
         }
