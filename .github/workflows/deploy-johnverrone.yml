@@ -89,12 +89,7 @@ jobs:
 
       - name: Build
         working-directory: johnverrone
-        run: |
-          set -a
-          ENV_FILE=".vercel/.env.${{ steps.target.outputs.env }}.local"
-          [ -f "$ENV_FILE" ] && source "$ENV_FILE"
-          set +a
-          bun run build
+        run: bun --env-file=".vercel/.env.${{ steps.target.outputs.env }}.local" run build
 
       - name: Deploy (Vercel)
         id: deploy
