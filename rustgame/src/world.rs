@@ -195,7 +195,7 @@ fn setup_world(
         "Notes",
         StationKind::Notes,
         Vec3::new(8.5, 0.0, -2.5),
-        Color::srgb(0.92, 0.45, 0.78),
+        Color::srgb(0.96, 0.97, 0.98),
     );
     let _ = spawn_station(
         &mut commands,
@@ -278,10 +278,10 @@ pub fn spawn_station(
             )
         }
         StationKind::Notes => (
-            meshes.add(Cuboid::new(1.2, 2.4, 0.4)),
-            Collider::cuboid(1.2, 2.4, 0.4),
+            meshes.add(Cuboid::new(3.0, 1.8, 0.08)),
+            Collider::cuboid(3.0, 1.8, 0.08),
             face_spawn(base + Vec3::Y * 1.2),
-            2.4,
+            2.5,
         ),
         StationKind::YouTube => (
             meshes.add(Cuboid::new(1.6, 1.0, 0.1)),
@@ -330,7 +330,7 @@ pub fn spawn_station(
         ))
         .id();
 
-    if kind == StationKind::Coffee {
+    if kind == StationKind::Coffee || kind == StationKind::Notes {
         return station_entity;
     }
 

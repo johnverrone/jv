@@ -130,12 +130,12 @@ fn move_player(
     // Map input axis to world space: +y forward = -z world, +x right = +x world.
     let direction = Vec3::new(input.move_axis.x, 0.0, -input.move_axis.y);
 
-    let speed = if input.run {
+    let base = if input.run {
         player.speed * player.run_multiplier
     } else {
         player.speed
     };
-    let mut horizontal = direction.normalize_or_zero() * speed;
+    let mut horizontal = direction.normalize_or_zero() * base * input.speed_scale;
 
     // Remove velocity components that push into a surface in contact with the
     // player. Without this, holding "into wall" while airborne keeps writing

@@ -96,15 +96,15 @@ fn station_env(kind: StationKind) -> Env {
             fog_end: 70.0,
         },
         StationKind::Notes => Env {
-            // Warm amber autumn afternoon
-            sky: Vec3::new(0.75, 0.62, 0.45),
-            ambient_color: Vec3::new(1.0, 0.88, 0.65),
-            ambient_brightness: 45.0,
-            sun_color: Vec3::new(1.0, 0.82, 0.50),
-            sun_illuminance: 10_000.0,
-            sun_from: Vec3::new(-3.0, 4.0, 6.0),
-            fog_start: 18.0,
-            fog_end: 30.0,
+            // Fluorescent classroom — overcast sky, high cool ambient, dim overhead sun
+            sky: Vec3::new(0.88, 0.91, 0.96),
+            ambient_color: Vec3::new(0.92, 0.95, 1.0),
+            ambient_brightness: 500.0,
+            sun_color: Vec3::new(0.92, 0.95, 1.0),
+            sun_illuminance: 4_000.0,
+            sun_from: Vec3::new(2.0, 10.0, 3.0),
+            fog_start: 25.0,
+            fog_end: 45.0,
         },
         StationKind::Dev => Env {
             // Crisp clear blue — focused daylight

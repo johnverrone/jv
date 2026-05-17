@@ -7,6 +7,7 @@ mod camera;
 mod coffee;
 mod input;
 mod interaction;
+mod notes;
 mod player;
 mod world;
 
@@ -44,6 +45,7 @@ pub fn run() {
             camera::CameraPlugin,
             interaction::InteractionPlugin,
             coffee::CoffeePlugin,
+            notes::NotesPlugin,
             biosphere::BiospherePlugin,
         ))
         .run();
