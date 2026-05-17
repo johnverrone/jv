@@ -21,11 +21,12 @@ use bevy::image::Image;
 use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
+use bevy::transform::TransformSystems;
 
 /// Single font reused for every baked label. Inter Bold reads well at small
 /// sizes and covers the punctuation we need (em-dash, etc.) that Bevy's
 /// default font lacks.
-static FONT_BYTES: &[u8] = include_bytes!("../data/fonts/label.ttf");
+pub(crate) static FONT_BYTES: &[u8] = include_bytes!("../data/fonts/label.ttf");
 
 /// Default rasterization size for a single-line label (station signs,
 /// interaction prompt). Higher = crisper at close range, larger texture.
@@ -210,10 +211,6 @@ pub fn bake_lines_image(lines: &[LineSpec], cfg: &BakeConfig) -> Image {
 ///   map).
 #[derive(Component)]
 pub struct BakedLabel {
-    pub anchor: Vec3,
-    // Stored on the component for future systems that need to compute screen
-    // bounds (e.g., a hover-to-highlight overlay), even though the spawn
-    // function already bakes it into the mesh size.
     #[allow(dead_code)]
     pub world_height: f32,
     pub keep_apparent_size: bool,
@@ -226,9 +223,12 @@ pub struct BakedLabelPlugin;
 
 impl Plugin for BakedLabelPlugin {
     fn build(&self, app: &mut App) {
-        // PostUpdate after Bevy's transform / camera systems so we read final
-        // camera position this frame, same slot WorldLabel uses.
-        app.add_systems(PostUpdate, billboard_baked_labels);
+        // Run after transform propagation so GlobalTransform is current for
+        // child labels (station props) and the interaction prompt.
+        app.add_systems(
+            PostUpdate,
+            billboard_baked_labels.after(TransformSystems::Propagate),
+        );
     }
 }
 
@@ -252,7 +252,12 @@ pub fn spawn_baked_label(
 
     let mat = materials.add(StandardMaterial {
         base_color_texture: Some(texture),
-        alpha_mode: AlphaMode::Blend,
+        // Mask puts labels in the opaque pass so they write depth. This
+        // prevents large transparent ground planes from sorting on top of
+        // distant labels in the transparent pass. Threshold 0.01 discards
+        // only the faintest sub-1% anti-aliasing fringe — imperceptible at
+        // label viewing distances.
+        alpha_mode: AlphaMode::Mask(0.01),
         double_sided: true,
         cull_mode: None,
         ..default()
@@ -268,7 +273,6 @@ pub fn spawn_baked_label(
             MeshMaterial3d(mat),
             Transform::from_translation(anchor),
             BakedLabel {
-                anchor,
                 world_height,
                 keep_apparent_size,
                 reference_distance: 8.0,
@@ -278,77 +282,43 @@ pub fn spawn_baked_label(
         .id()
 }
 
-/// Spawn a flat label that lies on a horizontal surface (XZ plane) rather
-/// than billboarding. Used for "page" content like the catalog book, where
-/// the text reads as printed on the surface and shouldn't rotate to face the
-/// camera.
-///
-/// `anchor` is the world position of the decal's center; `world_width` is its
-/// X extent. The Z extent (depth on the surface) follows from the texture
-/// aspect ratio. The mesh is a Rectangle (XY plane) rotated -90° around X so
-/// the texture's top maps to the surface's -Z edge (= "top of page" when
-/// viewed from a camera looking down from +Z).
-pub fn spawn_baked_decal(
-    commands: &mut Commands,
-    meshes: &mut Assets<Mesh>,
-    materials: &mut Assets<StandardMaterial>,
-    images: &mut Assets<Image>,
-    image: Image,
-    anchor: Vec3,
-    world_width: f32,
-) -> Entity {
-    let aspect = image.width() as f32 / image.height() as f32;
-    let world_depth = world_width / aspect;
-    let texture = images.add(image);
-
-    let mat = materials.add(StandardMaterial {
-        base_color_texture: Some(texture),
-        alpha_mode: AlphaMode::Blend,
-        ..default()
-    });
-
-    let mesh = meshes.add(Rectangle::new(world_width, world_depth));
-    let transform = Transform::from_translation(anchor)
-        .with_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2));
-
-    commands
-        .spawn((
-            Mesh3d(mesh),
-            MeshMaterial3d(mat),
-            transform,
-            NotShadowCaster,
-        ))
-        .id()
-}
-
 /// Yaw-only billboarding: labels rotate around the world Y axis to face the
 /// camera but never tilt, so text stays upright regardless of camera pitch.
 /// Optionally scales the quad so its apparent size is distance-independent.
+///
+/// Uses `GlobalTransform` for world position so labels work correctly whether
+/// they are standalone entities or children of a station entity.
 fn billboard_baked_labels(
     camera_q: Query<&GlobalTransform, (With<Camera>, Without<BakedLabel>)>,
-    mut labels: Query<(&mut Transform, &BakedLabel)>,
+    mut labels: Query<(&mut Transform, &GlobalTransform, &BakedLabel)>,
 ) {
     let Ok(cam_tf) = camera_q.single() else {
         return;
     };
     let cam_pos = cam_tf.translation();
 
-    for (mut tf, label) in &mut labels {
-        tf.translation = label.anchor;
+    for (mut tf, global_tf, label) in &mut labels {
+        let world_pos = global_tf.translation();
 
-        let mut to_camera = cam_pos - label.anchor;
+        let mut to_camera = cam_pos - world_pos;
         to_camera.y = 0.0;
         let flat = to_camera.normalize_or_zero();
         if flat.length_squared() > 0.0 {
-            // Quad's +Z should point at the camera, i.e. -Z (Bevy "forward")
-            // points away. `look_to` aligns forward with the given direction.
-            tf.look_to(-flat, Vec3::Y);
+            // Compute the desired world-space rotation: +Z (label normal) facing camera.
+            let mut desired = Transform::IDENTITY;
+            desired.look_to(-flat, Vec3::Y);
+            let desired_world_rot = desired.rotation;
+
+            // Convert to local space so the label faces the camera correctly whether
+            // it is a top-level entity or a child of a rotated station.
+            // parent_rot = global_rot * local_rot⁻¹ (stable since stations don't move)
+            let parent_rot = global_tf.rotation() * tf.rotation.inverse();
+            tf.rotation = parent_rot.inverse() * desired_world_rot;
         }
 
         if label.keep_apparent_size {
-            let distance = cam_pos.distance(label.anchor).max(0.001);
-            let s = distance / label.reference_distance;
-            tf.scale = Vec3::splat(s);
+            let distance = cam_pos.distance(world_pos).max(0.001);
+            tf.scale = Vec3::splat(distance / label.reference_distance);
         } else {
             tf.scale = Vec3::ONE;
         }

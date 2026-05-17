@@ -11,7 +11,7 @@ pub struct WorldPlugin;
 
 impl Plugin for WorldPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup_world)
+        app.add_systems(Startup, (setup_world, spawn_boundary))
             .add_systems(Update, update_station_name_visibility);
     }
 }
@@ -101,7 +101,7 @@ fn setup_world(
     // material fields: base_color_texture, occlusion_texture, normal_map_texture, metallic_roughness_texture
     // also: generate_tangents() on the mesh, uv_transform: Affine2::from_scale(Vec2::splat(8.0))
 
-    let ground_radius = 24.0;
+    let ground_radius = 27.0;
     let ground_height = 0.2;
 
     // Physics collider only — the grass plane below provides the visual.
@@ -121,7 +121,7 @@ fn setup_world(
         MeshMaterial3d(materials.add(StandardMaterial {
             base_color: Color::srgb(0.47, 0.72, 0.33),
             base_color_texture: Some(grass_fade),
-            alpha_mode: AlphaMode::Mask(0.01),
+            alpha_mode: AlphaMode::Blend,
             perceptual_roughness: 1.0,
             reflectance: 0.0,
             ..default()
@@ -139,7 +139,7 @@ fn setup_world(
         MeshMaterial3d(materials.add(StandardMaterial {
             base_color: Color::srgb(0.82, 0.73, 0.56),
             base_color_texture: Some(beach_fade),
-            alpha_mode: AlphaMode::Mask(0.01),
+            alpha_mode: AlphaMode::Blend,
             perceptual_roughness: 0.95,
             reflectance: 0.0,
             ..default()
@@ -163,7 +163,7 @@ fn setup_world(
 
     // -- STATIONS --
 
-    spawn_station(
+    let _ = spawn_station(
         &mut commands,
         &mut meshes,
         &mut materials,
@@ -173,7 +173,7 @@ fn setup_world(
         Vec3::new(0.0, 0.0, -9.0),
         Color::srgb(0.94, 0.92, 0.90), // white cabinet
     );
-    spawn_station(
+    let _ = spawn_station(
         &mut commands,
         &mut meshes,
         &mut materials,
@@ -183,7 +183,7 @@ fn setup_world(
         Vec3::new(8.5, 0.0, -2.5),
         Color::srgb(0.92, 0.45, 0.78),
     );
-    spawn_station(
+    let _ = spawn_station(
         &mut commands,
         &mut meshes,
         &mut materials,
@@ -193,7 +193,7 @@ fn setup_world(
         Vec3::new(5.0, 0.0, 7.0),
         Color::srgb(0.35, 0.82, 0.95),
     );
-    spawn_station(
+    let _ = spawn_station(
         &mut commands,
         &mut meshes,
         &mut materials,
@@ -203,7 +203,7 @@ fn setup_world(
         Vec3::new(-5.0, 0.0, 7.0),
         Color::srgb(0.98, 0.40, 0.45),
     );
-    spawn_station(
+    let _ = spawn_station(
         &mut commands,
         &mut meshes,
         &mut materials,
@@ -222,6 +222,8 @@ fn setup_world(
             color: Color::srgb(1.0, 0.93, 0.76),
             illuminance: 12_000.0,
             shadows_enabled: true,
+            shadow_depth_bias: 0.06,
+            shadow_normal_bias: 1.8,
             ..default()
         },
         Transform::from_xyz(-5.0, 5.0, 8.0).looking_at(Vec3::ZERO, Vec3::Y),
@@ -230,7 +232,7 @@ fn setup_world(
     ));
 }
 
-fn spawn_station(
+pub fn spawn_station(
     commands: &mut Commands,
     meshes: &mut Assets<Mesh>,
     materials: &mut Assets<StandardMaterial>,
@@ -239,7 +241,7 @@ fn spawn_station(
     kind: StationKind,
     base: Vec3,
     color: Color,
-) {
+) -> Entity {
     let material = materials.add(StandardMaterial {
         base_color: color,
         perceptual_roughness: 1.0,
@@ -297,20 +299,27 @@ fn spawn_station(
     let view_pos = base + to_origin * 3.0 + Vec3::Y * 1.7;
     let view_look = base - to_origin * 0.6 + Vec3::Y * 1.45;
 
-    commands.spawn((
-        Mesh3d(mesh),
-        MeshMaterial3d(material),
-        transform,
-        RigidBody::Static,
-        collider,
-        Station {
-            kind,
-            label_anchor,
-            view_pos,
-            view_look,
-        },
-        Name::new(name),
-    ));
+    let station_entity = commands
+        .spawn((
+            Mesh3d(mesh),
+            MeshMaterial3d(material),
+            transform,
+            RigidBody::Static,
+            collider,
+            Station {
+                kind,
+                label_anchor,
+                view_pos,
+                view_look,
+            },
+            Name::new(name),
+        ))
+        .id();
+
+    // Compute label anchor in the station's local space so it moves with the
+    // entity when the station's transform is edited.
+    let world_offset = label_anchor - transform.translation;
+    let local_label_anchor = transform.rotation.inverse() * world_offset;
 
     let label_entity = spawn_baked_label(
         commands,
@@ -319,13 +328,16 @@ fn spawn_station(
         images,
         name,
         &BakeConfig::default(),
-        label_anchor,
+        local_label_anchor,
         0.6,
         false,
     );
     commands
         .entity(label_entity)
         .insert((StationNameLabel, Name::new(format!("{name} Label"))));
+    commands.entity(station_entity).add_child(label_entity);
+
+    station_entity
 }
 
 fn update_station_name_visibility(
@@ -339,5 +351,38 @@ fn update_station_name_visibility(
     };
     for mut vis in &mut labels {
         *vis = target;
+    }
+}
+
+fn spawn_boundary(mut commands: Commands) {
+    // A ring of 32 thin static cuboids forms a cylindrical wall at the
+    // ocean's edge. Each box is oriented with looking_at(origin) so its thin
+    // Z face is radial and its long X face spans the arc between neighbours.
+    // The wall sits from just below ground level to above max jump height.
+    let wall_radius = 25.0_f32;
+    let wall_height = 7.0_f32;
+    // Center the wall so its base is 0.5 m below ground (catches edge-hugging)
+    // and its top is 6.5 m up (well above any jump).
+    let wall_y_center = wall_height * 0.5 - 0.5;
+    let wall_thickness = 0.5_f32;
+    let n: usize = 32;
+
+    // Side length of the inscribed polygon: 2·r·tan(π/n), plus a small
+    // overlap so adjacent boxes share a sliver rather than leaving a gap.
+    let seg_len = 2.0 * wall_radius * (std::f32::consts::PI / n as f32).tan() + 0.5;
+
+    for i in 0..n {
+        let angle = i as f32 * std::f32::consts::TAU / n as f32;
+        let pos = Vec3::new(wall_radius * angle.cos(), wall_y_center, wall_radius * angle.sin());
+        // looking_at(origin at same Y) aligns -Z toward centre so the box's
+        // thin dimension (Z = wall_thickness) is radial and its long
+        // dimension (X = seg_len) is tangential.
+        let look = Vec3::new(0.0, wall_y_center, 0.0);
+        commands.spawn((
+            RigidBody::Static,
+            Collider::cuboid(seg_len, wall_height, wall_thickness),
+            Transform::from_translation(pos).looking_at(look, Vec3::Y),
+            Name::new("Boundary"),
+        ));
     }
 }

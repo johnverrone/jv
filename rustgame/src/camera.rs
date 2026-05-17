@@ -11,7 +11,7 @@ pub struct FollowCamera {
 }
 
 #[derive(Component)]
-pub struct BookView {
+pub struct CoffeeBagView {
     pub pos: Vec3,
     pub look: Vec3,
 }
@@ -52,7 +52,7 @@ fn update_camera(
     current_station: Res<CurrentStation>,
     player_q: Query<&Transform, (With<Player>, Without<FollowCamera>)>,
     station_q: Query<&Station>,
-    book_view_q: Query<&BookView>,
+    book_view_q: Query<&CoffeeBagView>,
     mut camera_q: Query<(&mut Transform, &FollowCamera)>,
 ) {
     let Ok((mut cam_tf, follow)) = camera_q.single_mut() else {

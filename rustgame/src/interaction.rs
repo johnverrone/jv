@@ -1,7 +1,7 @@
 use avian3d::prelude::*;
 use bevy::prelude::*;
 
-use crate::baked_label::{BakeConfig, BakedLabel, spawn_baked_label};
+use crate::baked_label::{BakeConfig, spawn_baked_label};
 use crate::input::PlayerInput;
 use crate::player::Player;
 use crate::world::{Station, StationKind};
@@ -132,15 +132,15 @@ fn find_nearest_station(
 fn update_prompt_ui(
     nearest: Res<NearestStation>,
     station_q: Query<&Station>,
-    mut prompt_q: Query<(&mut BakedLabel, &mut Visibility), With<InteractionPromptUi>>,
+    mut prompt_q: Query<(&mut Transform, &mut Visibility), With<InteractionPromptUi>>,
 ) {
-    let Ok((mut label, mut visibility)) = prompt_q.single_mut() else {
+    let Ok((mut tf, mut visibility)) = prompt_q.single_mut() else {
         return;
     };
 
     match nearest.0.and_then(|e| station_q.get(e).ok()) {
         Some(station) => {
-            label.anchor = station.label_anchor - Vec3::Y * 0.55;
+            tf.translation = station.label_anchor - Vec3::Y * 0.55;
             *visibility = Visibility::Inherited;
         }
         None => {
