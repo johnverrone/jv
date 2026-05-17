@@ -549,11 +549,10 @@ fn update_coffee_light(
         .is_some_and(|s| s.kind == StationKind::Coffee);
     let reading = *app_mode.get() == AppMode::Reading;
 
-    light.intensity = if near_coffee || reading {
-        200_000.0
-    } else {
-        0.0
-    };
+    let target = if near_coffee || reading { 200_000.0 } else { 0.0 };
+    if (light.intensity - target).abs() > 0.1 {
+        light.intensity = target;
+    }
 }
 
 fn spawn_coffee_counter_props(
@@ -816,7 +815,7 @@ fn spawn_coffee_counter_props(
         .spawn((
             PointLight {
                 color: Color::srgb(1.0, 0.87, 0.60),
-                intensity: 250_000.0,
+                intensity: 0.0,
                 range: 8.0,
                 radius: 0.06,
                 shadows_enabled: true,
