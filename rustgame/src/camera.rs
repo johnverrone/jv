@@ -29,7 +29,6 @@ fn spawn_camera(mut commands: Commands) {
     commands.spawn((
         Camera3d::default(),
         Transform::from_xyz(0.0, 5.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
-        // Matches the clear color so the island edge fades into sky.
         DistanceFog {
             color: Color::srgb(0.52, 0.78, 0.94),
             falloff: FogFalloff::Linear {
@@ -52,7 +51,7 @@ fn update_camera(
     current_station: Res<CurrentStation>,
     player_q: Query<&Transform, (With<Player>, Without<FollowCamera>)>,
     station_q: Query<&Station>,
-    book_view_q: Query<&CoffeeBagView>,
+    coffee_bag_q: Query<&CoffeeBagView>,
     mut camera_q: Query<(&mut Transform, &FollowCamera)>,
 ) {
     let Ok((mut cam_tf, follow)) = camera_q.single_mut() else {
@@ -79,10 +78,10 @@ fn update_camera(
         AppMode::Reading => {
             // Only Coffee enters Reading, and there's exactly one book in the
             // scene, so the first BookView is unambiguous.
-            let Ok(book) = book_view_q.single() else {
+            let Ok(coffee) = coffee_bag_q.single() else {
                 return;
             };
-            (book.pos, book.look)
+            (coffee.pos, coffee.look)
         }
     };
 

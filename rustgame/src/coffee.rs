@@ -1,3 +1,4 @@
+use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
 use bevy::text::Font;
 use serde::Deserialize;
@@ -5,7 +6,7 @@ use serde::Deserialize;
 use crate::baked_label::FONT_BYTES;
 use crate::camera::CoffeeBagView;
 use crate::input::PlayerInput;
-use crate::interaction::AppMode;
+use crate::interaction::{AppMode, INTERACTION_RANGE, NearestStation};
 use crate::world::{Station, StationKind};
 
 const COFFEES_JSON: &str = include_str!("../data/coffees.json");
@@ -138,6 +139,9 @@ struct BagHudCard;
 #[derive(Component)]
 struct BagHudText;
 
+#[derive(Component)]
+struct CoffeeLight;
+
 // ─── plugin ──────────────────────────────────────────────────────────────────
 
 pub struct CoffeePlugin;
@@ -151,19 +155,22 @@ impl Plugin for CoffeePlugin {
             .add_systems(Startup, spawn_bag_hud)
             .add_systems(
                 PostStartup,
-                (spawn_bag_carousel, spawn_coffee_counter_props),
+                (spawn_bag_carousel, spawn_floor, spawn_coffee_counter_props),
             )
             .add_systems(OnEnter(AppMode::Reading), show_bag_hud)
             .add_systems(OnExit(AppMode::Reading), (hide_bag_hud, reset_bag_on_exit))
             .add_systems(
                 Update,
                 (
-                    handle_bag_scroll,
-                    animate_bags,
-                    update_bag_hud,
-                    animate_hud_fade,
-                )
-                    .chain(),
+                    (
+                        handle_bag_scroll,
+                        animate_bags,
+                        update_bag_hud,
+                        animate_hud_fade,
+                    )
+                        .chain(),
+                    update_coffee_light,
+                ),
             );
     }
 }
@@ -247,7 +254,7 @@ fn spawn_bag_carousel(
     let cam_pos = Vec3::new(
         center_world.x,
         surface_y_world + 0.45,
-        center_world.z + 0.75,
+        center_world.z + 1.75,
     );
     let cam_look = Vec3::new(center_world.x, surface_y_world + 0.05, center_world.z);
     commands.spawn((
@@ -256,6 +263,42 @@ fn spawn_bag_carousel(
             look: cam_look,
         },
         Name::new("Bag View Target"),
+    ));
+}
+
+fn spawn_floor(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+    stations: Query<(&Transform, &Station)>,
+) {
+    let Some((counter_tf, _)) = stations.iter().find(|(_, s)| s.kind == StationKind::Coffee) else {
+        return;
+    };
+
+    // World-space XZ center of the counter; y just above the grass.
+    let center = counter_tf.translation.with_y(0.002);
+
+    commands.spawn((
+        Mesh3d(
+            meshes.add(
+                Circle {
+                    radius: INTERACTION_RANGE - 0.5,
+                }
+                .mesh()
+                .resolution(64),
+            ),
+        ),
+        MeshMaterial3d(materials.add(StandardMaterial {
+            base_color: Color::srgb(0.88, 0.84, 0.78),
+            alpha_mode: AlphaMode::Mask(0.01),
+            perceptual_roughness: 0.95,
+            reflectance: 0.0,
+            ..default()
+        })),
+        Transform::from_translation(center)
+            .with_rotation(Quat::from_rotation_x((-90.0_f32).to_radians())),
+        Name::new("Coffee Floor"),
     ));
 }
 
@@ -486,7 +529,32 @@ fn reset_bag_on_exit(
     }
 }
 
-// ─── counter props (unchanged) ────────────────────────────────────────────────
+// ─── counter props ────────────────────────────────────────────────
+
+fn update_coffee_light(
+    nearest: Res<NearestStation>,
+    app_mode: Res<State<AppMode>>,
+    station_q: Query<&Station>,
+    mut light_q: Query<&mut PointLight, With<CoffeeLight>>,
+) {
+    let Ok(mut light) = light_q.single_mut() else {
+        return;
+    };
+
+    // Light is on when the player is near the coffee station OR actively
+    // interacting with it (NearestStation clears to None during interactions).
+    let near_coffee = nearest
+        .0
+        .and_then(|e| station_q.get(e).ok())
+        .is_some_and(|s| s.kind == StationKind::Coffee);
+    let reading = *app_mode.get() == AppMode::Reading;
+
+    light.intensity = if near_coffee || reading {
+        200_000.0
+    } else {
+        0.0
+    };
+}
 
 fn spawn_coffee_counter_props(
     mut commands: Commands,
@@ -707,10 +775,10 @@ fn spawn_coffee_counter_props(
 
     // ── Ceiling pendant ───────────────────────────────────────────────────────
     // Hangs above the center of the counter. Local space: (0,0,0) = cabinet mid.
-    let shade_y = surface_y_local + 1.22; // ~1.2 m above counter surface
+    let shade_y = surface_y_local + 1.25; // ~1.2 m above counter surface
     let shade_r = 0.13_f32;
     let shade_h = 0.10_f32;
-    let cord_h = 0.50_f32;
+    let cord_h = 0.75_f32;
 
     let cord = commands
         .spawn((
@@ -722,6 +790,7 @@ fn spawn_coffee_counter_props(
             })),
             Transform::from_xyz(0.0, shade_y + shade_h * 0.5 + cord_h * 0.5, 0.0),
             Name::new("Pendant Cord"),
+            NotShadowCaster,
         ))
         .id();
 
@@ -736,6 +805,7 @@ fn spawn_coffee_counter_props(
             })),
             Transform::from_xyz(0.0, shade_y, 0.0),
             Name::new("Pendant Shade"),
+            NotShadowCaster,
         ))
         .id();
 
@@ -746,12 +816,13 @@ fn spawn_coffee_counter_props(
         .spawn((
             PointLight {
                 color: Color::srgb(1.0, 0.87, 0.60),
-                intensity: 150_000.0,
+                intensity: 250_000.0,
                 range: 8.0,
-                radius: 0.04,
-                shadows_enabled: false,
+                radius: 0.06,
+                shadows_enabled: true,
                 ..default()
             },
+            CoffeeLight,
             Transform::from_xyz(0.0, shade_y - shade_h * 0.5 - 0.02, 0.0),
             Name::new("Pendant Light"),
         ))

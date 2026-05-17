@@ -56,7 +56,11 @@ struct StationNameLabel;
 /// the UV radius (0.0 = center, 1.0 = edge of UV disk) where the fade begins
 /// and ends.  Apply as `base_color_texture` with `AlphaMode::Blend` so the
 /// mesh color fades smoothly without needing a custom shader.
-fn radial_fade_image(images: &mut Assets<Image>, inner_frac: f32, outer_frac: f32) -> Handle<Image> {
+pub fn radial_fade_image(
+    images: &mut Assets<Image>,
+    inner_frac: f32,
+    outer_frac: f32,
+) -> Handle<Image> {
     const SIZE: u32 = 256;
     let inner = inner_frac * 0.5;
     let outer = outer_frac * 0.5;
@@ -76,7 +80,11 @@ fn radial_fade_image(images: &mut Assets<Image>, inner_frac: f32, outer_frac: f3
         }
     }
     images.add(Image::new(
-        Extent3d { width: SIZE, height: SIZE, depth_or_array_layers: 1 },
+        Extent3d {
+            width: SIZE,
+            height: SIZE,
+            depth_or_array_layers: 1,
+        },
         TextureDimension::D2,
         data,
         TextureFormat::Rgba8UnormSrgb,
@@ -117,7 +125,10 @@ fn setup_world(
     // inner_frac=0.75 → fade starts at radius 18; outer_frac=1.0 → gone at radius 24.
     let grass_fade = radial_fade_image(&mut images, 0.75, 1.0);
     commands.spawn((
-        Mesh3d(meshes.add(Plane3d { normal: Dir3::Y, half_size: Vec2::splat(24.0) })),
+        Mesh3d(meshes.add(Plane3d {
+            normal: Dir3::Y,
+            half_size: Vec2::splat(24.0),
+        })),
         MeshMaterial3d(materials.add(StandardMaterial {
             base_color: Color::srgb(0.47, 0.72, 0.33),
             base_color_texture: Some(grass_fade),
@@ -135,7 +146,10 @@ fn setup_world(
     // inner_frac=0.80 → fade starts at radius 24; outer_frac=1.0 → gone at radius 30.
     let beach_fade = radial_fade_image(&mut images, 0.80, 1.0);
     commands.spawn((
-        Mesh3d(meshes.add(Plane3d { normal: Dir3::Y, half_size: Vec2::splat(30.0) })),
+        Mesh3d(meshes.add(Plane3d {
+            normal: Dir3::Y,
+            half_size: Vec2::splat(30.0),
+        })),
         MeshMaterial3d(materials.add(StandardMaterial {
             base_color: Color::srgb(0.82, 0.73, 0.56),
             base_color_texture: Some(beach_fade),
@@ -316,6 +330,10 @@ pub fn spawn_station(
         ))
         .id();
 
+    if kind == StationKind::Coffee {
+        return station_entity;
+    }
+
     // Compute label anchor in the station's local space so it moves with the
     // entity when the station's transform is edited.
     let world_offset = label_anchor - transform.translation;
@@ -373,7 +391,11 @@ fn spawn_boundary(mut commands: Commands) {
 
     for i in 0..n {
         let angle = i as f32 * std::f32::consts::TAU / n as f32;
-        let pos = Vec3::new(wall_radius * angle.cos(), wall_y_center, wall_radius * angle.sin());
+        let pos = Vec3::new(
+            wall_radius * angle.cos(),
+            wall_y_center,
+            wall_radius * angle.sin(),
+        );
         // looking_at(origin at same Y) aligns -Z toward centre so the box's
         // thin dimension (Z = wall_thickness) is radial and its long
         // dimension (X = seg_len) is tangential.

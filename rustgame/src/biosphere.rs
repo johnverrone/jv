@@ -73,7 +73,7 @@ fn hub_env() -> Env {
     Env {
         sky: Vec3::new(0.52, 0.78, 0.94),
         ambient_color: Vec3::new(0.82, 0.90, 1.0),
-        ambient_brightness: 50.0,
+        ambient_brightness: 200.0,
         sun_color: Vec3::new(1.0, 0.93, 0.76),
         sun_illuminance: 12_000.0,
         sun_from: Vec3::new(-5.0, 5.0, 8.0),
@@ -85,15 +85,15 @@ fn hub_env() -> Env {
 fn station_env(kind: StationKind) -> Env {
     match kind {
         StationKind::Coffee => Env {
-            // Dreamy cozy morning beach
-            sky: Vec3::new(0.96, 0.82, 0.75),
-            ambient_color: Vec3::new(1.0, 0.92, 0.85),
-            ambient_brightness: 55.0,
-            sun_color: Vec3::new(1.0, 0.72, 0.45),
-            sun_illuminance: 7_500.0,
-            sun_from: Vec3::new(8.0, 2.5, 3.0),
-            fog_start: 15.0,
-            fog_end: 28.0,
+            // Cozy golden sunrise — warm sky, lifted shadows, low sun
+            sky: Vec3::new(0.99, 0.80, 0.52),
+            ambient_color: Vec3::new(1.0, 0.6, 0.48),
+            ambient_brightness: 600.0,
+            sun_color: Vec3::new(1.0, 0.58, 0.28),
+            sun_illuminance: 3_000.0,
+            sun_from: Vec3::new(10.0, 1.5, 2.0),
+            fog_start: 20.0,
+            fog_end: 70.0,
         },
         StationKind::Notes => Env {
             // Warm amber autumn afternoon
