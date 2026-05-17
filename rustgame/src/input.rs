@@ -89,7 +89,7 @@ fn gather_keyboard(keys: Res<ButtonInput<KeyCode>>, mut input: ResMut<PlayerInpu
 }
 
 /// Pixels of drag that maps to full run speed.
-const MAX_DRAG_PX: f32 = 60.0;
+const MAX_DRAG_PX: f32 = 120.0;
 /// Release with total displacement below this → tap (interact / cancel).
 const TAP_MAX_PX: f32 = 20.0;
 /// Minimum drag before movement begins.
