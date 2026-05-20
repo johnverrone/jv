@@ -49,6 +49,9 @@ struct DragState {
     anchor: Option<Vec2>,
     current: Option<Vec2>,
     from_touch: bool,
+    /// True once a page_prev/next has fired for the current gesture so it
+    /// doesn't repeat every frame while the drag is held.
+    page_fired: bool,
 }
 
 pub struct InputPlugin;
@@ -63,16 +66,16 @@ impl Plugin for InputPlugin {
 
 fn gather_keyboard(keys: Res<ButtonInput<KeyCode>>, mut input: ResMut<PlayerInput>) {
     let mut axis = Vec2::ZERO;
-    if keys.pressed(KeyCode::KeyW) {
+    if keys.pressed(KeyCode::KeyW) || keys.pressed(KeyCode::ArrowUp) {
         axis.y += 1.0;
     }
-    if keys.pressed(KeyCode::KeyS) {
+    if keys.pressed(KeyCode::KeyS) || keys.pressed(KeyCode::ArrowDown) {
         axis.y -= 1.0;
     }
-    if keys.pressed(KeyCode::KeyD) {
+    if keys.pressed(KeyCode::KeyD) || keys.pressed(KeyCode::ArrowRight) {
         axis.x += 1.0;
     }
-    if keys.pressed(KeyCode::KeyA) {
+    if keys.pressed(KeyCode::KeyA) || keys.pressed(KeyCode::ArrowLeft) {
         axis.x -= 1.0;
     }
 
@@ -135,6 +138,7 @@ fn gather_pointer(
             drag.anchor = None;
             drag.current = None;
             drag.from_touch = false;
+            drag.page_fired = false;
             break;
         }
     }
@@ -166,6 +170,7 @@ fn gather_pointer(
                 }
                 drag.anchor = None;
                 drag.current = None;
+                drag.page_fired = false;
             }
         }
     }
@@ -181,6 +186,11 @@ fn gather_pointer(
             input.move_axis = Vec2::new(dir.x, -dir.y);
             input.run = true;
             input.speed_scale = (mag / MAX_DRAG_PX).min(1.0);
+            if !drag.page_fired {
+                input.page_prev = dir.x > TAP_MAX_PX;
+                input.page_next = dir.x < TAP_MAX_PX;
+                drag.page_fired = true;
+            }
         }
     }
 }

@@ -2,7 +2,8 @@ use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
 
 use crate::baked_label::{BakeConfig, bake_text_image};
-use crate::interaction::{CurrentStation, NearestStation};
+use crate::input::PlayerInput;
+use crate::interaction::{AppMode, CurrentStation, NearestStation};
 use crate::world::{Station, StationKind};
 
 // ─── mock data ────────────────────────────────────────────────────────────────
@@ -19,14 +20,28 @@ const MOCK_NOTES: &[&str] = &[
     "Weekly template",
 ];
 
+// Replace with real URLs when content is ready.
+const MOCK_URLS: &[&str] = &[
+    "https://johnverrone.com/notes/rust-async-patterns",
+    "https://johnverrone.com/notes/wasm-performance",
+    "https://johnverrone.com/notes/engine-architecture",
+    "https://johnverrone.com/notes/coffee-brewing-log",
+    "https://johnverrone.com/notes/reading-list-2026",
+    "https://johnverrone.com/notes/bevy-ecs-deep-dive",
+    "https://johnverrone.com/notes/site-roadmap",
+    "https://johnverrone.com/notes/project-ideas",
+    "https://johnverrone.com/notes/weekly-template",
+];
+
 // ─── constants ────────────────────────────────────────────────────────────────
 
 const NOTE_W: f32 = 0.80;
 const NOTE_H: f32 = 0.50;
 const NOTE_COLS: usize = 3;
 const NOTE_GAP: f32 = 0.08;
-// Board front face is at local z = -0.04 (half of 0.08 thickness); notes sit just proud of it.
 const BOARD_FACE_Z: f32 = -0.05;
+/// How far the selected note pops toward the viewer (station local -Z = toward player).
+const NOTE_SELECT_POP: f32 = 0.04;
 
 const NOTE_COLORS: &[[u8; 3]] = &[
     [255, 248, 140], // yellow
@@ -41,11 +56,17 @@ const NOTE_COLORS: &[[u8; 3]] = &[
 #[derive(Component)]
 struct NotesLight;
 
-/// Marker on each sticky note for future click-to-open behaviour.
 #[derive(Component)]
 pub struct NoteCard {
     pub index: usize,
 }
+
+// ─── resources ───────────────────────────────────────────────────────────────
+
+/// Index of the currently highlighted note while the player is viewing the
+/// Notes station. `None` when not in Notes interaction mode.
+#[derive(Resource, Default)]
+pub struct SelectedNote(pub Option<usize>);
 
 // ─── plugin ──────────────────────────────────────────────────────────────────
 
@@ -53,8 +74,9 @@ pub struct NotesPlugin;
 
 impl Plugin for NotesPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(PostStartup, (spawn_notes_board, spawn_notes_light))
-            .add_systems(Update, update_notes_light);
+        app.init_resource::<SelectedNote>()
+            .add_systems(PostStartup, (spawn_notes_board, spawn_notes_light))
+            .add_systems(Update, (update_notes_light, update_note_selection));
     }
 }
 
@@ -72,11 +94,9 @@ fn spawn_notes_board(
         return;
     };
 
-    // Center the grid on the board face. Board is 1.2 wide × 2.4 tall;
-    // local (0,0,0) = board center, front face at z = -0.2.
     let total_w = NOTE_COLS as f32 * NOTE_W + (NOTE_COLS - 1) as f32 * NOTE_GAP;
     let start_x = -total_w / 2.0 + NOTE_W / 2.0;
-    let start_y = 0.60; // top of grid; board local y range is -0.9..+0.9
+    let start_y = 0.60;
 
     let note_mesh = meshes.add(Rectangle::new(NOTE_W, NOTE_H));
     let mut children: Vec<Entity> = Vec::new();
@@ -137,9 +157,6 @@ fn spawn_notes_light(
         return;
     };
 
-    // Horizontal fluorescent tube above the board.
-    // Board is 3.0 wide, top at local y=0.9; tube spans full width and
-    // projects 0.25m forward so it reads as a real fixture, not a decal.
     let tube_y = 1.05;
     let tube_z = -0.25;
 
@@ -190,9 +207,6 @@ fn update_notes_light(
         return;
     };
 
-    // Light is on when the player is near OR actively viewing the Notes board.
-    // CurrentStation (not AppMode) is used because Interacting is shared across
-    // all stations — CurrentStation tells us which one specifically.
     let near_notes = nearest
         .0
         .and_then(|e| station_q.get(e).ok())
@@ -209,5 +223,88 @@ fn update_notes_light(
     };
     if (light.intensity - target).abs() > 0.1 {
         light.intensity = target;
+    }
+}
+
+fn update_note_selection(
+    input: Res<PlayerInput>,
+    app_mode: Res<State<AppMode>>,
+    current: Res<CurrentStation>,
+    station_q: Query<&Station>,
+    mut selected: ResMut<SelectedNote>,
+    mut note_q: Query<(&NoteCard, &mut Transform)>,
+) {
+    let viewing_notes = *app_mode.get() == AppMode::Interacting
+        && current
+            .0
+            .and_then(|e| station_q.get(e).ok())
+            .is_some_and(|s| s.kind == StationKind::Notes);
+
+    if !viewing_notes {
+        // Reset transforms and selection when leaving.
+        if selected.0.is_some() {
+            selected.0 = None;
+            for (_, mut tf) in &mut note_q {
+                tf.translation.z = BOARD_FACE_Z;
+                tf.scale = Vec3::ONE;
+            }
+        }
+        return;
+    }
+
+    // First frame entering Notes interaction — initialise to note 0.
+    if selected.0.is_none() {
+        selected.0 = Some(0);
+    }
+
+    let count = MOCK_NOTES.len();
+
+    if input.page_next {
+        selected.0 = selected.0.map(|i| (i + 1) % count);
+    } else if input.page_prev {
+        selected.0 = selected.0.map(|i| (i + count - 1) % count);
+    }
+
+    // Tap (interact + cancel) or keyboard E (interact only) opens the note.
+    // On touch a tap sets both; handle_interaction_input will also fire cancel
+    // and transition back to Walking next frame — open-and-exit is good UX.
+    if input.interact {
+        if let Some(idx) = selected.0 {
+            open_url(MOCK_URLS[idx]);
+        }
+    }
+
+    // Update visual state: selected note pops toward the viewer and scales up.
+    for (note, mut tf) in &mut note_q {
+        let is_selected = selected.0 == Some(note.index);
+        let target_z = if is_selected {
+            BOARD_FACE_Z - NOTE_SELECT_POP
+        } else {
+            BOARD_FACE_Z
+        };
+        let target_scale = if is_selected {
+            Vec3::splat(1.06)
+        } else {
+            Vec3::ONE
+        };
+        if tf.translation.z != target_z {
+            tf.translation.z = target_z;
+        }
+        if tf.scale != target_scale {
+            tf.scale = target_scale;
+        }
+    }
+}
+
+fn open_url(url: &str) {
+    #[cfg(target_arch = "wasm32")]
+    {
+        if let Some(window) = web_sys::window() {
+            let _ = window.open_with_url_and_target(url, "_blank");
+        }
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        info!("Open: {url}");
     }
 }
