@@ -102,6 +102,28 @@ jobs:
       - name: Build
         run: vercel build ${{ steps.target.outputs.flag }} --token=${{ secrets.VERCEL_TOKEN }}
 
+      # TODO: Remove this step once the image-processing server routes (sharp /
+      # heic-convert in src/lib/coffee/image.ts) move to the command-center Worker.
+      # Without those native deps in the SSR bundle, @vercel/nft stops mis-tracing
+      # the host node binary into the function and there's nothing left to prune.
+      - name: Prune mis-traced node binary from function bundle
+        run: |
+          # @vercel/nft copies the host /usr/local/bin/node (~119MB) into each
+          # function bundle — a false positive (Vercel provides its own runtime
+          # node; this copy is never exec'd) that trips Vercel's 100MB per-file
+          # upload limit. adapter-vercel exposes no trace-exclude hook and a Build
+          # Output API .func dir ships as-is, so strip it after build, before deploy.
+          OUT=""
+          for d in .vercel/output johnverrone/.vercel/output; do
+            [ -d "$d" ] && OUT="$d" && break
+          done
+          [ -z "$OUT" ] && { echo "::error::no .vercel/output found"; exit 1; }
+          if [ -d "$OUT/functions" ]; then
+            find "$OUT/functions" -type f -path '*/bin/node' -print -delete
+          else
+            echo "no $OUT/functions dir — nothing to prune"
+          fi
+
       - name: Inspect deploy artifact (.vercel/output)
         run: |
           # `vercel build` writes .vercel/output next to the linked .vercel dir.
