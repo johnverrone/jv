@@ -10,7 +10,10 @@
 
 	let { children, data }: Props = $props();
 
-	const APP_MENU_ITEMS = [{ slug: '/admin/gear', name: 'gear' }];
+	const APP_MENU_ITEMS = [
+		{ slug: '/admin/gear', name: 'gear' },
+		{ slug: '/admin/photos', name: 'photos' }
+	];
 
 	const isActive = (slug: string) =>
 		page.url.pathname === slug || page.url.pathname.startsWith(`${slug}/`);

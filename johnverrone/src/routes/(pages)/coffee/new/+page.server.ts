@@ -1,11 +1,8 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { dev } from '$app/environment';
 import type { Actions, PageServerLoad } from './$types';
 import { getAllRoasters } from '$lib/coffee/api';
 import { serializeBeanToYaml } from '$lib/coffee/yaml';
 import { createCoffeeBeanPR } from '$lib/coffee/github';
-import { normalizeImage } from '$lib/coffee/image';
-import storage from '$lib/storage';
 import type { CoffeeBean } from '$lib/coffee/types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -46,7 +43,6 @@ export const actions = {
 		const currentlyBrewing = data.get('currently_brewing') === 'on';
 		const priceStr = data.get('price_12oz') as string;
 		const notes = (data.get('notes') as string) || '';
-		const imageFile = data.get('image') as File | null;
 
 		if (!name || !roaster) {
 			return fail(400, { error: 'Name and roaster are required' });
@@ -56,28 +52,11 @@ export const actions = {
 		const rating = ratingStr ? parseInt(ratingStr) : null;
 		const price = priceStr ? parseFloat(priceStr) : null;
 
-		// Upload image to GCS (normalize to JPEG, handle HEIC, resize)
-		let imageUrl = '';
-		if (imageFile && imageFile.size > 0) {
-			const rawBuffer = Buffer.from(await imageFile.arrayBuffer());
-			const { data: buffer } = await normalizeImage(rawBuffer, imageFile.type);
-
-			const gcsPath = `coffee/${slug}.jpg`;
-			if (dev) {
-				console.log(`[DEV] Would upload image to GCS: ${gcsPath} (${buffer.length} bytes)`);
-				imageUrl = `https://placeholder.dev/${gcsPath}`;
-			} else {
-				const bucket = storage.bucket('johnverrone');
-				const file = bucket.file(gcsPath);
-
-				await file.save(buffer, {
-					contentType: 'image/jpeg',
-					metadata: { cacheControl: 'public, max-age=31536000' }
-				});
-
-				imageUrl = `https://storage.googleapis.com/johnverrone/${gcsPath}`;
-			}
-		}
+		// Image upload is paused during the Cloudflare migration (it used sharp +
+		// GCS, both Node-only). New beans are created without a photo for now; the
+		// photo pipeline moves to client-side HEIC + R2 + Cloudflare Images, same
+		// as /admin/photos.
+		const imageUrl = '';
 
 		const today = new Date().toISOString().split('T')[0];
 		const bean: CoffeeBean = {
