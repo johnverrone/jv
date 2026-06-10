@@ -10,10 +10,7 @@
 
 	let { children, data }: Props = $props();
 
-	const APP_MENU_ITEMS = [
-		{ slug: '/home', name: 'home' },
-		{ slug: '/gear', name: 'gear' }
-	];
+	const APP_MENU_ITEMS = [{ slug: '/admin/gear', name: 'gear' }];
 
 	const isActive = (slug: string) =>
 		page.url.pathname === slug || page.url.pathname.startsWith(`${slug}/`);
@@ -21,7 +18,7 @@
 
 <div class="cc">
 	<header class="cc-header">
-		<a class="cc-brand" href="/home">command center</a>
+		<a class="cc-brand" href="/admin">command center</a>
 		<nav class="cc-nav">
 			{#each APP_MENU_ITEMS as item (item.slug)}
 				<a href={item.slug} class:active={isActive(item.slug)}>{item.name}</a>

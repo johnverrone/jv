@@ -51,7 +51,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	const redirectTo = cookies.get('github_oauth_redirect');
 	cookies.delete('github_oauth_redirect', { path: '/' });
 	const dest =
-		redirectTo && redirectTo.startsWith('/') && !redirectTo.startsWith('//') ? redirectTo : '/home';
+		redirectTo && redirectTo.startsWith('/') && !redirectTo.startsWith('//') ? redirectTo : '/admin';
 
 	redirect(302, dest);
 };

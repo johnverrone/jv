@@ -79,6 +79,6 @@ export const actions: Actions = {
 		const id = Number((await request.formData()).get('id'));
 		if (!id) return fail(400, { error: 'Invalid gear item.' });
 		await deleteGear(db, id);
-		redirect(303, '/gear');
+		redirect(303, '/admin/gear');
 	}
 };

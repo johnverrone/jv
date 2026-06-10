@@ -42,6 +42,6 @@ export const actions: Actions = {
 			throw e;
 		}
 
-		redirect(303, `/gear/${slug}`);
+		redirect(303, `/admin/gear/${slug}`);
 	}
 };

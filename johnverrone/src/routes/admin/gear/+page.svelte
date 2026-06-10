@@ -52,7 +52,7 @@
 	<ul class="list">
 		{#each data.items as item (item.id)}
 			<li>
-				<a href="/gear/{item.slug}">
+				<a href="/admin/gear/{item.slug}">
 					<span class="name">{item.name}</span>
 					<span class="cat">{item.category}</span>
 					<span class="status status-{item.status}">{item.status}</span>

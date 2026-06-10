@@ -12,7 +12,7 @@
 	<title>{item.name} · gear</title>
 </svelte:head>
 
-<a class="back" href="/gear">← gear</a>
+<a class="back" href="/admin/gear">← gear</a>
 
 <div class="header">
 	{#if item.imageUrl}
