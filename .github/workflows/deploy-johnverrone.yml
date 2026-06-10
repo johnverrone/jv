@@ -58,16 +58,12 @@ jobs:
         if: steps.cache-pkg.outputs.cache-hit != 'true'
         run: cargo binstall -y --force wasm-bindgen-cli@${{ env.WASM_BINDGEN_VERSION }}
 
-      - name: Install wasm-opt (binaryen)
-        if: steps.cache-pkg.outputs.cache-hit != 'true'
-        run: sudo apt-get update && sudo apt-get install -y binaryen
-
       - uses: oven-sh/setup-bun@v2
 
       - name: Build WASM
         if: steps.cache-pkg.outputs.cache-hit != 'true'
         working-directory: rustgame
-        run: ./build-wasm.sh --release --opt
+        run: ./build-wasm.sh --release
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
