@@ -6,7 +6,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"build:wasm": "cd ../rustgame && ./build-wasm.sh",
-		"build:wasm:release": "cd ../rustgame && ./build-wasm.sh --release",
+		"build:wasm:release": "cd ../rustgame && ./build-wasm.sh --release --opt",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

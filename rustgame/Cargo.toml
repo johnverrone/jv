@@ -32,3 +32,10 @@ opt-level = 1
 # Enable a large amount of optimization in the dev profile for dependencies.
 [profile.dev.package."*"]
 opt-level = 3
+
+# Shrink the deployed WASM; `strip` drops ~100MB of DWARF (Vercel's per-file cap).
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true

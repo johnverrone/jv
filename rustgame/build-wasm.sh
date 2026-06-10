@@ -46,7 +46,7 @@ wasm-bindgen \
 if [ "$RUN_WASM_OPT" = "1" ]; then
   if command -v wasm-opt &> /dev/null; then
     echo "▶ Running wasm-opt -Oz…"
-    wasm-opt -Oz --output pkg/rustgame_bg.wasm.opt pkg/rustgame_bg.wasm
+    wasm-opt -Oz --strip-debug --output pkg/rustgame_bg.wasm.opt pkg/rustgame_bg.wasm
     mv pkg/rustgame_bg.wasm.opt pkg/rustgame_bg.wasm
   else
     echo "⚠ wasm-opt not found; skipping. Install with: cargo install wasm-opt"
