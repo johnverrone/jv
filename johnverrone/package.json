@@ -5,6 +5,8 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"build:wasm": "cd ../rustgame && ./build-wasm.sh",
+		"build:wasm:release": "cd ../rustgame && ./build-wasm.sh --release",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -15,7 +17,7 @@
 		"@google-cloud/storage": "^7.14.0",
 		"@iconify-json/fa-solid": "^1.2.1",
 		"@iconify-json/material-symbols": "^1.2.12",
-		"@sveltejs/adapter-auto": "^3.3.1",
+		"@sveltejs/adapter-vercel": "^5.5.0",
 		"@sveltejs/kit": "^2.15.1",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@types/dom-view-transitions": "^1.0.5",
