@@ -1,4 +1,6 @@
-const API_BASE = 'https://hobbies.johnverrone.workers.dev/guitar';
+import { HOBBIES_API_BASE } from '$lib/api/base';
+
+const API_BASE = `${HOBBIES_API_BASE}/guitar`;
 
 export async function getJournalEntries(fetch: typeof globalThis.fetch) {
 	const res = await fetch(`${API_BASE}/journal`);
