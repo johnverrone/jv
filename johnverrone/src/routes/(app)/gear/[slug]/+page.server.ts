@@ -1,62 +1,84 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { hobbiesWrite } from '$lib/server/hobbiesWrite';
+import { getDb } from '$lib/server/db';
+import {
+	getGearBySlug,
+	updateGear,
+	deleteGear,
+	publishGear,
+	unpublishGear,
+	addMaintenance,
+	deleteMaintenance
+} from '$lib/server/db/gear';
 import { centsFromDollars, str } from '$lib/server/form';
-import type { GearItem, MaintenanceLog } from '$lib/gear/types';
+import type { GearStatus } from '$lib/gear/types';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params }) => {
-	const data = await hobbiesWrite<{ item: GearItem; maintenance: MaintenanceLog[] }>(
-		`/gear/${params.slug}`,
-		{ method: 'GET' }
-	);
-	if (!data?.item) error(404, 'Gear not found');
-	return { item: data.item, maintenance: data.maintenance ?? [] };
+export const load: PageServerLoad = async ({ params, platform }) => {
+	const db = getDb(platform!.env.DB);
+	const data = await getGearBySlug(db, params.slug);
+	if (!data) error(404, 'Gear not found');
+	return data;
 };
 
 export const actions: Actions = {
-	updateStatus: async ({ request }) => {
+	updateStatus: async ({ request, platform }) => {
+		const db = getDb(platform!.env.DB);
 		const form = await request.formData();
 		const id = Number(form.get('id'));
 		const status = str(form.get('status'));
 		if (!id || !status) return fail(400, { error: 'Invalid status update.' });
-		await hobbiesWrite(`/gear/${id}`, { method: 'PUT', body: { status } });
+		await updateGear(db, id, { status: status as GearStatus });
 		return { success: true };
 	},
 
-	addMaintenance: async ({ request }) => {
+	publish: async ({ request, platform }) => {
+		const db = getDb(platform!.env.DB);
+		const id = Number((await request.formData()).get('id'));
+		if (!id) return fail(400, { error: 'Invalid gear item.' });
+		await publishGear(db, id);
+		return { success: true };
+	},
+
+	unpublish: async ({ request, platform }) => {
+		const db = getDb(platform!.env.DB);
+		const id = Number((await request.formData()).get('id'));
+		if (!id) return fail(400, { error: 'Invalid gear item.' });
+		await unpublishGear(db, id);
+		return { success: true };
+	},
+
+	addMaintenance: async ({ request, platform }) => {
+		const db = getDb(platform!.env.DB);
 		const form = await request.formData();
 		const id = Number(form.get('id'));
-		const performed_date = str(form.get('performed_date'));
+		const performedDate = str(form.get('performed_date'));
 		const type = str(form.get('type'));
-		if (!id || !performed_date || !type) {
+		if (!id || !performedDate || !type) {
 			return fail(400, { error: 'Date and type are required.' });
 		}
-		await hobbiesWrite(`/gear/${id}/maintenance`, {
-			method: 'POST',
-			body: {
-				performed_date,
-				type,
-				description: str(form.get('description')),
-				cost_cents: centsFromDollars(form.get('cost')),
-				performed_by: str(form.get('performed_by'))
-			}
+		await addMaintenance(db, id, {
+			performedDate,
+			type,
+			description: str(form.get('description')),
+			costCents: centsFromDollars(form.get('cost')),
+			performedBy: str(form.get('performed_by'))
 		});
 		return { success: true };
 	},
 
-	deleteMaintenance: async ({ request }) => {
-		const form = await request.formData();
-		const logId = Number(form.get('log_id'));
+	deleteMaintenance: async ({ request, platform }) => {
+		const db = getDb(platform!.env.DB);
+		const logId = Number((await request.formData()).get('log_id'));
 		if (!logId) return fail(400, { error: 'Invalid maintenance entry.' });
-		await hobbiesWrite(`/maintenance/${logId}`, { method: 'DELETE' });
+		await deleteMaintenance(db, logId);
 		return { success: true };
 	},
 
-	deleteGear: async ({ request }) => {
-		const form = await request.formData();
-		const id = Number(form.get('id'));
+	deleteGear: async ({ request, platform }) => {
+		const db = getDb(platform!.env.DB);
+		const id = Number((await request.formData()).get('id'));
 		if (!id) return fail(400, { error: 'Invalid gear item.' });
-		await hobbiesWrite(`/gear/${id}`, { method: 'DELETE' });
+		await deleteGear(db, id);
 		redirect(303, '/gear');
 	}
 };

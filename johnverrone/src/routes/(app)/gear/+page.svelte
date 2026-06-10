@@ -56,7 +56,7 @@
 					<span class="name">{item.name}</span>
 					<span class="cat">{item.category}</span>
 					<span class="status status-{item.status}">{item.status}</span>
-					<span class="price">{formatCents(item.acquired_price_cents)}</span>
+					<span class="price">{formatCents(item.acquiredPriceCents)}</span>
 				</a>
 			</li>
 		{/each}

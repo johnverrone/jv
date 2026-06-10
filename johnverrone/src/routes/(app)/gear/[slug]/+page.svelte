@@ -15,8 +15,8 @@
 <a class="back" href="/gear">← gear</a>
 
 <div class="header">
-	{#if item.image_url}
-		<img class="photo" src={item.image_url} alt={item.name} />
+	{#if item.imageUrl}
+		<img class="photo" src={item.imageUrl} alt={item.name} />
 	{/if}
 	<div>
 		<h1>{item.name}</h1>
@@ -25,23 +25,38 @@
 		</p>
 		<dl class="facts">
 			<div><dt>category</dt><dd>{item.category}</dd></div>
-			{#if item.serial_number}<div><dt>serial</dt><dd>{item.serial_number}</dd></div>{/if}
-			{#if item.acquired_date}<div><dt>acquired</dt><dd>{item.acquired_date}</dd></div>{/if}
-			<div><dt>price</dt><dd>{formatCents(item.acquired_price_cents)}</dd></div>
+			{#if item.serialNumber}<div><dt>serial</dt><dd>{item.serialNumber}</dd></div>{/if}
+			{#if item.acquiredDate}<div><dt>acquired</dt><dd>{item.acquiredDate}</dd></div>{/if}
+			<div><dt>price</dt><dd>{formatCents(item.acquiredPriceCents)}</dd></div>
 		</dl>
 		{#if item.notes}<p class="notes">{item.notes}</p>{/if}
 
-		<form method="POST" action="?/updateStatus" class="status-form" use:enhance>
-			<input type="hidden" name="id" value={item.id} />
-			<label>
-				status
-				<select name="status" value={item.status} onchange={(e) => e.currentTarget.form?.requestSubmit()}>
-					{#each GEAR_STATUSES as s (s)}
-						<option value={s}>{s}</option>
-					{/each}
-				</select>
-			</label>
-		</form>
+		<div class="controls">
+			<form method="POST" action="?/updateStatus" class="status-form" use:enhance>
+				<input type="hidden" name="id" value={item.id} />
+				<label>
+					status
+					<select name="status" value={item.status} onchange={(e) => e.currentTarget.form?.requestSubmit()}>
+						{#each GEAR_STATUSES as s (s)}
+							<option value={s}>{s}</option>
+						{/each}
+					</select>
+				</label>
+			</form>
+
+			<form
+				method="POST"
+				action={item.visibility === 'published' ? '?/unpublish' : '?/publish'}
+				class="vis-form"
+				use:enhance
+			>
+				<input type="hidden" name="id" value={item.id} />
+				<span class="vis-title">spotlight</span>
+				<button type="submit" class="vis-btn" class:on={item.visibility === 'published'}>
+					{item.visibility === 'published' ? '★ published' : '☆ publish'}
+				</button>
+			</form>
+		</div>
 	</div>
 </div>
 
@@ -67,10 +82,10 @@
 		<ul class="logs">
 			{#each data.maintenance as log (log.id)}
 				<li>
-					<span class="ldate">{log.performed_date}</span>
+					<span class="ldate">{log.performedDate}</span>
 					<span class="ltype">{log.type}</span>
 					<span class="ldesc">{log.description ?? ''}</span>
-					<span class="lcost">{formatCents(log.cost_cents)}</span>
+					<span class="lcost">{formatCents(log.costCents)}</span>
 					<form method="POST" action="?/deleteMaintenance" use:enhance>
 						<input type="hidden" name="log_id" value={log.id} />
 						<button type="submit" class="del" aria-label="delete entry">×</button>
@@ -156,7 +171,8 @@
 		border: 1px solid var(--color-hint);
 		border-radius: 4px;
 	}
-	.status-form label {
+	.status-form label,
+	.vis-title {
 		display: inline-flex;
 		flex-direction: column;
 		gap: 0.25rem;
@@ -164,6 +180,34 @@
 		font-size: 0.65rem;
 		text-transform: uppercase;
 		color: var(--color-text-secondary);
+	}
+
+	.controls {
+		display: flex;
+		gap: 1.5rem;
+		align-items: flex-end;
+		flex-wrap: wrap;
+	}
+
+	.vis-form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.vis-btn {
+		font-family: var(--font-family-mono);
+		font-size: 0.8rem;
+		padding: 0.3rem 0.6rem;
+		border: 1px solid var(--color-hint);
+		border-radius: 4px;
+		background: var(--color-background);
+		cursor: pointer;
+	}
+	.vis-btn.on {
+		background: var(--color-card-bg);
+		color: var(--color-card-fg);
+		border-color: transparent;
 	}
 
 	.maint h2 {

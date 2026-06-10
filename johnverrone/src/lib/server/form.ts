@@ -11,3 +11,12 @@ export function centsFromDollars(value: FormDataEntryValue | null): number | nul
 	const dollars = Number(s);
 	return Number.isFinite(dollars) ? Math.round(dollars * 100) : null;
 }
+
+/** Turn a string into a url-safe slug. */
+export function slugify(input: string): string {
+	return input
+		.toLowerCase()
+		.trim()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
+}
