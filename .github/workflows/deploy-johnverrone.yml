@@ -65,6 +65,19 @@ jobs:
         working-directory: rustgame
         run: ./build-wasm.sh --release
 
+      - name: Report wasm size
+        run: |
+          echo "cache-hit: ${{ steps.cache-pkg.outputs.cache-hit }}"
+          if [ -d rustgame/pkg ]; then
+            ls -lh rustgame/pkg
+            if [ -f rustgame/pkg/rustgame_bg.wasm ]; then
+              bytes=$(stat -c%s rustgame/pkg/rustgame_bg.wasm)
+              echo "rustgame_bg.wasm: ${bytes} bytes ($((bytes/1048576)) MB)"
+            fi
+          else
+            echo "no rustgame/pkg dir"
+          fi
+
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
@@ -88,6 +101,33 @@ jobs:
 
       - name: Build
         run: vercel build ${{ steps.target.outputs.flag }} --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Inspect deploy artifact (.vercel/output)
+        run: |
+          # `vercel build` writes .vercel/output next to the linked .vercel dir.
+          # In CI the project is linked at the repo root; locally it lives in johnverrone/.
+          OUT=""
+          for d in .vercel/output johnverrone/.vercel/output; do
+            [ -d "$d" ] && OUT="$d" && break
+          done
+          if [ -z "$OUT" ]; then
+            echo "::error::no .vercel/output found"; ls -la; exit 0
+          fi
+          echo "Found deploy artifact at: $OUT"
+          echo "::group::Total size"
+          du -sh "$OUT"
+          echo "::endgroup::"
+          echo "::group::Top 30 largest files"
+          find "$OUT" -type f -printf '%s\t%p\n' | sort -rn | head -30 \
+            | awk -F'\t' '{ s=$1; u="B"; if(s>=1048576){s/=1048576;u="MB"} else if(s>=1024){s/=1024;u="KB"}; printf "%10.1f %-3s %s\n", s, u, $2 }'
+          echo "::endgroup::"
+          echo "Files over 100MB:"
+          big=$(find "$OUT" -type f -size +100M -printf '%s\t%p\n' | sort -rn)
+          if [ -n "$big" ]; then
+            echo "$big" | awk -F'\t' '{ printf "::error::OVER 100MB: %.1f MB  %s\n", $1/1048576, $2 }'
+          else
+            echo "  none ✅"
+          fi
 
       - name: Deploy (Vercel)
         id: deploy
