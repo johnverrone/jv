@@ -1,0 +1,11 @@
+# deps
+node_modules/
+.wrangler
+
+# env / secrets
+.env
+.dev.vars
+
+# misc
+.DS_Store
+*.log

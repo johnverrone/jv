@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "command-center",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-02-14",
+  "observability": {
+    "logs": {
+      "enabled": true,
+    },
+  },
+  // Runs on a different local port than the hobbies read Worker (8787) so both
+  // can run side by side during dev.
+  "dev": {
+    "port": 8788,
+  },
+  // Private, dynamic data — gear now; finance/calendar later. Local dev uses
+  // Miniflare SQLite (`--local`); `database_id` is a placeholder. To go hosted:
+  // `wrangler d1 create command-center` and swap the real id in.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "command-center",
+      "database_id": "local-placeholder-id",
+      "migrations_dir": "migrations",
+    },
+  ],
+}
