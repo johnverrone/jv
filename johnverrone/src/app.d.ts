@@ -15,7 +15,9 @@ declare global {
 		interface Platform {
 			env: {
 				DB: D1Database;
-				MEDIA: R2Bucket;
+				PHOTOS: R2Bucket;
+				COFFEE: R2Bucket;
+				GAME: R2Bucket;
 			};
 		}
 	}

@@ -70,7 +70,7 @@
 	<ul class="grid">
 		{#each data.keys as key (key)}
 			<li>
-				<img src={mediaUrl(key, { width: 300 })} alt="" loading="lazy" />
+				<img src={mediaUrl('photos', key, { width: 300 })} alt="" loading="lazy" />
 				<form
 					method="POST"
 					action="?/delete"

@@ -1,9 +1,9 @@
 import { error, fail } from '@sveltejs/kit';
-import { listPhotos, putPhoto, deletePhoto } from '$lib/server/media';
+import { listKeys, putObject, deleteObject, imageKey } from '$lib/server/media';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ platform }) => {
-	const keys = await listPhotos(platform!.env.MEDIA);
+	const keys = await listKeys(platform!.env.PHOTOS);
 	return { keys };
 };
 
@@ -16,10 +16,10 @@ export const actions: Actions = {
 		if (!(file instanceof File) || file.size === 0) {
 			return fail(400, { error: 'No image provided.' });
 		}
-		const key = await putPhoto(
-			platform!.env.MEDIA,
+		const key = await putObject(
+			platform!.env.PHOTOS,
+			imageKey(file.name),
 			await file.arrayBuffer(),
-			file.name,
 			file.type || 'image/jpeg'
 		);
 		return { uploaded: key };
@@ -29,7 +29,7 @@ export const actions: Actions = {
 		if (!locals.authenticated) error(403, 'Unauthorized');
 		const key = String((await request.formData()).get('key') ?? '');
 		if (!key) return fail(400, { error: 'No key.' });
-		await deletePhoto(platform!.env.MEDIA, key);
+		await deleteObject(platform!.env.PHOTOS, key);
 		return { success: true };
 	}
 };

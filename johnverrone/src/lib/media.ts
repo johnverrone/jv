@@ -1,22 +1,17 @@
 import { dev } from '$app/environment';
-import { env } from '$env/dynamic/public';
+
+/** Content categories — each maps to its own R2 bucket (see wrangler.jsonc). */
+export type MediaCategory = 'photos' | 'coffee' | 'rustgame';
 
 /**
- * Public base for media (R2). In production this is the R2 custom domain
- * (e.g. https://media.johnverrone.com) where Cloudflare image transformations
- * are available. In dev there is no such domain, so images are served from the
- * local `/media/<key>` Worker route (originals, no transform). Override with
- * `PUBLIC_MEDIA_BASE`.
+ * URL for an object in a per-category R2 bucket, served via the same-origin
+ * `/media/<category>/<key>` route. In production, image categories are wrapped
+ * in a Cloudflare image transform (resize + auto AVIF/WebP); dev serves the
+ * original. (rustgame .js/.wasm are loaded from the raw /media path, not here.)
  */
-const MEDIA_BASE = env.PUBLIC_MEDIA_BASE ?? (dev ? '' : 'https://media.johnverrone.com');
-
-/**
- * URL for an R2 media key. In production, wraps the custom domain in a
- * Cloudflare image transform (resize + auto format/AVIF/WebP). In dev, points
- * at the local serving route with no transform.
- */
-export function mediaUrl(key: string, opts: { width?: number } = {}): string {
-	if (!MEDIA_BASE) return `/media/${key}`;
+export function mediaUrl(category: MediaCategory, key: string, opts: { width?: number } = {}): string {
+	const path = `/media/${category}/${key}`;
+	if (dev) return path;
 	const params = [`width=${opts.width ?? 800}`, 'format=auto', 'fit=scale-down'].join(',');
-	return `${MEDIA_BASE}/cdn-cgi/image/${params}/${key}`;
+	return `/cdn-cgi/image/${params}${path}`;
 }

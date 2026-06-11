@@ -3,7 +3,6 @@
 </svelte:head>
 
 <h1>command center</h1>
-<p class="subtitle">behind the curtain</p>
 
 <ul class="sections">
 	<li><a href="/admin/gear">gear</a></li>
@@ -11,11 +10,8 @@
 </ul>
 
 <style>
-	.subtitle {
-		margin: 0.25rem 0 2rem;
-		color: var(--color-text-secondary);
-		font-family: var(--font-family-mono);
-		font-size: 0.85rem;
+	h1 {
+		margin-bottom: 2rem;
 	}
 
 	.sections {

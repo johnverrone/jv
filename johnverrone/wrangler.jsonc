@@ -25,6 +25,11 @@
     }
   ],
 
-  // Media (photos). Created later with `wrangler r2 bucket create johnverrone-media`.
-  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "johnverrone-media" }]
+  // Media buckets, one per content category. Created at go-live with
+  // `wrangler r2 bucket create johnverrone-{photos,coffee,rustgame}`.
+  "r2_buckets": [
+    { "binding": "PHOTOS", "bucket_name": "johnverrone-photos" },
+    { "binding": "COFFEE", "bucket_name": "johnverrone-coffee" },
+    { "binding": "GAME", "bucket_name": "johnverrone-rustgame" }
+  ]
 }

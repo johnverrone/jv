@@ -7,7 +7,7 @@
 		"build": "vite build",
 		"build:wasm": "cd ../rustgame && ./build-wasm.sh",
 		"build:wasm:release": "cd ../rustgame && ./build-wasm.sh --release",
-		"rustgame:push": "wrangler r2 object put johnverrone-media/rustgame/rustgame.js --file=../rustgame/pkg/rustgame.js --content-type=text/javascript --local && wrangler r2 object put johnverrone-media/rustgame/rustgame_bg.wasm --file=../rustgame/pkg/rustgame_bg.wasm --content-type=application/wasm --local",
+		"rustgame:push": "wrangler r2 object put johnverrone-rustgame/rustgame.js --file=../rustgame/pkg/rustgame.js --content-type=text/javascript --local && wrangler r2 object put johnverrone-rustgame/rustgame_bg.wasm --file=../rustgame/pkg/rustgame_bg.wasm --content-type=application/wasm --local",
 		"rustgame:build": "bun run build:wasm:release && bun run rustgame:push",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",

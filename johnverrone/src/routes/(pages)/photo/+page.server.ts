@@ -1,7 +1,7 @@
-import { listPhotos } from '$lib/server/media';
+import { listKeys } from '$lib/server/media';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ platform }) => {
-	const keys = await listPhotos(platform!.env.MEDIA);
+	const keys = await listKeys(platform!.env.PHOTOS);
 	return { keys };
 };

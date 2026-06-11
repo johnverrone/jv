@@ -22,6 +22,7 @@
 <div class="cc">
 	<header class="cc-header">
 		<a class="cc-brand" href="/admin">command center</a>
+		<a class="cc-brand" href="/">site</a>
 		<nav class="cc-nav">
 			{#each APP_MENU_ITEMS as item (item.slug)}
 				<a href={item.slug} class:active={isActive(item.slug)}>{item.name}</a>

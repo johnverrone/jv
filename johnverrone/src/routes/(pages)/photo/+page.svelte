@@ -7,7 +7,7 @@
 
 <div class="photo-grid">
 	{#each data.keys as key (key)}
-		<img src={mediaUrl(key, { width: 600 })} alt="Portfolio by John" loading="lazy" />
+		<img src={mediaUrl('photos', key, { width: 600 })} alt="Portfolio by John" loading="lazy" />
 	{/each}
 </div>
 
