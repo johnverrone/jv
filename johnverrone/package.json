@@ -11,6 +11,8 @@
 		"rustgame:build": "bun run build:wasm:release && bun run rustgame:push",
 		"db:migrate:local": "wrangler d1 migrations apply command-center --local",
 		"db:migrate:remote": "wrangler d1 migrations apply command-center --remote",
+		"migrate:coffee": "bun run scripts/migrate-coffee.ts",
+		"migrate:photos": "bun run scripts/migrate-photos.ts",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -21,6 +23,7 @@
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.16.14",
 		"@cloudflare/workers-types": "^4.20260610.1",
+		"@google-cloud/storage": "^7.21.0",
 		"@iconify-json/fa-solid": "^1.2.1",
 		"@iconify-json/material-symbols": "^1.2.12",
 		"@sveltejs/adapter-cloudflare": "^7.2.8",
