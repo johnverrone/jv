@@ -40,7 +40,7 @@
 					<div class="title-row">
 						<h2>{bean.name}</h2>
 						<span class="rating">
-							{#each Array(bean.rating ?? 0) as _, i (i)}
+							{#each Array.from({ length: bean.rating ?? 0 }, (_, i) => i) as i (i)}
 								<IconStar />
 							{/each}
 						</span>
