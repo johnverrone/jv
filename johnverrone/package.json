@@ -24,7 +24,6 @@
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.16.14",
 		"@cloudflare/workers-types": "^4.20260610.1",
-		"@google-cloud/storage": "^7.21.0",
 		"@iconify-json/fa-solid": "^1.2.1",
 		"@iconify-json/material-symbols": "^1.2.12",
 		"@sveltejs/adapter-cloudflare": "^7.2.8",
