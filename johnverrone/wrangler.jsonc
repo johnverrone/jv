@@ -20,7 +20,7 @@
     {
       "binding": "DB",
       "database_name": "command-center",
-      "database_id": "PLACEHOLDER__run_wrangler_d1_create",
+      "database_id": "099c692f-661c-483e-9aac-73e808fa6705",
       "migrations_dir": "migrations"
     }
   ],
