@@ -31,5 +31,10 @@
     { "binding": "PHOTOS", "bucket_name": "johnverrone-photos" },
     { "binding": "COFFEE", "bucket_name": "johnverrone-coffee" },
     { "binding": "GAME", "bucket_name": "johnverrone-rustgame" }
-  ]
+  ],
+
+  // Service binding to the legacy `hobbies` Worker — guitar reads go through this
+  // because the deployed Worker can't reach it over its public workers.dev URL
+  // (same-subdomain subrequests are blocked). Removed once guitar moves to D1.
+  "services": [{ "binding": "HOBBIES", "service": "hobbies" }]
 }

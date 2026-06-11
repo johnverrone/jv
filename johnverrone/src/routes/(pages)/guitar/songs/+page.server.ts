@@ -1,6 +1,6 @@
 import { getSongs } from '$lib/guitar/api';
 
-export async function load({ fetch }) {
-	const songs = await getSongs(fetch);
+export async function load({ fetch, platform }) {
+	const songs = await getSongs(fetch, platform?.env?.HOBBIES);
 	return { songs };
 }
