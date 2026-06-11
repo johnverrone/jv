@@ -17,7 +17,8 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Accept: 'application/json'
+			Accept: 'application/json',
+			'User-Agent': 'johnverrone.com'
 		},
 		body: JSON.stringify({
 			client_id: env.GITHUB_CLIENT_ID,
@@ -32,7 +33,10 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	}
 
 	const userRes = await fetch('https://api.github.com/user', {
-		headers: { Authorization: `Bearer ${tokenData.access_token}` }
+		headers: {
+			Authorization: `Bearer ${tokenData.access_token}`,
+			'User-Agent': 'johnverrone.com'
+		}
 	});
 	const user = await userRes.json();
 
