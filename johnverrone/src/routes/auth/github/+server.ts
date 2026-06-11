@@ -27,7 +27,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 
 	const params = new URLSearchParams({
 		client_id: env.GITHUB_CLIENT_ID!,
-		scope: 'repo',
+		scope: 'read:user',
 		state
 	});
 
