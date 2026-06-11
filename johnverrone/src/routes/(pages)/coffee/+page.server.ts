@@ -1,14 +1,16 @@
-import { getAllBeans, getAllRoasters } from '$lib/coffee/api';
+import { getDb } from '$lib/server/db';
+import { listBeans, listRoasters } from '$lib/server/db/coffee';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals }) => {
-	const [beans, roasters] = await Promise.all([getAllBeans(), getAllRoasters()]);
-
-	const roastersBySlug = new Map(roasters.map((r) => [r.slug, r]));
-
+export const load: PageServerLoad = async ({ platform, locals }) => {
+	const db = getDb(platform!.env.DB);
+	const [beans, roasters] = await Promise.all([
+		listBeans(db, { publishedOnly: true }),
+		listRoasters(db)
+	]);
 	return {
 		beans,
-		roastersBySlug,
+		roastersBySlug: new Map(roasters.map((r) => [r.slug, r])),
 		authenticated: locals.authenticated ?? false
 	};
 };

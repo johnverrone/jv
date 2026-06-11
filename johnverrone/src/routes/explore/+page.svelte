@@ -2,7 +2,12 @@
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
-		const init = (await import('$rustgame/rustgame.js')).default;
+		// The Bevy wasm is ~34 MiB — over Cloudflare's 25 MiB per-asset limit — so
+		// it is NOT bundled. The glue + wasm are served at runtime from R2 via the
+		// same-origin /media route; init() fetches rustgame_bg.wasm relative to the
+		// glue's URL. @vite-ignore keeps Vite from bundling it back in.
+		const url = '/media/rustgame/rustgame.js';
+		const init = (await import(/* @vite-ignore */ url)).default;
 		await init();
 	});
 </script>

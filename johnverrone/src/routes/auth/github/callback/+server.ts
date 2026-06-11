@@ -48,5 +48,10 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		maxAge: 60 * 60 * 24 * 7
 	});
 
-	redirect(302, '/coffee/new');
+	const redirectTo = cookies.get('github_oauth_redirect');
+	cookies.delete('github_oauth_redirect', { path: '/' });
+	const dest =
+		redirectTo && redirectTo.startsWith('/') && !redirectTo.startsWith('//') ? redirectTo : '/admin';
+
+	redirect(302, dest);
 };

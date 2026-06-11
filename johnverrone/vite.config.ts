@@ -9,10 +9,5 @@ export default defineConfig({
 			autoInstall: true,
 			compiler: 'svelte'
 		})
-	],
-	server: {
-		fs: {
-			allow: ['../rustgame/pkg']
-		}
-	}
+	]
 });

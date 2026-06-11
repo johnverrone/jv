@@ -12,3 +12,4 @@ vite.config.ts.timestamp-*
 pb_data
 pocketbase
 .vercel
+.wrangler

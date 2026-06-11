@@ -1,16 +1,13 @@
 <script lang="ts">
+	import { mediaUrl } from '$lib/media';
 	import type { PageData } from './$types';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data }: { data: PageData } = $props();
 </script>
 
 <div class="photo-grid">
-	{#each data.photos as photo}
-		<img src={photo} alt="Portfolio by John" width={600} height={800} />
+	{#each data.keys as key (key)}
+		<img src={mediaUrl('photos', key, { width: 600 })} alt="Portfolio by John" loading="lazy" />
 	{/each}
 </div>
 
@@ -22,6 +19,7 @@
 	}
 
 	img {
+		width: 100%;
 		height: auto;
 		object-fit: cover;
 		aspect-ratio: 3/4;

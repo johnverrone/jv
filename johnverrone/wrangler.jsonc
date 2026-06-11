@@ -1,0 +1,40 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jv",
+  "compatibility_date": "2026-02-14",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // NOTE: forward-looking. The app still deploys to Vercel today; `main`/`assets`
+  // get wired to the adapter-cloudflare output at the Phase-4 adapter swap. The
+  // bindings below are the live declarative source of truth for D1 + R2.
+  "main": ".svelte-kit/cloudflare/_worker.js",
+  "assets": { "binding": "ASSETS", "directory": ".svelte-kit/cloudflare" },
+
+  "observability": { "logs": { "enabled": true } },
+
+  // Private, dynamic data (gear now; finance/calendar later). `database_id` is a
+  // placeholder until `wrangler d1 create command-center` is run (deferred — no
+  // hosted changes yet). Migrations live in ./migrations and are applied with
+  // `wrangler d1 migrations apply`.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "command-center",
+      "database_id": "099c692f-661c-483e-9aac-73e808fa6705",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  // Media buckets, one per content category. Created at go-live with
+  // `wrangler r2 bucket create johnverrone-{photos,coffee,rustgame}`.
+  "r2_buckets": [
+    { "binding": "PHOTOS", "bucket_name": "johnverrone-photos" },
+    { "binding": "COFFEE", "bucket_name": "johnverrone-coffee" },
+    { "binding": "GAME", "bucket_name": "johnverrone-rustgame" }
+  ],
+
+  // Service binding to the legacy `hobbies` Worker — guitar reads go through this
+  // because the deployed Worker can't reach it over its public workers.dev URL
+  // (same-subdomain subrequests are blocked). Removed once guitar moves to D1.
+  "services": [{ "binding": "HOBBIES", "service": "hobbies" }]
+}
