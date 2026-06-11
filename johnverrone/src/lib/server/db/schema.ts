@@ -54,3 +54,64 @@ export type GearItem = typeof gearItem.$inferSelect;
 export type NewGearItem = typeof gearItem.$inferInsert;
 export type MaintenanceLog = typeof maintenanceLog.$inferSelect;
 export type NewMaintenanceLog = typeof maintenanceLog.$inferInsert;
+
+export const coffeeRoaster = sqliteTable('coffee_roaster', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	slug: text('slug').notNull().unique(),
+	name: text('name').notNull(),
+	location: text('location'),
+	website: text('website'),
+	notes: text('notes'),
+	imageKey: text('image_key'), // R2 key in the coffee bucket
+	createdAt: text('created_at')
+		.notNull()
+		.default(sql`(datetime('now'))`),
+	updatedAt: text('updated_at')
+		.notNull()
+		.default(sql`(datetime('now'))`)
+});
+
+export const coffeeBean = sqliteTable(
+	'coffee_bean',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		slug: text('slug').notNull().unique(),
+		name: text('name').notNull(),
+		roasterSlug: text('roaster_slug')
+			.notNull()
+			.references(() => coffeeRoaster.slug),
+		rating: integer('rating'), // 1-5
+		origins: text('origins', { mode: 'json' })
+			.$type<string[]>()
+			.notNull()
+			.default(sql`'[]'`),
+		flavors: text('flavors', { mode: 'json' })
+			.$type<string[]>()
+			.notNull()
+			.default(sql`'[]'`),
+		process: text('process'),
+		singleOrigin: integer('single_origin', { mode: 'boolean' }).notNull().default(false),
+		currentlyBrewing: integer('currently_brewing', { mode: 'boolean' }).notNull().default(false),
+		price12ozCents: integer('price_12oz_cents'),
+		notes: text('notes'),
+		imageKey: text('image_key'), // R2 key in the coffee bucket
+		visibility: text('visibility', { enum: ['draft', 'published'] })
+			.notNull()
+			.default('published'),
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime('now'))`),
+		updatedAt: text('updated_at')
+			.notNull()
+			.default(sql`(datetime('now'))`)
+	},
+	(t) => [
+		index('idx_bean_roaster').on(t.roasterSlug),
+		index('idx_bean_visibility').on(t.visibility)
+	]
+);
+
+export type CoffeeRoaster = typeof coffeeRoaster.$inferSelect;
+export type NewCoffeeRoaster = typeof coffeeRoaster.$inferInsert;
+export type CoffeeBean = typeof coffeeBean.$inferSelect;
+export type NewCoffeeBean = typeof coffeeBean.$inferInsert;
