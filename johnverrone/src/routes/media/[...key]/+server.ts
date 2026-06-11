@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { dev } from '$app/environment';
 import type { RequestHandler } from './$types';
 
 /**
@@ -13,7 +14,9 @@ export const GET: RequestHandler = async ({ params, platform }) => {
 	return new Response(await obj.arrayBuffer(), {
 		headers: {
 			'content-type': obj.httpMetadata?.contentType ?? 'application/octet-stream',
-			'cache-control': 'public, max-age=3600',
+			// no-store in dev so re-uploaded assets (e.g. a rebuilt rustgame wasm)
+			// appear immediately without a hard refresh; cache in production.
+			'cache-control': dev ? 'no-store' : 'public, max-age=3600',
 			etag: obj.httpEtag
 		}
 	});
