@@ -12,7 +12,8 @@
 
 	const APP_MENU_ITEMS = [
 		{ slug: '/admin/gear', name: 'gear' },
-		{ slug: '/admin/photos', name: 'photos' }
+		{ slug: '/admin/photos', name: 'photos' },
+		{ slug: '/admin/coffee', name: 'coffee' }
 	];
 
 	const isActive = (slug: string) =>

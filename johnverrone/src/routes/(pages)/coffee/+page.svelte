@@ -1,44 +1,37 @@
 <script lang="ts">
-	import type { CoffeeBean } from '$lib/coffee/types';
+	import { mediaUrl } from '$lib/media';
 	import type { PageData } from './$types';
 	import IconStar from '~icons/fa-solid/star';
 	import CoffeeMaker from '~icons/material-symbols/coffee-maker';
 
-	interface Props {
-		data: PageData;
-	}
+	let { data }: { data: PageData } = $props();
+	type Bean = PageData['beans'][number];
 
-	let { data }: Props = $props();
+	const roasterName = (bean: Bean) =>
+		data.roastersBySlug.get(bean.roasterSlug)?.name ?? bean.roasterSlug;
 
-	const roasterName = (bean: CoffeeBean) => {
-		const roaster = data.roastersBySlug.get(bean.roaster);
-		return roaster?.name ?? bean.roaster;
-	};
-
-	const coffeeSortFn = (a: CoffeeBean, b: CoffeeBean) => {
+	const coffeeSortFn = (a: Bean, b: Bean) => {
 		const currentFirst =
-			a.currently_brewing === b.currently_brewing ? 0 : a.currently_brewing ? -1 : 1;
-		const ratingDesc = (b.rating ?? 0) - (a.rating ?? 0);
-		return currentFirst || ratingDesc;
+			a.currentlyBrewing === b.currentlyBrewing ? 0 : a.currentlyBrewing ? -1 : 1;
+		return currentFirst || (b.rating ?? 0) - (a.rating ?? 0);
 	};
 </script>
 
 {#if data.authenticated}
 	<div class="add-link">
-		<a href="/coffee/new">+ Add bean</a>
+		<a href="/admin/coffee">+ manage coffee</a>
 	</div>
 {/if}
 
 <div class="coffee-grid">
-	{#each data.beans.sort(coffeeSortFn) as bean}
+	{#each data.beans.sort(coffeeSortFn) as bean (bean.slug)}
 		<article class="coffee-card">
 			<div class="image-container">
-				{#if bean.image_url}
+				{#if bean.imageKey}
 					<img
-						src={bean.image_url}
+						src={mediaUrl('coffee', bean.imageKey, { width: 400 })}
 						alt={`Coffee bag artwork for ${bean.name}`}
-						width={400}
-						height={400}
+						loading="lazy"
 					/>
 				{/if}
 			</div>
@@ -47,8 +40,8 @@
 					<div class="title-row">
 						<h2>{bean.name}</h2>
 						<span class="rating">
-							{#each Array(bean.rating ?? 0) as i}
-								<IconStar data-key={i} />
+							{#each Array(bean.rating ?? 0) as _, i (i)}
+								<IconStar />
 							{/each}
 						</span>
 					</div>
@@ -56,7 +49,7 @@
 				</div>
 				<div class="bottom-row">
 					<span class="origin">{bean.origins.join(', ')}</span>
-					{#if bean.currently_brewing}
+					{#if bean.currentlyBrewing}
 						<span class="coffee-maker"><CoffeeMaker /></span>
 					{/if}
 				</div>

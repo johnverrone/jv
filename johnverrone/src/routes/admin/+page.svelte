@@ -7,6 +7,7 @@
 <ul class="sections">
 	<li><a href="/admin/gear">gear</a></li>
 	<li><a href="/admin/photos">photos</a></li>
+	<li><a href="/admin/coffee">coffee</a></li>
 </ul>
 
 <style>
