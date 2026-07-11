@@ -1,0 +1,30 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "coach-mcp",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-02-14",
+	"compatibility_flags": ["nodejs_compat"],
+	// One Durable Object per MCP session (McpAgent's session/state store — this
+	// worker has no data of its own; everything is proxied to johnverrone.com).
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["CoachMCP"]
+		}
+	],
+	"durable_objects": {
+		"bindings": [{ "class_name": "CoachMCP", "name": "MCP_OBJECT" }]
+	},
+	"observability": {
+		"enabled": true
+	},
+	"vars": {
+		// Override with COACH_SITE_BASE_URL in .dev.vars to point at a local
+		// `bun run dev` instance of johnverrone/ instead.
+		"COACH_SITE_BASE_URL": "https://johnverrone.com"
+	}
+}
