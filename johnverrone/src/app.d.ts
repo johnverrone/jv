@@ -19,6 +19,8 @@ declare global {
 				COFFEE: R2Bucket;
 				GAME: R2Bucket;
 				HOBBIES: Fetcher;
+				/** Bearer token for /api/coach (wrangler secret; .dev.vars locally). */
+				COACH_API_TOKEN: string;
 			};
 		}
 	}

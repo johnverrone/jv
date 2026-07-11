@@ -39,7 +39,10 @@ export async function getGearBySlug(db: DB, slug: string) {
 }
 
 /** Create a gear item. New items are `draft` by default (curation is deliberate). */
-export async function createGear(db: DB, input: Omit<NewGearItem, 'id' | 'createdAt' | 'updatedAt'>) {
+export async function createGear(
+	db: DB,
+	input: Omit<NewGearItem, 'id' | 'createdAt' | 'updatedAt'>
+) {
 	const [item] = await db.insert(gearItem).values(input).returning();
 	return item;
 }

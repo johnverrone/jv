@@ -11,6 +11,7 @@
 	let { children, data }: Props = $props();
 
 	const APP_MENU_ITEMS = [
+		{ slug: '/admin/coach', name: 'coach' },
 		{ slug: '/admin/gear', name: 'gear' },
 		{ slug: '/admin/photos', name: 'photos' },
 		{ slug: '/admin/coffee', name: 'coffee' }

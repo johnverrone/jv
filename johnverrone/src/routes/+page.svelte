@@ -18,8 +18,8 @@
 		</p>
 		<p>
 			as a developer, this site also serves a little side project to learn the latest tech. it is
-			constantly changing, but at the moment it is built with SvelteKit and hosted on Vercel. two
-			technologies I have enjoyed working with.
+			constantly changing, but at the moment it is built with SvelteKit and hosted on Cloudflare.
+			two technologies I have enjoyed working with.
 		</p>
 		<p>cheers,<br />jv</p>
 	</section>

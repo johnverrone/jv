@@ -1,4 +1,4 @@
-import { sqliteTable, integer, text, index } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, integer, real, text, index, unique } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
 
 export const gearItem = sqliteTable('gear_item', {
@@ -115,3 +115,144 @@ export type CoffeeRoaster = typeof coffeeRoaster.$inferSelect;
 export type NewCoffeeRoaster = typeof coffeeRoaster.$inferInsert;
 export type CoffeeBean = typeof coffeeBean.$inferSelect;
 export type NewCoffeeBean = typeof coffeeBean.$inferInsert;
+
+// --- Health coach (see migrations/0004_coach.sql) ---
+// All `date` columns are local America/Chicago days as ISO yyyy-mm-dd text,
+// computed server-side (src/lib/server/date.ts). dayOfWeek matches Date#getDay.
+
+export {
+	MODALITIES,
+	WORKOUT_STATUSES,
+	WORKOUT_VARIANTS,
+	CHECK_IN_TYPES,
+	type Modality
+} from '../../coach/types';
+import { MODALITIES, WORKOUT_STATUSES, WORKOUT_VARIANTS, CHECK_IN_TYPES } from '../../coach/types';
+
+export const planSession = sqliteTable(
+	'plan_session',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		dayOfWeek: integer('day_of_week').notNull(), // 0=Sunday..6=Saturday
+		sortOrder: integer('sort_order').notNull().default(0),
+		name: text('name').notNull(),
+		modality: text('modality', { enum: MODALITIES }).notNull(),
+		durationMin: integer('duration_min'),
+		prescription: text('prescription'), // markdown: the full session
+		bareMin: text('bare_min'), // markdown: 10-15 min fallback for chaotic days
+		bareMinDurationMin: integer('bare_min_duration_min'),
+		active: integer('active', { mode: 'boolean' }).notNull().default(true),
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime('now'))`),
+		updatedAt: text('updated_at')
+			.notNull()
+			.default(sql`(datetime('now'))`)
+	},
+	(t) => [index('idx_plan_dow').on(t.dayOfWeek, t.sortOrder)]
+);
+
+export const workoutLog = sqliteTable(
+	'workout_log',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		date: text('date').notNull(),
+		planSessionId: integer('plan_session_id').references(() => planSession.id, {
+			onDelete: 'set null'
+		}),
+		status: text('status', { enum: WORKOUT_STATUSES }).notNull(),
+		variant: text('variant', { enum: WORKOUT_VARIANTS }).notNull().default('full'),
+		modality: text('modality', { enum: MODALITIES }).notNull(),
+		durationMin: integer('duration_min'),
+		rpe: integer('rpe'), // 1-10
+		notes: text('notes'),
+		source: text('source', { enum: ['manual', 'api', 'strava', 'whoop'] })
+			.notNull()
+			.default('manual'),
+		stravaActivityId: text('strava_activity_id').unique(), // sync dedupe key
+		whoopWorkoutId: text('whoop_workout_id').unique(), // sync dedupe key (v2 UUID)
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime('now'))`)
+	},
+	(t) => [index('idx_workout_date').on(t.date)]
+);
+
+export const habitLog = sqliteTable('habit_log', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	date: text('date').notNull().unique(), // one row per day; upsert target
+	noAddedSugar: integer('no_added_sugar', { mode: 'boolean' }).notNull().default(false),
+	noAlcohol: integer('no_alcohol', { mode: 'boolean' }).notNull().default(false),
+	mobilityDone: integer('mobility_done', { mode: 'boolean' }).notNull().default(false),
+	notes: text('notes'),
+	createdAt: text('created_at')
+		.notNull()
+		.default(sql`(datetime('now'))`),
+	updatedAt: text('updated_at')
+		.notNull()
+		.default(sql`(datetime('now'))`)
+});
+
+export const bodyMetric = sqliteTable(
+	'body_metric',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		date: text('date').notNull(),
+		type: text('type').notNull(), // weight_lb|a1c|resting_hr|... (open set)
+		value: real('value').notNull(),
+		notes: text('notes'),
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime('now'))`)
+	},
+	(t) => [
+		unique('uq_metric_date_type').on(t.date, t.type),
+		index('idx_metric_type_date').on(t.type, t.date)
+	]
+);
+
+export const checkIn = sqliteTable(
+	'check_in',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		date: text('date').notNull(),
+		type: text('type', { enum: CHECK_IN_TYPES }).notNull(),
+		author: text('author', { enum: ['coach', 'john'] })
+			.notNull()
+			.default('coach'),
+		content: text('content').notNull(), // markdown
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime('now'))`)
+	},
+	(t) => [index('idx_checkin_date').on(t.date, t.type)]
+);
+
+// One row per provider (see migrations/0005_integrations.sql). Refresh tokens
+// rotate on both providers — always persist the pair returned by a refresh.
+export const oauthToken = sqliteTable('oauth_token', {
+	provider: text('provider', { enum: ['strava', 'whoop'] }).primaryKey(),
+	accessToken: text('access_token').notNull(),
+	refreshToken: text('refresh_token').notNull(),
+	expiresAt: integer('expires_at').notNull(), // unix seconds
+	athleteId: text('athlete_id'),
+	scopes: text('scopes'),
+	lastSyncedAt: text('last_synced_at'),
+	updatedAt: text('updated_at')
+		.notNull()
+		.default(sql`(datetime('now'))`)
+});
+
+export type OAuthToken = typeof oauthToken.$inferSelect;
+export type NewOAuthToken = typeof oauthToken.$inferInsert;
+
+export type PlanSession = typeof planSession.$inferSelect;
+export type NewPlanSession = typeof planSession.$inferInsert;
+export type WorkoutLog = typeof workoutLog.$inferSelect;
+export type NewWorkoutLog = typeof workoutLog.$inferInsert;
+export type HabitLog = typeof habitLog.$inferSelect;
+export type NewHabitLog = typeof habitLog.$inferInsert;
+export type BodyMetric = typeof bodyMetric.$inferSelect;
+export type NewBodyMetric = typeof bodyMetric.$inferInsert;
+export type CheckIn = typeof checkIn.$inferSelect;
+export type NewCheckIn = typeof checkIn.$inferInsert;
