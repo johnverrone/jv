@@ -19,6 +19,9 @@
 	"durable_objects": {
 		"bindings": [{ "class_name": "CoachMCP", "name": "MCP_OBJECT" }]
 	},
+	// OAuth 2.1 state store for @cloudflare/workers-oauth-provider (authorize
+	// request state, one-time CSRF-bound tokens). See src/github-handler.ts.
+	"kv_namespaces": [{ "binding": "OAUTH_KV", "id": "dc301fae003b4e799ab4563e2f9a4360" }],
 	"observability": {
 		"enabled": true
 	},
@@ -27,4 +30,13 @@
 		// `bun run dev` instance of johnverrone/ instead.
 		"COACH_SITE_BASE_URL": "https://johnverrone.com"
 	}
+	/**
+	 * Secrets (never in this file — use `wrangler secret put <NAME>`):
+	 *   COACH_API_TOKEN       same value as the johnverrone worker's secret;
+	 *                         used for this worker's outbound calls to /api/coach/*
+	 *   GITHUB_CLIENT_ID      a SEPARATE GitHub OAuth App from johnverrone.com's
+	 *   GITHUB_CLIENT_SECRET  (classic OAuth Apps allow only one callback URL);
+	 *                         callback URL: https://coach-mcp.<subdomain>.workers.dev/callback
+	 *   COOKIE_ENCRYPTION_KEY random string, e.g. `openssl rand -base64 32`
+	 */
 }
