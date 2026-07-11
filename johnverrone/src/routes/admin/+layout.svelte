@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { slide } from 'svelte/transition';
 	import type { Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
 
@@ -20,6 +21,14 @@
 
 	const isActive = (slug: string) =>
 		page.url.pathname === slug || page.url.pathname.startsWith(`${slug}/`);
+
+	let mobileOpen = $state(false);
+
+	// Close the mobile panel on navigation.
+	$effect(() => {
+		page.url.pathname;
+		mobileOpen = false;
+	});
 </script>
 
 <div class="cc">
@@ -33,7 +42,27 @@
 			<span class="cc-user">@{data.user.login}</span>
 			<a class="cc-logout" href="/auth/logout">logout</a>
 		</nav>
+		<button
+			class="cc-toggle"
+			aria-label={mobileOpen ? 'close menu' : 'open menu'}
+			aria-expanded={mobileOpen}
+			onclick={() => (mobileOpen = !mobileOpen)}
+		>
+			{mobileOpen ? '✕' : '☰'}
+		</button>
 	</header>
+
+	{#if mobileOpen}
+		<nav class="cc-mobile-nav" transition:slide={{ duration: 150 }}>
+			{#each APP_MENU_ITEMS as item (item.slug)}
+				<a href={item.slug} class:active={isActive(item.slug)}>{item.name}</a>
+			{/each}
+			<div class="cc-mobile-footer">
+				<span class="cc-user">@{data.user.login}</span>
+				<a class="cc-logout" href="/auth/logout">logout</a>
+			</div>
+		</nav>
+	{/if}
 
 	<main class="cc-main">
 		{@render children?.()}
@@ -94,6 +123,52 @@
 		color: var(--color-accent) !important;
 	}
 
+	.cc-toggle {
+		display: none;
+		margin-left: auto;
+		background: none;
+		border: none;
+		color: var(--color-card-fg);
+		font-size: 1.25rem;
+		line-height: 1;
+		padding: 0.25rem 0.4rem;
+		cursor: pointer;
+	}
+
+	.cc-mobile-nav {
+		display: none;
+		flex-direction: column;
+		position: sticky;
+		top: 2.9rem;
+		z-index: 1;
+		background: var(--color-card-bg);
+		color: var(--color-card-fg);
+		font-family: var(--font-family-mono);
+		font-size: 0.9rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.cc-mobile-nav a {
+		color: var(--color-card-fg);
+		text-decoration: none;
+		opacity: 0.8;
+		padding: 0.85rem 1.5rem;
+	}
+
+	.cc-mobile-nav a:active,
+	.cc-mobile-nav a.active {
+		opacity: 1;
+		background: rgba(255, 255, 255, 0.06);
+	}
+
+	.cc-mobile-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.85rem 1.5rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
 	.cc-main {
 		max-width: 80rem;
 		margin: 0 auto;
@@ -103,6 +178,19 @@
 	@media screen and (min-width: 40rem) {
 		.cc-main {
 			padding: 2.5rem;
+		}
+	}
+
+	/* Below 40rem: collapse the inline nav into the hamburger panel. */
+	@media screen and (max-width: 39.99rem) {
+		.cc-nav {
+			display: none;
+		}
+		.cc-toggle {
+			display: block;
+		}
+		.cc-mobile-nav {
+			display: flex;
 		}
 	}
 </style>

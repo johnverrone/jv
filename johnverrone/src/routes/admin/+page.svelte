@@ -9,6 +9,7 @@
 	<li><a href="/admin/gear">gear</a></li>
 	<li><a href="/admin/photos">photos</a></li>
 	<li><a href="/admin/coffee">coffee</a></li>
+	<li><a href="/admin/guitar">guitar</a></li>
 </ul>
 
 <style>
