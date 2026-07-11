@@ -14,7 +14,8 @@
 		{ slug: '/admin/coach', name: 'coach' },
 		{ slug: '/admin/gear', name: 'gear' },
 		{ slug: '/admin/photos', name: 'photos' },
-		{ slug: '/admin/coffee', name: 'coffee' }
+		{ slug: '/admin/coffee', name: 'coffee' },
+		{ slug: '/admin/guitar', name: 'guitar' }
 	];
 
 	const isActive = (slug: string) =>

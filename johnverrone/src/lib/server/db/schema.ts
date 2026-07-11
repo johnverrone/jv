@@ -256,3 +256,65 @@ export type BodyMetric = typeof bodyMetric.$inferSelect;
 export type NewBodyMetric = typeof bodyMetric.$inferInsert;
 export type CheckIn = typeof checkIn.$inferSelect;
 export type NewCheckIn = typeof checkIn.$inferInsert;
+
+// --- Guitar (see migrations/0007_guitar.sql) ---
+// Migrated off the legacy `hobbies` Worker's flat YAML/Markdown files.
+
+export const guitarJournalEntry = sqliteTable(
+	'guitar_journal_entry',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		date: text('date').notNull().unique(), // yyyy-mm-dd
+		durationMin: integer('duration_min').notNull(),
+		theme: text('theme').notNull(),
+		content: text('content').notNull(), // markdown
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime('now'))`),
+		updatedAt: text('updated_at')
+			.notNull()
+			.default(sql`(datetime('now'))`)
+	},
+	(t) => [index('idx_guitar_journal_date').on(t.date)]
+);
+
+export const guitarSong = sqliteTable(
+	'guitar_song',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		sortOrder: integer('sort_order').notNull().default(0),
+		title: text('title').notNull(),
+		artist: text('artist').notNull(),
+		difficulty: text('difficulty', { enum: ['Beginner', 'Intermediate', 'Advanced'] }).notNull(),
+		genre: text('genre').notNull(),
+		key: text('key').notNull(),
+		tuning: text('tuning').notNull(),
+		bpm: integer('bpm').notNull(),
+		capo: integer('capo'),
+		progress: text('progress').notNull().default('Not Started'),
+		tabLink: text('tab_link'),
+		notes: text('notes'),
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime('now'))`),
+		updatedAt: text('updated_at')
+			.notNull()
+			.default(sql`(datetime('now'))`)
+	},
+	(t) => [index('idx_guitar_song_sort').on(t.sortOrder)]
+);
+
+// Singleton: always exactly one row (id=1). See getPlan/setPlan in guitar.ts.
+export const guitarPlan = sqliteTable('guitar_plan', {
+	id: integer('id').primaryKey(),
+	content: text('content').notNull(),
+	updatedAt: text('updated_at')
+		.notNull()
+		.default(sql`(datetime('now'))`)
+});
+
+export type GuitarJournalEntry = typeof guitarJournalEntry.$inferSelect;
+export type NewGuitarJournalEntry = typeof guitarJournalEntry.$inferInsert;
+export type GuitarSong = typeof guitarSong.$inferSelect;
+export type NewGuitarSong = typeof guitarSong.$inferInsert;
+export type GuitarPlan = typeof guitarPlan.$inferSelect;

@@ -1,6 +1,7 @@
-import { getJournalEntries } from '$lib/guitar/api';
+import { getDb } from '$lib/server/db';
+import { listJournalEntries } from '$lib/server/db/guitar';
 
-export async function load({ fetch, platform }) {
-	const entries = await getJournalEntries(fetch, platform?.env?.HOBBIES);
-	return { entries };
+export async function load({ platform }) {
+	const db = getDb(platform!.env.DB);
+	return { entries: await listJournalEntries(db) };
 }

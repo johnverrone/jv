@@ -83,7 +83,9 @@
 		color: var(--color-text-secondary);
 		font-size: 0.875rem;
 		font-family: var(--font-family-mono);
-		transition: color 0.15s, background-color 0.15s;
+		transition:
+			color 0.15s,
+			background-color 0.15s;
 	}
 
 	.sidebar a:hover {
