@@ -1,6 +1,7 @@
-import { getPlan } from '$lib/guitar/api';
+import { getDb } from '$lib/server/db';
+import { getPlan } from '$lib/server/db/guitar';
 
-export async function load({ fetch, platform }) {
-	const plan = await getPlan(fetch, platform?.env?.HOBBIES);
-	return { plan };
+export async function load({ platform }) {
+	const db = getDb(platform!.env.DB);
+	return { plan: await getPlan(db) };
 }

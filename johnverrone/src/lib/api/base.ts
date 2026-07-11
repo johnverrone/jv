@@ -1,9 +1,9 @@
 import { env } from '$env/dynamic/public';
 
 /**
- * Base URL for the legacy `hobbies` datastore Worker — still serves the guitar
- * (and golf) reads; coffee has moved to D1. Defaults to the deployed Worker so
- * `bun run dev` works without running the hobbies Worker locally. Override with
+ * Base URL for the legacy `hobbies` datastore Worker. Guitar and coffee have
+ * both moved to D1; this only remains for src/lib/golf and src/lib/software,
+ * neither of which is wired to any route (dead code). Override with
  * `PUBLIC_HOBBIES_API_BASE` (e.g. http://localhost:8787 to run it locally).
  */
 export const HOBBIES_API_BASE =

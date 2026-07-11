@@ -22,7 +22,13 @@
 		<tbody>
 			{#each data.songs as song}
 				<tr>
-					<td><a href={song.tab_link} target="_blank" rel="noopener">{song.title}</a></td>
+					<td>
+						{#if song.tabLink}
+							<a href={song.tabLink} target="_blank" rel="noopener">{song.title}</a>
+						{:else}
+							{song.title}
+						{/if}
+					</td>
 					<td>{song.artist}</td>
 					<td>{song.difficulty}</td>
 					<td>{song.genre}</td>
