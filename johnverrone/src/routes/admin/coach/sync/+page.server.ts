@@ -17,7 +17,6 @@ export const load: PageServerLoad = async ({ platform }) => {
 		token
 			? { connected: true as const, athleteId: token.athleteId, lastSyncedAt: token.lastSyncedAt }
 			: { connected: false as const, athleteId: null, lastSyncedAt: null };
-	console.log('env.STRAVA_CLIENT_ID:', env.STRAVA_CLIENT_ID);
 	return {
 		strava: status(strava),
 		whoop: status(whoop),

@@ -181,8 +181,9 @@
 
 	.row {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: baseline;
-		gap: 1rem;
+		gap: 0.4rem 1rem;
 		padding: 0.85rem 1rem;
 		background: var(--color-background-secondary);
 		border-radius: var(--border-radius);
@@ -192,10 +193,12 @@
 		font-family: var(--font-family-mono);
 		font-size: 0.85rem;
 		font-weight: 600;
+		white-space: nowrap;
 	}
 
 	.theme {
-		flex: 1;
+		flex: 1 1 100%;
+		order: 3;
 		font-size: 0.9rem;
 	}
 
@@ -203,11 +206,20 @@
 		font-family: var(--font-family-mono);
 		font-size: 0.8rem;
 		color: var(--color-text-secondary);
+		white-space: nowrap;
 	}
 
 	.actions {
 		display: flex;
 		gap: 0.75rem;
+		margin-left: auto;
+	}
+
+	@media (min-width: 30rem) {
+		.theme {
+			flex: 1 1 auto;
+			order: 0;
+		}
 	}
 
 	.inline {
