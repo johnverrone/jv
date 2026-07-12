@@ -1,13 +1,13 @@
 import { json } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
 import { upsertHabit } from '$lib/server/db/coach';
-import { requireCoachToken } from '$lib/server/coach/auth';
+import { requireApiToken } from '$lib/server/api/auth';
 import { todayCentral } from '$lib/server/date';
 import type { RequestHandler } from './$types';
 
 /** Partial habit patch, e.g. {"no_added_sugar": true}. Upserts the day's row. */
 export const POST: RequestHandler = async ({ request, platform }) => {
-	const denied = await requireCoachToken(request, platform?.env.COACH_API_TOKEN);
+	const denied = await requireApiToken(request, platform?.env.COACH_API_TOKEN);
 	if (denied) return denied;
 
 	let body: Record<string, unknown>;

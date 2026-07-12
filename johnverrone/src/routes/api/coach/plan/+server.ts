@@ -7,12 +7,12 @@ import {
 	deletePlanSession
 } from '$lib/server/db/coach';
 import { MODALITIES } from '$lib/server/db/schema';
-import { requireCoachToken } from '$lib/server/coach/auth';
+import { requireApiToken } from '$lib/server/api/auth';
 import type { RequestHandler } from './$types';
 
 /** The weekly template — what the planning agent reads before a weekly review. */
 export const GET: RequestHandler = async ({ request, platform }) => {
-	const denied = await requireCoachToken(request, platform?.env.COACH_API_TOKEN);
+	const denied = await requireApiToken(request, platform?.env.COACH_API_TOKEN);
 	if (denied) return denied;
 	return json(await listPlanSessions(getDb(platform!.env.DB)));
 };
@@ -61,7 +61,7 @@ function patchFrom(body: Body) {
  * `{name, modality, day_of_week, ...}` without an id creates one.
  */
 export const POST: RequestHandler = async ({ request, platform }) => {
-	const denied = await requireCoachToken(request, platform?.env.COACH_API_TOKEN);
+	const denied = await requireApiToken(request, platform?.env.COACH_API_TOKEN);
 	if (denied) return denied;
 
 	let body: Body;

@@ -7,13 +7,13 @@ import {
 	listCheckIns,
 	listWorkoutLogs
 } from '$lib/server/db/coach';
-import { requireCoachToken } from '$lib/server/coach/auth';
+import { requireApiToken } from '$lib/server/api/auth';
 import { addDays, todayCentral, weekStart } from '$lib/server/date';
 import type { RequestHandler } from './$types';
 
 /** Rolling summary for the weekly review agent: adherence, streaks, volume, metrics. */
 export const GET: RequestHandler = async ({ request, platform, url }) => {
-	const denied = await requireCoachToken(request, platform?.env.COACH_API_TOKEN);
+	const denied = await requireApiToken(request, platform?.env.COACH_API_TOKEN);
 	if (denied) return denied;
 
 	const db = getDb(platform!.env.DB);

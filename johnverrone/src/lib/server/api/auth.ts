@@ -5,8 +5,8 @@ async function sha256(input: string): Promise<Uint8Array> {
 }
 
 /**
- * Bearer-token gate for /api/coach — the contract for scheduled coach agents.
- * Returns a Response to send on failure, null when authorized.
+ * Bearer-token gate for /api/* — the contract for the command-center-mcp
+ * Worker and any other automation calling this site's JSON API.
  *
  * Deliberately independent of locals.authenticated: hooks.server.ts fakes auth
  * in dev, and that bypass must never open these endpoints. Comparison is
@@ -14,7 +14,7 @@ async function sha256(input: string): Promise<Uint8Array> {
  * in both workerd and the Node-based dev server (crypto.subtle.timingSafeEqual
  * is workerd-only).
  */
-export async function requireCoachToken(
+export async function requireApiToken(
 	request: Request,
 	expected: string | undefined
 ): Promise<Response | null> {

@@ -39,8 +39,8 @@ app.get('/authorize', async (c) => {
 		client: await c.env.OAUTH_PROVIDER.lookupClient(clientId),
 		csrfToken,
 		server: {
-			name: 'johnverrone coach',
-			description: 'Personal health coach data — plan, logs, habits, metrics.'
+			name: 'johnverrone command center',
+			description: 'Personal data — health coach plan/logs/habits, guitar journal/plan/songs.'
 		},
 		setCookie,
 		state: { oauthReqInfo }
