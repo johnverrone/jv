@@ -1,13 +1,13 @@
-export interface CoachClientOptions {
+export interface CommandCenterClientOptions {
 	baseUrl: string;
 	token: string;
 }
 
-export class CoachApiError extends Error {}
+export class CommandCenterApiError extends Error {}
 
-/** Thin wrapper over the johnverrone.com /api/coach/* contract. No local state. */
-export class CoachClient {
-	constructor(private opts: CoachClientOptions) {}
+/** Thin wrapper over johnverrone.com's /api/coach/* and /api/guitar/* contracts. No local state. */
+export class CommandCenterClient {
+	constructor(private opts: CommandCenterClientOptions) {}
 
 	private async request(path: string, init: RequestInit = {}) {
 		const res = await fetch(`${this.opts.baseUrl}${path}`, {
@@ -21,10 +21,12 @@ export class CoachClient {
 		const body = await res.json().catch(() => null);
 		if (!res.ok) {
 			const message = (body as { error?: string } | null)?.error ?? res.statusText;
-			throw new CoachApiError(`${path} → ${res.status}: ${message}`);
+			throw new CommandCenterApiError(`${path} → ${res.status}: ${message}`);
 		}
 		return body;
 	}
+
+	// --- Coach ---
 
 	getToday(date?: string) {
 		return this.request(`/api/coach/today${date ? `?date=${date}` : ''}`);
@@ -52,5 +54,31 @@ export class CoachClient {
 
 	postCheckin(body: Record<string, unknown>) {
 		return this.request('/api/coach/checkin', { method: 'POST', body: JSON.stringify(body) });
+	}
+
+	// --- Guitar ---
+
+	getGuitarJournal(date?: string) {
+		return this.request(`/api/guitar/journal${date ? `?date=${date}` : ''}`);
+	}
+
+	updateGuitarJournalEntry(body: Record<string, unknown>) {
+		return this.request('/api/guitar/journal', { method: 'POST', body: JSON.stringify(body) });
+	}
+
+	getGuitarPlan() {
+		return this.request('/api/guitar/plan');
+	}
+
+	updateGuitarPlan(content: string) {
+		return this.request('/api/guitar/plan', { method: 'POST', body: JSON.stringify({ content }) });
+	}
+
+	listGuitarSongs() {
+		return this.request('/api/guitar/songs');
+	}
+
+	updateGuitarSong(body: Record<string, unknown>) {
+		return this.request('/api/guitar/songs', { method: 'POST', body: JSON.stringify(body) });
 	}
 }

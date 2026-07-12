@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "coach-mcp",
+	"name": "command-center-mcp",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-02-14",
 	"compatibility_flags": ["nodejs_compat"],
@@ -13,11 +13,11 @@
 	"migrations": [
 		{
 			"tag": "v1",
-			"new_sqlite_classes": ["CoachMCP"]
+			"new_sqlite_classes": ["CommandCenterMCP"]
 		}
 	],
 	"durable_objects": {
-		"bindings": [{ "class_name": "CoachMCP", "name": "MCP_OBJECT" }]
+		"bindings": [{ "class_name": "CommandCenterMCP", "name": "MCP_OBJECT" }]
 	},
 	// OAuth 2.1 state store for @cloudflare/workers-oauth-provider (authorize
 	// request state, one-time CSRF-bound tokens). See src/github-handler.ts.
@@ -33,10 +33,10 @@
 	/**
 	 * Secrets (never in this file — use `wrangler secret put <NAME>`):
 	 *   COACH_API_TOKEN       same value as the johnverrone worker's secret;
-	 *                         used for this worker's outbound calls to /api/coach/*
+	 *                         used for this worker's outbound calls to /api/*
 	 *   GITHUB_CLIENT_ID      a SEPARATE GitHub OAuth App from johnverrone.com's
 	 *   GITHUB_CLIENT_SECRET  (classic OAuth Apps allow only one callback URL);
-	 *                         callback URL: https://coach-mcp.<subdomain>.workers.dev/callback
+	 *                         callback URL: https://command-center-mcp.<subdomain>.workers.dev/callback
 	 *   COOKIE_ENCRYPTION_KEY random string, e.g. `openssl rand -base64 32`
 	 */
 }

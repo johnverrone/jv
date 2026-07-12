@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
+import { isUniqueConstraintError } from '$lib/server/db/errors';
 import { listGear, createGear } from '$lib/server/db/gear';
 import { centsFromDollars, slugify, str } from '$lib/server/form';
 import type { Actions, PageServerLoad } from './$types';
@@ -36,7 +37,7 @@ export const actions: Actions = {
 			});
 			slug = created.slug;
 		} catch (e) {
-			if (String(e).includes('UNIQUE')) {
+			if (isUniqueConstraintError(e)) {
 				return fail(409, { error: 'A gear item with that name already exists.' });
 			}
 			throw e;

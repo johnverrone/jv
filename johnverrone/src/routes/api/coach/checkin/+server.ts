@@ -2,13 +2,13 @@ import { json } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
 import { addCheckIn } from '$lib/server/db/coach';
 import { CHECK_IN_TYPES } from '$lib/server/db/schema';
-import { requireCoachToken } from '$lib/server/coach/auth';
+import { requireApiToken } from '$lib/server/api/auth';
 import { todayCentral } from '$lib/server/date';
 import type { RequestHandler } from './$types';
 
 /** Where scheduled agents deposit coaching messages; surfaced on the Today page. */
 export const POST: RequestHandler = async ({ request, platform }) => {
-	const denied = await requireCoachToken(request, platform?.env.COACH_API_TOKEN);
+	const denied = await requireApiToken(request, platform?.env.COACH_API_TOKEN);
 	if (denied) return denied;
 
 	let body: { type?: string; content?: string; date?: string };

@@ -1,5 +1,6 @@
 import { error, fail } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
+import { isUniqueConstraintError } from '$lib/server/db/errors';
 import {
 	listJournalEntries,
 	createJournalEntry,
@@ -37,7 +38,7 @@ export const actions: Actions = {
 		try {
 			await createJournalEntry(getDb(platform!.env.DB), input);
 		} catch (e) {
-			if (String(e).includes('UNIQUE')) {
+			if (isUniqueConstraintError(e)) {
 				return fail(409, { error: 'An entry for that date already exists.' });
 			}
 			throw e;

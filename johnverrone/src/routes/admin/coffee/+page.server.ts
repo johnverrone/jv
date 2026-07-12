@@ -1,5 +1,6 @@
 import { error, fail } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
+import { isUniqueConstraintError } from '$lib/server/db/errors';
 import {
 	listBeans,
 	createBean,
@@ -54,7 +55,7 @@ export const actions: Actions = {
 				visibility: 'draft' // new beans start as draft; publish when ready
 			});
 		} catch (e) {
-			if (String(e).includes('UNIQUE')) {
+			if (isUniqueConstraintError(e)) {
 				return fail(409, { error: 'A bean with that name already exists.' });
 			}
 			throw e;
@@ -98,7 +99,7 @@ export const actions: Actions = {
 				notes: str(form.get('notes'))
 			});
 		} catch (e) {
-			if (String(e).includes('UNIQUE')) {
+			if (isUniqueConstraintError(e)) {
 				return fail(409, { error: 'A roaster with that name already exists.' });
 			}
 			throw e;
