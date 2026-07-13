@@ -5,9 +5,7 @@
 	let { children }: { children?: Snippet } = $props();
 
 	const TABS = [
-		{ slug: '/admin/coach', name: 'today' },
-		{ slug: '/admin/coach/week', name: 'week' },
-		{ slug: '/admin/coach/plan', name: 'plan' },
+		{ slug: '/admin/coach', name: 'home' },
 		{ slug: '/admin/coach/metrics', name: 'metrics' },
 		{ slug: '/admin/coach/history', name: 'history' },
 		{ slug: '/admin/coach/sync', name: 'sync' }
