@@ -185,6 +185,8 @@ describe('whoop workouts + cross-provider dedupe', () => {
 
 	it('maps and normalizes whoop sport names', () => {
 		expect(mapWhoopSport('weightlifting')).toBe('lift');
+		expect(mapWhoopSport('weightlifting_msk')).toBe('lift');
+		expect(mapWhoopSport('Powerlifting MSK')).toBe('lift');
 		expect(mapWhoopSport('Functional Fitness')).toBe('hiit');
 		expect(mapWhoopSport('walking')).toBe('walk');
 		expect(mapWhoopSport('stroller_walking')).toBe('walk');

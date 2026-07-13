@@ -102,7 +102,10 @@ const WHOOP_SPORT_TO_MODALITY: Record<string, Modality> = {
 };
 
 export function mapWhoopSport(sportName: string): Modality | null {
-	return WHOOP_SPORT_TO_MODALITY[sportName.toLowerCase().replace(/\s+/g, '_')] ?? null;
+	// Whoop reports strength sports tracked with the musculoskeletal (strength
+	// trainer) feature as e.g. "weightlifting_msk" — same sport, so map both.
+	const name = sportName.toLowerCase().replace(/\s+/g, '_').replace(/_msk$/, '');
+	return WHOOP_SPORT_TO_MODALITY[name] ?? null;
 }
 
 /**
