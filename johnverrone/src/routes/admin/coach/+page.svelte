@@ -20,13 +20,24 @@
 	const metric = (type: string) => summary.todayMetrics.find((m) => m.type === type)?.value;
 	const recovery = $derived(metric('whoop_recovery'));
 
+	// Only surface a check-in from the week on screen — stale notes hide.
+	const checkIn = $derived(
+		summary.latestCheckIn && summary.latestCheckIn.date >= data.week.weekStart
+			? summary.latestCheckIn
+			: null
+	);
+
 	const HABIT_FIELDS = ['noAddedSugar', 'noAlcohol', 'mobilityDone'] as const;
 
-	const statusGlyph = (status: string, variant: string) => {
-		if (status === 'done') return variant === 'bare_min' ? '✓ bare min' : '✓ done';
-		if (status === 'modified') return '~ modified';
-		return '✗ skipped';
+	type LogLike = {
+		status: string;
+		variant: string;
+		durationMin: number | null;
+		rpe: number | null;
 	};
+
+	const sessionMeta = (modality: string, durationMin: number | null) =>
+		durationMin ? `${modality} · ${durationMin}′` : modality;
 
 	const planForDay = (dow: number) => data.planSessions.filter((s) => s.dayOfWeek === dow);
 </script>
@@ -37,7 +48,12 @@
 
 <div class="head">
 	<h1>week of {data.week.weekStart}</h1>
-	<span class="adherence">{data.week.done}/{data.week.planned} · {data.week.pct}%</span>
+	<div class="adherence" title="{data.week.pct}% of planned sessions logged">
+		<span class="bar"
+			><span class="fill" style="width: {Math.min(data.week.pct, 100)}%"></span></span
+		>
+		<span>{data.week.done}/{data.week.planned}</span>
+	</div>
 </div>
 
 <nav class="subnav">
@@ -109,6 +125,7 @@
 						class="chip"
 						class:red={recovery < 34}
 						class:yellow={recovery >= 34 && recovery < 67}
+						class:green={recovery >= 67}
 					>
 						recovery {recovery}%
 					</span>
@@ -128,13 +145,13 @@
 			</div>
 		{/if}
 
-		{#if summary.latestCheckIn}
+		{#if checkIn}
 			<section class="coach-msg">
 				<header>
-					<span class="author">{summary.latestCheckIn.author}</span>
-					<span class="msg-meta">{summary.latestCheckIn.type} · {summary.latestCheckIn.date}</span>
+					<span class="author">{checkIn.author}</span>
+					<span class="msg-meta">{checkIn.type} · {checkIn.date}</span>
 				</header>
-				<SvelteMarked source={summary.latestCheckIn.content} />
+				<SvelteMarked source={checkIn.content} />
 			</section>
 		{/if}
 	{/if}
@@ -146,86 +163,96 @@
 				<li class="today-cell">
 					<div class="day-head">
 						<span class="day-name">{DAY_NAMES[day.dayOfWeek]}</span>
-						<span class="day-date">{day.date} · today</span>
+						<span class="day-date">{day.date}</span>
+						<span class="today-chip">today</span>
 					</div>
-					<div class="today-body">
+					<div class="day-body">
 						{#each summary.sessions as session (session.id)}
 							{@const logged = logFor(session.id)}
-							<section class="session" class:done={logged?.status === 'done'}>
-								<header class="session-head">
-									<h2>{session.name}</h2>
-									<span class="meta">
-										{session.modality}
-										{#if session.durationMin}· {session.durationMin}′{/if}
-									</span>
-								</header>
-
-								{#if logged}
-									<p class="logged">
-										{logged.status}{logged.variant === 'bare_min' ? ' (bare minimum)' : ''}
-										{#if logged.durationMin}· {logged.durationMin}′{/if}
-										{#if logged.rpe}· RPE {logged.rpe}{/if}
-									</p>
-									<form method="POST" action="?/undoWorkout" use:enhance>
-										<input type="hidden" name="id" value={logged.id} />
-										<button type="submit" class="link">undo</button>
-									</form>
-								{:else}
-									{#if bareMinFor === session.id && session.bareMin}
-										<div class="rx bare-rx">
-											<SvelteMarked source={session.bareMin} />
-										</div>
-									{:else if session.prescription}
-										<div class="rx">
-											<SvelteMarked source={session.prescription} />
-										</div>
+							<details class="planned" open={!logged}>
+								<summary>
+									<span class="name">{session.name}</span>
+									<span class="meta">{sessionMeta(session.modality, session.durationMin)}</span>
+									{#if logged}
+										{@render statusPill(logged, summary.date, session.modality)}
+									{:else}
+										<span class="pill todo">todo</span>
 									{/if}
+								</summary>
+								<div class="row-details">
+									{#if logged}
+										{#if session.prescription}
+											<div class="rx">
+												<SvelteMarked source={session.prescription} />
+											</div>
+										{/if}
+										{#if session.bareMin}
+											<p class="bare">
+												bare minimum{session.bareMinDurationMin
+													? ` (${session.bareMinDurationMin}′)`
+													: ''}: {session.bareMin}
+											</p>
+										{/if}
+										<form method="POST" action="?/undoWorkout" use:enhance class="undo-row">
+											<input type="hidden" name="id" value={logged.id} />
+											<button type="submit" class="link">undo</button>
+										</form>
+									{:else}
+										{#if bareMinFor === session.id && session.bareMin}
+											<div class="rx bare-rx">
+												<SvelteMarked source={session.bareMin} />
+											</div>
+										{:else if session.prescription}
+											<div class="rx">
+												<SvelteMarked source={session.prescription} />
+											</div>
+										{/if}
 
-									{#if session.bareMin}
-										<button
-											type="button"
-											class="link"
-											onclick={() => (bareMinFor = bareMinFor === session.id ? null : session.id)}
-										>
-											{bareMinFor === session.id
-												? 'back to the full session'
-												: `chaotic day? bare minimum (${session.bareMinDurationMin ?? 15}′)`}
-										</button>
-									{/if}
-
-									<div class="actions">
-										<form method="POST" action="?/logDone" use:enhance>
-											<input type="hidden" name="plan_session_id" value={session.id} />
-											<input
-												type="hidden"
-												name="variant"
-												value={bareMinFor === session.id ? 'bare_min' : 'full'}
-											/>
-											<button type="submit" class="big done-btn">
-												done{bareMinFor === session.id ? ' (bare min)' : ''}
+										{#if session.bareMin}
+											<button
+												type="button"
+												class="link"
+												onclick={() => (bareMinFor = bareMinFor === session.id ? null : session.id)}
+											>
+												{bareMinFor === session.id
+													? 'back to the full session'
+													: `chaotic day? bare minimum (${session.bareMinDurationMin ?? 15}′)`}
 											</button>
-										</form>
-										<form method="POST" action="?/logSkipped" use:enhance>
-											<input type="hidden" name="plan_session_id" value={session.id} />
-											<button type="submit" class="big skip-btn">skip</button>
-										</form>
-									</div>
-								{/if}
-							</section>
+										{/if}
+
+										<div class="actions">
+											<form method="POST" action="?/logDone" use:enhance>
+												<input type="hidden" name="plan_session_id" value={session.id} />
+												<input
+													type="hidden"
+													name="variant"
+													value={bareMinFor === session.id ? 'bare_min' : 'full'}
+												/>
+												<button type="submit" class="big done-btn">
+													✓ done{bareMinFor === session.id ? ' (bare min)' : ''}
+												</button>
+											</form>
+											<form method="POST" action="?/logSkipped" use:enhance>
+												<input type="hidden" name="plan_session_id" value={session.id} />
+												<button type="submit" class="big skip-btn">skip</button>
+											</form>
+										</div>
+									{/if}
+								</div>
+							</details>
 						{:else}
-							<section class="session">
-								<p class="empty">
-									Nothing planned for {DAY_NAMES[summary.dayOfWeek]} —
-									<button type="button" class="link" onclick={() => (editingPlan = true)}>
-										edit the weekly plan
-									</button>.
-								</p>
-							</section>
+							<p class="empty">
+								Nothing planned for {DAY_NAMES[summary.dayOfWeek]} —
+								<button type="button" class="link" onclick={() => (editingPlan = true)}>
+									edit the weekly plan
+								</button>.
+							</p>
 						{/each}
 						{#each summary.workouts.filter((w) => !summary.sessions.some((s) => s.id === w.planSessionId)) as log (log.id)}
-							<p class="extra-log">
-								{log.modality} (unplanned) · {statusGlyph(log.status, log.variant)}
-							</p>
+							<div class="planned plain extra today-extra">
+								<span class="name">{log.modality} (unplanned)</span>
+								{@render statusPill(log, summary.date, log.modality)}
+							</div>
 						{/each}
 					</div>
 				</li>
@@ -238,23 +265,38 @@
 					<div class="day-body">
 						{#each day.sessions as session (session.id)}
 							{@const log = day.logs.find((l) => l.planSessionId === session.id)}
-							<div class="planned">
-								<span class="name">{session.name}</span>
-								{#if log}
-									<span class="glyph" class:ok={log.status !== 'skipped'}>
-										{statusGlyph(log.status, log.variant)}
-									</span>
-								{:else if day.date < summary.date && session.modality !== 'rest'}
-									<span class="glyph missed">missed</span>
-								{:else if day.date > summary.date && session.modality !== 'rest'}
-									<span class="glyph">up next</span>
-								{/if}
-							</div>
+							{#if session.prescription || session.bareMin}
+								<details class="planned">
+									<summary>
+										<span class="name">{session.name}</span>
+										<span class="meta">{sessionMeta(session.modality, session.durationMin)}</span>
+										{@render statusPill(log, day.date, session.modality)}
+									</summary>
+									<div class="row-details">
+										{#if session.prescription}
+											<div class="rx"><SvelteMarked source={session.prescription} /></div>
+										{/if}
+										{#if session.bareMin}
+											<p class="bare">
+												bare minimum{session.bareMinDurationMin
+													? ` (${session.bareMinDurationMin}′)`
+													: ''}: {session.bareMin}
+											</p>
+										{/if}
+									</div>
+								</details>
+							{:else}
+								<div class="planned plain">
+									<span class="name">{session.name}</span>
+									<span class="meta">{sessionMeta(session.modality, session.durationMin)}</span>
+									{@render statusPill(log, day.date, session.modality)}
+								</div>
+							{/if}
 						{/each}
 						{#each day.logs.filter((l) => !day.sessions.some((s) => s.id === l.planSessionId)) as log (log.id)}
-							<div class="planned extra">
+							<div class="planned plain extra">
 								<span class="name">{log.modality} (unplanned)</span>
-								<span class="glyph ok">{statusGlyph(log.status, log.variant)}</span>
+								{@render statusPill(log, day.date, log.modality)}
 							</div>
 						{/each}
 					</div>
@@ -307,8 +349,8 @@
 					<form method="POST" action="?/toggleHabit" use:enhance>
 						<input type="hidden" name="field" value={field} />
 						<button type="submit" class="habit" class:on>
+							<span class="habit-state">{on ? '✓' : '○'}</span>
 							<span class="habit-name">{HABIT_LABELS[field]}</span>
-							<span class="habit-state">{on ? '✓' : '—'}</span>
 							<span class="habit-streak">{streak.current}d · best {streak.best}</span>
 						</button>
 					</form>
@@ -317,6 +359,22 @@
 		</section>
 	{/if}
 {/if}
+
+{#snippet statusPill(log: LogLike | undefined, date: string, modality: string)}
+	{#if log}
+		{#if log.status === 'done' && log.variant === 'bare_min'}
+			<span class="pill bare-min">✓ bare min{log.durationMin ? ` · ${log.durationMin}′` : ''}</span>
+		{:else if log.status === 'done'}
+			<span class="pill ok">✓ done{log.durationMin ? ` · ${log.durationMin}′` : ''}</span>
+		{:else if log.status === 'modified'}
+			<span class="pill mod">~ modified</span>
+		{:else}
+			<span class="pill skip">✗ skipped</span>
+		{/if}
+	{:else if date < summary.date && modality !== 'rest'}
+		<span class="pill missed">missed</span>
+	{/if}
+{/snippet}
 
 {#snippet sessionForm(session: (typeof data.planSessions)[number] | null)}
 	<form
@@ -403,9 +461,27 @@
 	}
 
 	.adherence {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 		font-family: var(--font-family-mono);
-		font-size: 0.85rem;
+		font-size: 0.8rem;
 		color: var(--color-text-secondary);
+	}
+
+	.bar {
+		width: 64px;
+		height: 4px;
+		border-radius: 999px;
+		background: var(--color-background-secondary);
+		overflow: hidden;
+	}
+
+	.fill {
+		display: block;
+		height: 100%;
+		border-radius: 999px;
+		background: #3d8b5f;
 	}
 
 	.subnav {
@@ -420,6 +496,7 @@
 	.subnav a {
 		color: var(--color-accent);
 		text-decoration: none;
+		white-space: nowrap;
 	}
 
 	.subnav a.muted {
@@ -443,22 +520,29 @@
 		font-size: 0.7rem;
 		padding: 0.2rem 0.6rem;
 		border-radius: 999px;
-		border: 1px solid #27ae60;
+		border: 1px solid var(--color-hint);
 		color: var(--color-text-secondary);
 	}
 
+	.chip.green {
+		border-color: rgba(61, 139, 95, 0.5);
+		color: #3d8b5f;
+	}
+
 	.chip.yellow {
-		border-color: #f39c12;
+		border-color: rgba(201, 154, 46, 0.55);
+		color: #9a7420;
 	}
 
 	.chip.red {
-		border-color: #c0392b;
+		border-color: rgba(179, 86, 77, 0.55);
+		color: #b3564d;
 	}
 
 	.chip-note {
 		font-family: var(--font-family-mono);
 		font-size: 0.7rem;
-		color: #c0392b;
+		color: #b3564d;
 	}
 
 	.coach-msg {
@@ -509,27 +593,21 @@
 	}
 
 	.days li.future {
-		opacity: 0.6;
+		opacity: 0.65;
 	}
 
 	.days li.today-cell {
-		grid-template-columns: 1fr;
-		gap: 0.5rem;
-		background: none;
-		padding: 0;
-		outline: 2px solid var(--color-accent);
-		outline-offset: 4px;
-		border-radius: var(--border-radius);
-		margin: 4px 0;
+		border-left: 3px solid var(--color-accent);
 	}
 
-	.today-cell .day-head {
-		padding: 0.5rem 1rem 0;
+	.day-head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
 	}
 
 	.day-name {
 		font-weight: 600;
-		display: block;
 	}
 
 	.day-date {
@@ -538,67 +616,140 @@
 		color: var(--color-text-secondary);
 	}
 
-	.planned {
+	.today-chip {
+		font-family: var(--font-family-mono);
+		font-size: 0.7rem;
+		padding: 0.05rem 0.5rem;
+		border-radius: 999px;
+		border: 1px solid var(--color-accent);
+		color: var(--color-accent);
+		align-self: flex-start;
+		margin-top: 0.25rem;
+	}
+
+	.day-body {
 		display: flex;
-		justify-content: space-between;
-		gap: 0.75rem;
+		flex-direction: column;
+		gap: 0.35rem;
+		min-width: 0;
+	}
+
+	/* --- planned session rows --- */
+
+	.planned {
 		font-size: 0.9rem;
+	}
+
+	.planned summary,
+	.planned.plain {
+		display: flex;
+		align-items: baseline;
+		gap: 0.6rem;
+		min-width: 0;
+	}
+
+	.planned summary {
+		cursor: pointer;
+		list-style: none;
+	}
+
+	.planned summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.planned summary::before,
+	.planned.plain::before {
+		content: '▸';
+		font-size: 0.6rem;
+		color: var(--color-text-secondary);
+		transition: transform 0.15s ease;
+		flex: none;
+	}
+
+	.planned.plain::before {
+		visibility: hidden;
+	}
+
+	.planned[open] summary::before {
+		transform: rotate(90deg);
+	}
+
+	.planned summary:hover .name {
+		color: var(--color-accent);
+	}
+
+	.planned .name {
+		font-weight: 500;
 	}
 
 	.planned.extra .name {
 		color: var(--color-text-secondary);
 	}
 
-	.glyph {
-		font-family: var(--font-family-mono);
-		font-size: 0.75rem;
-		color: var(--color-text-secondary);
+	.planned .meta {
+		white-space: nowrap;
 	}
 
-	.glyph.ok {
-		color: #27ae60;
+	.planned .pill {
+		margin-left: auto;
 	}
 
-	.glyph.missed {
-		color: #c0392b;
+	.row-details {
+		padding: 0.4rem 0 0.35rem 1rem;
+		font-size: 0.9rem;
 	}
 
-	.extra-log {
-		font-family: var(--font-family-mono);
-		font-size: 0.8rem;
-		color: var(--color-text-secondary);
+	.row-details .rx {
 		margin: 0;
-		padding: 0 1rem 0.5rem;
 	}
 
-	/* --- today's expanded card --- */
-
-	.session {
-		padding: 1.25rem;
-		background: var(--color-background-secondary);
-		border-radius: var(--border-radius);
+	.today-extra {
+		padding: 0;
 	}
 
-	.today-body {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
+	/* --- status pills --- */
+
+	.pill {
+		font-family: var(--font-family-mono);
+		font-size: 0.7rem;
+		padding: 0.15rem 0.55rem;
+		border: 1px solid transparent;
+		border-radius: 999px;
+		white-space: nowrap;
+		flex: none;
 	}
 
-	.session.done {
-		border-left: 3px solid #27ae60;
+	.pill.ok {
+		color: #3d8b5f;
+		background: rgba(61, 139, 95, 0.14);
 	}
 
-	.session-head {
-		display: flex;
-		align-items: baseline;
-		gap: 0.75rem;
+	.pill.bare-min {
+		color: #3d8b5f;
+		border-color: rgba(61, 139, 95, 0.45);
 	}
 
-	h2 {
-		margin: 0;
-		font-size: 1.1rem;
+	.pill.mod {
+		color: var(--color-accent);
+		background: rgba(191, 134, 64, 0.14);
 	}
+
+	.pill.skip {
+		color: var(--color-text-secondary);
+		background: rgba(0, 0, 0, 0.07);
+	}
+
+	.pill.missed {
+		color: #b3564d;
+		background: rgba(179, 86, 77, 0.1);
+	}
+
+	.pill.todo {
+		color: var(--color-accent);
+		border-color: rgba(191, 134, 64, 0.45);
+	}
+
+	/* --- today's row --- */
 
 	.meta {
 		font-family: var(--font-family-mono);
@@ -617,26 +768,30 @@
 		border-radius: var(--border-radius);
 	}
 
-	.logged {
-		font-family: var(--font-family-mono);
-		font-size: 0.9rem;
-		margin: 0.75rem 0 0.25rem;
+	.undo-row {
+		display: flex;
+		justify-content: flex-end;
 	}
 
 	.actions {
 		display: flex;
 		gap: 0.75rem;
-		margin-top: 1rem;
+		margin-top: 0.85rem;
 	}
 
 	.big {
 		flex: 1;
 		min-height: 48px;
 		font-family: var(--font-family-mono);
-		font-size: 0.95rem;
+		font-size: 0.9rem;
 		border: none;
 		border-radius: var(--border-radius);
 		cursor: pointer;
+		transition: filter 0.15s ease;
+	}
+
+	.big:hover {
+		filter: brightness(1.12);
 	}
 
 	.done-btn {
@@ -657,12 +812,12 @@
 		padding: 0;
 		cursor: pointer;
 		font-family: var(--font-family-mono);
-		font-size: 0.75rem;
+		font-size: 0.8rem;
 		color: var(--color-accent);
 	}
 
 	.link.danger {
-		color: #c0392b;
+		color: #b3564d;
 	}
 
 	.custom {
@@ -727,6 +882,8 @@
 		margin-top: 0.75rem;
 	}
 
+	/* --- habits --- */
+
 	.habits h2 {
 		font-family: var(--font-family-mono);
 		font-size: 0.8rem;
@@ -748,14 +905,23 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.25rem;
-		padding: 0.75rem 0.25rem;
-		min-height: 72px;
+		justify-content: center;
+		gap: 0.3rem;
+		padding: 0.85rem 0.5rem;
+		min-height: 76px;
 		border: 1px solid var(--color-hint);
 		border-radius: var(--border-radius);
 		background: none;
+		color: var(--color-text-primary);
 		cursor: pointer;
 		font-family: var(--font-family-mono);
+		transition:
+			border-color 0.15s ease,
+			background-color 0.15s ease;
+	}
+
+	.habit:hover {
+		border-color: var(--color-accent);
 	}
 
 	.habit.on {
@@ -764,17 +930,24 @@
 		border-color: var(--color-card-bg);
 	}
 
-	.habit-name {
-		font-size: 0.7rem;
+	.habit-state {
+		font-size: 1rem;
+		line-height: 1;
+		color: var(--color-text-secondary);
 	}
 
-	.habit-state {
-		font-size: 1.1rem;
+	.habit.on .habit-state {
+		color: inherit;
+	}
+
+	.habit-name {
+		font-size: 0.75rem;
 	}
 
 	.habit-streak {
 		font-size: 0.65rem;
 		opacity: 0.7;
+		white-space: nowrap;
 	}
 
 	/* --- plan editing --- */
@@ -811,7 +984,7 @@
 
 	.badge {
 		font-family: var(--font-family-mono);
-		font-size: 0.75rem;
+		font-size: 0.8rem;
 		color: var(--color-text-secondary);
 		border: 1px solid var(--color-hint);
 		border-radius: 999px;
@@ -831,7 +1004,7 @@
 
 	.plan-rx {
 		font-family: var(--font-family-body);
-		font-size: 0.85rem;
+		font-size: 0.9rem;
 		white-space: pre-wrap;
 		margin: 0.5rem 0 0;
 		color: var(--color-text-primary);
@@ -879,12 +1052,12 @@
 
 	.empty {
 		font-family: var(--font-family-mono);
-		font-size: 0.85rem;
+		font-size: 0.9rem;
 		color: var(--color-text-secondary);
 	}
 
 	.error {
-		color: #c0392b;
+		color: #b3564d;
 		font-family: var(--font-family-mono);
 		font-size: 0.8rem;
 	}
@@ -892,7 +1065,43 @@
 	@media (max-width: 30rem) {
 		.days li {
 			grid-template-columns: 1fr;
-			gap: 0.25rem;
+			gap: 0.4rem;
+		}
+
+		.day-head {
+			flex-direction: row;
+			align-items: baseline;
+			gap: 0.5rem;
+		}
+
+		.today-chip {
+			align-self: baseline;
+			margin-top: 0;
+		}
+
+		.planned .meta {
+			display: none;
+		}
+
+		.habit-row {
+			grid-template-columns: 1fr;
+		}
+
+		.habit {
+			flex-direction: row;
+			justify-content: flex-start;
+			gap: 0.6rem;
+			min-height: 52px;
+			padding: 0 1rem;
+		}
+
+		.habit-name {
+			font-size: 0.85rem;
+		}
+
+		.habit-streak {
+			margin-left: auto;
+			font-size: 0.7rem;
 		}
 	}
 </style>
