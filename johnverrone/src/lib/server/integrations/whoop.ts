@@ -80,7 +80,7 @@ export interface WhoopImportResult {
 	workouts: ImportResult;
 }
 
-// Whoop sport names → modality. Names are normalized (lowercase, spaces→_).
+// Whoop sport names → modality. Names are normalized (lowercase, spaces/-/→_).
 const WHOOP_SPORT_TO_MODALITY: Record<string, Modality> = {
 	running: 'run',
 	trail_running: 'run',
@@ -96,16 +96,30 @@ const WHOOP_SPORT_TO_MODALITY: Record<string, Modality> = {
 	stroller_walking: 'walk',
 	hiking: 'hike',
 	rucking: 'hike',
+	hiking_rucking: 'hike',
 	yoga: 'mobility',
 	pilates: 'mobility',
 	stretching: 'mobility'
 };
 
-export function mapWhoopSport(sportName: string): Modality | null {
+// Deliberately not coached — skipped silently rather than reported as unmapped.
+const WHOOP_SPORT_IGNORED = new Set(['activity', 'golf']);
+
+function normalizeWhoopSport(sportName: string): string {
 	// Whoop reports strength sports tracked with the musculoskeletal (strength
 	// trainer) feature as e.g. "weightlifting_msk" — same sport, so map both.
-	const name = sportName.toLowerCase().replace(/\s+/g, '_').replace(/_msk$/, '');
-	return WHOOP_SPORT_TO_MODALITY[name] ?? null;
+	return sportName
+		.toLowerCase()
+		.replace(/[\s/-]+/g, '_')
+		.replace(/_msk$/, '');
+}
+
+export function mapWhoopSport(sportName: string): Modality | null {
+	return WHOOP_SPORT_TO_MODALITY[normalizeWhoopSport(sportName)] ?? null;
+}
+
+export function isIgnoredWhoopSport(sportName: string): boolean {
+	return WHOOP_SPORT_IGNORED.has(normalizeWhoopSport(sportName));
 }
 
 /**
@@ -120,7 +134,9 @@ export async function importWhoopWorkouts(db: DB, workouts: WhoopWorkout[]): Pro
 	for (const workout of workouts) {
 		const modality = mapWhoopSport(workout.sport_name);
 		if (!modality) {
-			if (!result.unmapped.includes(workout.sport_name)) result.unmapped.push(workout.sport_name);
+			if (!isIgnoredWhoopSport(workout.sport_name) && !result.unmapped.includes(workout.sport_name)) {
+				result.unmapped.push(workout.sport_name);
+			}
 			continue;
 		}
 

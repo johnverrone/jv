@@ -39,8 +39,15 @@ const SPORT_TO_MODALITY: Record<string, Modality> = {
 	Pilates: 'mobility'
 };
 
+// Deliberately not coached — skipped silently rather than reported as unmapped.
+const SPORT_IGNORED = new Set(['Golf']);
+
 export function mapSportType(sportType: string): Modality | null {
 	return SPORT_TO_MODALITY[sportType] ?? null;
+}
+
+export function isIgnoredSportType(sportType: string): boolean {
+	return SPORT_IGNORED.has(sportType);
 }
 
 export interface ImportResult {
@@ -70,7 +77,9 @@ export async function importStravaActivities(
 	for (const activity of activities) {
 		const modality = mapSportType(activity.sport_type);
 		if (!modality) {
-			if (!result.unmapped.includes(activity.sport_type)) result.unmapped.push(activity.sport_type);
+			if (!isIgnoredSportType(activity.sport_type) && !result.unmapped.includes(activity.sport_type)) {
+				result.unmapped.push(activity.sport_type);
+			}
 			continue;
 		}
 
