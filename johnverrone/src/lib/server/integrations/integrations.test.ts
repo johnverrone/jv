@@ -7,6 +7,7 @@ import { importStravaActivities, mapSportType, type StravaActivity } from './str
 import {
 	applyWhoopData,
 	importWhoopWorkouts,
+	isIgnoredWhoopSport,
 	mapWhoopSport,
 	whoopLocalDate,
 	type WhoopWorkout
@@ -93,11 +94,13 @@ describe('strava import', () => {
 
 		const result = await importStravaActivities(db, [
 			run(9002, '2026-09-16T18:00:00Z', { sport_type: 'Ride' }),
-			run(9003, '2026-09-16T20:00:00Z', { sport_type: 'Golf' })
+			run(9003, '2026-09-16T20:00:00Z', { sport_type: 'Pickleball' }),
+			run(9004, '2026-09-16T21:00:00Z', { sport_type: 'Golf' })
 		]);
 		expect(result.imported).toBe(0);
 		expect(result.duplicates).toBe(1);
-		expect(result.unmapped).toEqual(['Golf']);
+		// Golf is deliberately ignored, not reported as unmapped.
+		expect(result.unmapped).toEqual(['Pickleball']);
 	});
 });
 
@@ -191,7 +194,14 @@ describe('whoop workouts + cross-provider dedupe', () => {
 		expect(mapWhoopSport('walking')).toBe('walk');
 		expect(mapWhoopSport('stroller_walking')).toBe('walk');
 		expect(mapWhoopSport('hiking')).toBe('hike');
+		expect(mapWhoopSport('hiking-rucking')).toBe('hike');
+		expect(mapWhoopSport('Hiking/Rucking')).toBe('hike');
 		expect(mapWhoopSport('table tennis')).toBeNull();
+		// Deliberately ignored sports stay unmapped but are skipped silently.
+		expect(mapWhoopSport('golf')).toBeNull();
+		expect(isIgnoredWhoopSport('golf')).toBe(true);
+		expect(isIgnoredWhoopSport('activity')).toBe(true);
+		expect(isIgnoredWhoopSport('table tennis')).toBe(false);
 	});
 
 	it('imports whoop workouts, links the plan, and dedupes on re-sync', async () => {
