@@ -5,7 +5,7 @@ export interface CommandCenterClientOptions {
 
 export class CommandCenterApiError extends Error {}
 
-/** Thin wrapper over johnverrone.com's /api/coach/* and /api/guitar/* contracts. No local state. */
+/** Thin wrapper over johnverrone.com's /api/coach/*, /api/guitar/*, and /api/coffee/* contracts. No local state. */
 export class CommandCenterClient {
 	constructor(private opts: CommandCenterClientOptions) {}
 
@@ -80,5 +80,11 @@ export class CommandCenterClient {
 
 	updateGuitarSong(body: Record<string, unknown>) {
 		return this.request('/api/guitar/songs', { method: 'POST', body: JSON.stringify(body) });
+	}
+
+	// --- Coffee ---
+
+	createCoffeeBean(body: Record<string, unknown>) {
+		return this.request('/api/coffee/beans', { method: 'POST', body: JSON.stringify(body) });
 	}
 }

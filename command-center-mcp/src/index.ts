@@ -16,7 +16,7 @@ import { CommandCenterClient, CommandCenterApiError } from './apiClient';
 // COACH_API_TOKEN is unrelated to that — it's this worker's own credential
 // for its *outbound* calls to johnverrone.com's /api/* contracts.
 //
-// Tools are namespaced by prefix (coach_*, guitar_*) rather than split across
+// Tools are namespaced by prefix (coach_*, guitar_*, coffee_*) rather than split across
 // servers — MCP has no native tool-grouping concept, and splitting would mean
 // duplicating this entire OAuth/KV/DO setup per domain. Revisit if the tool
 // count crosses ~15-20 or a domain stops fitting "personal command center."
@@ -220,6 +220,29 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 				}
 			},
 			async (input) => this.run(() => this.client.updateGuitarSong(input))
+		);
+
+		// --- Coffee ---
+
+		this.server.registerTool(
+			'coffee_create_bean',
+			{
+				description:
+					'Add a coffee bean to johnverrone.com/coffee — typically from a photo of the bag. Reuses the roaster if it already exists (matched by name), otherwise creates it. New beans start as drafts; rating, flavors, and publishing happen later in the admin.',
+				inputSchema: {
+					name: z.string().describe('Bean name as printed on the bag, e.g. "Geometry"'),
+					roaster: z.string().describe('Roaster name, e.g. "Onyx Coffee Lab"'),
+					origins: z
+						.array(z.string())
+						.optional()
+						.describe('Origin countries/regions, e.g. ["Ethiopia", "Colombia"]'),
+					process: z
+						.string()
+						.optional()
+						.describe('Processing method, e.g. "Washed", "Natural", "Honey"')
+				}
+			},
+			async (input) => this.run(() => this.client.createCoffeeBean(input))
 		);
 	}
 
