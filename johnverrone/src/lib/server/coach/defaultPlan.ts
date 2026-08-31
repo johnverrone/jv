@@ -3,7 +3,9 @@ import type { NewPlanSession } from '$lib/server/db/schema';
 /**
  * The default weekly template, per the voice-session decisions: full-body
  * lifting 2×/week (chosen over splits for schedule resilience), two runs, one
- * steady trainer ride, and flexible weekend movement. 10-min pre-lift mobility
+ * steady trainer ride, and optional weekend movement (Saturday/Sunday never
+ * count against adherence; any synced activity marks them done). 10-min
+ * pre-lift mobility
  * and core are deliberate weak-point fixes; strength + easy aerobic volume is
  * the A1C/insulin-sensitivity play. Every session has a bare-minimum variant so
  * a chaotic day never has to become a zero. Seeded once via the plan editor's
@@ -83,7 +85,7 @@ export const DEFAULT_PLAN: Omit<NewPlanSession, 'id' | 'createdAt' | 'updatedAt'
 		name: 'Walk or light exercise',
 		modality: 'walk',
 		durationMin: 30,
-		prescription: 'A walk or any easy movement — light and unhurried counts.',
+		prescription: 'Optional — a walk or any easy movement; light and unhurried counts.',
 		bareMin: '15-min walk.',
 		bareMinDurationMin: 15
 	},

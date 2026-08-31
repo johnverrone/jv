@@ -16,6 +16,7 @@ import {
 	type CheckIn
 } from './schema';
 import { DEFAULT_PLAN } from '../coach/defaultPlan';
+import { isOptionalDay } from '../../coach/types';
 import { addDays, dayOfWeek, weekStart } from '../date';
 
 const now = sql`(datetime('now'))`;
@@ -201,6 +202,8 @@ export interface WeekAdherence {
  * Plan-vs-actual for the week starting at `weekStartDate` (a Monday).
  * `done` counts done + modified logs; a bare-minimum variant counts fully —
  * consistency over volume is the whole point of the fallback.
+ * Weekend days are optional: their sessions don't count as planned, but any
+ * logged weekend activity still counts toward `done` (pct caps at 100).
  */
 export async function getWeekAdherence(db: DB, weekStartDate: string): Promise<WeekAdherence> {
 	const dates = Array.from({ length: 7 }, (_, i) => addDays(weekStartDate, i));
@@ -222,7 +225,8 @@ export async function getWeekAdherence(db: DB, weekStartDate: string): Promise<W
 	});
 
 	const planned = days.reduce(
-		(n, d) => n + d.sessions.filter((s) => s.modality !== 'rest').length,
+		(n, d) =>
+			isOptionalDay(d.dayOfWeek) ? n : n + d.sessions.filter((s) => s.modality !== 'rest').length,
 		0
 	);
 	const done = logs.filter((l) => l.status === 'done' || l.status === 'modified').length;

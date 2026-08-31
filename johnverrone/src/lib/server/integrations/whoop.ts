@@ -1,6 +1,6 @@
 import type { DB } from '../db';
 import { workoutLog } from '../db/schema';
-import type { Modality } from '../../coach/types';
+import { isOptionalDay, type Modality } from '../../coach/types';
 import { addMetric, getSessionsForDay, getWorkoutsForDate } from '../db/coach';
 import { getOAuthToken, saveOAuthToken, markSynced } from '../db/integrations';
 import { dayOfWeek } from '../date';
@@ -127,28 +127,38 @@ export function isIgnoredWhoopSport(sportName: string): boolean {
  * as the Strava import, except Whoop is the LOWER-priority source: any existing
  * log for the date+modality — manual, api, or Strava — makes it a duplicate.
  * (The Strava import replaces whoop-sourced rows, so sync order never matters.)
+ * Weekends are optional days where ANY activity counts: an activity that
+ * doesn't match a planned modality — even an unmapped or ignored sport — links
+ * to the day's session (inheriting its modality when unmapped) so the day
+ * shows done.
  */
 export async function importWhoopWorkouts(db: DB, workouts: WhoopWorkout[]): Promise<ImportResult> {
 	const result: ImportResult = { imported: 0, duplicates: 0, replaced: 0, unmapped: [] };
 
 	for (const workout of workouts) {
-		const modality = mapWhoopSport(workout.sport_name);
+		const date = whoopLocalDate(workout.start, workout.timezone_offset);
+		const dow = dayOfWeek(date);
+		const mapped = mapWhoopSport(workout.sport_name);
+		const sessions = await getSessionsForDay(db, dow);
+		const planned =
+			sessions.find((s) => s.modality === mapped) ?? (isOptionalDay(dow) ? sessions[0] : undefined);
+		const modality = mapped ?? (isOptionalDay(dow) ? planned?.modality : undefined);
 		if (!modality) {
-			if (!isIgnoredWhoopSport(workout.sport_name) && !result.unmapped.includes(workout.sport_name)) {
+			if (
+				!isIgnoredWhoopSport(workout.sport_name) &&
+				!result.unmapped.includes(workout.sport_name)
+			) {
 				result.unmapped.push(workout.sport_name);
 			}
 			continue;
 		}
 
-		const date = whoopLocalDate(workout.start, workout.timezone_offset);
 		const existing = await getWorkoutsForDate(db, date);
 		if (existing.some((w) => w.modality === modality && w.whoopWorkoutId !== workout.id)) {
 			result.duplicates++;
 			continue;
 		}
 
-		const sessions = await getSessionsForDay(db, dayOfWeek(date));
-		const planned = sessions.find((s) => s.modality === modality);
 		const durationMin = Math.max(
 			1,
 			Math.round((new Date(workout.end).getTime() - new Date(workout.start).getTime()) / 60_000)

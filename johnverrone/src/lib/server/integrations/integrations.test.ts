@@ -102,6 +102,33 @@ describe('strava import', () => {
 		// Golf is deliberately ignored, not reported as unmapped.
 		expect(result.unmapped).toEqual(['Pickleball']);
 	});
+
+	it('counts any weekend activity: mismatched and ignored sports mark the optional day done', async () => {
+		const db = getDb(env.DB);
+		await seedDefaultPlan(db);
+		const sessions = await listPlanSessions(db);
+		const satWalk = sessions.find((s) => s.dayOfWeek === 6)!;
+		const sunRest = sessions.find((s) => s.dayOfWeek === 0)!;
+
+		// 2026-09-19 is a Saturday: a ride doesn't match the planned walk but still
+		// links it. 2026-09-20 is a Sunday: golf is ignored on weekdays, but any
+		// weekend activity counts and inherits the session's modality.
+		const result = await importStravaActivities(db, [
+			run(9101, '2026-09-19T09:00:00Z', { sport_type: 'Ride' }),
+			run(9102, '2026-09-20T14:00:00Z', { sport_type: 'Golf', name: 'Sunday golf' })
+		]);
+		expect(result).toEqual({ imported: 2, duplicates: 0, replaced: 0, unmapped: [] });
+
+		const [sat] = await listWorkoutLogs(db, { from: '2026-09-19', to: '2026-09-19' });
+		expect(sat.planSessionId).toBe(satWalk.id);
+		expect(sat.status).toBe('done');
+		expect(sat.modality).toBe('bike'); // mapped sports keep their own modality
+
+		const [sun] = await listWorkoutLogs(db, { from: '2026-09-20', to: '2026-09-20' });
+		expect(sun.planSessionId).toBe(sunRest.id);
+		expect(sun.status).toBe('done');
+		expect(sun.modality).toBe(sunRest.modality);
+	});
 });
 
 describe('whoop import', () => {
@@ -249,5 +276,23 @@ describe('whoop workouts + cross-provider dedupe', () => {
 		expect(logs).toHaveLength(1);
 		expect(logs[0].source).toBe('strava');
 		expect(logs[0].durationMin).toBe(40);
+	});
+
+	it('counts any weekend whoop activity toward the optional day session', async () => {
+		const db = getDb(env.DB);
+		await seedDefaultPlan(db);
+		const sunRest = (await listPlanSessions(db)).find((s) => s.dayOfWeek === 0)!;
+
+		// 2026-09-27 is a Sunday — "activity" is ignored on weekdays, but any
+		// weekend activity counts.
+		const result = await importWhoopWorkouts(db, [
+			lift('w-9', '2026-09-27T15:00:00.000Z', { sport_name: 'activity' })
+		]);
+		expect(result).toEqual({ imported: 1, duplicates: 0, replaced: 0, unmapped: [] });
+
+		const [log] = await listWorkoutLogs(db, { from: '2026-09-27', to: '2026-09-27' });
+		expect(log.planSessionId).toBe(sunRest.id);
+		expect(log.status).toBe('done');
+		expect(log.modality).toBe(sunRest.modality);
 	});
 });
