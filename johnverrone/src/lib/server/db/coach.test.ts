@@ -24,6 +24,7 @@ const MON = '2026-07-06';
 const TUE = '2026-07-07';
 const WED = '2026-07-08';
 const THU = '2026-07-09';
+const SAT = '2026-07-11';
 
 describe('coach data layer (real Miniflare D1)', () => {
 	it('seeds the default plan idempotently', async () => {
@@ -78,7 +79,7 @@ describe('coach data layer (real Miniflare D1)', () => {
 		expect(streaks.noAddedSugar).toEqual({ current: 0, best: 3 });
 	});
 
-	it('computes week adherence: bare-min and modified count as done', async () => {
+	it('computes week adherence: bare-min and modified count as done, weekends are optional', async () => {
 		const db = getDb(env.DB);
 		await seedDefaultPlan(db);
 		const sessions = await listPlanSessions(db);
@@ -95,11 +96,13 @@ describe('coach data layer (real Miniflare D1)', () => {
 		});
 		await logWorkout(db, { date: TUE, status: 'skipped', modality: 'run' });
 		await logWorkout(db, { date: WED, status: 'modified', modality: 'run', durationMin: 30 });
+		// Sat: optional-day activity — counts toward done but never toward planned.
+		await logWorkout(db, { date: SAT, status: 'done', modality: 'hike', durationMin: 90 });
 
 		const week = await getWeekAdherence(db, MON);
-		expect(week.planned).toBe(6); // Sunday is 'rest' modality and doesn't count as planned
-		expect(week.done).toBe(2); // bare-min + modified; the skip doesn't count
-		expect(week.pct).toBe(33);
+		expect(week.planned).toBe(5); // Sat/Sun are optional days and don't count as planned
+		expect(week.done).toBe(3); // bare-min + modified + Saturday hike; the skip doesn't count
+		expect(week.pct).toBe(60);
 		expect(week.days[0].date).toBe(MON);
 		expect(week.days[0].logs).toHaveLength(1);
 		expect(week.days[0].sessions[0].name).toBe('Full body A');

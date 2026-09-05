@@ -1,6 +1,6 @@
 import type { DB } from '../db';
 import { workoutLog } from '../db/schema';
-import type { Modality } from '../../coach/types';
+import { isOptionalDay, type Modality } from '../../coach/types';
 import { getOAuthToken, saveOAuthToken, markSynced } from '../db/integrations';
 import { getSessionsForDay, getWorkoutsForDate, deleteWorkoutLog } from '../db/coach';
 import { dayOfWeek } from '../date';
@@ -66,7 +66,11 @@ export interface ImportResult {
  * - a whoop-sourced log for the same date+modality is REPLACED — when both
  *   providers saw the workout, Strava's version (GPS, real moving time) wins
  *   regardless of which sync ran first;
- * - the day's plan session with the same modality gets linked for adherence.
+ * - the day's plan session with the same modality gets linked for adherence;
+ * - weekends are optional days where ANY activity counts: an activity that
+ *   doesn't match a planned modality — even an unmapped or ignored sport —
+ *   links to the day's session (inheriting its modality when unmapped) so the
+ *   day shows done.
  */
 export async function importStravaActivities(
 	db: DB,
@@ -75,15 +79,23 @@ export async function importStravaActivities(
 	const result: ImportResult = { imported: 0, duplicates: 0, replaced: 0, unmapped: [] };
 
 	for (const activity of activities) {
-		const modality = mapSportType(activity.sport_type);
+		const date = activity.start_date_local.slice(0, 10);
+		const dow = dayOfWeek(date);
+		const mapped = mapSportType(activity.sport_type);
+		const sessions = await getSessionsForDay(db, dow);
+		const planned =
+			sessions.find((s) => s.modality === mapped) ?? (isOptionalDay(dow) ? sessions[0] : undefined);
+		const modality = mapped ?? (isOptionalDay(dow) ? planned?.modality : undefined);
 		if (!modality) {
-			if (!isIgnoredSportType(activity.sport_type) && !result.unmapped.includes(activity.sport_type)) {
+			if (
+				!isIgnoredSportType(activity.sport_type) &&
+				!result.unmapped.includes(activity.sport_type)
+			) {
 				result.unmapped.push(activity.sport_type);
 			}
 			continue;
 		}
 
-		const date = activity.start_date_local.slice(0, 10);
 		const existing = await getWorkoutsForDate(db, date);
 		const sameModality = existing.filter(
 			(w) => w.modality === modality && w.stravaActivityId !== String(activity.id)
@@ -96,9 +108,6 @@ export async function importStravaActivities(
 			await deleteWorkoutLog(db, whoopDup.id);
 			result.replaced++;
 		}
-
-		const sessions = await getSessionsForDay(db, dayOfWeek(date));
-		const planned = sessions.find((s) => s.modality === modality);
 
 		const inserted = await db
 			.insert(workoutLog)

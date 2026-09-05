@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import SvelteMarked from 'svelte-marked';
-	import { MODALITIES, DAY_NAMES, DAY_ORDER, HABIT_LABELS } from '$lib/coach/types';
+	import { MODALITIES, DAY_NAMES, DAY_ORDER, HABIT_LABELS, isOptionalDay } from '$lib/coach/types';
 	import type { PageData, ActionData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
@@ -174,7 +174,9 @@
 									<span class="name">{session.name}</span>
 									<span class="meta">{sessionMeta(session.modality, session.durationMin)}</span>
 									{#if logged}
-										{@render statusPill(logged, summary.date, session.modality)}
+										{@render statusPill(logged, summary.date, session.modality, summary.dayOfWeek)}
+									{:else if isOptionalDay(summary.dayOfWeek)}
+										<span class="pill optional">optional</span>
 									{:else}
 										<span class="pill todo">todo</span>
 									{/if}
@@ -251,7 +253,7 @@
 						{#each summary.workouts.filter((w) => !summary.sessions.some((s) => s.id === w.planSessionId)) as log (log.id)}
 							<div class="planned plain extra today-extra">
 								<span class="name">{log.modality} (unplanned)</span>
-								{@render statusPill(log, summary.date, log.modality)}
+								{@render statusPill(log, summary.date, log.modality, summary.dayOfWeek)}
 							</div>
 						{/each}
 					</div>
@@ -270,7 +272,7 @@
 									<summary>
 										<span class="name">{session.name}</span>
 										<span class="meta">{sessionMeta(session.modality, session.durationMin)}</span>
-										{@render statusPill(log, day.date, session.modality)}
+										{@render statusPill(log, day.date, session.modality, day.dayOfWeek)}
 									</summary>
 									<div class="row-details">
 										{#if session.prescription}
@@ -289,14 +291,14 @@
 								<div class="planned plain">
 									<span class="name">{session.name}</span>
 									<span class="meta">{sessionMeta(session.modality, session.durationMin)}</span>
-									{@render statusPill(log, day.date, session.modality)}
+									{@render statusPill(log, day.date, session.modality, day.dayOfWeek)}
 								</div>
 							{/if}
 						{/each}
 						{#each day.logs.filter((l) => !day.sessions.some((s) => s.id === l.planSessionId)) as log (log.id)}
 							<div class="planned plain extra">
 								<span class="name">{log.modality} (unplanned)</span>
-								{@render statusPill(log, day.date, log.modality)}
+								{@render statusPill(log, day.date, log.modality, day.dayOfWeek)}
 							</div>
 						{/each}
 					</div>
@@ -360,7 +362,7 @@
 	{/if}
 {/if}
 
-{#snippet statusPill(log: LogLike | undefined, date: string, modality: string)}
+{#snippet statusPill(log: LogLike | undefined, date: string, modality: string, dow: number)}
 	{#if log}
 		{#if log.status === 'done' && log.variant === 'bare_min'}
 			<span class="pill bare-min">✓ bare min{log.durationMin ? ` · ${log.durationMin}′` : ''}</span>
@@ -371,6 +373,8 @@
 		{:else}
 			<span class="pill skip">✗ skipped</span>
 		{/if}
+	{:else if isOptionalDay(dow)}
+		<span class="pill optional">optional</span>
 	{:else if date < summary.date && modality !== 'rest'}
 		<span class="pill missed">missed</span>
 	{/if}
@@ -747,6 +751,11 @@
 	.pill.todo {
 		color: var(--color-accent);
 		border-color: rgba(191, 134, 64, 0.45);
+	}
+
+	.pill.optional {
+		color: var(--color-text-secondary);
+		border-color: var(--color-hint);
 	}
 
 	/* --- today's row --- */
