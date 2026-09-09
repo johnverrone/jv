@@ -4,7 +4,11 @@
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 
-	let syncing = $state<string | null>(null);
+	let syncing = $state(false);
+
+	const stravaReady = $derived(data.configured.strava && data.strava.connected);
+	const whoopReady = $derived(data.configured.whoop && data.whoop.connected);
+	const anyReady = $derived(stravaReady || whoopReady);
 </script>
 
 <svelte:head>
@@ -13,6 +17,24 @@
 
 <div class="head">
 	<h1>integrations</h1>
+	{#if anyReady}
+		<form
+			method="POST"
+			action="?/sync"
+			use:enhance={() => {
+				syncing = true;
+				return async ({ update }) => {
+					await update();
+					syncing = false;
+				};
+			}}
+		>
+			<input type="hidden" name="days" value="14" />
+			<button type="submit" class="save" disabled={syncing}>
+				{syncing ? 'syncing…' : 'sync last 14 days'}
+			</button>
+		</form>
+	{/if}
 </div>
 
 {#if form?.error}<p class="error">{form.error}</p>{/if}
@@ -37,22 +59,6 @@
 		<a class="save" href="/auth/strava">connect strava</a>
 	{:else}
 		<div class="row">
-			<form
-				method="POST"
-				action="?/syncStrava"
-				use:enhance={() => {
-					syncing = 'strava';
-					return async ({ update }) => {
-						await update();
-						syncing = null;
-					};
-				}}
-			>
-				<input type="hidden" name="days" value="14" />
-				<button type="submit" class="save" disabled={syncing === 'strava'}>
-					{syncing === 'strava' ? 'syncing…' : 'sync last 14 days'}
-				</button>
-			</form>
 			<form method="POST" action="?/disconnect" use:enhance>
 				<input type="hidden" name="provider" value="strava" />
 				<button type="submit" class="link danger">disconnect</button>
@@ -97,22 +103,6 @@
 		<a class="save" href="/auth/whoop">connect whoop</a>
 	{:else}
 		<div class="row">
-			<form
-				method="POST"
-				action="?/syncWhoop"
-				use:enhance={() => {
-					syncing = 'whoop';
-					return async ({ update }) => {
-						await update();
-						syncing = null;
-					};
-				}}
-			>
-				<input type="hidden" name="days" value="14" />
-				<button type="submit" class="save" disabled={syncing === 'whoop'}>
-					{syncing === 'whoop' ? 'syncing…' : 'sync last 14 days'}
-				</button>
-			</form>
 			<form method="POST" action="?/disconnect" use:enhance>
 				<input type="hidden" name="provider" value="whoop" />
 				<button type="submit" class="link danger">disconnect</button>
@@ -133,6 +123,11 @@
 
 <style>
 	.head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		flex-wrap: wrap;
 		margin-bottom: 1rem;
 	}
 

@@ -2,8 +2,8 @@ import { env } from '$env/dynamic/private';
 import { error, fail } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
 import { getOAuthToken, deleteOAuthToken, type Provider } from '$lib/server/db/integrations';
-import { syncStrava } from '$lib/server/integrations/strava';
-import { syncWhoop } from '$lib/server/integrations/whoop';
+import { syncStrava, type ImportResult } from '$lib/server/integrations/strava';
+import { syncWhoop, type WhoopImportResult } from '$lib/server/integrations/whoop';
 import { str } from '$lib/server/form';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -36,39 +36,55 @@ const syncDays = (form: FormData) => {
 	return Number.isFinite(days) && days >= 1 ? Math.min(Math.round(days), 90) : 14;
 };
 
-export const actions: Actions = {
-	syncStrava: async ({ request, locals, platform }) => {
-		requireAuth(locals.authenticated);
-		if (!env.STRAVA_CLIENT_ID || !env.STRAVA_CLIENT_SECRET) {
-			return fail(500, { error: 'Strava credentials are not configured.' });
-		}
-		try {
-			const result = await syncStrava(
-				getDb(platform!.env.DB),
-				{ clientId: env.STRAVA_CLIENT_ID, clientSecret: env.STRAVA_CLIENT_SECRET },
-				syncDays(await request.formData())
-			);
-			return { strava: result };
-		} catch (e) {
-			return fail(502, { error: `Strava sync failed: ${e instanceof Error ? e.message : e}` });
-		}
-	},
+const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
-	syncWhoop: async ({ request, locals, platform }) => {
+export const actions: Actions = {
+	sync: async ({ request, locals, platform }) => {
 		requireAuth(locals.authenticated);
-		if (!env.WHOOP_CLIENT_ID || !env.WHOOP_CLIENT_SECRET) {
-			return fail(500, { error: 'Whoop credentials are not configured.' });
+		const db = getDb(platform!.env.DB);
+		const days = syncDays(await request.formData());
+		const [stravaToken, whoopToken] = await Promise.all([
+			getOAuthToken(db, 'strava'),
+			getOAuthToken(db, 'whoop')
+		]);
+
+		const stravaReady = Boolean(stravaToken && env.STRAVA_CLIENT_ID && env.STRAVA_CLIENT_SECRET);
+		const whoopReady = Boolean(whoopToken && env.WHOOP_CLIENT_ID && env.WHOOP_CLIENT_SECRET);
+		if (!stravaReady && !whoopReady) {
+			return fail(400, { error: 'No integrations are connected.' });
 		}
-		try {
-			const result = await syncWhoop(
-				getDb(platform!.env.DB),
-				{ clientId: env.WHOOP_CLIENT_ID, clientSecret: env.WHOOP_CLIENT_SECRET },
-				syncDays(await request.formData())
-			);
-			return { whoop: result };
-		} catch (e) {
-			return fail(502, { error: `Whoop sync failed: ${e instanceof Error ? e.message : e}` });
+
+		let strava: ImportResult | null = null;
+		let whoop: WhoopImportResult | null = null;
+		const errors: string[] = [];
+
+		// Whoop first: Strava wins when both saw a workout, so its import gets the
+		// last word and can replace the Whoop-logged version.
+		if (whoopReady) {
+			try {
+				whoop = await syncWhoop(
+					db,
+					{ clientId: env.WHOOP_CLIENT_ID!, clientSecret: env.WHOOP_CLIENT_SECRET! },
+					days
+				);
+			} catch (e) {
+				errors.push(`Whoop sync failed: ${message(e)}`);
+			}
 		}
+		if (stravaReady) {
+			try {
+				strava = await syncStrava(
+					db,
+					{ clientId: env.STRAVA_CLIENT_ID!, clientSecret: env.STRAVA_CLIENT_SECRET! },
+					days
+				);
+			} catch (e) {
+				errors.push(`Strava sync failed: ${message(e)}`);
+			}
+		}
+
+		if (errors.length && !strava && !whoop) return fail(502, { error: errors.join(' · ') });
+		return { strava, whoop, error: errors.length ? errors.join(' · ') : null };
 	},
 
 	disconnect: async ({ request, locals, platform }) => {
