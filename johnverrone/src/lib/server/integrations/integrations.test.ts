@@ -2,7 +2,13 @@ import { env } from 'cloudflare:test';
 import { describe, it, expect } from 'vitest';
 import { getDb } from '../db';
 import { getOAuthToken, saveOAuthToken, deleteOAuthToken } from '../db/integrations';
-import { seedDefaultPlan, listPlanSessions, listWorkoutLogs, listMetrics } from '../db/coach';
+import {
+	seedDefaultPlan,
+	listPlanSessions,
+	listWorkoutLogs,
+	listMetrics,
+	setWorkoutExercises
+} from '../db/coach';
 import { importStravaActivities, mapSportType, type StravaActivity } from './strava';
 import {
 	applyWhoopData,
@@ -276,6 +282,37 @@ describe('whoop workouts + cross-provider dedupe', () => {
 		expect(logs).toHaveLength(1);
 		expect(logs[0].source).toBe('strava');
 		expect(logs[0].durationMin).toBe(40);
+	});
+
+	it('carries hand-logged exercises onto the row that replaces a whoop workout', async () => {
+		const db = getDb(env.DB);
+
+		// Whoop creates the lift row; the exercises get filled in afterward.
+		await importWhoopWorkouts(db, [
+			lift('w-4', '2026-09-24T17:00:00.000Z', { sport_name: 'weightlifting' })
+		]);
+		const [whoopLog] = await listWorkoutLogs(db, { from: '2026-09-24', to: '2026-09-24' });
+		await setWorkoutExercises(db, whoopLog.id, [
+			{ name: 'Back Squat', sets: 3, reps: 5, weightLb: 205, rpe: 8 }
+		]);
+
+		// Strava then imports the same session and replaces the whoop row — the
+		// detail no sync can recreate has to survive.
+		const strava = await importStravaActivities(db, [
+			{
+				id: 8803,
+				sport_type: 'WeightTraining',
+				start_date_local: '2026-09-24T12:00:00Z',
+				moving_time: 3000
+			}
+		]);
+		expect(strava.replaced).toBe(1);
+
+		const logs = await listWorkoutLogs(db, { from: '2026-09-24', to: '2026-09-24' });
+		expect(logs).toHaveLength(1);
+		expect(logs[0].source).toBe('strava');
+		expect(logs[0].exercises.map((e) => e.name)).toEqual(['Back Squat']);
+		expect(logs[0].exercises[0].weightLb).toBe(205);
 	});
 
 	it('counts any weekend whoop activity toward the optional day session', async () => {
