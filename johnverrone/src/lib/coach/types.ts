@@ -40,6 +40,29 @@ export function isOptionalDay(dow: number): boolean {
 	return dow === 0 || dow === 6;
 }
 
+/**
+ * Normalized exercise key: lowercase, non-alphanumerics collapsed to a single
+ * underscore. "Back Squat", "back squat", and "back-squat" all become
+ * `back_squat` so progression for one lift can be pulled by name.
+ */
+export function exerciseSlug(name: string): string {
+	return name
+		.trim()
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '_')
+		.replace(/^_+|_+$/g, '');
+}
+
+/**
+ * Epley estimated 1RM: weight × (1 + reps/30). Null when there's nothing to
+ * estimate from (bodyweight work, or a set logged without reps). A single rep
+ * returns the weight itself.
+ */
+export function estimateOneRepMax(weightLb: number | null, reps: number | null): number | null {
+	if (!weightLb || !reps || reps < 1) return null;
+	return Math.round(weightLb * (1 + reps / 30) * 10) / 10;
+}
+
 export const HABIT_LABELS = {
 	noAddedSugar: 'no added sugar',
 	noAlcohol: 'no alcohol',

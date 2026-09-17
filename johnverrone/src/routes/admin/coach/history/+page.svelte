@@ -9,6 +9,19 @@
 	const workoutsFor = (date: string) => data.workouts.filter((w) => w.date === date);
 	const habitFor = (date: string) => data.habits.find((h) => h.date === date);
 
+	type Exercise = PageData['workouts'][number]['exercises'][number];
+
+	/** "3×5 @ 185 lb · RPE 8" — each part dropped when it wasn't logged. */
+	const load = (e: Exercise) =>
+		[
+			e.sets && e.reps ? `${e.sets}×${e.reps}` : (e.reps && `${e.reps} reps`) || '',
+			e.weightLb ? `@ ${e.weightLb} lb` : '',
+			e.rpe ? `· RPE ${e.rpe}` : '',
+			e.notes ? `· ${e.notes}` : ''
+		]
+			.filter(Boolean)
+			.join(' ');
+
 	const habitSummary = (date: string) => {
 		const habit = habitFor(date);
 		if (!habit) return '';
@@ -51,6 +64,16 @@
 					<button type="submit" class="link danger">delete</button>
 				</form>
 			</div>
+			{#if log.exercises.length}
+				<ul class="exercises">
+					{#each log.exercises as exercise (exercise.id)}
+						<li>
+							<span class="exercise-name">{exercise.name}</span>
+							<span class="exercise-load">{load(exercise)}</span>
+						</li>
+					{/each}
+				</ul>
+			{/if}
 		{/each}
 	</section>
 {/each}
@@ -86,6 +109,25 @@
 
 	.log.skipped {
 		opacity: 0.6;
+	}
+
+	.exercises {
+		list-style: none;
+		margin: 0 0 4px;
+		padding: 0.1rem 0.75rem 0.35rem 1.5rem;
+		font-size: 0.85rem;
+	}
+
+	.exercises li {
+		display: flex;
+		gap: 0.6rem;
+		padding: 0.1rem 0;
+	}
+
+	.exercise-load {
+		font-family: var(--font-family-mono);
+		font-size: 0.75rem;
+		color: var(--color-text-secondary);
 	}
 
 	.modality {

@@ -178,6 +178,34 @@ export const workoutLog = sqliteTable(
 	(t) => [index('idx_workout_date').on(t.date)]
 );
 
+// Per-exercise detail for a workout (see migrations/0008_workout_exercise.sql).
+// Optional: only lifts tend to carry it, and it's usually filled in after the
+// sync-created workout row already exists.
+export const workoutExercise = sqliteTable(
+	'workout_exercise',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		workoutLogId: integer('workout_log_id')
+			.notNull()
+			.references(() => workoutLog.id, { onDelete: 'cascade' }),
+		sortOrder: integer('sort_order').notNull().default(0),
+		name: text('name').notNull(), // as typed: "Back Squat"
+		slug: text('slug').notNull(), // derived from name; the history lookup key
+		sets: integer('sets'),
+		reps: integer('reps'),
+		weightLb: real('weight_lb'), // null for bodyweight work
+		rpe: integer('rpe'), // 1-10
+		notes: text('notes'),
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime('now'))`)
+	},
+	(t) => [
+		index('idx_exercise_workout').on(t.workoutLogId, t.sortOrder),
+		index('idx_exercise_slug').on(t.slug)
+	]
+);
+
 export const habitLog = sqliteTable('habit_log', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	date: text('date').notNull().unique(), // one row per day; upsert target
@@ -250,6 +278,8 @@ export type PlanSession = typeof planSession.$inferSelect;
 export type NewPlanSession = typeof planSession.$inferInsert;
 export type WorkoutLog = typeof workoutLog.$inferSelect;
 export type NewWorkoutLog = typeof workoutLog.$inferInsert;
+export type WorkoutExercise = typeof workoutExercise.$inferSelect;
+export type NewWorkoutExercise = typeof workoutExercise.$inferInsert;
 export type HabitLog = typeof habitLog.$inferSelect;
 export type NewHabitLog = typeof habitLog.$inferInsert;
 export type BodyMetric = typeof bodyMetric.$inferSelect;

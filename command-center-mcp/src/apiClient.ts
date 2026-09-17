@@ -44,6 +44,13 @@ export class CommandCenterClient {
 		return this.request('/api/coach/plan', { method: 'POST', body: JSON.stringify(body) });
 	}
 
+	getExerciseHistory(params: { name: string; weeks?: number; limit?: number }) {
+		const query = new URLSearchParams({ name: params.name });
+		if (params.weeks) query.set('weeks', String(params.weeks));
+		if (params.limit) query.set('limit', String(params.limit));
+		return this.request(`/api/coach/exercise?${query}`);
+	}
+
 	logWorkout(body: Record<string, unknown>) {
 		return this.request('/api/coach/log/workout', { method: 'POST', body: JSON.stringify(body) });
 	}

@@ -29,6 +29,18 @@ const WORKOUT_VARIANTS = ['full', 'bare_min'] as const;
 const CHECK_IN_TYPES = ['daily', 'weekly'] as const;
 const DIFFICULTIES = ['Beginner', 'Intermediate', 'Advanced'] as const;
 
+// One logged exercise entry. Everything but the name is optional — a quick log
+// ("did squats") is still worth more than nothing, and bodyweight work has no
+// weight to give.
+const EXERCISE_SCHEMA = z.object({
+	name: z.string().describe('e.g. "Back Squat"'),
+	sets: z.number().int().min(1).optional(),
+	reps: z.number().int().min(1).optional().describe('reps per set'),
+	weight_lb: z.number().optional().describe('load in pounds; omit for bodyweight'),
+	rpe: z.number().int().min(1).max(10).optional(),
+	notes: z.string().optional()
+});
+
 const text = (value: unknown) => ({
 	content: [{ type: 'text' as const, text: JSON.stringify(value, null, 2) }]
 });
@@ -55,7 +67,7 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 			'coach_get_today',
 			{
 				description:
-					"Today's planned session, logged workouts, habit toggles, streaks, latest coach check-in, and this week's adherence.",
+					"Today's planned session, logged workouts (each with its exercises), habit toggles, streaks, latest coach check-in, and this week's adherence.",
 				inputSchema: { date: z.string().optional().describe('yyyy-mm-dd, defaults to today') }
 			},
 			async ({ date }) => this.run(() => this.client.getToday(date))
@@ -65,7 +77,7 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 			'coach_get_summary',
 			{
 				description:
-					'Rolling summary for a weekly review: adherence, streaks, training volume by modality, recent logs, latest body metrics, recent check-ins.',
+					'Rolling summary for a weekly review: adherence, streaks, training volume by modality, recent logs (each with its exercises), latest body metrics, recent check-ins.',
 				inputSchema: { days: z.number().int().min(1).max(90).optional().describe('default 7') }
 			},
 			async ({ days }) => this.run(() => this.client.getSummary(days))
@@ -102,19 +114,55 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 		this.server.registerTool(
 			'coach_log_workout',
 			{
-				description: 'Log a completed, skipped, or modified workout.',
+				description:
+					'Log a completed, skipped, or modified workout, optionally with per-exercise detail. Omit id to create; pass the id of an existing log (from coach_get_today) to patch it — the usual path for lifts, since a Whoop sync creates the workout row and the exercises get filled in afterward.',
 				inputSchema: {
+					id: z
+						.number()
+						.int()
+						.optional()
+						.describe('Existing workout log id to patch; omit to create a new log'),
 					date: z.string().optional().describe('yyyy-mm-dd, defaults to today'),
-					status: z.enum(WORKOUT_STATUSES),
-					modality: z.enum(MODALITIES),
+					status: z.enum(WORKOUT_STATUSES).optional().describe('required when creating'),
+					modality: z.enum(MODALITIES).optional().describe('required when creating'),
 					plan_session_id: z.number().int().optional(),
 					duration_min: z.number().int().optional(),
 					rpe: z.number().int().min(1).max(10).optional(),
 					notes: z.string().optional(),
-					variant: z.enum(WORKOUT_VARIANTS).optional()
+					variant: z.enum(WORKOUT_VARIANTS).optional(),
+					exercises: z
+						.array(EXERCISE_SCHEMA)
+						.optional()
+						.describe(
+							'Exercises performed, in order. One entry per exercise (or per distinct load — a back-off set can be its own entry with the same name).'
+						),
+					exercises_mode: z
+						.enum(['replace', 'append'])
+						.optional()
+						.describe('How exercises apply to an existing log. Default replace.')
 				}
 			},
 			async (input) => this.run(() => this.client.logWorkout(input))
+		);
+
+		this.server.registerTool(
+			'coach_get_exercise_history',
+			{
+				description:
+					'Progression for a single exercise by name: one entry per day with that day\'s top set (weight × reps × RPE) and estimated 1RM, newest first. Use this for "has my squat gone up?" instead of scanning workouts. Name matching ignores case, spaces, and hyphens.',
+				inputSchema: {
+					name: z.string().describe('Exercise name, e.g. "back squat"'),
+					weeks: z
+						.number()
+						.int()
+						.min(1)
+						.max(52)
+						.optional()
+						.describe('Look back this many weeks; omit for all history'),
+					limit: z.number().int().min(1).max(200).optional().describe('Max days returned, default 50')
+				}
+			},
+			async (input) => this.run(() => this.client.getExerciseHistory(input))
 		);
 
 		this.server.registerTool(

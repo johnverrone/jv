@@ -2,7 +2,13 @@ import type { DB } from '../db';
 import { workoutLog } from '../db/schema';
 import { isOptionalDay, type Modality } from '../../coach/types';
 import { getOAuthToken, saveOAuthToken, markSynced } from '../db/integrations';
-import { getSessionsForDay, getWorkoutsForDate, deleteWorkoutLog } from '../db/coach';
+import {
+	getSessionsForDay,
+	getWorkoutsForDate,
+	deleteWorkoutLog,
+	setWorkoutExercises,
+	type ExerciseInput
+} from '../db/coach';
 import { dayOfWeek } from '../date';
 
 export interface OAuthCreds {
@@ -65,7 +71,8 @@ export interface ImportResult {
  *   the Today page) means the activity is a duplicate, not a second workout;
  * - a whoop-sourced log for the same date+modality is REPLACED — when both
  *   providers saw the workout, Strava's version (GPS, real moving time) wins
- *   regardless of which sync ran first;
+ *   regardless of which sync ran first — any exercises logged against the
+ *   replaced row move to the new one;
  * - the day's plan session with the same modality gets linked for adherence;
  * - weekends are optional days where ANY activity counts: an activity that
  *   doesn't match a planned modality — even an unmapped or ignored sport —
@@ -104,7 +111,11 @@ export async function importStravaActivities(
 			result.duplicates++;
 			continue;
 		}
+		// Exercises are hand-filled detail that no sync can recreate, so they ride
+		// along to the replacement row rather than dying with the whoop-sourced one.
+		const carried: ExerciseInput[] = [];
 		for (const whoopDup of sameModality) {
+			carried.push(...whoopDup.exercises);
 			await deleteWorkoutLog(db, whoopDup.id);
 			result.replaced++;
 		}
@@ -125,8 +136,10 @@ export async function importStravaActivities(
 			.onConflictDoNothing({ target: workoutLog.stravaActivityId })
 			.returning();
 
-		if (inserted.length) result.imported++;
-		else result.duplicates++;
+		if (inserted.length) {
+			result.imported++;
+			if (carried.length) await setWorkoutExercises(db, inserted[0].id, carried);
+		} else result.duplicates++;
 	}
 
 	return result;

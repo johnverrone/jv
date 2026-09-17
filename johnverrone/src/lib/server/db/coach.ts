@@ -1,13 +1,15 @@
-import { eq, and, desc, asc, gte, lte, sql } from 'drizzle-orm';
+import { eq, and, desc, asc, gte, lte, inArray, sql } from 'drizzle-orm';
 import type { DB } from './index';
 import {
 	planSession,
 	workoutLog,
+	workoutExercise,
 	habitLog,
 	bodyMetric,
 	checkIn,
 	type PlanSession,
 	type WorkoutLog,
+	type WorkoutExercise,
 	type HabitLog,
 	type NewPlanSession,
 	type NewWorkoutLog,
@@ -16,7 +18,7 @@ import {
 	type CheckIn
 } from './schema';
 import { DEFAULT_PLAN } from '../coach/defaultPlan';
-import { isOptionalDay } from '../../coach/types';
+import { isOptionalDay, exerciseSlug, estimateOneRepMax } from '../../coach/types';
 import { addDays, dayOfWeek, weekStart } from '../date';
 
 const now = sql`(datetime('now'))`;
@@ -75,8 +77,24 @@ export async function logWorkout(db: DB, input: Omit<NewWorkoutLog, 'id' | 'crea
 	return entry;
 }
 
+export async function getWorkoutLog(db: DB, id: number) {
+	const [row] = await db.select().from(workoutLog).where(eq(workoutLog.id, id)).limit(1);
+	return row ?? null;
+}
+
+export async function updateWorkoutLog(db: DB, id: number, patch: Partial<NewWorkoutLog>) {
+	if (!Object.keys(patch).length) return getWorkoutLog(db, id);
+	const [row] = await db.update(workoutLog).set(patch).where(eq(workoutLog.id, id)).returning();
+	return row ?? null;
+}
+
 export async function getWorkoutsForDate(db: DB, date: string) {
-	return db.select().from(workoutLog).where(eq(workoutLog.date, date)).orderBy(asc(workoutLog.id));
+	const logs = await db
+		.select()
+		.from(workoutLog)
+		.where(eq(workoutLog.date, date))
+		.orderBy(asc(workoutLog.id));
+	return withExercises(db, logs);
 }
 
 export async function listWorkoutLogs(
@@ -87,17 +105,223 @@ export async function listWorkoutLogs(
 	if (opts.from) filters.push(gte(workoutLog.date, opts.from));
 	if (opts.to) filters.push(lte(workoutLog.date, opts.to));
 
-	return db
+	const logs = await db
 		.select()
 		.from(workoutLog)
 		.where(filters.length ? and(...filters) : undefined)
 		.orderBy(desc(workoutLog.date), desc(workoutLog.id))
 		.limit(opts.limit ?? 50)
 		.offset(opts.offset ?? 0);
+	return withExercises(db, logs);
 }
 
 export async function deleteWorkoutLog(db: DB, id: number) {
+	// Explicit, not left to ON DELETE CASCADE: D1 only enforces foreign keys
+	// when the connection has them enabled, and an orphaned exercise row would
+	// silently pollute exercise history.
+	await db.delete(workoutExercise).where(eq(workoutExercise.workoutLogId, id));
 	await db.delete(workoutLog).where(eq(workoutLog.id, id));
+}
+
+// --- Exercises ---
+
+export type WorkoutLogWithExercises = WorkoutLog & { exercises: WorkoutExercise[] };
+
+/**
+ * D1 caps bound parameters per statement, so anything built from a list —
+ * an `IN (...)` or a multi-row insert — goes out in batches. 9 columns per
+ * exercise row keeps this comfortably under the limit.
+ */
+const PARAM_BATCH = 50;
+
+function batched<T>(items: T[], size = PARAM_BATCH): T[][] {
+	const batches: T[][] = [];
+	for (let i = 0; i < items.length; i += size) batches.push(items.slice(i, i + size));
+	return batches;
+}
+
+/** Exercise rows for a set of workout logs, keyed by workout id. */
+export async function listExercisesForWorkouts(db: DB, workoutLogIds: number[]) {
+	const byWorkout = new Map<number, WorkoutExercise[]>();
+	if (!workoutLogIds.length) return byWorkout;
+
+	for (const ids of batched(workoutLogIds)) {
+		const rows = await db
+			.select()
+			.from(workoutExercise)
+			.where(inArray(workoutExercise.workoutLogId, ids))
+			.orderBy(
+				asc(workoutExercise.workoutLogId),
+				asc(workoutExercise.sortOrder),
+				asc(workoutExercise.id)
+			);
+		for (const row of rows) {
+			const list = byWorkout.get(row.workoutLogId);
+			if (list) list.push(row);
+			else byWorkout.set(row.workoutLogId, [row]);
+		}
+	}
+	return byWorkout;
+}
+
+/**
+ * Decorate workout logs with their exercises — one extra query, so every
+ * read path (today, summary, adherence, history) carries load detail without
+ * the caller having to ask for it.
+ */
+async function withExercises<T extends WorkoutLog>(db: DB, logs: T[]) {
+	const byWorkout = await listExercisesForWorkouts(
+		db,
+		logs.map((l) => l.id)
+	);
+	return logs.map((log) => ({ ...log, exercises: byWorkout.get(log.id) ?? [] }));
+}
+
+export interface ExerciseInput {
+	name: string;
+	sets?: number | null;
+	reps?: number | null;
+	weightLb?: number | null;
+	rpe?: number | null;
+	notes?: string | null;
+}
+
+/**
+ * Write the exercises for a workout. `replace` (the default) swaps the whole
+ * list; `append` adds to it — the common shape when detail trickles in after
+ * a Whoop-created workout row. Sort order is assigned, never supplied.
+ */
+export async function setWorkoutExercises(
+	db: DB,
+	workoutLogId: number,
+	exercises: ExerciseInput[],
+	mode: 'replace' | 'append' = 'replace'
+) {
+	if (mode === 'replace') {
+		await db.delete(workoutExercise).where(eq(workoutExercise.workoutLogId, workoutLogId));
+	}
+	const existing =
+		mode === 'append'
+			? await db
+					.select({ sortOrder: workoutExercise.sortOrder })
+					.from(workoutExercise)
+					.where(eq(workoutExercise.workoutLogId, workoutLogId))
+			: [];
+	const offset = existing.reduce((max, r) => Math.max(max, r.sortOrder + 1), 0);
+
+	const rows = exercises.map((e, i) => ({
+		workoutLogId,
+		sortOrder: offset + i,
+		name: e.name.trim(),
+		slug: exerciseSlug(e.name),
+		sets: e.sets ?? null,
+		reps: e.reps ?? null,
+		weightLb: e.weightLb ?? null,
+		rpe: e.rpe ?? null,
+		notes: e.notes ?? null
+	}));
+	for (const batch of batched(rows, 10)) await db.insert(workoutExercise).values(batch);
+
+	return (await listExercisesForWorkouts(db, [workoutLogId])).get(workoutLogId) ?? [];
+}
+
+export interface ExerciseHistoryEntry {
+	date: string;
+	workoutLogId: number;
+	name: string;
+	sets: number | null;
+	reps: number | null;
+	weightLb: number | null;
+	rpe: number | null;
+	estimatedOneRepMax: number | null;
+	notes: string | null;
+	/** Entries logged for this exercise that day, top set included. */
+	entriesLogged: number;
+	/** sets × reps × weight across the day, when every entry carries all three. */
+	volumeLb: number | null;
+}
+
+export interface ExerciseHistory {
+	name: string;
+	slug: string;
+	from: string | null;
+	to: string | null;
+	entries: ExerciseHistoryEntry[];
+}
+
+/**
+ * Progression for a single exercise: one entry per day, carrying that day's
+ * top set (heaviest; ties broken by reps) and its estimated 1RM. Answers
+ * "has my squat gone up in the last three weeks?" in one call instead of
+ * scanning every workout.
+ */
+export async function getExerciseHistory(
+	db: DB,
+	name: string,
+	opts: { from?: string; to?: string; limit?: number } = {}
+): Promise<ExerciseHistory> {
+	const slug = exerciseSlug(name);
+	const filters = [eq(workoutExercise.slug, slug)];
+	if (opts.from) filters.push(gte(workoutLog.date, opts.from));
+	if (opts.to) filters.push(lte(workoutLog.date, opts.to));
+
+	const rows = await db
+		.select({
+			date: workoutLog.date,
+			workoutLogId: workoutLog.id,
+			name: workoutExercise.name,
+			sets: workoutExercise.sets,
+			reps: workoutExercise.reps,
+			weightLb: workoutExercise.weightLb,
+			rpe: workoutExercise.rpe,
+			notes: workoutExercise.notes
+		})
+		.from(workoutExercise)
+		.innerJoin(workoutLog, eq(workoutExercise.workoutLogId, workoutLog.id))
+		.where(and(...filters))
+		.orderBy(desc(workoutLog.date), asc(workoutExercise.sortOrder));
+
+	const byDate = new Map<string, typeof rows>();
+	for (const row of rows) {
+		const list = byDate.get(row.date);
+		if (list) list.push(row);
+		else byDate.set(row.date, [row]);
+	}
+
+	const entries: ExerciseHistoryEntry[] = [...byDate.entries()]
+		.slice(0, opts.limit ?? 50)
+		.map(([date, dayRows]) => {
+			const top = dayRows.reduce((best, row) =>
+				(row.weightLb ?? 0) > (best.weightLb ?? 0) ||
+				((row.weightLb ?? 0) === (best.weightLb ?? 0) && (row.reps ?? 0) > (best.reps ?? 0))
+					? row
+					: best
+			);
+			const complete = dayRows.every((r) => r.sets && r.reps && r.weightLb);
+			return {
+				date,
+				workoutLogId: top.workoutLogId,
+				name: top.name,
+				sets: top.sets,
+				reps: top.reps,
+				weightLb: top.weightLb,
+				rpe: top.rpe,
+				estimatedOneRepMax: estimateOneRepMax(top.weightLb, top.reps),
+				notes: top.notes,
+				entriesLogged: dayRows.length,
+				volumeLb: complete
+					? Math.round(dayRows.reduce((n, r) => n + r.sets! * r.reps! * r.weightLb!, 0))
+					: null
+			};
+		});
+
+	return {
+		name: entries[0]?.name ?? name.trim(),
+		slug,
+		from: opts.from ?? null,
+		to: opts.to ?? null,
+		entries
+	};
 }
 
 // --- Habits ---
@@ -187,7 +411,7 @@ export interface DayPlanStatus {
 	date: string;
 	dayOfWeek: number;
 	sessions: PlanSession[];
-	logs: WorkoutLog[];
+	logs: WorkoutLogWithExercises[];
 }
 
 export interface WeekAdherence {

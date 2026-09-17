@@ -16,7 +16,11 @@ import {
 	listMetrics,
 	latestMetrics,
 	addCheckIn,
-	latestCheckIn
+	latestCheckIn,
+	setWorkoutExercises,
+	getExerciseHistory,
+	getWorkoutsForDate,
+	deleteWorkoutLog
 } from './coach';
 
 // Fixed dates keep the tests deterministic: 2026-07-06 is a Monday.
@@ -152,6 +156,97 @@ describe('coach data layer (real Miniflare D1)', () => {
 		const latest = await latestMetrics(db);
 		expect(latest.find((m) => m.type === 'weight_lb')?.value).toBe(191.2);
 		expect(latest.find((m) => m.type === 'a1c')?.value).toBe(5.9);
+	});
+
+	it('attaches exercises to workout reads and replaces or appends them', async () => {
+		const db = getDb(env.DB);
+		const log = await logWorkout(db, {
+			date: '2026-09-07',
+			status: 'done',
+			modality: 'lift',
+			durationMin: 55
+		});
+
+		await setWorkoutExercises(db, log.id, [
+			{ name: 'Back Squat', sets: 3, reps: 5, weightLb: 185, rpe: 8 },
+			{ name: 'Bench Press', sets: 3, reps: 8, weightLb: 135 }
+		]);
+
+		let [read] = await getWorkoutsForDate(db, '2026-09-07');
+		expect(read.exercises.map((e) => e.name)).toEqual(['Back Squat', 'Bench Press']);
+		expect(read.exercises[0].slug).toBe('back_squat');
+
+		// Append adds to the list; sort order keeps the logged sequence.
+		await setWorkoutExercises(db, log.id, [{ name: 'Chin-up', sets: 3, reps: 6 }], 'append');
+		[read] = await getWorkoutsForDate(db, '2026-09-07');
+		expect(read.exercises.map((e) => e.name)).toEqual(['Back Squat', 'Bench Press', 'Chin-up']);
+		expect(read.exercises[2].weightLb).toBeNull(); // bodyweight
+
+		// Replace swaps the whole list.
+		await setWorkoutExercises(db, log.id, [{ name: 'Deadlift', sets: 1, reps: 5, weightLb: 275 }]);
+		[read] = await getWorkoutsForDate(db, '2026-09-07');
+		expect(read.exercises.map((e) => e.name)).toEqual(['Deadlift']);
+
+		// Exercises don't outlive their workout.
+		await deleteWorkoutLog(db, log.id);
+		expect(await getWorkoutsForDate(db, '2026-09-07')).toHaveLength(0);
+		expect((await getExerciseHistory(db, 'deadlift')).entries).toHaveLength(0);
+	});
+
+	it('writes and reads back more exercises than fit in one D1 statement', async () => {
+		const db = getDb(env.DB);
+		const log = await logWorkout(db, { date: '2026-09-09', status: 'done', modality: 'lift' });
+		const many = Array.from({ length: 40 }, (_, i) => ({
+			name: `Accessory ${i}`,
+			sets: 3,
+			reps: 10,
+			weightLb: 40
+		}));
+
+		const written = await setWorkoutExercises(db, log.id, many);
+		expect(written).toHaveLength(40);
+		const [read] = await getWorkoutsForDate(db, '2026-09-09');
+		expect(read.exercises.map((e) => e.name)).toEqual(many.map((e) => e.name)); // order preserved
+	});
+
+	it('reports exercise progression by name: top set per day, estimated 1RM', async () => {
+		const db = getDb(env.DB);
+		for (const [date, weight] of [
+			['2026-09-01', 185],
+			['2026-09-08', 195],
+			['2026-09-15', 205]
+		] as const) {
+			const log = await logWorkout(db, { date, status: 'done', modality: 'lift' });
+			await setWorkoutExercises(db, log.id, [
+				// Back-off set first: the heavier top set must still win.
+				{ name: 'back squat', sets: 2, reps: 8, weightLb: weight - 30, rpe: 6 },
+				{ name: 'Back Squat', sets: 3, reps: 5, weightLb: weight, rpe: 8 }
+			]);
+		}
+
+		// Loose name matching: "Back-Squat" resolves to the same exercise.
+		const history = await getExerciseHistory(db, 'Back-Squat', {
+			from: '2026-09-01',
+			to: '2026-09-15'
+		});
+		expect(history.slug).toBe('back_squat');
+		expect(history.entries.map((e) => e.date)).toEqual(['2026-09-15', '2026-09-08', '2026-09-01']); // newest first
+		expect(history.entries[0].weightLb).toBe(205);
+		expect(history.entries[0].reps).toBe(5);
+		expect(history.entries[0].rpe).toBe(8);
+		expect(history.entries[0].entriesLogged).toBe(2);
+		// Epley: 205 × (1 + 5/30) = 239.2
+		expect(history.entries[0].estimatedOneRepMax).toBe(239.2);
+		// 3×5×205 + 2×8×175 = 3075 + 2800
+		expect(history.entries[0].volumeLb).toBe(5875);
+
+		// A window narrows the entries without changing their shape.
+		const recent = await getExerciseHistory(db, 'back squat', { from: '2026-09-09' });
+		expect(recent.entries).toHaveLength(1);
+		expect(recent.entries[0].estimatedOneRepMax).toBe(239.2);
+
+		// An exercise that was never logged is an empty history, not an error.
+		expect((await getExerciseHistory(db, 'zercher squat')).entries).toEqual([]);
 	});
 
 	it('returns the latest check-in, optionally by type', async () => {
