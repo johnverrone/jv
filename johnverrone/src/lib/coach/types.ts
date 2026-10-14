@@ -41,15 +41,18 @@ export function isOptionalDay(dow: number): boolean {
 }
 
 /**
- * Normalized exercise key: lowercase, non-alphanumerics collapsed to a single
- * underscore. "Back Squat", "back squat", and "back-squat" all become
- * `back_squat` so progression for one lift can be pulled by name.
+ * Normalized exercise key: accents folded, lowercased, and anything that isn't
+ * a letter or digit (in any script) collapsed to a single underscore. "Back
+ * Squat", "back squat", and "back-squat" all become `back_squat`; "Développé"
+ * becomes `developpe`. Empty when the name has no letters or digits at all —
+ * callers reject those rather than lumping them into one "" exercise.
  */
 export function exerciseSlug(name: string): string {
 	return name
-		.trim()
+		.normalize('NFKD')
+		.replace(/\p{M}+/gu, '')
 		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '_')
+		.replace(/[^\p{L}\p{N}]+/gu, '_')
 		.replace(/^_+|_+$/g, '');
 }
 

@@ -21,6 +21,11 @@ export default defineConfig({
 			};
 		})
 	],
+	// SvelteKit's $lib alias, so route handlers can be imported and called
+	// directly in tests (the kit plugin itself isn't loaded here).
+	resolve: {
+		alias: { $lib: fileURLToPath(new URL('./src/lib', import.meta.url)) }
+	},
 	test: {
 		include: ['src/**/*.test.ts'],
 		setupFiles: ['./test/apply-migrations.ts']

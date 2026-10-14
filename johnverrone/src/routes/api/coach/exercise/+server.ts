@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
 import { getExerciseHistory } from '$lib/server/db/coach';
+import { exerciseSlug } from '$lib/coach/types';
 import { requireApiToken } from '$lib/server/api/auth';
 import { addDays, todayCentral } from '$lib/server/date';
 import type { RequestHandler } from './$types';
@@ -16,7 +17,9 @@ export const GET: RequestHandler = async ({ request, platform, url }) => {
 	if (denied) return denied;
 
 	const name = url.searchParams.get('name')?.trim();
-	if (!name) return json({ error: 'name is required' }, { status: 400 });
+	if (!name || !exerciseSlug(name)) {
+		return json({ error: 'name is required and must contain a letter or digit' }, { status: 400 });
+	}
 
 	const weeks = Number(url.searchParams.get('weeks'));
 	const days = Number(url.searchParams.get('days'));
@@ -24,7 +27,8 @@ export const GET: RequestHandler = async ({ request, platform, url }) => {
 	const span = window ?? (Number.isFinite(days) && days > 0 ? Math.min(days, 365) : null);
 
 	const today = todayCentral();
-	const limit = Math.min(Number(url.searchParams.get('limit')) || 50, 200);
+	const requested = Number(url.searchParams.get('limit'));
+	const limit = Number.isInteger(requested) && requested > 0 ? Math.min(requested, 200) : 50;
 
 	const history = await getExerciseHistory(getDb(platform!.env.DB), name, {
 		from: span ? addDays(today, -(span - 1)) : undefined,

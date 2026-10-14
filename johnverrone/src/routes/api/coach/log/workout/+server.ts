@@ -9,47 +9,70 @@ import {
 	type ExerciseInput
 } from '$lib/server/db/coach';
 import { MODALITIES, WORKOUT_STATUSES, WORKOUT_VARIANTS } from '$lib/server/db/schema';
+import { exerciseSlug } from '$lib/coach/types';
 import { requireApiToken } from '$lib/server/api/auth';
 import { todayCentral } from '$lib/server/date';
 import type { RequestHandler } from './$types';
 
-interface ExerciseBody {
-	name?: unknown;
-	sets?: unknown;
-	reps?: unknown;
-	weight_lb?: unknown;
-	rpe?: unknown;
-	notes?: unknown;
+/** Thrown by the field readers below; becomes a 400 naming the bad field. */
+class BadField extends Error {}
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Read an optional field. `undefined` → absent (leave it alone); `null` →
+ * explicitly cleared; anything else must pass `check` or the request is
+ * rejected. A wrong type is never silently stored as null — on the patch path
+ * that would wipe a value the caller meant to keep.
+ */
+function field<T>(
+	v: unknown,
+	label: string,
+	check: (v: unknown) => v is T,
+	expected: string,
+	nullable = true
+): T | null | undefined {
+	if (v === undefined) return undefined;
+	if (v === null && nullable) return null;
+	if (!check(v)) throw new BadField(`${label} must be ${expected}`);
+	return v;
 }
 
-const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
-const int = (v: unknown) => (typeof v === 'number' && Number.isInteger(v) ? v : null);
+const isInt =
+	(min: number, max = Infinity) =>
+	(v: unknown): v is number =>
+		typeof v === 'number' && Number.isInteger(v) && v >= min && v <= max;
+const isNonNegative = (v: unknown): v is number =>
+	typeof v === 'number' && Number.isFinite(v) && v >= 0;
+const isString = (v: unknown): v is string => typeof v === 'string';
+const isDate = (v: unknown): v is string => typeof v === 'string' && DATE_RE.test(v);
+const oneOf =
+	<T extends string>(values: readonly T[]) =>
+	(v: unknown): v is T =>
+		values.includes(v as T);
 
-/** `exercises` → insert input, or an error message naming the bad entry. */
-function exercisesFrom(raw: unknown): { exercises: ExerciseInput[] } | { error: string } {
-	if (!Array.isArray(raw)) return { error: 'exercises must be an array' };
-	if (raw.length > 60) return { error: 'exercises is capped at 60 entries per call' };
-	const exercises: ExerciseInput[] = [];
-	for (const [i, entry] of raw.entries()) {
-		if (!entry || typeof entry !== 'object') return { error: `exercises[${i}] must be an object` };
-		const e = entry as ExerciseBody;
-		if (typeof e.name !== 'string' || !e.name.trim()) {
-			return { error: `exercises[${i}].name is required` };
+/** `exercises` → insert input. Throws BadField naming the bad entry. */
+function exercisesFrom(raw: unknown): ExerciseInput[] {
+	if (!Array.isArray(raw)) throw new BadField('exercises must be an array');
+	if (raw.length > 60) throw new BadField('exercises is capped at 60 entries per call');
+	return raw.map((entry, i) => {
+		if (!entry || typeof entry !== 'object') {
+			throw new BadField(`exercises[${i}] must be an object`);
 		}
-		const rpe = int(e.rpe);
-		if (rpe !== null && (rpe < 1 || rpe > 10)) {
-			return { error: `exercises[${i}].rpe must be 1-10` };
+		const e = entry as Record<string, unknown>;
+		if (typeof e.name !== 'string' || !exerciseSlug(e.name)) {
+			throw new BadField(`exercises[${i}].name must contain a letter or digit`);
 		}
-		exercises.push({
+		const at = (key: string) => `exercises[${i}].${key}`;
+		return {
 			name: e.name,
-			sets: int(e.sets),
-			reps: int(e.reps),
-			weightLb: num(e.weight_lb),
-			rpe,
-			notes: typeof e.notes === 'string' ? e.notes : null
-		});
-	}
-	return { exercises };
+			sets: field(e.sets, at('sets'), isInt(1), 'a positive integer'),
+			reps: field(e.reps, at('reps'), isInt(1), 'a positive integer'),
+			weightLb: field(e.weight_lb, at('weight_lb'), isNonNegative, 'a number ≥ 0'),
+			rpe: field(e.rpe, at('rpe'), isInt(1, 10), 'an integer 1-10'),
+			notes: field(e.notes, at('notes'), isString, 'a string')
+		};
+	});
 }
 
 /**
@@ -57,9 +80,9 @@ function exercisesFrom(raw: unknown): { exercises: ExerciseInput[] } | { error: 
  *
  * Without `id` this creates a log. With `id` it patches an existing one —
  * the path that matters for lifts, since Whoop's sync creates the workout row
- * on its own and the per-exercise detail gets filled in afterward. Pass
- * `exercises_mode: "append"` to add to what's already there instead of
- * replacing it.
+ * on its own and the per-exercise detail gets filled in afterward. Only the
+ * fields sent are touched (`null` clears one). Pass `exercises_mode: "append"`
+ * to add to the existing exercises instead of replacing them.
  */
 export const POST: RequestHandler = async ({ request, platform }) => {
 	const denied = await requireApiToken(request, platform?.env.COACH_API_TOKEN);
@@ -71,99 +94,85 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	} catch {
 		return json({ error: 'Body must be JSON' }, { status: 400 });
 	}
-
-	if (
-		body.exercises_mode !== undefined &&
-		body.exercises_mode !== 'append' &&
-		body.exercises_mode !== 'replace'
-	) {
-		return json({ error: 'exercises_mode must be "append" or "replace"' }, { status: 400 });
-	}
-	const mode = body.exercises_mode === 'append' ? 'append' : 'replace';
-
-	let exercises: ExerciseInput[] | null = null;
-	if (body.exercises !== undefined) {
-		const parsed = exercisesFrom(body.exercises);
-		if ('error' in parsed) return json({ error: parsed.error }, { status: 400 });
-		exercises = parsed.exercises;
+	if (!body || typeof body !== 'object' || Array.isArray(body)) {
+		return json({ error: 'Body must be a JSON object' }, { status: 400 });
 	}
 
-	const db = getDb(platform!.env.DB);
+	try {
+		const id = field(body.id, 'id', isInt(1), 'a positive integer', false);
+		const mode =
+			field(
+				body.exercises_mode,
+				'exercises_mode',
+				oneOf(['replace', 'append'] as const),
+				'"replace" or "append"',
+				false
+			) ?? 'replace';
+		const exercises = body.exercises === undefined ? null : exercisesFrom(body.exercises);
 
-	// --- Patch an existing log ---
-	if (body.id !== undefined) {
-		if (typeof body.id !== 'number') return json({ error: 'id must be a number' }, { status: 400 });
-		const existing = await getWorkoutLog(db, body.id);
-		if (!existing) return json({ error: `No workout log with id ${body.id}` }, { status: 404 });
+		const fields = {
+			date: field(body.date, 'date', isDate, 'yyyy-mm-dd', false),
+			status: field(
+				body.status,
+				'status',
+				oneOf(WORKOUT_STATUSES),
+				`one of: ${WORKOUT_STATUSES.join(', ')}`,
+				false
+			),
+			modality: field(
+				body.modality,
+				'modality',
+				oneOf(MODALITIES),
+				`one of: ${MODALITIES.join(', ')}`,
+				false
+			),
+			variant: field(
+				body.variant,
+				'variant',
+				oneOf(WORKOUT_VARIANTS),
+				`one of: ${WORKOUT_VARIANTS.join(', ')}`,
+				false
+			),
+			planSessionId: field(body.plan_session_id, 'plan_session_id', isInt(1), 'a positive integer'),
+			durationMin: field(body.duration_min, 'duration_min', isInt(0), 'a non-negative integer'),
+			rpe: field(body.rpe, 'rpe', isInt(1, 10), 'an integer 1-10'),
+			notes: field(body.notes, 'notes', isString, 'a string')
+		};
 
-		const patch: Record<string, unknown> = {};
-		if (body.status !== undefined) {
-			const status = WORKOUT_STATUSES.find((s) => s === body.status);
-			if (!status) {
-				return json(
-					{ error: `status must be one of: ${WORKOUT_STATUSES.join(', ')}` },
-					{ status: 400 }
-				);
-			}
-			patch.status = status;
+		const db = getDb(platform!.env.DB);
+
+		// --- Patch an existing log ---
+		if (id) {
+			const existing = await getWorkoutLog(db, id);
+			if (!existing) return json({ error: `No workout log with id ${id}` }, { status: 404 });
+
+			const patch = Object.fromEntries(Object.entries(fields).filter(([, v]) => v !== undefined));
+			const updated = await updateWorkoutLog(db, id, patch);
+			const rows = exercises
+				? await setWorkoutExercises(db, id, exercises, mode)
+				: ((await listExercisesForWorkouts(db, [id])).get(id) ?? []);
+			return json({ ...updated, exercises: rows });
 		}
-		if (body.modality !== undefined) {
-			const modality = MODALITIES.find((m) => m === body.modality);
-			if (!modality) {
-				return json(
-					{ error: `modality must be one of: ${MODALITIES.join(', ')}` },
-					{ status: 400 }
-				);
-			}
-			patch.modality = modality;
-		}
-		if (body.variant !== undefined) {
-			const variant = WORKOUT_VARIANTS.find((v) => v === body.variant);
-			if (!variant) {
-				return json(
-					{ error: `variant must be one of: ${WORKOUT_VARIANTS.join(', ')}` },
-					{ status: 400 }
-				);
-			}
-			patch.variant = variant;
-		}
-		if (body.duration_min !== undefined) patch.durationMin = int(body.duration_min);
-		if (body.rpe !== undefined) patch.rpe = int(body.rpe);
-		if (body.notes !== undefined) patch.notes = typeof body.notes === 'string' ? body.notes : null;
-		if (body.plan_session_id !== undefined) patch.planSessionId = int(body.plan_session_id);
 
-		const updated = await updateWorkoutLog(db, body.id, patch);
-		const rows = exercises
-			? await setWorkoutExercises(db, body.id, exercises, mode)
-			: ((await listExercisesForWorkouts(db, [body.id])).get(body.id) ?? []);
-		return json({ ...updated, exercises: rows });
-	}
+		// --- Create ---
+		if (!fields.status) throw new BadField(`status must be one of: ${WORKOUT_STATUSES.join(', ')}`);
+		if (!fields.modality) throw new BadField(`modality must be one of: ${MODALITIES.join(', ')}`);
 
-	// --- Create ---
-	const status = WORKOUT_STATUSES.find((s) => s === body.status);
-	if (!status) {
-		return json(
-			{ error: `status must be one of: ${WORKOUT_STATUSES.join(', ')}` },
-			{ status: 400 }
-		);
+		const row = await logWorkout(db, {
+			date: fields.date ?? todayCentral(),
+			planSessionId: fields.planSessionId ?? null,
+			status: fields.status,
+			variant: fields.variant ?? 'full',
+			modality: fields.modality,
+			durationMin: fields.durationMin ?? null,
+			rpe: fields.rpe ?? null,
+			notes: fields.notes ?? null,
+			source: 'api'
+		});
+		const rows = exercises?.length ? await setWorkoutExercises(db, row.id, exercises) : [];
+		return json({ ...row, exercises: rows }, { status: 201 });
+	} catch (e) {
+		if (e instanceof BadField) return json({ error: e.message }, { status: 400 });
+		throw e;
 	}
-	const modality = MODALITIES.find((m) => m === body.modality);
-	if (!modality) {
-		return json({ error: `modality must be one of: ${MODALITIES.join(', ')}` }, { status: 400 });
-	}
-	const variant = WORKOUT_VARIANTS.find((v) => v === body.variant) ?? 'full';
-
-	const row = await logWorkout(db, {
-		date: typeof body.date === 'string' ? body.date : todayCentral(),
-		planSessionId: typeof body.plan_session_id === 'number' ? body.plan_session_id : null,
-		status,
-		variant,
-		modality,
-		durationMin: typeof body.duration_min === 'number' ? body.duration_min : null,
-		rpe: typeof body.rpe === 'number' ? body.rpe : null,
-		notes: typeof body.notes === 'string' ? body.notes : null,
-		source: 'api'
-	});
-	const rows = exercises?.length ? await setWorkoutExercises(db, row.id, exercises) : [];
-	return json({ ...row, exercises: rows }, { status: 201 });
 };

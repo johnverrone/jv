@@ -315,6 +315,38 @@ describe('whoop workouts + cross-provider dedupe', () => {
 		expect(logs[0].exercises[0].weightLb).toBe(205);
 	});
 
+	it('keeps the whoop row and its exercises when the strava insert turns out to be a no-op', async () => {
+		const db = getDb(env.DB);
+
+		// The activity id is already on file under a different date (e.g. it was
+		// first imported before a timezone fix), so it never shows up as a
+		// same-day duplicate — and the insert below hits the unique id and no-ops.
+		await importStravaActivities(db, [
+			{ id: 8804, sport_type: 'Run', start_date_local: '2026-09-28T07:00:00Z', moving_time: 1800 }
+		]);
+		await importWhoopWorkouts(db, [
+			lift('w-5', '2026-09-29T17:00:00.000Z', { sport_name: 'weightlifting' })
+		]);
+		const [whoopLog] = await listWorkoutLogs(db, { from: '2026-09-29', to: '2026-09-29' });
+		await setWorkoutExercises(db, whoopLog.id, [
+			{ name: 'Deadlift', sets: 1, reps: 5, weightLb: 315 }
+		]);
+
+		const result = await importStravaActivities(db, [
+			{
+				id: 8804,
+				sport_type: 'WeightTraining',
+				start_date_local: '2026-09-29T12:00:00Z',
+				moving_time: 3000
+			}
+		]);
+		expect(result).toEqual({ imported: 0, duplicates: 1, replaced: 0, unmapped: [] });
+
+		const [still] = await listWorkoutLogs(db, { from: '2026-09-29', to: '2026-09-29' });
+		expect(still.id).toBe(whoopLog.id);
+		expect(still.exercises.map((e) => e.name)).toEqual(['Deadlift']);
+	});
+
 	it('counts any weekend whoop activity toward the optional day session', async () => {
 		const db = getDb(env.DB);
 		await seedDefaultPlan(db);

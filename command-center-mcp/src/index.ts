@@ -36,7 +36,7 @@ const EXERCISE_SCHEMA = z.object({
 	name: z.string().describe('e.g. "Back Squat"'),
 	sets: z.number().int().min(1).optional(),
 	reps: z.number().int().min(1).optional().describe('reps per set'),
-	weight_lb: z.number().optional().describe('load in pounds; omit for bodyweight'),
+	weight_lb: z.number().min(0).optional().describe('load in pounds; omit for bodyweight'),
 	rpe: z.number().int().min(1).max(10).optional(),
 	notes: z.string().optional()
 });

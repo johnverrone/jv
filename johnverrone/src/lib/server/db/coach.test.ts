@@ -1,6 +1,7 @@
 import { env } from 'cloudflare:test';
 import { describe, it, expect } from 'vitest';
 import { getDb } from './index';
+import { exerciseSlug } from '../../coach/types';
 import {
 	seedDefaultPlan,
 	listPlanSessions,
@@ -152,6 +153,15 @@ describe('coach data layer (real Miniflare D1)', () => {
 		expect((await getExerciseHistory(db, 'deadlift')).entries).toHaveLength(0);
 	});
 
+	it('slugs exercise names across scripts without collapsing them together', () => {
+		expect(exerciseSlug('Back Squat')).toBe('back_squat');
+		expect(exerciseSlug('  back-squat! ')).toBe('back_squat');
+		expect(exerciseSlug('Développé couché')).toBe('developpe_couche');
+		expect(exerciseSlug('深蹲')).toBe('深蹲');
+		expect(exerciseSlug('卧推')).not.toBe(exerciseSlug('深蹲'));
+		expect(exerciseSlug('---')).toBe('');
+	});
+
 	it('writes and reads back more exercises than fit in one D1 statement', async () => {
 		const db = getDb(env.DB);
 		const log = await logWorkout(db, { date: '2026-09-09', status: 'done', modality: 'lift' });
@@ -206,6 +216,8 @@ describe('coach data layer (real Miniflare D1)', () => {
 
 		// An exercise that was never logged is an empty history, not an error.
 		expect((await getExerciseHistory(db, 'zercher squat')).entries).toEqual([]);
+		// A name with no letters or digits matches nothing rather than everything blank.
+		expect((await getExerciseHistory(db, '---')).entries).toEqual([]);
 	});
 
 	it('returns the latest check-in, optionally by type', async () => {

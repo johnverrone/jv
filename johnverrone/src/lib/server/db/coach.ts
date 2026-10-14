@@ -1,4 +1,5 @@
 import { eq, and, desc, asc, gte, lte, inArray, sql } from 'drizzle-orm';
+import type { BatchItem } from 'drizzle-orm/batch';
 import type { DB } from './index';
 import {
 	planSession,
@@ -117,8 +118,10 @@ export async function deleteWorkoutLog(db: DB, id: number) {
 	// Explicit, not left to ON DELETE CASCADE: D1 only enforces foreign keys
 	// when the connection has them enabled, and an orphaned exercise row would
 	// silently pollute exercise history.
-	await db.delete(workoutExercise).where(eq(workoutExercise.workoutLogId, id));
-	await db.delete(workoutLog).where(eq(workoutLog.id, id));
+	await db.batch([
+		db.delete(workoutExercise).where(eq(workoutExercise.workoutLogId, id)),
+		db.delete(workoutLog).where(eq(workoutLog.id, id))
+	]);
 }
 
 // --- Exercises ---
@@ -126,13 +129,14 @@ export async function deleteWorkoutLog(db: DB, id: number) {
 export type WorkoutLogWithExercises = WorkoutLog & { exercises: WorkoutExercise[] };
 
 /**
- * D1 caps bound parameters per statement, so anything built from a list —
- * an `IN (...)` or a multi-row insert — goes out in batches. 9 columns per
- * exercise row keeps this comfortably under the limit.
+ * D1 caps bound parameters per statement (100), so anything built from a
+ * list goes out in chunks: `IN (...)` lookups take one parameter per id, while
+ * an exercise insert takes 9 per row — hence the much smaller insert chunk.
  */
-const PARAM_BATCH = 50;
+const IN_BATCH = 50;
+const INSERT_BATCH = 10;
 
-function batched<T>(items: T[], size = PARAM_BATCH): T[][] {
+function batched<T>(items: T[], size: number): T[][] {
 	const batches: T[][] = [];
 	for (let i = 0; i < items.length; i += size) batches.push(items.slice(i, i + size));
 	return batches;
@@ -143,7 +147,7 @@ export async function listExercisesForWorkouts(db: DB, workoutLogIds: number[]) 
 	const byWorkout = new Map<number, WorkoutExercise[]>();
 	if (!workoutLogIds.length) return byWorkout;
 
-	for (const ids of batched(workoutLogIds)) {
+	for (const ids of batched(workoutLogIds, IN_BATCH)) {
 		const rows = await db
 			.select()
 			.from(workoutExercise)
@@ -188,6 +192,9 @@ export interface ExerciseInput {
  * Write the exercises for a workout. `replace` (the default) swaps the whole
  * list; `append` adds to it — the common shape when detail trickles in after
  * a Whoop-created workout row. Sort order is assigned, never supplied.
+ *
+ * The delete and every insert chunk go out as one D1 batch, which runs as a
+ * transaction: a failed replace leaves the old list intact, never half of each.
  */
 export async function setWorkoutExercises(
 	db: DB,
@@ -195,9 +202,6 @@ export async function setWorkoutExercises(
 	exercises: ExerciseInput[],
 	mode: 'replace' | 'append' = 'replace'
 ) {
-	if (mode === 'replace') {
-		await db.delete(workoutExercise).where(eq(workoutExercise.workoutLogId, workoutLogId));
-	}
 	const existing =
 		mode === 'append'
 			? await db
@@ -218,9 +222,34 @@ export async function setWorkoutExercises(
 		rpe: e.rpe ?? null,
 		notes: e.notes ?? null
 	}));
-	for (const batch of batched(rows, 10)) await db.insert(workoutExercise).values(batch);
+
+	const statements: BatchItem<'sqlite'>[] = [
+		...(mode === 'replace'
+			? [db.delete(workoutExercise).where(eq(workoutExercise.workoutLogId, workoutLogId))]
+			: []),
+		...batched(rows, INSERT_BATCH).map((chunk) => db.insert(workoutExercise).values(chunk))
+	];
+	const [first, ...rest] = statements;
+	if (first) await db.batch([first, ...rest]);
 
 	return (await listExercisesForWorkouts(db, [workoutLogId])).get(workoutLogId) ?? [];
+}
+
+/**
+ * Swap superseded workout rows for their replacement (a Strava import taking
+ * over a whoop-sourced log): exercises move to the new row, then the old rows
+ * go — in one transaction, so hand-entered detail no sync can recreate is
+ * never deleted without having landed somewhere.
+ */
+export async function supersedeWorkoutLogs(db: DB, oldIds: number[], newId: number) {
+	if (!oldIds.length) return;
+	await db.batch([
+		db
+			.update(workoutExercise)
+			.set({ workoutLogId: newId })
+			.where(inArray(workoutExercise.workoutLogId, oldIds)),
+		db.delete(workoutLog).where(inArray(workoutLog.id, oldIds))
+	]);
 }
 
 export interface ExerciseHistoryEntry {
@@ -259,6 +288,8 @@ export async function getExerciseHistory(
 	opts: { from?: string; to?: string; limit?: number } = {}
 ): Promise<ExerciseHistory> {
 	const slug = exerciseSlug(name);
+	const empty = { name: name.trim(), slug, from: opts.from ?? null, to: opts.to ?? null };
+	if (!slug) return { ...empty, entries: [] };
 	const filters = [eq(workoutExercise.slug, slug)];
 	if (opts.from) filters.push(gte(workoutLog.date, opts.from));
 	if (opts.to) filters.push(lte(workoutLog.date, opts.to));

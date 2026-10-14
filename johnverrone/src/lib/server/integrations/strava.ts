@@ -2,13 +2,7 @@ import type { DB } from '../db';
 import { workoutLog } from '../db/schema';
 import { isOptionalDay, type Modality } from '../../coach/types';
 import { getOAuthToken, saveOAuthToken, markSynced } from '../db/integrations';
-import {
-	getSessionsForDay,
-	getWorkoutsForDate,
-	deleteWorkoutLog,
-	setWorkoutExercises,
-	type ExerciseInput
-} from '../db/coach';
+import { getSessionsForDay, getWorkoutsForDate, supersedeWorkoutLogs } from '../db/coach';
 import { dayOfWeek } from '../date';
 
 export interface OAuthCreds {
@@ -111,15 +105,6 @@ export async function importStravaActivities(
 			result.duplicates++;
 			continue;
 		}
-		// Exercises are hand-filled detail that no sync can recreate, so they ride
-		// along to the replacement row rather than dying with the whoop-sourced one.
-		const carried: ExerciseInput[] = [];
-		for (const whoopDup of sameModality) {
-			carried.push(...whoopDup.exercises);
-			await deleteWorkoutLog(db, whoopDup.id);
-			result.replaced++;
-		}
-
 		const inserted = await db
 			.insert(workoutLog)
 			.values({
@@ -136,10 +121,21 @@ export async function importStravaActivities(
 			.onConflictDoNothing({ target: workoutLog.stravaActivityId })
 			.returning();
 
-		if (inserted.length) {
-			result.imported++;
-			if (carried.length) await setWorkoutExercises(db, inserted[0].id, carried);
-		} else result.duplicates++;
+		if (!inserted.length) {
+			result.duplicates++;
+			continue;
+		}
+		result.imported++;
+
+		// Only now that the replacement exists do the whoop rows go — their
+		// exercises are hand-filled detail no sync can recreate, so they move
+		// to the new row in the same transaction.
+		await supersedeWorkoutLogs(
+			db,
+			sameModality.map((w) => w.id),
+			inserted[0].id
+		);
+		result.replaced += sameModality.length;
 	}
 
 	return result;
