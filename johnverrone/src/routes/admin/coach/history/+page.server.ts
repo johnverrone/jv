@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { getDb } from '$lib/server/db';
-import { deleteWorkoutLog, listHabits, listWorkoutLogs } from '$lib/server/db/coach';
+import { deleteWorkoutLog, listWorkoutLogs } from '$lib/server/db/coach';
 import type { Actions, PageServerLoad } from './$types';
 
 const PAGE_SIZE = 30;
@@ -15,12 +15,7 @@ export const load: PageServerLoad = async ({ platform, url }) => {
 	const hasMore = workouts.length > PAGE_SIZE;
 	const rows = workouts.slice(0, PAGE_SIZE);
 
-	// Habit rows for the date span on this page, merged per-date in the UI.
-	const habits = rows.length
-		? await listHabits(db, { from: rows[rows.length - 1].date, to: rows[0].date })
-		: [];
-
-	return { workouts: rows, habits, page, hasMore };
+	return { workouts: rows, page, hasMore };
 };
 
 function requireAuth(authenticated: boolean | undefined) {

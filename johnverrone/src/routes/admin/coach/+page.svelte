@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import SvelteMarked from 'svelte-marked';
-	import { MODALITIES, DAY_NAMES, DAY_ORDER, HABIT_LABELS, isOptionalDay } from '$lib/coach/types';
+	import { MODALITIES, DAY_NAMES, DAY_ORDER, isOptionalDay } from '$lib/coach/types';
 	import type { PageData, ActionData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 
 	const summary = $derived(data.summary);
-	const habit = $derived(summary.habit);
 
 	let bareMinFor = $state<number | null>(null);
 	let loggingCustom = $state(false);
@@ -26,8 +25,6 @@
 			? summary.latestCheckIn
 			: null
 	);
-
-	const HABIT_FIELDS = ['noAddedSugar', 'noAlcohol', 'mobilityDone'] as const;
 
 	type LogLike = {
 		status: string;
@@ -340,24 +337,6 @@
 					<button type="submit" class="save">log it</button>
 				</form>
 			{/if}
-		</section>
-
-		<section class="habits">
-			<h2>today's habits</h2>
-			<div class="habit-row">
-				{#each HABIT_FIELDS as field (field)}
-					{@const on = habit?.[field] ?? false}
-					{@const streak = summary.streaks[field]}
-					<form method="POST" action="?/toggleHabit" use:enhance>
-						<input type="hidden" name="field" value={field} />
-						<button type="submit" class="habit" class:on>
-							<span class="habit-state">{on ? '✓' : '○'}</span>
-							<span class="habit-name">{HABIT_LABELS[field]}</span>
-							<span class="habit-streak">{streak.current}d · best {streak.best}</span>
-						</button>
-					</form>
-				{/each}
-			</div>
 		</section>
 	{/if}
 {/if}
@@ -891,74 +870,6 @@
 		margin-top: 0.75rem;
 	}
 
-	/* --- habits --- */
-
-	.habits h2 {
-		font-family: var(--font-family-mono);
-		font-size: 0.8rem;
-		color: var(--color-text-secondary);
-		margin-bottom: 0.5rem;
-	}
-
-	.habit-row {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 0.5rem;
-	}
-
-	.habit-row form {
-		display: contents;
-	}
-
-	.habit {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 0.3rem;
-		padding: 0.85rem 0.5rem;
-		min-height: 76px;
-		border: 1px solid var(--color-hint);
-		border-radius: var(--border-radius);
-		background: none;
-		color: var(--color-text-primary);
-		cursor: pointer;
-		font-family: var(--font-family-mono);
-		transition:
-			border-color 0.15s ease,
-			background-color 0.15s ease;
-	}
-
-	.habit:hover {
-		border-color: var(--color-accent);
-	}
-
-	.habit.on {
-		background: var(--color-card-bg);
-		color: var(--color-card-fg);
-		border-color: var(--color-card-bg);
-	}
-
-	.habit-state {
-		font-size: 1rem;
-		line-height: 1;
-		color: var(--color-text-secondary);
-	}
-
-	.habit.on .habit-state {
-		color: inherit;
-	}
-
-	.habit-name {
-		font-size: 0.75rem;
-	}
-
-	.habit-streak {
-		font-size: 0.65rem;
-		opacity: 0.7;
-		white-space: nowrap;
-	}
-
 	/* --- plan editing --- */
 
 	.edit-day h2 {
@@ -1090,27 +1001,6 @@
 
 		.planned .meta {
 			display: none;
-		}
-
-		.habit-row {
-			grid-template-columns: 1fr;
-		}
-
-		.habit {
-			flex-direction: row;
-			justify-content: flex-start;
-			gap: 0.6rem;
-			min-height: 52px;
-			padding: 0 1rem;
-		}
-
-		.habit-name {
-			font-size: 0.85rem;
-		}
-
-		.habit-streak {
-			margin-left: auto;
-			font-size: 0.7rem;
 		}
 	}
 </style>
