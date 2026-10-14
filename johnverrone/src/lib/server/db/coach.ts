@@ -3,12 +3,10 @@ import type { DB } from './index';
 import {
 	planSession,
 	workoutLog,
-	habitLog,
 	bodyMetric,
 	checkIn,
 	type PlanSession,
 	type WorkoutLog,
-	type HabitLog,
 	type NewPlanSession,
 	type NewWorkoutLog,
 	type NewBodyMetric,
@@ -100,87 +98,6 @@ export async function deleteWorkoutLog(db: DB, id: number) {
 	await db.delete(workoutLog).where(eq(workoutLog.id, id));
 }
 
-// --- Habits ---
-
-type HabitPatch = Partial<Pick<HabitLog, 'noAddedSugar' | 'noAlcohol' | 'mobilityDone' | 'notes'>>;
-
-/** Create or patch the single habit row for a date. */
-export async function upsertHabit(db: DB, date: string, patch: HabitPatch) {
-	const [row] = await db
-		.insert(habitLog)
-		.values({ date, ...patch })
-		.onConflictDoUpdate({ target: habitLog.date, set: { ...patch, updatedAt: now } })
-		.returning();
-	return row;
-}
-
-export async function getHabit(db: DB, date: string) {
-	const [row] = await db.select().from(habitLog).where(eq(habitLog.date, date)).limit(1);
-	return row ?? null;
-}
-
-export async function listHabits(db: DB, opts: { from: string; to: string }) {
-	return db
-		.select()
-		.from(habitLog)
-		.where(and(gte(habitLog.date, opts.from), lte(habitLog.date, opts.to)))
-		.orderBy(desc(habitLog.date));
-}
-
-// --- Streaks ---
-
-export interface StreakInfo {
-	current: number;
-	best: number;
-}
-
-export interface HabitStreaks {
-	noAddedSugar: StreakInfo;
-	noAlcohol: StreakInfo;
-	mobilityDone: StreakInfo;
-}
-
-type HabitField = 'noAddedSugar' | 'noAlcohol' | 'mobilityDone';
-
-/**
- * Current + best streak per habit over the last ~400 logged days.
- * Grace rule: an unlogged/false *today* doesn't break the current streak (the
- * day isn't over yet) — the walk simply starts from yesterday. An unlogged or
- * false *yesterday* does break it.
- */
-export async function getHabitStreaks(db: DB, today: string): Promise<HabitStreaks> {
-	const rows = await db.select().from(habitLog).orderBy(desc(habitLog.date)).limit(400);
-	const byDate = new Map(rows.map((r) => [r.date, r]));
-	const isTrue = (date: string, field: HabitField) => byDate.get(date)?.[field] === true;
-
-	const streakFor = (field: HabitField): StreakInfo => {
-		let start = today;
-		if (!isTrue(start, field)) start = addDays(start, -1);
-		let current = 0;
-		for (let d = start; isTrue(d, field); d = addDays(d, -1)) current++;
-
-		// Best: walk oldest→newest; a run continues only across consecutive true days.
-		let best = 0;
-		let run = 0;
-		let lastTrueDate: string | null = null;
-		for (let i = rows.length - 1; i >= 0; i--) {
-			const row = rows[i];
-			if (row[field]) {
-				run = lastTrueDate === addDays(row.date, -1) ? run + 1 : 1;
-				lastTrueDate = row.date;
-				if (run > best) best = run;
-			}
-		}
-		return { current, best: Math.max(best, current) };
-	};
-
-	return {
-		noAddedSugar: streakFor('noAddedSugar'),
-		noAlcohol: streakFor('noAlcohol'),
-		mobilityDone: streakFor('mobilityDone')
-	};
-}
-
 // --- Adherence ---
 
 export interface DayPlanStatus {
@@ -239,11 +156,9 @@ export async function getWeekAdherence(db: DB, weekStartDate: string): Promise<W
 
 export async function getTodaySummary(db: DB, date: string) {
 	const dow = dayOfWeek(date);
-	const [sessions, workouts, habit, streaks, latest, adherence, todayMetrics] = await Promise.all([
+	const [sessions, workouts, latest, adherence, todayMetrics] = await Promise.all([
 		getSessionsForDay(db, dow),
 		getWorkoutsForDate(db, date),
-		getHabit(db, date),
-		getHabitStreaks(db, date),
 		latestCheckIn(db),
 		getWeekAdherence(db, weekStart(date)),
 		getMetricsForDate(db, date)
@@ -253,8 +168,6 @@ export async function getTodaySummary(db: DB, date: string) {
 		dayOfWeek: dow,
 		sessions,
 		workouts,
-		habit,
-		streaks,
 		latestCheckIn: latest,
 		weekAdherence: adherence,
 		todayMetrics

@@ -178,21 +178,6 @@ export const workoutLog = sqliteTable(
 	(t) => [index('idx_workout_date').on(t.date)]
 );
 
-export const habitLog = sqliteTable('habit_log', {
-	id: integer('id').primaryKey({ autoIncrement: true }),
-	date: text('date').notNull().unique(), // one row per day; upsert target
-	noAddedSugar: integer('no_added_sugar', { mode: 'boolean' }).notNull().default(false),
-	noAlcohol: integer('no_alcohol', { mode: 'boolean' }).notNull().default(false),
-	mobilityDone: integer('mobility_done', { mode: 'boolean' }).notNull().default(false),
-	notes: text('notes'),
-	createdAt: text('created_at')
-		.notNull()
-		.default(sql`(datetime('now'))`),
-	updatedAt: text('updated_at')
-		.notNull()
-		.default(sql`(datetime('now'))`)
-});
-
 export const bodyMetric = sqliteTable(
 	'body_metric',
 	{
@@ -250,8 +235,6 @@ export type PlanSession = typeof planSession.$inferSelect;
 export type NewPlanSession = typeof planSession.$inferInsert;
 export type WorkoutLog = typeof workoutLog.$inferSelect;
 export type NewWorkoutLog = typeof workoutLog.$inferInsert;
-export type HabitLog = typeof habitLog.$inferSelect;
-export type NewHabitLog = typeof habitLog.$inferInsert;
 export type BodyMetric = typeof bodyMetric.$inferSelect;
 export type NewBodyMetric = typeof bodyMetric.$inferInsert;
 export type CheckIn = typeof checkIn.$inferSelect;

@@ -48,10 +48,6 @@ export class CommandCenterClient {
 		return this.request('/api/coach/log/workout', { method: 'POST', body: JSON.stringify(body) });
 	}
 
-	logHabit(body: Record<string, unknown>) {
-		return this.request('/api/coach/log/habit', { method: 'POST', body: JSON.stringify(body) });
-	}
-
 	postCheckin(body: Record<string, unknown>) {
 		return this.request('/api/coach/checkin', { method: 'POST', body: JSON.stringify(body) });
 	}

@@ -5,7 +5,7 @@ import { requireApiToken } from '$lib/server/api/auth';
 import { todayCentral } from '$lib/server/date';
 import type { RequestHandler } from './$types';
 
-/** Today's plan, logs, habits, streaks, and latest check-in — the daily agent's input. */
+/** Today's plan, logs, and latest check-in — the daily agent's input. */
 export const GET: RequestHandler = async ({ request, platform, url }) => {
 	const denied = await requireApiToken(request, platform?.env.COACH_API_TOKEN);
 	if (denied) return denied;

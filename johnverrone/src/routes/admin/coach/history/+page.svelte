@@ -1,22 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { HABIT_LABELS } from '$lib/coach/types';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	const dates = $derived([...new Set(data.workouts.map((w) => w.date))]);
 	const workoutsFor = (date: string) => data.workouts.filter((w) => w.date === date);
-	const habitFor = (date: string) => data.habits.find((h) => h.date === date);
-
-	const habitSummary = (date: string) => {
-		const habit = habitFor(date);
-		if (!habit) return '';
-		return (['noAddedSugar', 'noAlcohol', 'mobilityDone'] as const)
-			.filter((f) => habit[f])
-			.map((f) => HABIT_LABELS[f])
-			.join(' · ');
-	};
 </script>
 
 <svelte:head>
@@ -33,7 +22,7 @@
 
 {#each dates as date (date)}
 	<section>
-		<h2>{date}{habitSummary(date) ? ` — ${habitSummary(date)}` : ''}</h2>
+		<h2>{date}</h2>
 		{#each workoutsFor(date) as log (log.id)}
 			<div class="log" class:skipped={log.status === 'skipped'}>
 				<span class="modality">{log.modality}</span>

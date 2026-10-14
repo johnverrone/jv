@@ -7,9 +7,6 @@ import {
 	getSessionsForDay,
 	logWorkout,
 	listWorkoutLogs,
-	upsertHabit,
-	getHabit,
-	getHabitStreaks,
 	getWeekAdherence,
 	getTodaySummary,
 	addMetric,
@@ -23,7 +20,6 @@ import {
 const MON = '2026-07-06';
 const TUE = '2026-07-07';
 const WED = '2026-07-08';
-const THU = '2026-07-09';
 const SAT = '2026-07-11';
 
 describe('coach data layer (real Miniflare D1)', () => {
@@ -43,40 +39,6 @@ describe('coach data layer (real Miniflare D1)', () => {
 		expect(monday).toHaveLength(1);
 		expect(monday[0].name).toBe('Full body A');
 		expect(sessions.every((s) => s.bareMin)).toBe(true);
-	});
-
-	it('upserts habits: create then patch without clobbering other fields', async () => {
-		const db = getDb(env.DB);
-
-		await upsertHabit(db, MON, { noAddedSugar: true });
-		await upsertHabit(db, MON, { noAlcohol: true });
-
-		const habit = await getHabit(db, MON);
-		expect(habit?.noAddedSugar).toBe(true); // survived the second upsert
-		expect(habit?.noAlcohol).toBe(true);
-		expect(habit?.mobilityDone).toBe(false);
-	});
-
-	it('computes streaks with today-grace and gap semantics', async () => {
-		const db = getDb(env.DB);
-
-		// Mon+Tue+Wed sugar-free; Wed is "today".
-		await upsertHabit(db, MON, { noAddedSugar: true, noAlcohol: true });
-		await upsertHabit(db, TUE, { noAddedSugar: true });
-		await upsertHabit(db, WED, { noAddedSugar: true });
-
-		let streaks = await getHabitStreaks(db, WED);
-		expect(streaks.noAddedSugar).toEqual({ current: 3, best: 3 });
-		// Alcohol only logged Monday — Tuesday broke it.
-		expect(streaks.noAlcohol).toEqual({ current: 0, best: 1 });
-
-		// Grace: Thursday ("today") not yet logged — sugar streak still counts from Wed.
-		streaks = await getHabitStreaks(db, THU);
-		expect(streaks.noAddedSugar.current).toBe(3);
-
-		// No grace beyond one day: from Friday, the unlogged Thursday breaks it, best survives.
-		streaks = await getHabitStreaks(db, '2026-07-10');
-		expect(streaks.noAddedSugar).toEqual({ current: 0, best: 3 });
 	});
 
 	it('computes week adherence: bare-min and modified count as done, weekends are optional', async () => {
@@ -111,14 +73,11 @@ describe('coach data layer (real Miniflare D1)', () => {
 	it('resolves the today summary for the right day of week', async () => {
 		const db = getDb(env.DB);
 		await seedDefaultPlan(db);
-		await upsertHabit(db, TUE, { mobilityDone: true });
 		await addCheckIn(db, { date: TUE, type: 'daily', author: 'coach', content: '**Go run.**' });
 
 		const summary = await getTodaySummary(db, TUE);
 		expect(summary.dayOfWeek).toBe(2);
 		expect(summary.sessions[0].name).toBe('Easy run');
-		expect(summary.habit?.mobilityDone).toBe(true);
-		expect(summary.streaks.mobilityDone.current).toBe(1);
 		expect(summary.latestCheckIn?.content).toBe('**Go run.**');
 		expect(summary.weekAdherence.weekStart).toBe(MON);
 	});

@@ -6,8 +6,6 @@ import {
 	getWeekAdherence,
 	logWorkout,
 	deleteWorkoutLog,
-	upsertHabit,
-	getHabit,
 	listPlanSessions,
 	createPlanSession,
 	updatePlanSession,
@@ -131,20 +129,6 @@ export const actions: Actions = {
 			rpe: int(form.get('rpe')),
 			notes: str(form.get('notes'))
 		});
-		return { success: true };
-	},
-
-	toggleHabit: async ({ request, locals, platform }) => {
-		requireAuth(locals.authenticated);
-		const db = getDb(platform!.env.DB);
-		const form = await request.formData();
-		const field = str(form.get('field'));
-		if (field !== 'noAddedSugar' && field !== 'noAlcohol' && field !== 'mobilityDone') {
-			return fail(400, { error: 'Unknown habit.' });
-		}
-		const date = todayCentral();
-		const current = await getHabit(db, date);
-		await upsertHabit(db, date, { [field]: !current?.[field] });
 		return { success: true };
 	},
 

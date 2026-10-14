@@ -55,7 +55,7 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 			'coach_get_today',
 			{
 				description:
-					"Today's planned session, logged workouts, habit toggles, streaks, latest coach check-in, and this week's adherence.",
+					"Today's planned session, logged workouts, latest coach check-in, and this week's adherence.",
 				inputSchema: { date: z.string().optional().describe('yyyy-mm-dd, defaults to today') }
 			},
 			async ({ date }) => this.run(() => this.client.getToday(date))
@@ -65,7 +65,7 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 			'coach_get_summary',
 			{
 				description:
-					'Rolling summary for a weekly review: adherence, streaks, training volume by modality, recent logs, latest body metrics, recent check-ins.',
+					'Rolling summary for a weekly review: adherence, training volume by modality, recent logs, latest body metrics, recent check-ins.',
 				inputSchema: { days: z.number().int().min(1).max(90).optional().describe('default 7') }
 			},
 			async ({ days }) => this.run(() => this.client.getSummary(days))
@@ -115,22 +115,6 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 				}
 			},
 			async (input) => this.run(() => this.client.logWorkout(input))
-		);
-
-		this.server.registerTool(
-			'coach_log_habit',
-			{
-				description:
-					"Patch today's (or a given date's) habit toggles: no added sugar, no alcohol, mobility.",
-				inputSchema: {
-					date: z.string().optional().describe('yyyy-mm-dd, defaults to today'),
-					no_added_sugar: z.boolean().optional(),
-					no_alcohol: z.boolean().optional(),
-					mobility_done: z.boolean().optional(),
-					notes: z.string().optional()
-				}
-			},
-			async (input) => this.run(() => this.client.logHabit(input))
 		);
 
 		this.server.registerTool(

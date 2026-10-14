@@ -39,9 +39,3 @@ export const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0] as const;
 export function isOptionalDay(dow: number): boolean {
 	return dow === 0 || dow === 6;
 }
-
-export const HABIT_LABELS = {
-	noAddedSugar: 'no added sugar',
-	noAlcohol: 'no alcohol',
-	mobilityDone: 'mobility'
-} as const;

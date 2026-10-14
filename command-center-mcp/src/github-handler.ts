@@ -40,7 +40,7 @@ app.get('/authorize', async (c) => {
 		csrfToken,
 		server: {
 			name: 'johnverrone command center',
-			description: 'Personal data — health coach plan/logs/habits, guitar journal/plan/songs.'
+			description: 'Personal data — health coach plan/logs, guitar journal/plan/songs.'
 		},
 		setCookie,
 		state: { oauthReqInfo }
