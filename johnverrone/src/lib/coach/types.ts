@@ -39,3 +39,29 @@ export const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0] as const;
 export function isOptionalDay(dow: number): boolean {
 	return dow === 0 || dow === 6;
 }
+
+/**
+ * Normalized exercise key: accents folded, lowercased, and anything that isn't
+ * a letter or digit (in any script) collapsed to a single underscore. "Back
+ * Squat", "back squat", and "back-squat" all become `back_squat`; "Développé"
+ * becomes `developpe`. Empty when the name has no letters or digits at all —
+ * callers reject those rather than lumping them into one "" exercise.
+ */
+export function exerciseSlug(name: string): string {
+	return name
+		.normalize('NFKD')
+		.replace(/\p{M}+/gu, '')
+		.toLowerCase()
+		.replace(/[^\p{L}\p{N}]+/gu, '_')
+		.replace(/^_+|_+$/g, '');
+}
+
+/**
+ * Epley estimated 1RM: weight × (1 + reps/30). Null when there's nothing to
+ * estimate from (bodyweight work, or a set logged without reps). A single rep
+ * returns the weight itself.
+ */
+export function estimateOneRepMax(weightLb: number | null, reps: number | null): number | null {
+	if (!weightLb || !reps || reps < 1) return null;
+	return Math.round(weightLb * (1 + reps / 30) * 10) / 10;
+}
