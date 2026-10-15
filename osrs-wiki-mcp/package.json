@@ -1,0 +1,25 @@
+{
+	"name": "osrs-wiki-mcp",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy",
+		"cf-typegen": "wrangler types",
+		"type-check": "tsc --noEmit",
+		"test": "bun test"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "1.29.0",
+		"agents": "^0.17.3",
+		"node-html-parser": "^9.0.4",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.4.3",
+		"@types/node": "^26.6.5",
+		"typescript": "^5.7.2",
+		"wrangler": "^4.99.0"
+	}
+}

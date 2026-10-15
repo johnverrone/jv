@@ -1,0 +1,28 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "osrs-wiki-mcp",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-02-14",
+	"compatibility_flags": ["nodejs_compat"],
+	"observability": {
+		"enabled": true
+	},
+	"vars": {
+		// The wiki asks API clients to send a descriptive User-Agent with a way
+		// to contact the operator: https://oldschool.runescape.wiki/w/RuneScape:APIs
+		"WIKI_USER_AGENT": "osrs-wiki-mcp/0.1 (Cloudflare Worker MCP server; github.com/johnverrone/jv)",
+		// How long a parsed page is reused before re-fetching from the wiki.
+		"PAGE_TTL_SECONDS": "3600"
+	}
+	/**
+	 * Optional: a KV namespace shares parsed pages across isolates/locations
+	 * (otherwise caching is per-isolate memory only). To enable:
+	 *   bunx wrangler kv namespace create CACHE
+	 * then add:
+	 *   "kv_namespaces": [{ "binding": "CACHE", "id": "<id from above>" }]
+	 */
+}
