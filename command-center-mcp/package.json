@@ -4,13 +4,15 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"build:views": "bun scripts/build-views.ts",
 		"dev": "wrangler dev",
 		"deploy": "wrangler deploy",
 		"cf-typegen": "wrangler types",
-		"type-check": "tsc --noEmit"
+		"type-check": "tsc --noEmit && tsc --noEmit -p views"
 	},
 	"dependencies": {
 		"@cloudflare/workers-oauth-provider": "^0.8.1",
+		"@modelcontextprotocol/ext-apps": "^2.0.3",
 		"@modelcontextprotocol/sdk": "^1.29.0",
 		"agents": "^0.17.3",
 		"hono": "^4.12.29",

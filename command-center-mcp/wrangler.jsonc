@@ -8,6 +8,9 @@
 	"main": "src/index.ts",
 	"compatibility_date": "2026-02-14",
 	"compatibility_flags": ["nodejs_compat"],
+	// Bundles views/*.ts into the single-file HTML the MCP Apps UI resources
+	// serve (src/ui.ts imports them). Runs before every dev/deploy build.
+	"build": { "command": "bun run build:views", "watch_dir": "views" },
 	// One Durable Object per MCP session (McpAgent's session/state store — this
 	// worker has no data of its own; everything is proxied to johnverrone.com).
 	"migrations": [

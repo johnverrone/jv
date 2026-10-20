@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { GitHubHandler } from './github-handler';
 import type { Props } from './github-oauth';
 import { CommandCenterClient, CommandCenterApiError } from './apiClient';
+import { registerViews, uiMeta } from './ui';
 
 // Env (MCP_OBJECT, OAUTH_KV, COACH_SITE_BASE_URL, COACH_API_TOKEN,
 // GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, COOKIE_ENCRYPTION_KEY) is the
@@ -49,14 +50,17 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 	}
 
 	async init() {
+		registerViews(this.server);
+
 		// --- Coach ---
 
 		this.server.registerTool(
 			'coach_get_today',
 			{
 				description:
-					"Today's planned session, logged workouts, latest coach check-in, and this week's adherence.",
-				inputSchema: { date: z.string().optional().describe('yyyy-mm-dd, defaults to today') }
+					"Today's planned session, logged workouts, latest coach check-in, and this week's adherence. Renders an interactive card where the user can log the session.",
+				inputSchema: { date: z.string().optional().describe('yyyy-mm-dd, defaults to today') },
+				_meta: uiMeta('today')
 			},
 			async ({ date }) => this.run(() => this.client.getToday(date))
 		);
@@ -73,7 +77,11 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 
 		this.server.registerTool(
 			'coach_get_plan',
-			{ description: 'The full weekly fitness plan template (all seven days).', inputSchema: {} },
+			{
+				description: 'The full weekly fitness plan template (all seven days). Renders an interactive week view.',
+				inputSchema: {},
+				_meta: uiMeta('plan')
+			},
 			async () => this.run(() => this.client.getPlan())
 		);
 
@@ -177,7 +185,12 @@ export class CommandCenterMCP extends McpAgent<Env, Record<string, never>, Props
 
 		this.server.registerTool(
 			'guitar_list_songs',
-			{ description: 'The song list (repertoire), ordered by sort order then title.', inputSchema: {} },
+			{
+				description:
+					'The song list (repertoire), ordered by sort order then title. Renders an interactive list where the user can filter and update progress.',
+				inputSchema: {},
+				_meta: uiMeta('songs')
+			},
 			async () => this.run(() => this.client.listGuitarSongs())
 		);
 
