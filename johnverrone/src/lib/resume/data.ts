@@ -91,7 +91,7 @@ export const resume: Resume = {
 						"Led the move to Grammar, Fullstory's new design system. Wrote the migration plan in 2020 and built a theme engine that switched the whole app between old and new styles with one flag, without feature teams changing their code.",
 						'Ran the Home & Search style audit before GA, which turned 156 design notes into 46 tickets shipped over three iterations.',
 						'Rolled out ESLint across 37 frontend packages and set up code owners for 38. Later added Prettier and accessibility linting.',
-						'Helped move the entire app from Tomato, our homegrown framework, to React. Converted and managed the rollout of core areas like settings, billing, and navigation.',
+						'Helped move the entire app from Tomato, our homegrown framework, to React. Converted and managed the rollout of core areas like settings, searchies, and navigation.',
 						'Owned the dimensions feature in Conversions as a new hire. Took regular shifts as Launch Coordinator for weekly production deploys and wrote the hotfix process docs.'
 					]
 				}
