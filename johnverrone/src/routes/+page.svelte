@@ -30,6 +30,7 @@
 		<Link href="/notes">notes</Link>
 		<Link href="/photo">photos</Link>
 		<Link href="/video">videos</Link>
+		<Link href="/resume">resume</Link>
 	</ul>
 </div>
 
