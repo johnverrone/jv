@@ -1,86 +1,115 @@
 export interface CommandCenterClientOptions {
-	baseUrl: string;
-	token: string;
+  baseUrl: string;
+  token: string;
 }
 
 export class CommandCenterApiError extends Error {}
 
 /** Thin wrapper over johnverrone.com's /api/coach/*, /api/guitar/*, and /api/coffee/* contracts. No local state. */
 export class CommandCenterClient {
-	constructor(private opts: CommandCenterClientOptions) {}
+  constructor(private opts: CommandCenterClientOptions) {}
 
-	private async request(path: string, init: RequestInit = {}) {
-		const res = await fetch(`${this.opts.baseUrl}${path}`, {
-			...init,
-			headers: {
-				...init.headers,
-				Authorization: `Bearer ${this.opts.token}`,
-				...(init.body ? { 'Content-Type': 'application/json' } : {})
-			}
-		});
-		const body = await res.json().catch(() => null);
-		if (!res.ok) {
-			const message = (body as { error?: string } | null)?.error ?? res.statusText;
-			throw new CommandCenterApiError(`${path} → ${res.status}: ${message}`);
-		}
-		return body;
-	}
+  private async request(path: string, init: RequestInit = {}) {
+    const res = await fetch(`${this.opts.baseUrl}${path}`, {
+      ...init,
+      headers: {
+        ...init.headers,
+        Authorization: `Bearer ${this.opts.token}`,
+        ...(init.body ? { "Content-Type": "application/json" } : {}),
+      },
+    });
+    const body = await res.json().catch(() => null);
+    if (!res.ok) {
+      const message =
+        (body as { error?: string } | null)?.error ?? res.statusText;
+      throw new CommandCenterApiError(`${path} → ${res.status}: ${message}`);
+    }
+    return body;
+  }
 
-	// --- Coach ---
+  // --- Coach ---
 
-	getToday(date?: string) {
-		return this.request(`/api/coach/today${date ? `?date=${date}` : ''}`);
-	}
+  getToday(date?: string) {
+    return this.request(`/api/coach/today${date ? `?date=${date}` : ""}`);
+  }
 
-	getSummary(days?: number) {
-		return this.request(`/api/coach/summary${days ? `?days=${days}` : ''}`);
-	}
+  getSummary(days?: number) {
+    return this.request(`/api/coach/summary${days ? `?days=${days}` : ""}`);
+  }
 
-	getPlan() {
-		return this.request('/api/coach/plan');
-	}
+  getPlan() {
+    return this.request("/api/coach/plan");
+  }
 
-	updatePlanSession(body: Record<string, unknown>) {
-		return this.request('/api/coach/plan', { method: 'POST', body: JSON.stringify(body) });
-	}
+  updatePlanSession(body: Record<string, unknown>) {
+    return this.request("/api/coach/plan", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
 
-	logWorkout(body: Record<string, unknown>) {
-		return this.request('/api/coach/log/workout', { method: 'POST', body: JSON.stringify(body) });
-	}
+  logWorkout(body: Record<string, unknown>) {
+    return this.request("/api/coach/log/workout", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
 
-	postCheckin(body: Record<string, unknown>) {
-		return this.request('/api/coach/checkin', { method: 'POST', body: JSON.stringify(body) });
-	}
+  syncIntegrations(days?: number) {
+    return this.request("/api/coach/sync", {
+      method: "POST",
+      body: JSON.stringify(days ? { days } : {}),
+    });
+  }
 
-	// --- Guitar ---
+  postCheckin(body: Record<string, unknown>) {
+    return this.request("/api/coach/checkin", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
 
-	getGuitarJournal(date?: string) {
-		return this.request(`/api/guitar/journal${date ? `?date=${date}` : ''}`);
-	}
+  // --- Guitar ---
 
-	updateGuitarJournalEntry(body: Record<string, unknown>) {
-		return this.request('/api/guitar/journal', { method: 'POST', body: JSON.stringify(body) });
-	}
+  getGuitarJournal(date?: string) {
+    return this.request(`/api/guitar/journal${date ? `?date=${date}` : ""}`);
+  }
 
-	getGuitarPlan() {
-		return this.request('/api/guitar/plan');
-	}
+  updateGuitarJournalEntry(body: Record<string, unknown>) {
+    return this.request("/api/guitar/journal", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
 
-	updateGuitarPlan(content: string) {
-		return this.request('/api/guitar/plan', { method: 'POST', body: JSON.stringify({ content }) });
-	}
+  getGuitarPlan() {
+    return this.request("/api/guitar/plan");
+  }
 
-	listGuitarSongs() {
-		return this.request('/api/guitar/songs');
-	}
+  updateGuitarPlan(content: string) {
+    return this.request("/api/guitar/plan", {
+      method: "POST",
+      body: JSON.stringify({ content }),
+    });
+  }
 
-	updateGuitarSong(body: Record<string, unknown>) {
-		return this.request('/api/guitar/songs', { method: 'POST', body: JSON.stringify(body) });
-	}
+  listGuitarSongs() {
+    return this.request("/api/guitar/songs");
+  }
 
-	// --- Coffee ---
+  updateGuitarSong(body: Record<string, unknown>) {
+    return this.request("/api/guitar/songs", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
 
-	createCoffeeBean(body: Record<string, unknown>) {
-		return this.request('/api/coffee/beans', { method: 'POST', body: JSON.stringify(body) });
-	}
+  // --- Coffee ---
+
+  createCoffeeBean(body: Record<string, unknown>) {
+    return this.request("/api/coffee/beans", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
 }
